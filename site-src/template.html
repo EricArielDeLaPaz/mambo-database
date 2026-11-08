@@ -14,17 +14,18 @@
   --font-display:'Plus Jakarta Sans',system-ui,sans-serif; --font-body:'Inter',system-ui,sans-serif; --font-mono:'Space Mono',ui-monospace,monospace;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--font-body)}
+body{margin:0;padding-top:76px;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--font-body)}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .skip{position:absolute;left:-999px;top:8px;background:var(--text);color:var(--bg);padding:8px 14px;border-radius:999px;z-index:10}.skip:focus{left:8px}
-header.top{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:5}
-.logo{font:800 18px var(--font-display);letter-spacing:-.01em}
-.tabs{display:flex;gap:4px;margin-left:auto}
-.tab{border:1px solid transparent;border-radius:999px;background:none;padding:7px 14px;font:600 14px var(--font-body);cursor:pointer;color:var(--text-2)}
-.tab[aria-selected=true]{background:var(--surface);border-color:var(--border);color:var(--text)}
-.layout{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:calc(100vh - 62px)}
-aside{border-right:1px solid var(--border);padding:20px;position:sticky;top:62px;align-self:start;max-height:calc(100vh - 62px);overflow:auto}
+.nav-wrap{position:fixed;top:14px;left:0;right:0;z-index:20;display:flex;justify-content:center;padding:0 12px;pointer-events:none}
+.nav{pointer-events:auto;display:flex;align-items:center;gap:4px;padding:6px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:0 10px 30px -10px rgba(0,0,0,.12)}
+.tab{border:0;border-radius:999px;background:none;padding:7px 16px;font:600 13.5px var(--font-body);cursor:pointer;color:var(--text-2);white-space:nowrap}
+.tab:hover{color:var(--text);background:rgba(0,0,0,.05)}
+.tab[aria-selected=true]{background:var(--text);color:var(--bg)}
+.wordmark{font:800 18px var(--font-display);letter-spacing:-.01em;margin:0 0 14px}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:calc(100vh - 76px)}
+aside{border-right:1px solid var(--border);padding:20px;position:sticky;top:76px;align-self:start;max-height:calc(100vh - 76px);overflow:auto}
 main{padding:28px clamp(16px,4vw,48px) 80px;max-width:1000px}
 input[type=search]{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font:400 15px var(--font-body);background:var(--bg);color:var(--text)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
@@ -56,21 +57,19 @@ pre{margin:0;padding:14px;background:var(--surface);border:1px solid var(--borde
 textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--border);border-radius:8px;font:400 13px var(--font-mono);background:var(--bg);color:var(--text)}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 18px;border-radius:999px;font:600 14px var(--font-body);opacity:0;pointer-events:none;transition:opacity .2s}.toast.on{opacity:1}
 .empty{color:var(--text-2)}
-@media (max-width:820px){.layout{grid-template-columns:1fr}aside{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--border)}.tabs{margin-left:0;width:100%}}
+@media (max-width:820px){.layout{grid-template-columns:1fr}aside{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--border)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="top">
-  <span class="logo">Mambo Database</span>
-  <nav class="tabs" role="tablist" aria-label="Sections">
+<div class="nav-wrap"><nav class="nav" role="tablist" aria-label="Sections">
     <button class="tab" role="tab" id="t-browse" aria-selected="true" data-view="browse">Browse</button>
     <button class="tab" role="tab" id="t-systems" aria-selected="false" data-view="systems">My design systems</button>
-  </nav>
-</header>
+  </nav></div>
 <div class="layout">
   <aside id="side">
+    <p class="wordmark">Mambo Database</p>
     <label for="q" class="eyebrow">Search</label>
     <input id="q" type="search" placeholder="modal, contrast, mobile, font..." autocomplete="off">
     <div class="chips" role="group" aria-label="Filter by type">
