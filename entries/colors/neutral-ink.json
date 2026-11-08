@@ -1,8 +1,8 @@
 {
   "id": "neutral-ink",
-  "type": "palette",
+  "type": "color",
   "name": "Neutral ink",
-  "category": "palettes",
+  "category": "neutrals",
   "summary": "A plain black-and-white base with one swappable accent. Start here and replace the accent with your brand color.",
   "roles": {
     "bg": "#ffffff",
@@ -16,19 +16,52 @@
     "danger": "#b91c1c"
   },
   "pairs": [
-    ["text-primary", "bg"],
-    ["text-secondary", "bg"],
-    ["text-secondary", "surface"],
-    ["accent-text", "accent"],
-    ["accent", "bg"],
-    ["danger", "bg"],
-    ["border-strong", "bg"],
-    ["border", "bg"]
+    [
+      "text-primary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "accent-text",
+      "accent"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ],
+    [
+      "border-strong",
+      "bg"
+    ],
+    [
+      "border",
+      "bg"
+    ]
   ],
   "guidance": [
     "Body text needs 4.5:1 against its background; large text (24px, or 19px bold) and UI borders need 3:1.",
     "Use border-strong for input, checkbox and button outlines (they need 3:1). Use border only for decorative dividers; it intentionally fails 3:1.",
     "Replace only the accent and danger roles with brand colors, then re-check the pairs listed here.",
     "Use accent-text on accent fills; never place text-secondary on accent."
-  ]
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "neutral",
+    "black-and-white",
+    "starter"
+  ],
+  "mood": "Plain and flexible"
 }

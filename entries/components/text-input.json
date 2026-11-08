@@ -1,0 +1,120 @@
+{
+  "id": "text-input",
+  "type": "component",
+  "name": "Text input",
+  "category": "forms",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "form",
+    "field",
+    "validation"
+  ],
+  "summary": "A single-line field with a visible label, optional hint and an error message.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Always visible above the field. Placeholder text is not a label."
+    },
+    {
+      "part": "field",
+      "required": true,
+      "purpose": "The input box. Border needs 3:1 contrast against the background."
+    },
+    {
+      "part": "hint",
+      "required": false,
+      "purpose": "Short help below the label, such as the expected format."
+    },
+    {
+      "part": "error-message",
+      "required": false,
+      "purpose": "Appears below the field with an icon and text. Says what is wrong and how to fix it."
+    },
+    {
+      "part": "character-count",
+      "required": false,
+      "purpose": "Shown when there is a limit."
+    }
+  ],
+  "variants": [
+    {
+      "id": "default",
+      "name": "Default",
+      "use": "Standard single-line text.",
+      "contentLimits": {
+        "label": "max 40 characters",
+        "hint": "max 80 characters",
+        "error": "max 100 characters, one sentence"
+      }
+    },
+    {
+      "id": "with-icon",
+      "name": "With leading icon",
+      "use": "Search or currency fields where an icon adds meaning.",
+      "contentLimits": {
+        "label": "max 40 characters",
+        "icon": "decorative, 20px"
+      }
+    },
+    {
+      "id": "textarea",
+      "name": "Multi-line",
+      "use": "Comments or messages over one line.",
+      "contentLimits": {
+        "label": "max 40 characters",
+        "rows": "min 3 rows",
+        "count": "show a character count above 200 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Collecting short free text: name, email, search."
+  ],
+  "whenNotToUse": [
+    "A small fixed set of options: use radios, select or a segmented control.",
+    "Dates or numbers with strict format: use a specialized input."
+  ],
+  "alternatives": [
+    "select",
+    "segmented-control"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "color.text.primary",
+    "color.danger",
+    "radius.md",
+    "space.2",
+    "space.3"
+  ],
+  "accessibility": {
+    "role": "textbox (native <input>)",
+    "keyboard": [
+      "Tab moves between fields.",
+      "Enter submits the form from a single-line input."
+    ],
+    "focus": "Show a 2px focus ring. Do not hide it on click.",
+    "notes": [
+      "Associate the label with for/id.",
+      "Link hint and error with aria-describedby; set aria-invalid=true on error.",
+      "Error text must have 4.5:1 contrast and include an icon or the word Error, not just red color.",
+      "Use the right type and autocomplete values (email, tel, one-time-code).",
+      "Mobile text size must be 16px or larger to stop iOS from zooming."
+    ]
+  },
+  "related": [
+    "button"
+  ],
+  "code": {
+    "html": "<label class=\"field\">\n  <span class=\"field__label\">Email</span>\n  <input class=\"field__input\" type=\"email\" autocomplete=\"email\" aria-describedby=\"email-hint\">\n  <span id=\"email-hint\" class=\"field__hint\">We only use it to send your receipt.</span>\n</label>",
+    "css": ".field{display:grid;gap:6px;font-family:system-ui,sans-serif;max-width:360px}\n.field__label{font-weight:600;font-size:14px}\n.field__input{min-height:44px;padding:0 14px;border:1px solid #8a8a8a;border-radius:8px;font-size:16px}\n.field__input:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}\n.field__input[aria-invalid=true]{border-color:#b91c1c}\n.field__hint{font-size:13px;color:#525252}"
+  }
+}

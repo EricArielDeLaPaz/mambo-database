@@ -30,7 +30,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir _site
-          cp dist/site/index.html _site/index.html
+          cp -r dist/site/. _site/
           cp dist/llms.txt _site/llms.txt
           cp -r dist/entries dist/data _site/
           (cd dist/skill && zip -qr ../../_site/mambo-database-skill.zip mambo-database)

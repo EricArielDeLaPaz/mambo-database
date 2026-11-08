@@ -4,36 +4,75 @@
   "name": "Bottom sheet",
   "category": "overlays",
   "level": "organism",
-  "platforms": ["mobile-app", "mobile-web"],
+  "platforms": [
+    "mobile-app",
+    "mobile-web"
+  ],
   "summary": "A panel that slides up from the bottom edge on phones. It holds menus, short forms and details without leaving the screen.",
   "anatomy": [
-    { "part": "scrim", "required": true, "purpose": "Dims the screen behind a modal sheet. Tap closes it." },
-    { "part": "sheet", "required": true, "purpose": "The panel. Rounded top corners, anchored to the bottom edge, respects the safe area." },
-    { "part": "drag-handle", "required": false, "purpose": "Short bar that shows the sheet can be dragged. Must also have a non-drag way to close." },
-    { "part": "title", "required": true, "purpose": "Names the sheet. One line." },
-    { "part": "content", "required": true, "purpose": "A list of actions, a short form, or details. Scrolls inside the sheet." },
-    { "part": "actions", "required": false, "purpose": "Sticky footer with one primary action." }
+    {
+      "part": "scrim",
+      "required": true,
+      "purpose": "Dims the screen behind a modal sheet. Tap closes it."
+    },
+    {
+      "part": "sheet",
+      "required": true,
+      "purpose": "The panel. Rounded top corners, anchored to the bottom edge, respects the safe area."
+    },
+    {
+      "part": "drag-handle",
+      "required": false,
+      "purpose": "Short bar that shows the sheet can be dragged. Must also have a non-drag way to close."
+    },
+    {
+      "part": "title",
+      "required": true,
+      "purpose": "Names the sheet. One line."
+    },
+    {
+      "part": "content",
+      "required": true,
+      "purpose": "A list of actions, a short form, or details. Scrolls inside the sheet."
+    },
+    {
+      "part": "actions",
+      "required": false,
+      "purpose": "Sticky footer with one primary action."
+    }
   ],
   "variants": [
     {
       "id": "action-list",
       "name": "Action list",
       "use": "Choose one of 2 to 6 actions, such as share, edit, delete.",
-      "contentLimits": { "title": "max 40 characters", "content": "2 to 6 rows, one line each, 48px minimum height per row", "actions": "none; a cancel row at the end" },
+      "contentLimits": {
+        "title": "max 40 characters",
+        "content": "2 to 6 rows, one line each, 48px minimum height per row",
+        "actions": "none; a cancel row at the end"
+      },
       "height": "content height"
     },
     {
       "id": "form",
       "name": "Short form",
       "use": "Collect 1 to 3 inputs, such as a filter or a note.",
-      "contentLimits": { "title": "max 40 characters", "content": "up to 3 fields", "actions": "1 primary button, sticky" },
+      "contentLimits": {
+        "title": "max 40 characters",
+        "content": "up to 3 fields",
+        "actions": "1 primary button, sticky"
+      },
       "height": "up to 70% of the screen"
     },
     {
       "id": "expandable",
       "name": "Expandable details",
       "use": "Show a summary that expands to full detail, such as a map result or an order.",
-      "contentLimits": { "title": "max 40 characters", "content": "summary in the peek state; full content when expanded", "actions": "optional sticky primary" },
+      "contentLimits": {
+        "title": "max 40 characters",
+        "content": "summary in the peek state; full content when expanded",
+        "actions": "optional sticky primary"
+      },
       "height": "peek 30%, expanded 90%"
     }
   ],
@@ -47,8 +86,20 @@
     "Long or multi-step flows: use a full screen.",
     "Critical confirmations that must not be dismissed by a drag: use a modal dialog."
   ],
-  "alternatives": ["modal-dialog", "drawer", "popover"],
-  "tokens": ["color.surface.overlay", "color.text.primary", "color.scrim", "radius.xl", "space.4", "space.6", "shadow.overlay"],
+  "alternatives": [
+    "modal-dialog",
+    "drawer",
+    "popover"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.text.primary",
+    "color.scrim",
+    "radius.xl",
+    "space.4",
+    "space.6",
+    "shadow.overlay"
+  ],
   "accessibility": {
     "role": "dialog (modal sheet) or region (non-modal sheet)",
     "keyboard": [
@@ -62,10 +113,22 @@
       "Respect the bottom safe area so actions are not hidden by the home indicator."
     ]
   },
-  "related": ["modal-dialog", "drawer", "toast"],
+  "related": [
+    "modal-dialog",
+    "drawer",
+    "toast"
+  ],
   "code": {
     "html": "<div class=\"sheet-scrim\"></div>\n<section class=\"sheet\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"sheet-title\">\n  <div class=\"sheet__handle\" aria-hidden=\"true\"></div>\n  <h2 id=\"sheet-title\" class=\"sheet__title\">Photo options</h2>\n  <ul class=\"sheet__list\">\n    <li><button type=\"button\">Share</button></li>\n    <li><button type=\"button\">Edit</button></li>\n    <li><button type=\"button\">Delete</button></li>\n    <li><button type=\"button\">Cancel</button></li>\n  </ul>\n</section>",
     "css": ".sheet-scrim { position: fixed; inset: 0; background: rgba(0,0,0,.5); }\n.sheet {\n  position: fixed; left: 0; right: 0; bottom: 0;\n  padding: 8px 16px calc(16px + env(safe-area-inset-bottom));\n  background: #fff; color: #0a0a0a;\n  border-radius: 20px 20px 0 0;\n  box-shadow: 0 -12px 32px -8px rgba(0,0,0,.25);\n  max-height: 90vh; overflow: auto;\n}\n.sheet__handle { width: 36px; height: 4px; margin: 4px auto 12px; border-radius: 2px; background: #a3a3a3; }\n.sheet__title { margin: 0 0 8px; font-size: 18px; }\n.sheet__list { list-style: none; margin: 0; padding: 0; }\n.sheet__list button { width: 100%; min-height: 48px; text-align: left; border: 0; border-bottom: 1px solid #e5e5e5; background: none; font: 500 16px/1 inherit; color: inherit; cursor: pointer; }\n.sheet :focus-visible { outline: 2px solid #0a0a0a; outline-offset: -2px; }",
     "js": "// Slide in by toggling a class that animates transform: translateY(100%) -> 0.\n// Respect prefers-reduced-motion by skipping the animation."
-  }
+  },
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "overlay",
+    "mobile",
+    "gesture"
+  ]
 }

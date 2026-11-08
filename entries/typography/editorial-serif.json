@@ -1,0 +1,78 @@
+{
+  "id": "editorial-serif",
+  "type": "font-pairing",
+  "name": "Playfair Display + Source Sans 3",
+  "category": "pairings",
+  "summary": "An elegant serif for headlines over a plain, readable sans. Suits editorial, hospitality and education.",
+  "industries": [
+    "education",
+    "hospitality",
+    "nonprofit",
+    "retail",
+    "media"
+  ],
+  "tags": [
+    "serif",
+    "editorial",
+    "elegant"
+  ],
+  "roles": [
+    {
+      "role": "display",
+      "family": "Playfair Display",
+      "weights": [
+        600,
+        700
+      ],
+      "use": "Headlines and pull quotes"
+    },
+    {
+      "role": "body",
+      "family": "Source Sans 3",
+      "weights": [
+        400,
+        600
+      ],
+      "use": "Paragraphs and UI text"
+    }
+  ],
+  "scale": [
+    {
+      "token": "text.xs",
+      "size": "12px",
+      "lineHeight": "1.4"
+    },
+    {
+      "token": "text.sm",
+      "size": "14px",
+      "lineHeight": "1.5"
+    },
+    {
+      "token": "text.base",
+      "size": "16px",
+      "lineHeight": "1.6"
+    },
+    {
+      "token": "text.lg",
+      "size": "20px",
+      "lineHeight": "1.4"
+    },
+    {
+      "token": "text.xl",
+      "size": "28px",
+      "lineHeight": "1.25"
+    },
+    {
+      "token": "text.2xl",
+      "size": "40px",
+      "lineHeight": "1.15"
+    }
+  ],
+  "whyItWorks": "A high-contrast serif gives personality to headings while a neutral sans keeps long text easy to read. The two contrast in style but not in size.",
+  "avoid": [
+    "Playfair Display for body text or text under 18px.",
+    "Italics for long passages.",
+    "More than two weights per family."
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap');\n:root {\n  --font-display: 'Playfair Display', Georgia, serif;\n  --font-body: 'Source Sans 3', system-ui, sans-serif;\n}"
+}

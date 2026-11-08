@@ -1,0 +1,106 @@
+{
+  "id": "toast",
+  "type": "component",
+  "name": "Toast",
+  "category": "feedback",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "notification",
+    "transient",
+    "status"
+  ],
+  "summary": "A short message that appears briefly to confirm something happened, without blocking the page.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Small surface at the bottom (mobile) or a corner (desktop). Has role=status."
+    },
+    {
+      "part": "message",
+      "required": true,
+      "purpose": "One sentence about what happened."
+    },
+    {
+      "part": "action",
+      "required": false,
+      "purpose": "One optional action such as Undo."
+    },
+    {
+      "part": "close-button",
+      "required": false,
+      "purpose": "Required if the toast does not auto-dismiss."
+    }
+  ],
+  "variants": [
+    {
+      "id": "success",
+      "name": "Confirmation",
+      "use": "Confirm a finished action.",
+      "contentLimits": {
+        "message": "max 80 characters",
+        "duration": "5 seconds minimum",
+        "action": "0 or 1"
+      }
+    },
+    {
+      "id": "error",
+      "name": "Error",
+      "use": "Report a failed action that is not tied to a field.",
+      "contentLimits": {
+        "message": "max 100 characters, say how to fix",
+        "duration": "do not auto-dismiss",
+        "action": "Retry"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Confirm a quick action such as saved, copied, sent.",
+    "Offer Undo right after an action."
+  ],
+  "whenNotToUse": [
+    "The message is critical or needs a decision: use a modal dialog.",
+    "The error belongs to a form field: use inline error text.",
+    "Content people must read in full: toasts disappear."
+  ],
+  "alternatives": [
+    "modal-dialog",
+    "inline-alert"
+  ],
+  "tokens": [
+    "color.surface.inverse",
+    "color.text.inverse",
+    "radius.md",
+    "space.3",
+    "shadow.overlay"
+  ],
+  "accessibility": {
+    "role": "status (polite) or alert (assertive for errors)",
+    "keyboard": [
+      "If it has an action, the action must be reachable by Tab before it disappears.",
+      "Escape dismisses it."
+    ],
+    "focus": "Do not steal focus. Announce it through a live region instead.",
+    "notes": [
+      "Keep it on screen at least 5 seconds, and longer for more text (WCAG 2.2.1 timing).",
+      "Pause the timer on hover and focus.",
+      "Do not use a toast as the only place an error appears."
+    ]
+  },
+  "related": [
+    "modal-dialog",
+    "button"
+  ],
+  "code": {
+    "html": "<div class=\"toast\" role=\"status\">\n  <span>Project saved.</span>\n  <button type=\"button\" class=\"toast__action\">Undo</button>\n</div>",
+    "css": ".toast{display:inline-flex;align-items:center;gap:16px;padding:12px 16px;border-radius:8px;background:#0a0a0a;color:#fff;font:500 14px system-ui,sans-serif;box-shadow:0 12px 24px -8px rgba(0,0,0,.35)}\n.toast__action{border:0;background:none;color:#fff;font-weight:700;text-decoration:underline;cursor:pointer;min-height:32px}\n.toast :focus-visible{outline:2px solid #fff;outline-offset:2px}"
+  }
+}

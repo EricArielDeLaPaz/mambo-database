@@ -1,0 +1,65 @@
+{
+  "id": "playful-violet",
+  "type": "color",
+  "name": "Playful violet",
+  "category": "bold",
+  "summary": "Violet with a pink accent. Reads as creative and playful.",
+  "industries": [
+    "entertainment",
+    "gaming",
+    "education",
+    "creative"
+  ],
+  "tags": [
+    "violet",
+    "playful",
+    "bold"
+  ],
+  "mood": "Creative, playful",
+  "roles": {
+    "bg": "#ffffff",
+    "surface": "#f5f3ff",
+    "ink": "#1e1b4b",
+    "text-secondary": "#5b5780",
+    "primary": "#6d28d9",
+    "primary-text": "#ffffff",
+    "accent": "#be185d",
+    "danger": "#b91c1c"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Purple suggests creativity and imagination, so it is common in entertainment, gaming and learning products for younger audiences.",
+    "Body text needs 4.5:1 against its background; large text and UI outlines need 3:1.",
+    "Use primary-text only on primary fills. Do not place text-secondary on primary or accent.",
+    "Never rely on color alone to show state (for example error versus success); add an icon or text."
+  ]
+}

@@ -4,183 +4,444 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mambo Database</title>
-<meta name="description" content="Open library of UI components, palettes and font pairings with anatomy, accessibility notes and code, for designers and AI.">
+<meta name="description" content="Open database of UI components, colors and font pairings with anatomy, accessibility notes and code, for designers and AI.">
+<link rel="icon" type="image/png" href="mambo.png">
+<link rel="apple-touch-icon" href="mambo.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mambo Database">
+<meta property="og:description" content="Open database of UI components, colors and font pairings with anatomy, accessibility notes and code, for designers and AI.">
+<meta property="og:image" content="https://ericarieldelapaz.github.io/mambo-database/mambo.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ericarieldelapaz.github.io/mambo-database/mambo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
   /* Plain black-and-white base. Replace these to re-theme. */
-  --bg:#fff; --surface:#fafafa; --border:#d4d4d4; --text:#0a0a0a; --text-2:#525252; --accent:#0a0a0a; --accent-text:#fff; --focus:#1d4ed8;
+  --bg:#fff; --surface:#fafafa; --border:#d4d4d4; --border-strong:#8a8a8a; --text:#0a0a0a; --text-2:#525252; --accent:#0a0a0a; --accent-text:#fff; --focus:#1d4ed8;
   --font-display:'Plus Jakarta Sans',system-ui,sans-serif; --font-body:'Inter',system-ui,sans-serif; --font-mono:'Space Mono',ui-monospace,monospace;
 }
 *{box-sizing:border-box}
 body{margin:0;padding-top:76px;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--font-body)}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.skip{position:absolute;left:-999px;top:8px;background:var(--text);color:var(--bg);padding:8px 14px;border-radius:999px;z-index:10}.skip:focus{left:8px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--text);color:var(--bg);padding:8px 14px;border-radius:999px;z-index:30}.skip:focus{left:8px}
 .nav-wrap{position:fixed;top:14px;left:0;right:0;z-index:20;display:flex;justify-content:center;padding:0 12px;pointer-events:none}
 .nav{pointer-events:auto;display:flex;align-items:center;gap:4px;padding:6px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:0 10px 30px -10px rgba(0,0,0,.12)}
 .tab{border:0;border-radius:999px;background:none;padding:7px 16px;font:600 13.5px var(--font-body);cursor:pointer;color:var(--text-2);white-space:nowrap}
 .tab:hover{color:var(--text);background:rgba(0,0,0,.05)}
 .tab[aria-selected=true]{background:var(--text);color:var(--bg)}
-.wordmark{font:800 18px var(--font-display);letter-spacing:-.01em;margin:0 0 14px}
-.layout{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:calc(100vh - 76px)}
+.layout{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:calc(100vh - 76px)}
 aside{border-right:1px solid var(--border);padding:20px;position:sticky;top:76px;align-self:start;max-height:calc(100vh - 76px);overflow:auto}
-main{padding:28px clamp(16px,4vw,48px) 80px;max-width:1000px}
-input[type=search]{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font:400 15px var(--font-body);background:var(--bg);color:var(--text)}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
-.chip{border:1px solid var(--border);border-radius:4px;background:var(--bg);padding:4px 10px;font:700 12px var(--font-mono);cursor:pointer;color:var(--text-2)}
+main{padding:28px clamp(16px,4vw,48px) 80px;min-width:0}
+.wordmark{display:flex;align-items:center;gap:10px;font:800 18px var(--font-display);letter-spacing:-.01em;margin:0 0 14px}
+.wordmark img{width:32px;height:32px;border-radius:8px}
+.eyebrow{font:700 12px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+input[type=search],input[type=text],select,textarea{width:100%;padding:9px 12px;border:1px solid var(--border-strong);border-radius:8px;font:400 15px var(--font-body);background:var(--bg);color:var(--text)}
+select{padding-right:8px}
+textarea{min-height:120px;font:400 13px var(--font-mono)}
+fieldset{border:0;margin:16px 0 0;padding:0}
+legend{padding:0;margin-bottom:6px}
+.chk{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:14px;cursor:pointer}
+.chk input{width:16px;height:16px;accent-color:#0a0a0a;flex:none}
+.chk .n{margin-left:auto;color:var(--text-2);font:400 12px var(--font-mono)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--border-strong);border-radius:4px;background:var(--bg);padding:3px 9px;font:700 12px var(--font-mono);cursor:pointer;color:var(--text-2)}
 .chip[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
-.list{list-style:none;margin:8px 0 0;padding:0}
-.list button{display:block;width:100%;text-align:left;border:0;background:none;padding:8px 10px;border-radius:8px;cursor:pointer;font:500 15px var(--font-body);color:var(--text)}
-.list button[aria-current=true]{background:var(--surface);font-weight:600}
-.list small{display:block;color:var(--text-2);font:400 12px var(--font-mono)}
+.tag{display:inline-block;border:1px solid var(--border);border-radius:4px;padding:2px 8px;font:700 11.5px var(--font-mono);color:var(--text-2);background:var(--surface);margin:0 4px 4px 0}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--text);border-radius:999px;background:var(--bg);color:var(--text);padding:8px 16px;min-height:36px;font:600 13px var(--font-body);cursor:pointer}
+.btn.solid{background:var(--accent);color:var(--accent-text)}
+.btn.sm{padding:4px 12px;min-height:30px;font-size:12.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 h1{font:800 clamp(28px,4vw,40px)/1.15 var(--font-display);margin:0 0 8px;letter-spacing:-.02em}
 h2{font:700 20px var(--font-display);margin:36px 0 10px}
 h3{font:700 16px var(--font-display);margin:18px 0 4px}
-.eyebrow{font:700 12px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
-.meta{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
-.tag{border:1px solid var(--border);border-radius:4px;padding:3px 10px;font:700 12px var(--font-mono);color:var(--text-2);background:var(--surface)}
-.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--text);border-radius:999px;background:var(--bg);color:var(--text);padding:8px 16px;font:600 13px var(--font-body);cursor:pointer}
-.btn.solid{background:var(--accent);color:var(--accent-text)}
-.row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+p{margin:0 0 10px}
 table{border-collapse:collapse;width:100%;font-size:14px}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
 th{font:700 12px var(--font-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--text-2)}
+th button{all:unset;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:inherit}
+th button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 ul.plain{margin:0;padding-left:20px}
 iframe.preview{width:100%;height:380px;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
 pre{margin:0;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:auto;font:400 13px/1.55 var(--font-mono)}
 .codehead{display:flex;align-items:center;gap:8px;margin:16px 0 6px}.codehead strong{font:700 12px var(--font-mono);text-transform:uppercase;letter-spacing:.06em}
-.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-.sw{border:1px solid var(--border);border-radius:8px;overflow:hidden}.sw i{display:block;height:56px}.sw span{display:block;padding:6px 10px;font:400 12px var(--font-mono)}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.sw{border:1px solid var(--border);border-radius:8px;overflow:hidden}.sw i{display:block;height:52px}.sw span{display:block;padding:6px 10px;font:400 12px var(--font-mono)}
 .pass{font-weight:700}.fail{font-weight:700;text-decoration:underline}
-textarea{width:100%;min-height:160px;padding:12px;border:1px solid var(--border);border-radius:8px;font:400 13px var(--font-mono);background:var(--bg);color:var(--text)}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 18px;border-radius:999px;font:600 14px var(--font-body);opacity:0;pointer-events:none;transition:opacity .2s}.toast.on{opacity:1}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 18px;border-radius:999px;font:600 14px var(--font-body);opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}.toast.on{opacity:1}
 .empty{color:var(--text-2)}
-@media (max-width:820px){.layout{grid-template-columns:1fr}aside{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--border)}}
+.back{margin-bottom:16px}
+/* database table */
+.dbhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;justify-content:space-between;margin-bottom:12px}
+.name-btn{all:unset;cursor:pointer;font-weight:600;border-bottom:1px solid var(--border-strong)}
+.name-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sum{display:block;color:var(--text-2);font-size:13px;margin-top:2px;max-width:46ch}
+.swatchrow{display:flex;gap:3px;margin-top:6px}.swatchrow i{width:18px;height:18px;border-radius:4px;border:1px solid rgba(0,0,0,.2)}
+/* systems */
+.sys-layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:0;min-height:calc(100vh - 76px)}
+.sys-side{border-right:1px solid var(--border);padding:20px;position:sticky;top:76px;align-self:start;max-height:calc(100vh - 76px);overflow:auto}
+.folder{margin:14px 0 0}
+.folder-h{display:flex;align-items:center;gap:6px;font:700 12px var(--font-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--text-2)}
+.folder-h button.fold{all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;flex:1;padding:4px 0}
+.folder-h button.fold:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sysrow{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:8px}
+.sysrow[aria-current=true]{background:var(--surface);font-weight:600}
+.sysrow input{width:16px;height:16px;accent-color:#0a0a0a;flex:none}
+.sysrow button{all:unset;cursor:pointer;flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sysrow button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.bulk{position:sticky;bottom:0;background:var(--bg);border:1px solid var(--border-strong);border-radius:12px;padding:10px;margin-top:14px;display:grid;gap:8px}
+.panel{border:1px solid var(--border);border-radius:12px;padding:18px;margin:16px 0;background:var(--bg)}
+.panel>h2{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label.f{display:grid;gap:4px;font:600 13px var(--font-body)}
+.advice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border-strong);border-left-width:4px;border-radius:8px;padding:8px 12px;margin:10px 0;font-size:14px;background:var(--surface)}
+.advice b{font:700 12px var(--font-mono);flex:none;min-width:34px}
+.advice.warn{border-left-color:#0a0a0a;background:#fff}
+.advice.warn b{text-decoration:underline}
+.check{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px}
+.check b{display:inline-block;width:22px}
+.colorcard{border:1px solid var(--border);border-radius:12px;padding:14px;margin:12px 0}
+.colortop{display:grid;grid-template-columns:auto minmax(120px,1fr) minmax(110px,150px) minmax(130px,170px) auto;gap:10px;align-items:end}
+input[type=color]{width:46px;height:46px;padding:2px;border:1px solid var(--border-strong);border-radius:8px;background:var(--bg);cursor:pointer}
+.cr{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--border)}
+.cr .aa{display:grid;place-items:center;height:44px;border-radius:8px;border:1px solid rgba(0,0,0,.25);font:700 18px var(--font-display)}
+.cr .meta{font-size:13px;line-height:1.5}
+.badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.bd{border:1px solid var(--border-strong);border-radius:4px;padding:1px 7px;font:700 11px var(--font-mono);background:var(--bg)}
+.bd.no{color:var(--text-2);text-decoration:line-through}
+.note{font-size:13px;color:var(--text-2);margin-top:4px}
+.sugg{display:flex;flex-wrap:wrap;gap:10px}
+.sugg-card{border:1px solid var(--border);border-radius:8px;padding:10px;min-width:170px;flex:1 1 170px}
+.sugg-card b{display:block;font-size:14px}
+.fontrow{display:grid;grid-template-columns:150px minmax(120px,1fr) minmax(100px,160px) auto;gap:10px;align-items:end;margin:8px 0}
+.states{display:flex;flex-wrap:wrap;gap:6px 18px}
+@media (max-width:820px){
+  .layout,.sys-layout{grid-template-columns:1fr}
+  aside,.sys-side{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--border)}
+  .colortop,.fontrow{grid-template-columns:1fr 1fr}
+  table.db thead{display:none}
+  table.db,table.db tbody,table.db tr,table.db td{display:block;width:100%}
+  table.db tr{border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:10px}
+  table.db td{border:0;padding:3px 0}
+  table.db td[data-l]::before{content:attr(data-l) ": ";font:700 11px var(--font-mono);text-transform:uppercase;color:var(--text-2)}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="nav-wrap"><nav class="nav" role="tablist" aria-label="Sections">
-    <button class="tab" role="tab" id="t-browse" aria-selected="true" data-view="browse">Browse</button>
-    <button class="tab" role="tab" id="t-systems" aria-selected="false" data-view="systems">My design systems</button>
-  </nav></div>
-<div class="layout">
-  <aside id="side">
-    <p class="wordmark">Mambo Database</p>
-    <label for="q" class="eyebrow">Search</label>
-    <input id="q" type="search" placeholder="modal, contrast, mobile, font..." autocomplete="off">
-    <div class="chips" role="group" aria-label="Filter by type">
-      <button class="chip" aria-pressed="false" data-f="component">Components</button>
-      <button class="chip" aria-pressed="false" data-f="palette">Colors</button>
-      <button class="chip" aria-pressed="false" data-f="font-pairing">Typography</button>
-    </div>
-    <div class="chips" role="group" aria-label="Filter by platform">
-      <button class="chip" aria-pressed="false" data-p="desktop">Desktop</button>
-      <button class="chip" aria-pressed="false" data-p="mobile">Mobile</button>
-    </div>
-    <ul class="list" id="list"></ul>
-  </aside>
-  <main id="main" tabindex="-1"></main>
-</div>
+  <button class="tab" role="tab" id="t-browse" aria-selected="true" data-view="browse">Browse</button>
+  <button class="tab" role="tab" id="t-systems" aria-selected="false" data-view="systems">My design systems</button>
+</nav></div>
+<div id="app"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 const DATA = /*__DATA__*/[];
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const typeLabel = {component:'Component', palette:'Palette','font-pairing':'Font pairing'};
-const state = { q:'', types:new Set(), plats:new Set(), cur: DATA[0] && DATA[0].id, view:'browse' };
+const TYPE = {component:'Component', color:'Color', 'font-pairing':'Typography'};
+const TYPE_PLURAL = {component:'Components', color:'Colors', 'font-pairing':'Typography'};
+const PLAT = {desktop:'Desktop', 'mobile-web':'Mobile web', 'mobile-app':'Mobile app'};
+const INDUSTRIES = [['all','All'],['finance','Finance & fintech'],['insurance','Insurance'],['legal','Legal'],['healthcare','Healthcare'],['wellness','Wellness & fitness'],['education','Education'],['retail','Retail & e-commerce'],['food-beverage','Food & beverage'],['hospitality','Travel & hospitality'],['technology','Technology & SaaS'],['data','Data & analytics'],['entertainment','Entertainment'],['gaming','Gaming'],['creative','Creative & media'],['media','Publishing & media'],['nonprofit','Nonprofit'],['sustainability','Sustainability'],['agriculture','Agriculture']];
+const indLabel = k => (INDUSTRIES.find(i=>i[0]===k)||[k,k])[1];
 
-function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),1600)}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),1800)}
 async function copy(text,label){try{await navigator.clipboard.writeText(text);toast('Copied '+label)}catch{toast('Copy blocked. Select the text and copy it manually.')}}
 function download(name,text,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();URL.revokeObjectURL(a.href)}
+const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'item';
+const uid = () => Math.random().toString(36).slice(2,9);
 
+/* ---------- colour maths ---------- */
+function normHex(h){h=String(h).trim().replace(/^#/,'');if(/^[0-9a-f]{3}$/i.test(h))h=h.split('').map(c=>c+c).join('');return /^[0-9a-f]{6}$/i.test(h)?'#'+h.toLowerCase():null}
+function lum(h){const c=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255).map(v=>v<=.03928?v/12.92:((v+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2]}
+function ratio(a,b){const [x,y]=[lum(a),lum(b)].sort((p,q)=>q-p);return (x+.05)/(y+.05)}
+function hsl(h){let [r,g,b]=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let H=0;if(d){H=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;H=(H*60+360)%360}const L=(mx+mn)/2,S=d?d/(1-Math.abs(2*L-1)):0;return {h:H,s:S,l:L}}
+const isRed = h => {const c=hsl(h);return c.s>.3&&(c.h<22||c.h>335)};
+const isGreen = h => {const c=hsl(h);return c.s>.25&&c.h>85&&c.h<165};
+const textColorOn = h => ratio(h,'#ffffff')>=ratio(h,'#000000')?'#ffffff':'#000000';
+
+/* ---------- toast + hash routing ---------- */
+const route = () => { const h=location.hash.replace(/^#\/?/,''); if(h==='systems') return {view:'systems'}; if(h.startsWith('entry/')) return {view:'browse',id:h.slice(6)}; return {view:'browse'} };
+const go = h => { location.hash = h; };
+
+/* ====================================================================
+   BROWSE (database)
+==================================================================== */
+const B = { q:'', types:new Set(), cats:new Set(), plats:new Set(), industry:'all', tags:new Set(), sort:'name', dir:1 };
+const clipStore = {};
 function matches(e){
-  if(state.types.size && !state.types.has(e.type)) return false;
-  if(state.plats.size){const p=(e.platforms||[]).join(' ');let ok=false;for(const x of state.plats) if(p.includes(x)) ok=true;if(!ok) return false}
-  const q=state.q.trim().toLowerCase(); if(!q) return true;
-  return (e.name+' '+e.summary+' '+(e.category||'')+' '+(e.md||'')).toLowerCase().includes(q);
+  if(B.types.size && !B.types.has(e.type)) return false;
+  if(B.cats.size && !B.cats.has(e.category)) return false;
+  if(B.plats.size){const p=e.platforms||[];if(![...B.plats].some(x=>p.includes(x))) return false}
+  if(B.industry!=='all'){const i=e.industries||['all'];if(!(i.includes('all')||i.includes(B.industry))) return false}
+  if(B.tags.size){const t=e.tags||[];if(![...B.tags].every(x=>t.includes(x))) return false}
+  const q=B.q.trim().toLowerCase(); if(!q) return true;
+  return (e.name+' '+e.summary+' '+(e.category||'')+' '+(e.tags||[]).join(' ')+' '+(e.md||'')).toLowerCase().includes(q);
 }
-function renderList(){
-  const items=DATA.filter(matches);
-  $('#list').innerHTML = items.length ? items.map(e=>`<li><button data-id="${esc(e.id)}" ${e.id===state.cur?'aria-current="true"':''}>${esc(e.name)}<small>${typeLabel[e.type]}${e.category?' · '+esc(e.category):''}</small></button></li>`).join('') : '<li class="empty" style="padding:8px 10px">No matches.</li>';
+const countBy = (fn, items) => { const m={}; items.forEach(e=>[].concat(fn(e)||[]).forEach(k=>m[k]=(m[k]||0)+1)); return m };
+const checkbox = (grp,val,label,n,on) => `<label class="chk"><input type="checkbox" data-grp="${grp}" value="${esc(val)}" ${on?'checked':''}><span>${esc(label)}</span><span class="n">${n}</span></label>`;
+
+function renderBrowse(){
+  const r=route();
+  const e=r.id && DATA.find(x=>x.id===r.id);
+  $('#app').innerHTML = `<div class="layout"><aside id="side" aria-label="Filters"></aside><main id="main" tabindex="-1"></main></div>`;
+  renderFilters();
+  if(e) { $('#main').innerHTML = renderEntry(e); wireEntry(e); } else renderResults();
+}
+function renderFilters(){
+  const types=countBy(e=>e.type,DATA), cats=countBy(e=>e.category,DATA.filter(e=>!B.types.size||B.types.has(e.type))), plats=countBy(e=>e.platforms,DATA), tags=countBy(e=>e.tags,DATA);
+  const catList=Object.keys(cats).sort();
+  $('#side').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
+  <label for="q" class="eyebrow">Search</label>
+  <input id="q" type="search" placeholder="modal, contrast, finance..." autocomplete="off" value="${esc(B.q)}">
+  <fieldset><legend class="eyebrow">Type</legend>${Object.keys(TYPE).map(t=>checkbox('types',t,TYPE_PLURAL[t],types[t]||0,B.types.has(t))).join('')}</fieldset>
+  <fieldset><legend class="eyebrow">Category</legend>${catList.map(c=>checkbox('cats',c,c,cats[c],B.cats.has(c))).join('')}</fieldset>
+  <fieldset><legend class="eyebrow">Platform</legend>${Object.keys(PLAT).map(p=>checkbox('plats',p,PLAT[p],plats[p]||0,B.plats.has(p))).join('')}</fieldset>
+  <fieldset><legend class="eyebrow"><label for="ind">Industry</label></legend><select id="ind">${INDUSTRIES.map(([k,l])=>`<option value="${k}" ${B.industry===k?'selected':''}>${esc(l)}</option>`).join('')}</select></fieldset>
+  <fieldset><legend class="eyebrow">Tags</legend><div class="chips">${Object.keys(tags).sort().map(t=>`<button class="chip" aria-pressed="${B.tags.has(t)}" data-tag="${esc(t)}">${esc(t)}</button>`).join('')}</div></fieldset>
+  <div class="row"><button class="btn sm" id="clear">Clear filters</button></div>`;
+  $('#q').oninput=ev=>{B.q=ev.target.value;renderResults()};
+  $('#side').querySelectorAll('input[data-grp]').forEach(i=>i.onchange=()=>{const s=B[i.dataset.grp];i.checked?s.add(i.value):s.delete(i.value);if(i.dataset.grp==='types'){B.cats.forEach(c=>{if(B.types.size&&!DATA.some(e=>e.category===c&&B.types.has(e.type)))B.cats.delete(c)})}afterFilter(i.dataset.grp==='types')});
+  $('#ind').onchange=ev=>{B.industry=ev.target.value;afterFilter()};
+  $('#side').querySelectorAll('[data-tag]').forEach(b=>b.onclick=()=>{const t=b.dataset.tag;B.tags.has(t)?B.tags.delete(t):B.tags.add(t);afterFilter(true)});
+  $('#clear').onclick=()=>{B.q='';B.types.clear();B.cats.clear();B.plats.clear();B.tags.clear();B.industry='all';go('#/');renderFilters();renderResults()};
+}
+function afterFilter(refresh){ if(route().id){go('#/')} else { if(refresh) renderFilters(); renderResults() } }
+function sortVal(e,k){return k==='name'?e.name:k==='type'?TYPE[e.type]:k==='category'?e.category:k==='platforms'?(e.platforms||[]).join():(e.industries||['all']).join()}
+function renderResults(){
+  const items=DATA.filter(matches).sort((a,b)=>sortVal(a,B.sort).localeCompare(sortVal(b,B.sort))*B.dir);
+  const th=(k,l)=>`<th scope="col" aria-sort="${B.sort===k?(B.dir>0?'ascending':'descending'):'none'}"><button data-sort="${k}">${l}${B.sort===k?(B.dir>0?' ▲':' ▼'):''}</button></th>`;
+  $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries${B.industry!=='all'?' · industry: '+esc(indLabel(B.industry)):''}</p></div>
+  ${items.length?`<table class="db"><thead><tr>${th('name','Name')}${th('type','Type')}${th('category','Category')}${th('platforms','Platforms')}${th('industries','Industries')}</tr></thead><tbody>${items.map(e=>`<tr>
+   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${esc(e.name)}</button><span class="sum">${esc(e.summary)}</span>${e.type==='color'?`<span class="swatchrow" aria-hidden="true">${Object.values(e.roles).slice(0,8).map(c=>`<i style="background:${esc(c)}"></i>`).join('')}</span>`:''}</td>
+   <td data-l="Type">${TYPE[e.type]}</td><td data-l="Category">${esc(e.category)}</td>
+   <td data-l="Platforms">${(e.platforms||[]).map(p=>`<span class="tag">${esc(PLAT[p]||p)}</span>`).join('')||'<span class="empty">n/a</span>'}</td>
+   <td data-l="Industries">${(e.industries||['all']).map(i=>`<span class="tag">${esc(indLabel(i))}</span>`).join('')}</td></tr>`).join('')}</tbody></table>`:'<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
+  $('#main').querySelectorAll('[data-sort]').forEach(b=>b.onclick=()=>{const k=b.dataset.sort;if(B.sort===k)B.dir*=-1;else{B.sort=k;B.dir=1}renderResults()});
+  $('#main').querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>go('#/entry/'+b.dataset.open));
 }
 const ul = a => '<ul class="plain">'+(a||[]).map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>';
-const codeBlock = (label,code,id) => `<div class="codehead"><strong>${label}</strong><button class="btn" data-copy="${id}">Copy</button></div><pre><code>${esc(code)}</code></pre>`;
-const clipStore = {};
+const codeBlock = (label,code,id) => `<div class="codehead"><strong>${label}</strong><button class="btn sm" data-copy="${id}">Copy</button></div><pre><code>${esc(code)}</code></pre>`;
 function previewDoc(e){
   const c=e.code, html=c.html.replace('<dialog ','<dialog open ');
-  const fix='dialog{position:static!important;margin:24px auto!important;display:block}.sheet,.sheet-scrim{position:absolute!important}body{margin:0;font-family:system-ui,sans-serif;position:relative;min-height:340px;background:#fafafa}';
+  const fix='dialog{position:static!important;margin:24px auto!important;display:block}.sheet,.sheet-scrim{position:absolute!important}body{margin:0;padding:24px;font-family:system-ui,sans-serif;position:relative;min-height:300px;background:#fafafa}';
   return `<!doctype html><meta charset=utf-8><style>${c.css}\n${fix}</style>${html}`;
 }
-function renderComponent(e){
-  clipStore.html=e.code.html; clipStore.css=e.code.css; clipStore.js=e.code.js||''; clipStore.md=e.md; clipStore.json=JSON.stringify(e,(k,v)=>k==='md'?undefined:v,2);
-  clipStore.both=`<!-- ${e.name} -->\n<style>\n${e.code.css}\n</style>\n${e.code.html}`;
-  return `<p class="eyebrow">${esc(e.category)} · ${esc(e.level||'')}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>
-  <div class="meta">${(e.platforms||[]).map(p=>`<span class="tag">${esc(p)}</span>`).join('')}</div>
+const meta = e => `<div class="meta">${(e.platforms||[]).map(p=>`<span class="tag">${esc(PLAT[p]||p)}</span>`).join('')}${(e.industries||['all']).map(i=>`<span class="tag">Industry: ${esc(indLabel(i))}</span>`).join('')}${(e.tags||[]).map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div>`;
+function renderEntry(e){
+  Object.keys(clipStore).forEach(k=>delete clipStore[k]);
+  clipStore.md=e.md; clipStore.json=JSON.stringify(e,(k,v)=>k==='md'?undefined:v,2);
+  const back=`<button class="btn sm back" id="back">← Back to results</button>`;
+  if(e.type==='component'){
+    clipStore.html=e.code.html; clipStore.css=e.code.css; clipStore.js=e.code.js||''; clipStore.both=`<!-- ${e.name} -->\n<style>\n${e.code.css}\n</style>\n${e.code.html}`;
+    return `${back}<p class="eyebrow">${esc(e.category)} · ${esc(e.level||'')}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>${meta(e)}
   <div class="row"><button class="btn solid" data-copy="both">Copy HTML + CSS (for Figma importers)</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button><button class="btn" id="dl-md">Download .md</button></div>
   <h2>Live preview</h2><iframe class="preview" title="Preview of ${esc(e.name)}" sandbox srcdoc="${esc(previewDoc(e))}"></iframe>
   <h2>Anatomy</h2><table><thead><tr><th>Part</th><th>Required</th><th>Purpose</th></tr></thead><tbody>${e.anatomy.map(a=>`<tr><td><b>${esc(a.part)}</b></td><td>${a.required?'Yes':'Optional'}</td><td>${esc(a.purpose)}</td></tr>`).join('')}</tbody></table>
   <h2>Variants and content limits</h2>${e.variants.map(v=>`<h3>${esc(v.name)}</h3><p>${esc(v.use)}</p><ul class="plain">${Object.entries(v.contentLimits).map(([k,x])=>`<li><b>${esc(k)}:</b> ${esc(x)}</li>`).join('')}${v.width?`<li><b>width:</b> ${esc(v.width)}</li>`:''}${v.height?`<li><b>height:</b> ${esc(v.height)}</li>`:''}</ul>`).join('')}
   <h2>When to use</h2>${ul(e.whenToUse)}<h2>When not to use</h2>${ul(e.whenNotToUse)}
   ${e.alternatives?`<p><b>Alternatives:</b> ${e.alternatives.map(esc).join(', ')}</p>`:''}
-  <h2>Tokens</h2><div class="meta">${(e.tokens||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+  <h2>Tokens</h2><div>${(e.tokens||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
   <h2>Accessibility</h2><p><b>Role:</b> ${esc(e.accessibility.role)}</p><h3>Keyboard</h3>${ul(e.accessibility.keyboard)}<h3>Focus</h3><p>${esc(e.accessibility.focus)}</p><h3>Notes</h3>${ul(e.accessibility.notes)}
   <h2>Code</h2>${codeBlock('HTML',e.code.html,'html')}${codeBlock('CSS',e.code.css,'css')}${e.code.js?codeBlock('JS',e.code.js,'js'):''}`;
-}
-function renderPalette(e){
-  clipStore.md=e.md; clipStore.json=JSON.stringify(e,(k,v)=>k==='md'?undefined:v,2);
-  clipStore.vars=':root {\n'+Object.entries(e.roles).map(([k,v])=>`  --color-${k}: ${v};`).join('\n')+'\n}';
-  return `<p class="eyebrow">Palette</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>
+  }
+  if(e.type==='color'){
+    clipStore.vars=':root {\n'+Object.entries(e.roles).map(([k,v])=>`  --color-${k}: ${v};`).join('\n')+'\n}';
+    return `${back}<p class="eyebrow">Color · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>${meta(e)}
+  <p><b>Mood:</b> ${esc(e.mood||'')}</p>
   <div class="row"><button class="btn solid" data-copy="vars">Copy CSS variables</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button></div>
   <h2>Roles</h2><div class="swatches">${Object.entries(e.roles).map(([k,v])=>`<div class="sw"><i style="background:${esc(v)}"></i><span>${esc(k)}<br>${esc(v)}</span></div>`).join('')}</div>
-  <h2>Contrast checks</h2><table><thead><tr><th>Pair</th><th>Ratio</th><th>Normal text (4.5)</th><th>Large text / UI (3)</th></tr></thead><tbody>${e.contrast.map(c=>`<tr><td>${esc(c.fg)} on ${esc(c.bg)}</td><td>${c.ratio}:1</td><td class="${c.normalText?'pass':'fail'}">${c.normalText?'Pass':'Fail'}</td><td class="${c.largeTextAndUI?'pass':'fail'}">${c.largeTextAndUI?'Pass':'Fail'}</td></tr>`).join('')}</tbody></table>
+  <h2>Contrast checks</h2><p class="note">Each row is the first color placed on top of the second.</p><table><thead><tr><th>Pair</th><th>Ratio</th><th>Normal text (4.5)</th><th>Large text / UI (3)</th></tr></thead><tbody>${e.contrast.map(c=>`<tr><td>${esc(c.fg)} on ${esc(c.bg)}</td><td>${c.ratio}:1</td><td class="${c.normalText?'pass':'fail'}">${c.normalText?'Pass':'Fail'}</td><td class="${c.largeTextAndUI?'pass':'fail'}">${c.largeTextAndUI?'Pass':'Fail'}</td></tr>`).join('')}</tbody></table>
   <h2>Guidance</h2>${ul(e.guidance)}`;
-}
-function renderFont(e){
-  clipStore.md=e.md; clipStore.css=e.css; clipStore.json=JSON.stringify(e,(k,v)=>k==='md'?undefined:v,2);
-  return `<p class="eyebrow">Font pairing</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>
+  }
+  clipStore.css=e.css;
+  return `${back}<p class="eyebrow">Typography · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>${meta(e)}
   <div class="row"><button class="btn solid" data-copy="css">Copy CSS</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button></div>
   <h2>Roles</h2><table><thead><tr><th>Role</th><th>Family</th><th>Weights</th><th>Use</th></tr></thead><tbody>${e.roles.map(r=>`<tr><td>${esc(r.role)}</td><td>${esc(r.family)}</td><td>${r.weights.join(', ')}</td><td>${esc(r.use)}</td></tr>`).join('')}</tbody></table>
   <h2>Type scale</h2><table><thead><tr><th>Token</th><th>Size</th><th>Line height</th></tr></thead><tbody>${e.scale.map(s=>`<tr><td>${esc(s.token)}</td><td>${esc(s.size)}</td><td>${esc(s.lineHeight)}</td></tr>`).join('')}</tbody></table>
   <h2>Why it works</h2><p>${esc(e.whyItWorks)}</p><h2>Avoid</h2>${ul(e.avoid)}<h2>CSS</h2>${codeBlock('CSS',e.css,'css')}`;
 }
-function renderEntry(){
-  const e=DATA.find(x=>x.id===state.cur);
-  $('#main').innerHTML = !e ? '<p class="empty">Select an entry.</p>' : e.type==='component'?renderComponent(e):e.type==='palette'?renderPalette(e):renderFont(e);
+function wireEntry(e){
+  $('#back').onclick=()=>go('#/');
   const dl=$('#dl-md'); if(dl) dl.onclick=()=>download(e.id+'.md',e.md);
+  $('#main').addEventListener('click',ev=>{const b=ev.target.closest('[data-copy]');if(b)copy(clipStore[b.dataset.copy],b.textContent.replace(/^Copy /,'').toLowerCase().split(' (')[0])});
+  $('#main').focus({preventScroll:true});window.scrollTo(0,0);
 }
 
-/* ---------- My design systems (stored in this browser only) ---------- */
-const KEY='mambo-database.systems.v1';
-const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch{return[]}};
-const save=a=>{try{localStorage.setItem(KEY,JSON.stringify(a))}catch{toast('Storage unavailable in this browser.')}};
-function flatten(o,p=[]){return Object.entries(o).flatMap(([k,v])=>v&&typeof v==='object'&&!('$value' in v)?flatten(v,[...p,k]):[[[...p,k].join('-'),v&&v.$value!==undefined?v.$value:v]])}
+/* ====================================================================
+   MY DESIGN SYSTEMS
+==================================================================== */
+const KEY='mambo-database.systems.v2', OLD='mambo-database.systems.v1';
+const ROLES=['Primary','Secondary','Accent','Background','Surface','Text','Success','Warning','Danger','Info','Other'];
+const BRAND=['Primary','Secondary','Accent'];
+const STATE_LIST=[['default','Default'],['hover','Hover (pointer devices)'],['focus','Focus (keyboard)'],['pressed','Pressed / active'],['disabled','Disabled'],['loading','Loading'],['error','Error'],['selected','Selected']];
+const LIMITS={brand:3,colors:12,families:2,weights:3,radii:4};
+const S = { folders:['Unsorted'], systems:[], active:null, checked:new Set(), collapsed:new Set(), creating:false };
+function loadStore(){
+  try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.systems){S.folders=d.folders&&d.folders.length?d.folders:['Unsorted'];S.systems=d.systems;return}}catch{}
+  try{const old=JSON.parse(localStorage.getItem(OLD))||[];old.forEach(o=>{const cols=flat(o.tokens).filter(([k,v])=>normHex(v)).map(([k,v])=>({id:uid(),name:k,hex:normHex(v),role:'Other'}));S.systems.push(newSystem({name:o.name,colors:cols}))})}catch{}
+}
+function saveStore(){try{localStorage.setItem(KEY,JSON.stringify({folders:S.folders,systems:S.systems}))}catch{toast('Storage unavailable in this browser.')}}
+function flat(o,p=[]){return Object.entries(o||{}).flatMap(([k,v])=>v&&typeof v==='object'&&!('$value' in v)?flat(v,[...p,k]):[[[...p,k].join('-'),v&&v.$value!==undefined?v.$value:v]])}
+function newSystem(o={}){return {id:uid(),name:'Untitled system',folder:'Unsorted',platforms:['desktop','mobile-web','mobile-app'],industry:'all',
+  colors:[{id:uid(),name:'Background',hex:'#ffffff',role:'Background'},{id:uid(),name:'Text',hex:'#0a0a0a',role:'Text'}],fonts:[],states:['default','focus','disabled','error'],spacing:'4',radii:'4, 8, 12',...o}}
+const cur = () => S.systems.find(s=>s.id===S.active);
+const mobileOnly = s => s.platforms.length>0 && s.platforms.every(p=>p!=='desktop');
+const industryMatch = e => {const s=cur();if(!s||s.industry==='all')return true;const i=e.industries||['all'];return i.includes('all')||i.includes(s.industry)};
+
 function renderSystems(){
-  const sys=load();
-  $('#main').innerHTML=`<p class="eyebrow">My design systems</p><h1>Store your own tokens</h1>
-  <p>Paste a design-tokens JSON file (W3C format, as exported by Tokens Studio or Figma variable exporters). It is saved in this browser only. Nothing is uploaded. Export it as JSON or CSS variables, or bring it into Figma with a tokens plugin.</p>
-  <label for="sname"><b>Name</b></label><br><input id="sname" type="search" placeholder="e.g. Acme brand" style="max-width:360px"><br><br>
-  <label for="sjson"><b>Tokens JSON</b></label><textarea id="sjson" placeholder='{"color":{"brand":{"$value":"#1d4ed8","$type":"color"}}}'></textarea>
-  <div class="row"><button class="btn solid" id="ssave">Save system</button></div>
-  <h2>Saved</h2>${sys.length?sys.map((s,i)=>`<div style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px"><b>${esc(s.name)}</b> <span class="tag">${flatten(s.tokens).length} tokens</span><div class="row"><button class="btn" data-sjson="${i}">Download JSON</button><button class="btn" data-scss="${i}">Download CSS variables</button><button class="btn" data-sdel="${i}">Delete</button></div></div>`).join(''):'<p class="empty">Nothing saved yet.</p>'}`;
-  $('#ssave').onclick=()=>{const name=$('#sname').value.trim()||'Untitled';let t;try{t=JSON.parse($('#sjson').value)}catch{return toast('That is not valid JSON.')}save([...load(),{name,tokens:t}]);renderSystems();toast('Saved')};
-  $('#main').querySelectorAll('[data-sjson]').forEach(b=>b.onclick=()=>{const s=sys[b.dataset.sjson];download(s.name+'.tokens.json',JSON.stringify(s.tokens,null,2),'application/json')});
-  $('#main').querySelectorAll('[data-scss]').forEach(b=>b.onclick=()=>{const s=sys[b.dataset.scss];download(s.name+'.css',':root {\n'+flatten(s.tokens).map(([k,v])=>`  --${k}: ${v};`).join('\n')+'\n}\n','text/css')});
-  $('#main').querySelectorAll('[data-sdel]').forEach(b=>b.onclick=()=>{const a=load();a.splice(b.dataset.sdel,1);save(a);renderSystems()});
+  $('#app').innerHTML=`<div class="sys-layout"><aside class="sys-side" id="sside" aria-label="Your design systems"></aside><main id="main" tabindex="-1"></main></div>`;
+  renderTree(); renderEditor();
+}
+function renderTree(){
+  const folderOf=f=>S.systems.filter(s=>s.folder===f);
+  $('#sside').innerHTML=`<p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
+  <div class="row" style="margin-top:0"><button class="btn solid sm" id="newsys">+ New system</button><button class="btn sm" id="newfolder">+ New folder</button></div>
+  ${S.systems.length?'':'<p class="empty">No systems yet. Create one to get started.</p>'}
+  ${S.folders.map(f=>{const items=folderOf(f),open=!S.collapsed.has(f);return `<div class="folder"><div class="folder-h"><input type="checkbox" aria-label="Select all in ${esc(f)}" data-folder-all="${esc(f)}" ${items.length&&items.every(s=>S.checked.has(s.id))?'checked':''} ${items.length?'':'disabled'}>
+   <button class="fold" data-fold="${esc(f)}" aria-expanded="${open}">${open?'▾':'▸'} ${esc(f)} (${items.length})</button>
+   ${f!=='Unsorted'?`<button class="btn sm" data-rename="${esc(f)}" aria-label="Rename folder ${esc(f)}">Rename</button><button class="btn sm" data-delfolder="${esc(f)}" aria-label="Delete folder ${esc(f)}" ${items.length?'disabled title="Move or delete its systems first"':''}>✕</button>`:''}</div>
+   ${open?items.map(s=>`<div class="sysrow" ${S.active===s.id?'aria-current="true"':''}><input type="checkbox" aria-label="Select ${esc(s.name)}" data-check="${s.id}" ${S.checked.has(s.id)?'checked':''}><button data-open="${s.id}">${esc(s.name)}</button></div>`).join('')||'<p class="empty" style="margin:4px 6px;font-size:13px">Empty</p>':''}</div>`}).join('')}
+  ${S.checked.size?`<div class="bulk" role="group" aria-label="Actions for ${S.checked.size} selected"><b>${S.checked.size} selected</b>
+   <label class="f">Move to folder<select id="moveto"><option value="">Choose...</option>${S.folders.map(f=>`<option>${esc(f)}</option>`).join('')}</select></label>
+   <div class="row" style="margin:0"><button class="btn sm" id="bjson">Download JSON</button><button class="btn sm" id="bcss">Download CSS</button><button class="btn sm" id="bdel">Delete</button></div></div>`:''}`;
+  const q=s=>$('#sside').querySelector(s), qa=s=>$('#sside').querySelectorAll(s);
+  q('#newsys').onclick=()=>{const s=newSystem();S.systems.push(s);S.active=s.id;saveStore();renderTree();renderEditor();$('#main').focus()};
+  q('#newfolder').onclick=()=>{const n=(prompt('Folder name')||'').trim();if(!n)return;if(S.folders.includes(n))return toast('That folder already exists.');S.folders.push(n);saveStore();renderTree()};
+  qa('[data-open]').forEach(b=>b.onclick=()=>{S.active=b.dataset.open;renderTree();renderEditor()});
+  qa('[data-check]').forEach(i=>i.onchange=()=>{i.checked?S.checked.add(i.dataset.check):S.checked.delete(i.dataset.check);renderTree();renderEditor()});
+  qa('[data-folder-all]').forEach(i=>i.onchange=()=>{folderOf(i.dataset.folderAll).forEach(s=>i.checked?S.checked.add(s.id):S.checked.delete(s.id));renderTree();renderEditor()});
+  qa('[data-fold]').forEach(b=>b.onclick=()=>{const f=b.dataset.fold;S.collapsed.has(f)?S.collapsed.delete(f):S.collapsed.add(f);renderTree()});
+  qa('[data-rename]').forEach(b=>b.onclick=()=>{const o=b.dataset.rename,n=(prompt('Rename folder',o)||'').trim();if(!n||n===o)return;if(S.folders.includes(n))return toast('That folder already exists.');S.folders=S.folders.map(f=>f===o?n:f);S.systems.forEach(s=>{if(s.folder===o)s.folder=n});saveStore();renderTree();renderEditor()});
+  qa('[data-delfolder]').forEach(b=>b.onclick=()=>{S.folders=S.folders.filter(f=>f!==b.dataset.delfolder);saveStore();renderTree()});
+  const mv=q('#moveto');if(mv)mv.onchange=()=>{if(!mv.value)return;S.systems.forEach(s=>{if(S.checked.has(s.id))s.folder=mv.value});saveStore();toast('Moved '+S.checked.size);renderTree();renderEditor()};
+  const bj=q('#bjson');if(bj){bj.onclick=()=>{const o={};S.systems.filter(s=>S.checked.has(s.id)).forEach(s=>o[s.name]=tokens(s));download('design-systems.tokens.json',JSON.stringify(o,null,2),'application/json')};
+   q('#bcss').onclick=()=>download('design-systems.css',S.systems.filter(s=>S.checked.has(s.id)).map(s=>'/* '+s.name+' */\n'+cssVars(s)).join('\n'),'text/css');
+   q('#bdel').onclick=()=>{if(!confirm('Delete '+S.checked.size+' selected system(s)? This cannot be undone.'))return;S.systems=S.systems.filter(s=>!S.checked.has(s.id));if(!cur())S.active=null;S.checked.clear();saveStore();renderTree();renderEditor()}}
+}
+function tokens(s){
+  const t={color:{},typography:{},spacing:{base:{$value:s.spacing+'px',$type:'dimension'}},radius:{}};
+  s.colors.forEach(c=>{t.color[slug(c.name)]={$value:c.hex,$type:'color',$description:c.role}});
+  s.fonts.forEach(f=>{t.typography[slug(f.role+'-'+f.family)]={fontFamily:{$value:f.family,$type:'fontFamily'},fontWeight:{$value:f.weights,$type:'fontWeight'},$description:f.role}});
+  String(s.radii).split(',').map(x=>x.trim()).filter(Boolean).forEach((r,i)=>{t.radius['r'+(i+1)]={$value:(/px|rem|%/.test(r)?r:r+'px'),$type:'dimension'}});
+  return t}
+function cssVars(s){return ':root {\n'+s.colors.map(c=>`  --color-${slug(c.name)}: ${c.hex};`).join('\n')+'\n'+s.fonts.map(f=>`  --font-${slug(f.role)}: '${f.family}', system-ui, sans-serif;`).join('\n')+`\n  --space-base: ${s.spacing}px;\n`+String(s.radii).split(',').map(x=>x.trim()).filter(Boolean).map((r,i)=>`  --radius-${i+1}: ${/px|rem|%/.test(r)?r:r+'px'};`).join('\n')+'\n}\n'}
+
+/* ---- editor ---- */
+const advice=(ok,label,text)=>`<div class="advice ${ok?'':'warn'}" role="note"><b>${ok?'OK':'ADVICE'}</b><span><strong>${esc(label)}.</strong> ${esc(text)}</span></div>`;
+function contrastBlock(c,s){
+  const others=s.colors.filter(o=>o.id!==c.id&&normHex(o.hex)&&normHex(c.hex));
+  if(!others.length) return '<p class="note">Add another color to see how this one reads on top of it.</p>';
+  return `<p class="note">${esc(c.name)} placed on top of each color below (text or icon in ${esc(c.name)}, background in the other color).</p>`+others.map(o=>{
+    const r=ratio(c.hex,o.hex), P=(v)=>r>=v;
+    const bd=(l,ok)=>`<span class="bd ${ok?'':'no'}">${l} ${ok?'✓ pass':'✕ fail'}</span>`;
+    const rg=(isRed(c.hex)&&isGreen(o.hex))||(isGreen(c.hex)&&isRed(o.hex));
+    return `<div class="cr"><div class="aa" style="background:${o.hex};color:${c.hex}" aria-hidden="true">Aa</div><div class="meta"><b>on ${esc(o.name)}</b> ${esc(o.hex)} · <b>${r.toFixed(2)}:1</b>
+     <div class="badges">${bd('AA',P(4.5))}${bd('AA large',P(3))}${bd('AAA',P(7))}${bd('AAA large',P(4.5))}${bd('UI 3:1',P(3))}</div>
+     ${rg?'<div class="note"><b>Red and green:</b> people with color blindness may not tell these apart even when the ratio looks fine. Do not use this pair alone to mean good versus bad; add an icon or text.</div>':''}
+     ${r<3?'<div class="note">Too low for text or UI. Pick a lighter or darker color.</div>':''}</div></div>`}).join('');
+}
+function checklist(s){
+  const has=r=>s.colors.some(c=>c.role===r), fam=s.fonts.filter(f=>f.family.trim());
+  const items=[[s.name.trim()&&s.name!=='Untitled system','Name your system'],[s.platforms.length>0,'Choose what it is for'],[has('Primary'),'A Primary color'],[has('Background')&&has('Text'),'A Background and a Text color'],[has('Danger')&&has('Success'),'Success and Danger colors for feedback'],[fam.some(f=>f.role==='Display'||f.role==='Body'),'At least a Body typeface'],[s.states.includes('focus'),'A Focus state (always required for keyboard users)'],[!!s.spacing,'A spacing base unit']];
+  const done=items.filter(i=>i[0]).length;
+  return `<div class="panel"><h2>Setup checklist: ${done} of ${items.length}</h2><ul class="check">${items.map(([ok,l])=>`<li><b aria-hidden="true">${ok?'✓':'○'}</b><span class="${ok?'':'empty'}">${ok?'Done: ':'Still needed: '}${esc(l)}</span></li>`).join('')}</ul></div>`;
+}
+function suggestColors(s){
+  const sets=DATA.filter(e=>e.type==='color'&&industryMatch(e));
+  return `<h3>Suggested for ${s.industry==='all'?'any industry':esc(indLabel(s.industry))}</h3><p class="note">${s.industry==='all'?'Pick an industry above to see colors that suit it. Showing all sets.':'These color sets are commonly used in this industry and already pass contrast checks.'}</p><div class="sugg">${sets.map(e=>`<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.mood||'')}</span><div class="swatchrow">${['primary','accent','ink','surface'].filter(k=>e.roles[k]).map(k=>`<button class="chip" style="padding:0;border:0;background:none" data-addcolor="${esc(e.roles[k])}" data-nm="${esc(e.name+' '+k)}" data-role="${k==='primary'?'Primary':k==='accent'?'Accent':k==='ink'?'Text':'Surface'}" aria-label="Add ${esc(e.name)} ${k} ${esc(e.roles[k])}"><i style="display:block;background:${esc(e.roles[k])};width:26px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.3)"></i></button>`).join('')}</div><span class="note">Tap a swatch to add it.</span></div>`).join('')||'<p class="empty">No suggestions for this industry yet.</p>'}</div>`;
+}
+function suggestFonts(s){
+  const sets=DATA.filter(e=>e.type==='font-pairing'&&industryMatch(e));
+  return `<h3>Suggested pairings</h3><div class="sugg">${sets.map(e=>`<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.summary)}</span><div class="row" style="margin:8px 0 0"><button class="btn sm" data-usepair="${esc(e.id)}">Use this pairing</button></div></div>`).join('')||'<p class="empty">No pairings for this industry yet.</p>'}</div>`;
+}
+function renderEditor(){
+  const main=$('#main'); const s=cur();
+  if(S.checked.size>1){main.innerHTML=`<p class="eyebrow">Selection</p><h1>${S.checked.size} systems selected</h1><p>Use the actions at the bottom of the left panel to move, download or delete them. Click a system name to open and edit one.</p><ul class="plain">${S.systems.filter(x=>S.checked.has(x.id)).map(x=>`<li>${esc(x.name)} <span class="tag">${esc(x.folder)}</span></li>`).join('')}</ul>`;return}
+  if(!s){main.innerHTML=`<p class="eyebrow">My design systems</p><h1>Build and keep your design systems</h1><p>Create a system from our template. It tells you what is needed, warns you when you add too much, and checks color contrast as you pick colors. Everything is saved in this browser only. Nothing is uploaded.</p><div class="row"><button class="btn solid" id="empty-new">+ New system</button></div>`;
+    $('#empty-new').onclick=()=>$('#newsys').click();return}
+  const mob=mobileOnly(s), brand=s.colors.filter(c=>BRAND.includes(c.role)).length, fams=[...new Set(s.fonts.filter(f=>f.role!=='Mono'&&f.family.trim()).map(f=>f.family.trim().toLowerCase()))].length;
+  const radii=String(s.radii).split(',').map(x=>x.trim()).filter(Boolean).length;
+  main.innerHTML=`<p class="eyebrow">Design system</p><h1>${esc(s.name)}</h1>
+  ${checklist(s)}
+  <div class="panel"><h2>1. About this system</h2><div class="grid2">
+   <label class="f">Name<input type="text" id="f-name" value="${esc(s.name)}"></label>
+   <label class="f">Folder<select id="f-folder">${S.folders.map(f=>`<option ${s.folder===f?'selected':''}>${esc(f)}</option>`).join('')}</select></label>
+   <label class="f">Industry<select id="f-ind">${INDUSTRIES.map(([k,l])=>`<option value="${k}" ${s.industry===k?'selected':''}>${esc(l)}</option>`).join('')}</select></label></div>
+   <fieldset><legend class="eyebrow">What is it for?</legend><div class="states">${Object.entries(PLAT).map(([k,l])=>`<label class="chk"><input type="checkbox" data-plat="${k}" ${s.platforms.includes(k)?'checked':''}>${l}</label>`).join('')}</div></fieldset>
+   ${mob?advice(true,'Mobile only','No hover states needed, so they are hidden below. Use 44px touch targets and 16px minimum body text.'):s.platforms.length?advice(true,'Includes desktop','Design hover and keyboard focus states. Keep body text 16px or larger on mobile.'):advice(false,'Nothing selected','Choose at least one platform so we can tailor the advice.')}
+   <p class="note">Industry changes which colors and typefaces we suggest below. Leave it on All if you are not sure.</p></div>
+  <div class="panel"><h2>2. Colors</h2>
+   ${advice(brand<=LIMITS.brand,brand+' brand color'+(brand===1?'':'s'),brand<=LIMITS.brand?`We advise ${LIMITS.brand} or fewer brand colors (Primary, Secondary, Accent).`:`We advise ${LIMITS.brand} or fewer. More brand colors make it hard to stay consistent.`)}
+   ${advice(s.colors.length<=LIMITS.colors,s.colors.length+' colors in total',`Most systems work well with ${LIMITS.colors} or fewer core colors, plus tints if needed.`)}
+   <div id="colorlist">${s.colors.map(c=>colorCard(c,s)).join('')}</div>
+   <div class="row"><button class="btn solid sm" id="addcolor">+ Add color</button></div>
+   ${suggestColors(s)}</div>
+  <div class="panel"><h2>3. Typography</h2>
+   ${advice(fams<=LIMITS.families,fams+' typeface'+(fams===1?'':'s'),`We advise ${LIMITS.families} or fewer typefaces (plus one mono if you show code). More slows loading and looks busy.`)}
+   ${s.fonts.map(f=>{const w=f.weights.split(',').filter(x=>x.trim()).length;return `<div class="fontrow" data-fid="${f.id}"><label class="f">Role<select data-ff="role">${['Display','Body','Mono','Other'].map(r=>`<option ${f.role===r?'selected':''}>${r}</option>`).join('')}</select></label>
+    <label class="f">Typeface<input type="text" data-ff="family" list="fl" value="${esc(f.family)}"></label><label class="f">Weights<input type="text" data-ff="weights" value="${esc(f.weights)}" aria-describedby="w-${f.id}"></label><button class="btn sm" data-rmfont="${f.id}">Remove</button>
+    ${w>LIMITS.weights?`<div class="advice warn" style="grid-column:1/-1;margin:0" id="w-${f.id}"><b>ADVICE</b><span>${w} weights. We advise ${LIMITS.weights} or fewer per typeface (for example 400, 600, 700).</span></div>`:`<span id="w-${f.id}" hidden></span>`}</div>`}).join('')||'<p class="empty">No typefaces yet.</p>'}
+   <datalist id="fl">${[...new Set(DATA.filter(e=>e.type==='font-pairing').flatMap(e=>e.roles.map(r=>r.family)))].map(f=>`<option value="${esc(f)}">`).join('')}</datalist>
+   <div class="row"><button class="btn solid sm" id="addfont">+ Add typeface</button></div>${suggestFonts(s)}</div>
+  <div class="panel"><h2>4. Interaction states</h2><div class="states">${STATE_LIST.map(([k,l])=>{const off=k==='hover'&&mob;return `<label class="chk" ${off?'title="Not needed for mobile-only"':''}><input type="checkbox" data-state="${k}" ${s.states.includes(k)&&!off?'checked':''} ${off?'disabled':''}>${l}${off?' (not needed on mobile)':''}</label>`}).join('')}</div>
+   ${s.states.includes('focus')?'':advice(false,'Focus is missing','Keyboard and switch users need a visible focus state on every interactive element (WCAG 2.4.7).')}</div>
+  <div class="panel"><h2>5. Spacing and corners</h2><div class="grid2"><label class="f">Spacing base unit<select id="f-space"><option value="4" ${s.spacing==='4'?'selected':''}>4px (fine control)</option><option value="8" ${s.spacing==='8'?'selected':''}>8px (simple and common)</option></select></label>
+   <label class="f">Corner radii (comma separated)<input type="text" id="f-radii" value="${esc(s.radii)}"></label></div>
+   ${advice(radii<=LIMITS.radii,radii+' corner radii',`We advise ${LIMITS.radii} or fewer values. Pills are for buttons; tags and cards use small or medium radii.`)}</div>
+  <div class="panel"><h2>6. Export</h2><p class="note">Tokens use the W3C design tokens format. Import the JSON into Figma with a tokens plugin such as Tokens Studio.</p><div class="row"><button class="btn solid" id="x-json">Download tokens JSON</button><button class="btn" id="x-css">Download CSS variables</button><button class="btn" id="x-copy">Copy tokens JSON</button><button class="btn" id="x-del">Delete system</button></div></div>`;
+  wireEditor(s);
+}
+function colorCard(c,s){
+  return `<div class="colorcard" data-cid="${c.id}"><div class="colortop"><input type="color" value="${normHex(c.hex)||'#000000'}" data-cf="picker" aria-label="Pick color for ${esc(c.name)}">
+   <label class="f">Name<input type="text" data-cf="name" value="${esc(c.name)}"></label><label class="f">Hex<input type="text" data-cf="hex" value="${esc(c.hex)}" maxlength="7"></label>
+   <label class="f">Role<select data-cf="role">${ROLES.map(r=>`<option ${c.role===r?'selected':''}>${r}</option>`).join('')}</select></label><button class="btn sm" data-rmcolor="${c.id}">Remove</button></div>
+   <div class="contrast-box" data-cb="${c.id}">${contrastBlock(c,s)}</div></div>`;
+}
+function wireEditor(s){
+  const m=$('#main'), set=(k,v)=>{s[k]=v;saveStore()};
+  m.querySelector('h1').textContent=s.name;
+  $('#f-name').oninput=e=>{set('name',e.target.value||'Untitled system');m.querySelector('h1').textContent=s.name};
+  $('#f-name').onchange=()=>renderTree();
+  $('#f-folder').onchange=e=>{set('folder',e.target.value);renderTree()};
+  $('#f-ind').onchange=e=>{set('industry',e.target.value);renderEditor()};
+  m.querySelectorAll('[data-plat]').forEach(i=>i.onchange=()=>{const a=new Set(s.platforms);i.checked?a.add(i.dataset.plat):a.delete(i.dataset.plat);set('platforms',[...a]);renderEditor()});
+  m.querySelectorAll('[data-state]').forEach(i=>i.onchange=()=>{const a=new Set(s.states);i.checked?a.add(i.dataset.state):a.delete(i.dataset.state);set('states',[...a]);renderEditor()});
+  $('#f-space').onchange=e=>{set('spacing',e.target.value);renderEditor()};
+  $('#f-radii').onchange=e=>{set('radii',e.target.value);renderEditor()};
+  $('#addcolor').onclick=()=>{s.colors.push({id:uid(),name:'Color '+(s.colors.length+1),hex:'#1d4ed8',role:'Other'});saveStore();renderEditor();const n=m.querySelectorAll('.colorcard');n[n.length-1].querySelector('[data-cf=name]').focus()};
+  m.querySelectorAll('[data-addcolor]').forEach(b=>b.onclick=()=>{s.colors.push({id:uid(),name:b.dataset.nm,hex:b.dataset.addcolor,role:b.dataset.role});saveStore();renderEditor();toast('Added '+b.dataset.nm)});
+  m.querySelectorAll('[data-rmcolor]').forEach(b=>b.onclick=()=>{s.colors=s.colors.filter(c=>c.id!==b.dataset.rmcolor);saveStore();renderEditor()});
+  const refreshContrast=()=>m.querySelectorAll('[data-cb]').forEach(el=>{const c=s.colors.find(x=>x.id===el.dataset.cb);if(c)el.innerHTML=contrastBlock(c,s)});
+  m.querySelectorAll('.colorcard').forEach(card=>{const c=s.colors.find(x=>x.id===card.dataset.cid);
+    card.querySelector('[data-cf=picker]').oninput=e=>{c.hex=e.target.value;card.querySelector('[data-cf=hex]').value=c.hex;saveStore();refreshContrast()};
+    card.querySelector('[data-cf=hex]').oninput=e=>{const h=normHex(e.target.value);if(h){c.hex=h;card.querySelector('[data-cf=picker]').value=h;saveStore();refreshContrast()}};
+    card.querySelector('[data-cf=name]').oninput=e=>{c.name=e.target.value;saveStore()};
+    card.querySelector('[data-cf=name]').onchange=()=>refreshContrast();
+    card.querySelector('[data-cf=role]').onchange=e=>{c.role=e.target.value;saveStore();renderEditor()}});
+  $('#addfont').onclick=()=>{s.fonts.push({id:uid(),role:s.fonts.some(f=>f.role==='Body')?'Display':'Body',family:'',weights:'400, 600'});saveStore();renderEditor()};
+  m.querySelectorAll('[data-rmfont]').forEach(b=>b.onclick=()=>{s.fonts=s.fonts.filter(f=>f.id!==b.dataset.rmfont);saveStore();renderEditor()});
+  m.querySelectorAll('.fontrow').forEach(row=>{const f=s.fonts.find(x=>x.id===row.dataset.fid);row.querySelectorAll('[data-ff]').forEach(i=>i.onchange=()=>{f[i.dataset.ff]=i.value;saveStore();renderEditor()})});
+  m.querySelectorAll('[data-usepair]').forEach(b=>b.onclick=()=>{const e=DATA.find(x=>x.id===b.dataset.usepair);s.fonts=e.roles.map(r=>({id:uid(),role:r.role==='display'?'Display':r.role==='mono'?'Mono':'Body',family:r.family,weights:r.weights.join(', ')}));saveStore();renderEditor();toast('Applied '+e.name)});
+  $('#x-json').onclick=()=>download(slug(s.name)+'.tokens.json',JSON.stringify(tokens(s),null,2),'application/json');
+  $('#x-css').onclick=()=>download(slug(s.name)+'.css',cssVars(s),'text/css');
+  $('#x-copy').onclick=()=>copy(JSON.stringify(tokens(s),null,2),'tokens JSON');
+  $('#x-del').onclick=()=>{if(!confirm('Delete "'+s.name+'"? This cannot be undone.'))return;S.systems=S.systems.filter(x=>x.id!==s.id);S.checked.delete(s.id);S.active=null;saveStore();renderTree();renderEditor()};
 }
 
-/* ---------- wiring ---------- */
-function setView(v){state.view=v;document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.view===v));$('#side').hidden=v!=='browse';document.querySelector('.layout').style.gridTemplateColumns=v==='browse'?'':'1fr';v==='browse'?(renderList(),renderEntry()):renderSystems()}
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>setView(t.dataset.view));
-$('#q').oninput=e=>{state.q=e.target.value;renderList()};
-document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const s=state.types,k=b.dataset.f;s.has(k)?s.delete(k):s.add(k);b.setAttribute('aria-pressed',s.has(k));renderList()});
-document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const s=state.plats,k=b.dataset.p;s.has(k)?s.delete(k):s.add(k);b.setAttribute('aria-pressed',s.has(k));renderList()});
-$('#list').onclick=e=>{const b=e.target.closest('button[data-id]');if(!b)return;state.cur=b.dataset.id;renderList();renderEntry();$('#main').focus({preventScroll:true})};
-$('#main').addEventListener('click',e=>{const b=e.target.closest('[data-copy]');if(b)copy(clipStore[b.dataset.copy],b.textContent.replace(/^Copy /,'').toLowerCase().split(' (')[0])});
-setView('browse');
+/* ---------- app shell ---------- */
+function render(){
+  const r=route();
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.view===r.view));
+  r.view==='systems'?renderSystems():renderBrowse();
+}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>go(t.dataset.view==='systems'?'#/systems':'#/'));
+window.addEventListener('hashchange',render);
+loadStore();
+render();
 </script>
 </body>
 </html>
