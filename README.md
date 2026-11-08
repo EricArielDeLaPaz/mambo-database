@@ -24,3 +24,6 @@ Copy `entries/components/modal-dialog.json`, edit it, run the build. Required fi
 - "Copy HTML + CSS" is meant for Figma importer plugins. It is not a native Figma paste. A real one-click paste into Figma is a later step.
 - "My design systems" stores tokens in the browser only. There is no account or sync yet, and it cannot generate a `.fig` file. Export the JSON or CSS variables and bring them into Figma with a tokens plugin.
 - Only 4 sample entries exist. Preview rendering assumes simple HTML and CSS.
+
+## Live site
+Pushing to `main` rebuilds and deploys the site with GitHub Pages (`.github/workflows/pages.yml`). The deployed site also serves `llms.txt`, `entries/`, `data/library.json`, `skill/` and `mambo-database-skill.zip`.
