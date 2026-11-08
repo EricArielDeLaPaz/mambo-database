@@ -38,7 +38,11 @@ main{padding:28px clamp(16px,4vw,48px) 80px;min-width:0}
 .wordmark img{width:32px;height:32px;border-radius:8px}
 .eyebrow{font:700 12px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
 input[type=search],input[type=text],select,textarea{width:100%;padding:9px 12px;border:1px solid var(--border-strong);border-radius:8px;font:400 15px var(--font-body);background:var(--bg);color:var(--text)}
-select{padding-right:8px}
+select{appearance:none;-webkit-appearance:none;min-height:40px;padding-right:36px;cursor:pointer;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230a0a0a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center}
+select:hover{border-color:var(--text)}
+select:disabled{opacity:.5;cursor:not-allowed}
+select option{font:400 15px var(--font-body);color:#0a0a0a;background:#fff}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 textarea{min-height:120px;font:400 13px var(--font-mono)}
 fieldset{border:0;margin:16px 0 0;padding:0}
 legend{padding:0;margin-bottom:6px}
@@ -78,7 +82,7 @@ pre{margin:0;padding:14px;background:var(--surface);border:1px solid var(--borde
 .name-btn{all:unset;cursor:pointer;font-weight:600;border-bottom:1px solid var(--border-strong)}
 .name-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .sum{display:block;color:var(--text-2);font-size:13px;margin-top:2px;max-width:46ch}
-.swatchrow{display:flex;gap:3px;margin-top:6px}.swatchrow i{width:18px;height:18px;border-radius:4px;border:1px solid rgba(0,0,0,.2)}
+.swatchrow{display:flex;gap:3px;margin-top:6px}.swatchrow i{width:18px;height:18px;border-radius:4px;border:1px solid rgba(0,0,0,.2);cursor:pointer}
 /* systems */
 .sys-layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:0;min-height:calc(100vh - 76px)}
 .sys-side{border-right:1px solid var(--border);padding:20px;position:sticky;top:76px;align-self:start;max-height:calc(100vh - 76px);overflow:auto}
@@ -97,13 +101,35 @@ pre{margin:0;padding:14px;background:var(--surface);border:1px solid var(--borde
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 label.f{display:grid;gap:4px;font:600 13px var(--font-body)}
 .advice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border-strong);border-left-width:4px;border-radius:8px;padding:8px 12px;margin:10px 0;font-size:14px;background:var(--surface)}
-.advice b{font:700 12px var(--font-mono);flex:none;min-width:34px}
+.advice{align-items:center;flex-wrap:wrap}
+.advice b{display:grid;place-items:center;flex:none;width:24px;height:24px;border-radius:50%;font:700 14px/1 var(--font-body);background:var(--text);color:var(--bg)}
 .advice.warn{border-left-color:#0a0a0a;background:#fff}
-.advice.warn b{text-decoration:underline}
+.advice.warn b{background:var(--bg);color:var(--text);border:2px solid var(--text)}
+.advice .txt{flex:1 1 220px}
+.fixbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--text);border-radius:999px;background:var(--text);color:var(--bg);padding:3px 12px;min-height:28px;font:600 12.5px var(--font-body);cursor:pointer;white-space:nowrap}
+.fixbtn::before{content:"\1F527";font-size:12px}
+.wchips{display:flex;flex-wrap:wrap;gap:6px}
+.wchips label{display:flex;align-items:center;gap:6px;border:1px solid var(--border-strong);border-radius:4px;padding:3px 8px;font:600 12px var(--font-mono);cursor:pointer;background:var(--bg)}
+.wchips input{accent-color:#0a0a0a}
+.wchips label:has(input:checked){background:var(--text);color:var(--bg);border-color:var(--text)}
+.wchips label:has(input:checked) input{accent-color:#fff}
+.wchips label:has(input:focus-visible){outline:2px solid var(--focus);outline-offset:2px}
+.strip{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.strip .swb,.pick{display:block;width:40px;height:40px;border-radius:8px;border:1px solid rgba(0,0,0,.35);cursor:pointer;padding:0}
+.pick{width:auto;height:auto;border:0}
+.viewall{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:2px 0;font:600 13px var(--font-body);cursor:pointer;border-bottom:1px solid var(--text)}
+.viewall:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.ctip{position:fixed;z-index:60;width:min(300px,calc(100vw - 16px));background:#0a0a0a;color:#fff;border-radius:10px;padding:10px 12px;font:500 12.5px/1.4 var(--font-body);box-shadow:0 14px 34px -8px rgba(0,0,0,.5);pointer-events:none}
+.ctip b{font-weight:700}
+.ctip .r{display:flex;align-items:center;gap:8px;padding:3px 0;border-top:1px solid rgba(255,255,255,.18)}
+.ctip .r i{display:grid;place-items:center;width:30px;height:24px;border-radius:5px;font:700 12px var(--font-display);font-style:normal;border:1px solid rgba(255,255,255,.4);flex:none}
+.ctip .r span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ctip .r em{font:600 11.5px var(--font-mono);font-style:normal;white-space:nowrap}
+details.src{margin-top:8px;font-size:13px}details.src summary{cursor:pointer;font-weight:600}
 .check{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px}
 .check b{display:inline-block;width:22px}
 .colorcard{border:1px solid var(--border);border-radius:12px;padding:14px;margin:12px 0}
-.colortop{display:grid;grid-template-columns:auto minmax(120px,1fr) minmax(110px,150px) minmax(130px,170px) auto;gap:10px;align-items:end}
+.colortop{display:grid;grid-template-columns:auto minmax(120px,1fr) minmax(110px,150px) minmax(150px,190px) auto;gap:10px;align-items:end}
 input[type=color]{width:46px;height:46px;padding:2px;border:1px solid var(--border-strong);border-radius:8px;background:var(--bg);cursor:pointer}
 .cr{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--border)}
 .cr .aa{display:grid;place-items:center;height:44px;border-radius:8px;border:1px solid rgba(0,0,0,.25);font:700 18px var(--font-display)}
@@ -115,7 +141,8 @@ input[type=color]{width:46px;height:46px;padding:2px;border:1px solid var(--bord
 .sugg{display:flex;flex-wrap:wrap;gap:10px}
 .sugg-card{border:1px solid var(--border);border-radius:8px;padding:10px;min-width:170px;flex:1 1 170px}
 .sugg-card b{display:block;font-size:14px}
-.fontrow{display:grid;grid-template-columns:150px minmax(120px,1fr) minmax(100px,160px) auto;gap:10px;align-items:end;margin:8px 0}
+.fontrow{display:grid;grid-template-columns:170px minmax(140px,1fr) auto;gap:10px;align-items:end;margin:14px 0;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.fontrow .wide{grid-column:1/-1}
 .states{display:flex;flex-wrap:wrap;gap:6px 18px}
 @media (max-width:820px){
   .layout,.sys-layout{grid-template-columns:1fr}
@@ -216,7 +243,7 @@ function renderResults(){
   const th=(k,l)=>`<th scope="col" aria-sort="${B.sort===k?(B.dir>0?'ascending':'descending'):'none'}"><button data-sort="${k}">${l}${B.sort===k?(B.dir>0?' ▲':' ▼'):''}</button></th>`;
   $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries${B.industry!=='all'?' · industry: '+esc(indLabel(B.industry)):''}</p></div>
   ${items.length?`<table class="db"><thead><tr>${th('name','Name')}${th('type','Type')}${th('category','Category')}${th('platforms','Platforms')}${th('industries','Industries')}</tr></thead><tbody>${items.map(e=>`<tr>
-   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${esc(e.name)}</button><span class="sum">${esc(e.summary)}</span>${e.type==='color'?`<span class="swatchrow" aria-hidden="true">${Object.values(e.roles).slice(0,8).map(c=>`<i style="background:${esc(c)}"></i>`).join('')}</span>`:''}</td>
+   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${esc(e.name)}</button><span class="sum">${esc(e.summary)}</span>${e.type==='color'?`<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0,8).map(([k,c])=>`<i style="background:${esc(c)}" data-tip="${tipData(k,c,Object.entries(e.roles).filter(([x])=>x!==k).map(([x,y])=>({name:x,hex:y})))}"></i>`).join('')}</span>`:''}</td>
    <td data-l="Type">${TYPE[e.type]}</td><td data-l="Category">${esc(e.category)}</td>
    <td data-l="Platforms">${(e.platforms||[]).map(p=>`<span class="tag">${esc(PLAT[p]||p)}</span>`).join('')||'<span class="empty">n/a</span>'}</td>
    <td data-l="Industries">${(e.industries||['all']).map(i=>`<span class="tag">${esc(indLabel(i))}</span>`).join('')}</td></tr>`).join('')}</tbody></table>`:'<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
@@ -253,7 +280,7 @@ function renderEntry(e){
     return `${back}<p class="eyebrow">Color · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>${meta(e)}
   <p><b>Mood:</b> ${esc(e.mood||'')}</p>
   <div class="row"><button class="btn solid" data-copy="vars">Copy CSS variables</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button></div>
-  <h2>Roles</h2><div class="swatches">${Object.entries(e.roles).map(([k,v])=>`<div class="sw"><i style="background:${esc(v)}"></i><span>${esc(k)}<br>${esc(v)}</span></div>`).join('')}</div>
+  <h2>Roles</h2><div class="swatches">${Object.entries(e.roles).map(([k,v])=>`<div class="sw" tabindex="0" data-tip="${tipData(k,v,Object.entries(e.roles).filter(([x])=>x!==k).map(([x,y])=>({name:x,hex:y})))}"><i style="background:${esc(v)}"></i><span>${esc(k)}<br>${esc(v)}</span></div>`).join('')}</div>
   <h2>Contrast checks</h2><p class="note">Each row is the first color placed on top of the second.</p><table><thead><tr><th>Pair</th><th>Ratio</th><th>Normal text (4.5)</th><th>Large text / UI (3)</th></tr></thead><tbody>${e.contrast.map(c=>`<tr><td>${esc(c.fg)} on ${esc(c.bg)}</td><td>${c.ratio}:1</td><td class="${c.normalText?'pass':'fail'}">${c.normalText?'Pass':'Fail'}</td><td class="${c.largeTextAndUI?'pass':'fail'}">${c.largeTextAndUI?'Pass':'Fail'}</td></tr>`).join('')}</tbody></table>
   <h2>Guidance</h2>${ul(e.guidance)}`;
   }
@@ -275,13 +302,20 @@ function wireEntry(e){
    MY DESIGN SYSTEMS
 ==================================================================== */
 const KEY='mambo-database.systems.v2', OLD='mambo-database.systems.v1';
-const ROLES=['Primary','Secondary','Accent','Background','Surface','Text','Success','Warning','Danger','Info','Other'];
-const BRAND=['Primary','Secondary','Accent'];
+const ROLE_GROUPS={'Brand':['Primary','Secondary','Tertiary','Accent'],'Neutral':['Background','Surface','Surface variant','Neutral','Border','Text','Text secondary','Inverse text','Disabled','Overlay'],'Feedback':['Success','Warning','Danger','Info'],'Other':['Link','Highlight','Other']};
+const ROLES=Object.values(ROLE_GROUPS).flat();
+const BRAND=ROLE_GROUPS.Brand, NEUTRAL=ROLE_GROUPS.Neutral, FEEDBACK=ROLE_GROUPS.Feedback;
+const FONT_ROLES=['Display','Heading','Subheading','Body','Caption','Label','Button','Quote','Mono'];
+const FILL_ORDER=['Body','Display','Heading','Mono','Caption','Label'];
+const WEIGHTS=[[100,'Thin'],[200,'Extra Light'],[300,'Light'],[400,'Regular'],[500,'Medium'],[600,'Semi Bold'],[700,'Bold'],[800,'Extra Bold'],[900,'Black']];
+const WPRIORITY=[400,700,600,500,300,800,200,900,100];
+const keepThree=a=>WPRIORITY.filter(w=>a.includes(w)).slice(0,3).sort((x,y)=>x-y);
 const STATE_LIST=[['default','Default'],['hover','Hover (pointer devices)'],['focus','Focus (keyboard)'],['pressed','Pressed / active'],['disabled','Disabled'],['loading','Loading'],['error','Error'],['selected','Selected']];
-const LIMITS={brand:3,colors:12,families:2,weights:3,radii:4};
+/* Ranges are guidance drawn from published design-system writing (EightShapes, UXPin), not a single study. */
+const LIMITS={brand:{min:1,rec:3,max:4},neutral:{min:3,max:8},feedback:{min:2,max:4},colors:{min:6,rec:14,max:16},families:2,weights:3,radii:4};
 const S = { folders:['Unsorted'], systems:[], active:null, checked:new Set(), collapsed:new Set(), creating:false };
 function loadStore(){
-  try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.systems){S.folders=d.folders&&d.folders.length?d.folders:['Unsorted'];S.systems=d.systems;return}}catch{}
+  try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.systems){S.folders=d.folders&&d.folders.length?d.folders:['Unsorted'];S.systems=d.systems;S.systems.forEach(sy=>sy.fonts.forEach(f=>{if(!Array.isArray(f.weights))f.weights=String(f.weights||'').split(',').map(x=>parseInt(x,10)).filter(Boolean)}));return}}catch{}
   try{const old=JSON.parse(localStorage.getItem(OLD))||[];old.forEach(o=>{const cols=flat(o.tokens).filter(([k,v])=>normHex(v)).map(([k,v])=>({id:uid(),name:k,hex:normHex(v),role:'Other'}));S.systems.push(newSystem({name:o.name,colors:cols}))})}catch{}
 }
 function saveStore(){try{localStorage.setItem(KEY,JSON.stringify({folders:S.folders,systems:S.systems}))}catch{toast('Storage unavailable in this browser.')}}
@@ -325,24 +359,28 @@ function renderTree(){
 function tokens(s){
   const t={color:{},typography:{},spacing:{base:{$value:s.spacing+'px',$type:'dimension'}},radius:{}};
   s.colors.forEach(c=>{t.color[slug(c.name)]={$value:c.hex,$type:'color',$description:c.role}});
-  s.fonts.forEach(f=>{t.typography[slug(f.role+'-'+f.family)]={fontFamily:{$value:f.family,$type:'fontFamily'},fontWeight:{$value:f.weights,$type:'fontWeight'},$description:f.role}});
+  s.fonts.forEach(f=>{t.typography[slug(f.role+'-'+f.family)]={fontFamily:{$value:f.family,$type:'fontFamily'},fontWeight:{$value:f.weights.slice(),$type:'fontWeight'},$description:f.role}});
   String(s.radii).split(',').map(x=>x.trim()).filter(Boolean).forEach((r,i)=>{t.radius['r'+(i+1)]={$value:(/px|rem|%/.test(r)?r:r+'px'),$type:'dimension'}});
   return t}
 function cssVars(s){return ':root {\n'+s.colors.map(c=>`  --color-${slug(c.name)}: ${c.hex};`).join('\n')+'\n'+s.fonts.map(f=>`  --font-${slug(f.role)}: '${f.family}', system-ui, sans-serif;`).join('\n')+`\n  --space-base: ${s.spacing}px;\n`+String(s.radii).split(',').map(x=>x.trim()).filter(Boolean).map((r,i)=>`  --radius-${i+1}: ${/px|rem|%/.test(r)?r:r+'px'};`).join('\n')+'\n}\n'}
 
 /* ---- editor ---- */
-const advice=(ok,label,text)=>`<div class="advice ${ok?'':'warn'}" role="note"><b>${ok?'OK':'ADVICE'}</b><span><strong>${esc(label)}.</strong> ${esc(text)}</span></div>`;
+const advice=(ok,label,text,fix)=>`<div class="advice ${ok?'':'warn'}" role="note"><b aria-hidden="true">${ok?'✓':'✕'}</b><span class="sr">${ok?'Good: ':'Needs attention: '}</span><span class="txt"><strong>${esc(label)}.</strong> ${esc(text)}</span>${fix?`<button class="fixbtn" data-fix="${esc(fix.k)}" ${fix.d?`data-d="${esc(fix.d)}"`:''}>${esc(fix.l)}</button>`:''}</div>`;
+function fixFg(fg,bg,target){
+  const {h,s,l}=hsl(fg), conv=(H,S,L)=>{const a=S*Math.min(L,1-L),f=n=>{const k=(n+H/30)%12;return Math.round(255*(L-a*Math.max(-1,Math.min(k-3,9-k,1))))};return '#'+[f(0),f(8),f(4)].map(v=>v.toString(16).padStart(2,'0')).join('')};
+  let best=null;for(let d=1;d<=100;d++){for(const dir of [-1,1]){const L=l+dir*d/100;if(L<0||L>1)continue;const c=conv(h,s,L);if(ratio(c,bg)>=target){if(!best||Math.abs(L-l)<best.d)best={hex:c,d:Math.abs(L-l)}}}if(best)break}
+  return best?best.hex:(ratio('#000000',bg)>=ratio('#ffffff',bg)?'#000000':'#ffffff')}
 function contrastBlock(c,s){
   const others=s.colors.filter(o=>o.id!==c.id&&normHex(o.hex)&&normHex(c.hex));
-  if(!others.length) return '<p class="note">Add another color to see how this one reads on top of it.</p>';
-  return `<p class="note">${esc(c.name)} placed on top of each color below (text or icon in ${esc(c.name)}, background in the other color).</p>`+others.map(o=>{
+  if(!others.length) return '';
+  return others.map(o=>{
     const r=ratio(c.hex,o.hex), P=(v)=>r>=v;
     const bd=(l,ok)=>`<span class="bd ${ok?'':'no'}">${l} ${ok?'✓ pass':'✕ fail'}</span>`;
     const rg=(isRed(c.hex)&&isGreen(o.hex))||(isGreen(c.hex)&&isRed(o.hex));
     return `<div class="cr"><div class="aa" style="background:${o.hex};color:${c.hex}" aria-hidden="true">Aa</div><div class="meta"><b>on ${esc(o.name)}</b> ${esc(o.hex)} · <b>${r.toFixed(2)}:1</b>
      <div class="badges">${bd('AA',P(4.5))}${bd('AA large',P(3))}${bd('AAA',P(7))}${bd('AAA large',P(4.5))}${bd('UI 3:1',P(3))}</div>
      ${rg?'<div class="note"><b>Red and green:</b> people with color blindness may not tell these apart even when the ratio looks fine. Do not use this pair alone to mean good versus bad; add an icon or text.</div>':''}
-     ${r<3?'<div class="note">Too low for text or UI. Pick a lighter or darker color.</div>':''}</div></div>`}).join('');
+     ${r<4.5?`<div class="note" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">${r<3?'Too low for text or UI.':'Passes for large text only.'} ${(()=>{const BG=['Background','Surface','Surface variant','Overlay'];const tgt=(BG.includes(c.role)&&!BG.includes(o.role))?o:c, oth=tgt===c?o:c;const f=fixFg(tgt.hex,oth.hex,4.5);return `<button class="fixbtn" data-fixcolor="${tgt.id}" data-hex="${f}">Fix: change ${esc(tgt.name)} to ${f} (${ratio(f,oth.hex).toFixed(1)}:1)</button>`})()}</div>`:''}</div></div>`}).join('');
 }
 function checklist(s){
   const has=r=>s.colors.some(c=>c.role===r), fam=s.fonts.filter(f=>f.family.trim());
@@ -350,20 +388,29 @@ function checklist(s){
   const done=items.filter(i=>i[0]).length;
   return `<div class="panel"><h2>Setup checklist: ${done} of ${items.length}</h2><ul class="check">${items.map(([ok,l])=>`<li><b aria-hidden="true">${ok?'✓':'○'}</b><span class="${ok?'':'empty'}">${ok?'Done: ':'Still needed: '}${esc(l)}</span></li>`).join('')}</ul></div>`;
 }
+const tipData=(name,hex,others)=>esc(JSON.stringify({n:name,h:hex,o:others.map(o=>({n:o.name,h:o.hex}))}));
 function suggestColors(s){
   const sets=DATA.filter(e=>e.type==='color'&&industryMatch(e));
-  return `<h3>Suggested for ${s.industry==='all'?'any industry':esc(indLabel(s.industry))}</h3><p class="note">${s.industry==='all'?'Pick an industry above to see colors that suit it. Showing all sets.':'These color sets are commonly used in this industry and already pass contrast checks.'}</p><div class="sugg">${sets.map(e=>`<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.mood||'')}</span><div class="swatchrow">${['primary','accent','ink','surface'].filter(k=>e.roles[k]).map(k=>`<button class="chip" style="padding:0;border:0;background:none" data-addcolor="${esc(e.roles[k])}" data-nm="${esc(e.name+' '+k)}" data-role="${k==='primary'?'Primary':k==='accent'?'Accent':k==='ink'?'Text':'Surface'}" aria-label="Add ${esc(e.name)} ${k} ${esc(e.roles[k])}"><i style="display:block;background:${esc(e.roles[k])};width:26px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.3)"></i></button>`).join('')}</div><span class="note">Tap a swatch to add it.</span></div>`).join('')||'<p class="empty">No suggestions for this industry yet.</p>'}</div>`;
+  return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested for ${s.industry==='all'?'any industry':esc(indLabel(s.industry))}</h3><button class="viewall" data-viewall="color">View all <span aria-hidden="true">→</span></button></div>
+  <div class="sugg">${sets.slice(0,4).map(e=>{const keys=Object.keys(e.roles);return `<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.mood||'')}</span><div class="swatchrow">${['primary','accent','ink','surface'].filter(k=>e.roles[k]).map(k=>`<button class="chip" style="padding:0;border:0;background:none" data-tip="${tipData(e.name+' '+k,e.roles[k],keys.filter(x=>x!==k).map(x=>({name:x,hex:e.roles[x]})))}" data-addcolor="${esc(e.roles[k])}" data-nm="${esc(e.name+' '+k)}" data-role="${k==='primary'?'Primary':k==='accent'?'Accent':k==='ink'?'Text':'Surface'}" aria-label="Add ${esc(e.name)} ${k} ${esc(e.roles[k])}"><i style="display:block;background:${esc(e.roles[k])};width:26px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.3)"></i></button>`).join('')}</div></div>`}).join('')||'<p class="empty">No suggestions for this industry yet.</p>'}</div>`;
 }
 function suggestFonts(s){
   const sets=DATA.filter(e=>e.type==='font-pairing'&&industryMatch(e));
-  return `<h3>Suggested pairings</h3><div class="sugg">${sets.map(e=>`<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.summary)}</span><div class="row" style="margin:8px 0 0"><button class="btn sm" data-usepair="${esc(e.id)}">Use this pairing</button></div></div>`).join('')||'<p class="empty">No pairings for this industry yet.</p>'}</div>`;
+  return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested pairings</h3><button class="viewall" data-viewall="font-pairing">View all <span aria-hidden="true">→</span></button></div><div class="sugg">${sets.slice(0,4).map(e=>`<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.summary)}</span><div class="row" style="margin:8px 0 0"><button class="btn sm" data-usepair="${esc(e.id)}">Use this pairing</button></div></div>`).join('')||'<p class="empty">No pairings for this industry yet.</p>'}</div>`;
+}
+const DEFAULT_HEX={Primary:'#1d4ed8',Secondary:'#0f766e',Tertiary:'#7c3aed',Accent:'#b45309',Background:'#ffffff',Surface:'#fafafa',Border:'#8a8a8a',Text:'#0a0a0a','Text secondary':'#525252',Success:'#166534',Warning:'#92400e',Danger:'#b91c1c',Info:'#0369a1'};
+function rangeAdvice(label,n,L,hint,roles,addRole){
+  const rec=L.rec||L.max, ok=n>=L.min&&n<=rec;
+  const text=n<L.min?`Add at least ${L.min}. ${hint}`:n>L.max?`Over the maximum of ${L.max}. Remove or merge some.`:n>rec?`Above the recommended ${rec} (maximum ${L.max}).`:`${L.min} to ${rec} is the healthy range. ${hint}`;
+  return advice(ok,`${n} ${label.toLowerCase()}`,text,n<L.min&&addRole?{k:'addrole',l:'Add '+addRole,d:addRole}:null);
 }
 function renderEditor(){
   const main=$('#main'); const s=cur();
   if(S.checked.size>1){main.innerHTML=`<p class="eyebrow">Selection</p><h1>${S.checked.size} systems selected</h1><p>Use the actions at the bottom of the left panel to move, download or delete them. Click a system name to open and edit one.</p><ul class="plain">${S.systems.filter(x=>S.checked.has(x.id)).map(x=>`<li>${esc(x.name)} <span class="tag">${esc(x.folder)}</span></li>`).join('')}</ul>`;return}
   if(!s){main.innerHTML=`<p class="eyebrow">My design systems</p><h1>Build and keep your design systems</h1><p>Create a system from our template. It tells you what is needed, warns you when you add too much, and checks color contrast as you pick colors. Everything is saved in this browser only. Nothing is uploaded.</p><div class="row"><button class="btn solid" id="empty-new">+ New system</button></div>`;
     $('#empty-new').onclick=()=>$('#newsys').click();return}
-  const mob=mobileOnly(s), brand=s.colors.filter(c=>BRAND.includes(c.role)).length, fams=[...new Set(s.fonts.filter(f=>f.role!=='Mono'&&f.family.trim()).map(f=>f.family.trim().toLowerCase()))].length;
+  const cntR=rs=>s.colors.filter(c=>rs.includes(c.role)).length;
+  const mob=mobileOnly(s), brand=cntR(BRAND), neu=cntR(NEUTRAL), fb=cntR(FEEDBACK), fams=[...new Set(s.fonts.filter(f=>f.role!=='Mono'&&f.family.trim()).map(f=>f.family.trim().toLowerCase()))].length;
   const radii=String(s.radii).split(',').map(x=>x.trim()).filter(Boolean).length;
   main.innerHTML=`<p class="eyebrow">Design system</p><h1>${esc(s.name)}</h1>
   ${checklist(s)}
@@ -372,38 +419,55 @@ function renderEditor(){
    <label class="f">Folder<select id="f-folder">${S.folders.map(f=>`<option ${s.folder===f?'selected':''}>${esc(f)}</option>`).join('')}</select></label>
    <label class="f">Industry<select id="f-ind">${INDUSTRIES.map(([k,l])=>`<option value="${k}" ${s.industry===k?'selected':''}>${esc(l)}</option>`).join('')}</select></label></div>
    <fieldset><legend class="eyebrow">What is it for?</legend><div class="states">${Object.entries(PLAT).map(([k,l])=>`<label class="chk"><input type="checkbox" data-plat="${k}" ${s.platforms.includes(k)?'checked':''}>${l}</label>`).join('')}</div></fieldset>
-   ${mob?advice(true,'Mobile only','No hover states needed, so they are hidden below. Use 44px touch targets and 16px minimum body text.'):s.platforms.length?advice(true,'Includes desktop','Design hover and keyboard focus states. Keep body text 16px or larger on mobile.'):advice(false,'Nothing selected','Choose at least one platform so we can tailor the advice.')}
+   ${mob?advice(true,'Mobile only','No hover states needed, so they are hidden below. Use 44px touch targets and 16px minimum body text.'):s.platforms.length?advice(true,'Includes desktop','Design hover and keyboard focus states. Keep body text 16px or larger on mobile.'):advice(false,'Nothing selected','Choose at least one platform so we can tailor the advice.',{k:'plat',l:'Select all'})}
    <p class="note">Industry changes which colors and typefaces we suggest below. Leave it on All if you are not sure.</p></div>
   <div class="panel"><h2>2. Colors</h2>
-   ${advice(brand<=LIMITS.brand,brand+' brand color'+(brand===1?'':'s'),brand<=LIMITS.brand?`We advise ${LIMITS.brand} or fewer brand colors (Primary, Secondary, Accent).`:`We advise ${LIMITS.brand} or fewer. More brand colors make it hard to stay consistent.`)}
-   ${advice(s.colors.length<=LIMITS.colors,s.colors.length+' colors in total',`Most systems work well with ${LIMITS.colors} or fewer core colors, plus tints if needed.`)}
+   ${rangeAdvice('Brand colors',brand,LIMITS.brand,'Primary, Secondary, Tertiary and Accent. Most products use 1 to 3.',BRAND,'Primary')}
+   ${rangeAdvice('Neutrals',neu,LIMITS.neutral,'Background, Surface, Border, Text and similar.',NEUTRAL,'Border')}
+   ${rangeAdvice('Feedback colors',fb,LIMITS.feedback,'Success, Warning, Danger and Info. Four is the common set.',FEEDBACK,!s.colors.some(c=>c.role==='Success')?'Success':!s.colors.some(c=>c.role==='Danger')?'Danger':'Warning')}
+   ${rangeAdvice('All colors',s.colors.length,LIMITS.colors,'Core colors, before tints and shades.',null,null)}
+   <details class="src"><summary>Where these numbers come from</summary><p class="note" style="margin-top:6px">Guidance drawn from published design-system writing, not a single study: <a href="https://eightshapes.com/articles/color-in-design-systems/">EightShapes</a> (one to a few brand colors, a few neutrals, four feedback colors, roughly 10 to 14 base colors) and <a href="https://www.uxpin.com/studio/blog/choose-color-pallete/">UXPin</a> (1 to 2 primary, 1 accent, a neutral scale, four feedback colors, 5 to 7 base hues). Treat them as sensible limits, not rules.</p></details>
+   ${s.colors.length?`<div class="strip" role="group" aria-label="Your colors. Hover or focus a color to see its contrast with the others.">${s.colors.map(c=>`<button class="swb" style="background:${esc(c.hex)}" data-goto="${c.id}" data-tip="${tipData(c.name,c.hex,s.colors.filter(o=>o.id!==c.id))}" aria-label="${esc(c.name)} ${esc(c.hex)}"></button>`).join('')}</div>`:''}
    <div id="colorlist">${s.colors.map(c=>colorCard(c,s)).join('')}</div>
    <div class="row"><button class="btn solid sm" id="addcolor">+ Add color</button></div>
    ${suggestColors(s)}</div>
   <div class="panel"><h2>3. Typography</h2>
-   ${advice(fams<=LIMITS.families,fams+' typeface'+(fams===1?'':'s'),`We advise ${LIMITS.families} or fewer typefaces (plus one mono if you show code). More slows loading and looks busy.`)}
-   ${s.fonts.map(f=>{const w=f.weights.split(',').filter(x=>x.trim()).length;return `<div class="fontrow" data-fid="${f.id}"><label class="f">Role<select data-ff="role">${['Display','Body','Mono','Other'].map(r=>`<option ${f.role===r?'selected':''}>${r}</option>`).join('')}</select></label>
-    <label class="f">Typeface<input type="text" data-ff="family" list="fl" value="${esc(f.family)}"></label><label class="f">Weights<input type="text" data-ff="weights" value="${esc(f.weights)}" aria-describedby="w-${f.id}"></label><button class="btn sm" data-rmfont="${f.id}">Remove</button>
-    ${w>LIMITS.weights?`<div class="advice warn" style="grid-column:1/-1;margin:0" id="w-${f.id}"><b>ADVICE</b><span>${w} weights. We advise ${LIMITS.weights} or fewer per typeface (for example 400, 600, 700).</span></div>`:`<span id="w-${f.id}" hidden></span>`}</div>`}).join('')||'<p class="empty">No typefaces yet.</p>'}
+   ${fams===0?advice(false,'No typeface yet','Add at least a Body typeface.',{k:'addfont',l:'Add Body typeface'}):advice(fams<=LIMITS.families,fams+' typeface'+(fams===1?'':'s'),fams<=LIMITS.families?`We advise ${LIMITS.families} or fewer, plus one mono if you show code.`:`We advise ${LIMITS.families} or fewer. More slows loading and looks busy.`)}
+   ${s.fonts.map(f=>{const custom=!FONT_ROLES.includes(f.role);return `<div class="fontrow" data-fid="${f.id}"><div class="f"><label class="f">Role<select data-ff="rolesel">${FONT_ROLES.map(r=>`<option ${f.role===r?'selected':''}>${r}</option>`).join('')}<option value="__custom" ${custom?'selected':''}>Custom...</option></select></label>${custom?`<input type="text" data-ff="rolecustom" aria-label="Custom role name" value="${esc(f.role==='Custom'?'':f.role)}" placeholder="Role name" style="margin-top:6px">`:''}</div>
+    <label class="f">Typeface<input type="text" data-ff="family" list="fl" value="${esc(f.family)}"></label><button class="btn sm" data-rmfont="${f.id}">Remove</button>
+    <div class="wide"><span class="eyebrow">Weights</span><div class="wchips" role="group" aria-label="Weights for ${esc(f.family||f.role)}">${WEIGHTS.map(([n,l])=>`<label><input type="checkbox" data-fw="${n}" ${f.weights.includes(n)?'checked':''}>${n} ${l}</label>`).join('')}</div>
+    ${f.weights.length>LIMITS.weights?advice(false,f.weights.length+' weights',`We advise ${LIMITS.weights} or fewer per typeface, for example 400 Regular, 600 Semi Bold, 700 Bold.`,{k:'weights',l:'Keep the best 3',d:f.id}):''}</div></div>`}).join('')||'<p class="empty">No typefaces yet.</p>'}
    <datalist id="fl">${[...new Set(DATA.filter(e=>e.type==='font-pairing').flatMap(e=>e.roles.map(r=>r.family)))].map(f=>`<option value="${esc(f)}">`).join('')}</datalist>
    <div class="row"><button class="btn solid sm" id="addfont">+ Add typeface</button></div>${suggestFonts(s)}</div>
   <div class="panel"><h2>4. Interaction states</h2><div class="states">${STATE_LIST.map(([k,l])=>{const off=k==='hover'&&mob;return `<label class="chk" ${off?'title="Not needed for mobile-only"':''}><input type="checkbox" data-state="${k}" ${s.states.includes(k)&&!off?'checked':''} ${off?'disabled':''}>${l}${off?' (not needed on mobile)':''}</label>`}).join('')}</div>
-   ${s.states.includes('focus')?'':advice(false,'Focus is missing','Keyboard and switch users need a visible focus state on every interactive element (WCAG 2.4.7).')}</div>
+   ${s.states.includes('focus')?'':advice(false,'Focus is missing','Keyboard and switch users need a visible focus state on every interactive element (WCAG 2.4.7).',{k:'focus',l:'Add Focus state'})}</div>
   <div class="panel"><h2>5. Spacing and corners</h2><div class="grid2"><label class="f">Spacing base unit<select id="f-space"><option value="4" ${s.spacing==='4'?'selected':''}>4px (fine control)</option><option value="8" ${s.spacing==='8'?'selected':''}>8px (simple and common)</option></select></label>
    <label class="f">Corner radii (comma separated)<input type="text" id="f-radii" value="${esc(s.radii)}"></label></div>
-   ${advice(radii<=LIMITS.radii,radii+' corner radii',`We advise ${LIMITS.radii} or fewer values. Pills are for buttons; tags and cards use small or medium radii.`)}</div>
+   ${advice(radii<=LIMITS.radii,radii+' corner radii',`We advise ${LIMITS.radii} or fewer values. Pills are for buttons; tags and cards use small or medium radii.`,radii>LIMITS.radii?{k:'radii',l:'Keep the first '+LIMITS.radii}:null)}</div>
   <div class="panel"><h2>6. Export</h2><p class="note">Tokens use the W3C design tokens format. Import the JSON into Figma with a tokens plugin such as Tokens Studio.</p><div class="row"><button class="btn solid" id="x-json">Download tokens JSON</button><button class="btn" id="x-css">Download CSS variables</button><button class="btn" id="x-copy">Copy tokens JSON</button><button class="btn" id="x-del">Delete system</button></div></div>`;
   wireEditor(s);
 }
 function colorCard(c,s){
-  return `<div class="colorcard" data-cid="${c.id}"><div class="colortop"><input type="color" value="${normHex(c.hex)||'#000000'}" data-cf="picker" aria-label="Pick color for ${esc(c.name)}">
+  const others=s.colors.filter(o=>o.id!==c.id);
+  return `<div class="colorcard" data-cid="${c.id}" id="cc-${c.id}"><div class="colortop"><span class="pick" data-tip="${tipData(c.name,c.hex,others)}"><input type="color" value="${normHex(c.hex)||'#000000'}" data-cf="picker" aria-label="Pick color for ${esc(c.name)}"></span>
    <label class="f">Name<input type="text" data-cf="name" value="${esc(c.name)}"></label><label class="f">Hex<input type="text" data-cf="hex" value="${esc(c.hex)}" maxlength="7"></label>
-   <label class="f">Role<select data-cf="role">${ROLES.map(r=>`<option ${c.role===r?'selected':''}>${r}</option>`).join('')}</select></label><button class="btn sm" data-rmcolor="${c.id}">Remove</button></div>
+   <label class="f">Role<select data-cf="role">${Object.entries(ROLE_GROUPS).map(([g,rs])=>`<optgroup label="${g}">${rs.map(r=>`<option ${c.role===r?'selected':''}>${r}</option>`).join('')}</optgroup>`).join('')}</select></label><button class="btn sm" data-rmcolor="${c.id}">Remove</button></div>
    <div class="contrast-box" data-cb="${c.id}">${contrastBlock(c,s)}</div></div>`;
 }
 function wireEditor(s){
   const m=$('#main'), set=(k,v)=>{s[k]=v;saveStore()};
   m.querySelector('h1').textContent=s.name;
+  m.querySelectorAll('[data-fix]').forEach(b=>b.onclick=()=>{const k=b.dataset.fix,d=b.dataset.d;
+    if(k==='weights'){const f=s.fonts.find(x=>x.id===d);f.weights=keepThree(f.weights)}
+    else if(k==='radii')s.radii=String(s.radii).split(',').map(x=>x.trim()).filter(Boolean).slice(0,LIMITS.radii).join(', ');
+    else if(k==='focus')s.states=[...new Set([...s.states,'focus'])];
+    else if(k==='plat')s.platforms=Object.keys(PLAT);
+    else if(k==='addfont')s.fonts.push({id:uid(),role:FILL_ORDER.find(r=>!s.fonts.some(f=>f.role===r))||'Custom',family:'',weights:[400,700]});
+    else if(k==='addrole')s.colors.push({id:uid(),name:d,hex:DEFAULT_HEX[d]||'#6b7280',role:d});
+    saveStore();renderEditor();toast('Fixed')});
+  m.querySelectorAll('[data-fixcolor]').forEach(b=>b.onclick=()=>{const c=s.colors.find(x=>x.id===b.dataset.fixcolor);c.hex=b.dataset.hex;saveStore();renderEditor();toast('Color updated to '+c.hex)});
+  m.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>{const el=document.getElementById('cc-'+b.dataset.goto);el.scrollIntoView({block:'center'});el.querySelector('[data-cf=name]').focus()});
+  m.querySelectorAll('[data-viewall]').forEach(b=>b.onclick=()=>{B.types=new Set([b.dataset.viewall]);B.industry=s.industry;B.cats.clear();B.tags.clear();B.q='';go('#/')});
   $('#f-name').oninput=e=>{set('name',e.target.value||'Untitled system');m.querySelector('h1').textContent=s.name};
   $('#f-name').onchange=()=>renderTree();
   $('#f-folder').onchange=e=>{set('folder',e.target.value);renderTree()};
@@ -415,22 +479,45 @@ function wireEditor(s){
   $('#addcolor').onclick=()=>{s.colors.push({id:uid(),name:'Color '+(s.colors.length+1),hex:'#1d4ed8',role:'Other'});saveStore();renderEditor();const n=m.querySelectorAll('.colorcard');n[n.length-1].querySelector('[data-cf=name]').focus()};
   m.querySelectorAll('[data-addcolor]').forEach(b=>b.onclick=()=>{s.colors.push({id:uid(),name:b.dataset.nm,hex:b.dataset.addcolor,role:b.dataset.role});saveStore();renderEditor();toast('Added '+b.dataset.nm)});
   m.querySelectorAll('[data-rmcolor]').forEach(b=>b.onclick=()=>{s.colors=s.colors.filter(c=>c.id!==b.dataset.rmcolor);saveStore();renderEditor()});
-  const refreshContrast=()=>m.querySelectorAll('[data-cb]').forEach(el=>{const c=s.colors.find(x=>x.id===el.dataset.cb);if(c)el.innerHTML=contrastBlock(c,s)});
+  const syncTips=()=>{m.querySelectorAll('.pick').forEach(el=>{const id=el.closest('.colorcard').dataset.cid,c=s.colors.find(x=>x.id===id);el.dataset.tip=JSON.stringify({n:c.name,h:c.hex,o:s.colors.filter(o=>o.id!==id).map(o=>({n:o.name,h:o.hex}))})});m.querySelectorAll('.swb').forEach(el=>{const c=s.colors.find(x=>x.id===el.dataset.goto);el.style.background=c.hex;el.dataset.tip=JSON.stringify({n:c.name,h:c.hex,o:s.colors.filter(o=>o.id!==c.id).map(o=>({n:o.name,h:o.hex}))})})};
+  const refreshContrast=()=>{m.querySelectorAll('[data-cb]').forEach(el=>{const c=s.colors.find(x=>x.id===el.dataset.cb);if(c)el.innerHTML=contrastBlock(c,s)});m.querySelectorAll('[data-fixcolor]').forEach(b=>b.onclick=()=>{const c=s.colors.find(x=>x.id===b.dataset.fixcolor);c.hex=b.dataset.hex;saveStore();renderEditor();toast('Color updated to '+c.hex)});syncTips()};
   m.querySelectorAll('.colorcard').forEach(card=>{const c=s.colors.find(x=>x.id===card.dataset.cid);
     card.querySelector('[data-cf=picker]').oninput=e=>{c.hex=e.target.value;card.querySelector('[data-cf=hex]').value=c.hex;saveStore();refreshContrast()};
     card.querySelector('[data-cf=hex]').oninput=e=>{const h=normHex(e.target.value);if(h){c.hex=h;card.querySelector('[data-cf=picker]').value=h;saveStore();refreshContrast()}};
     card.querySelector('[data-cf=name]').oninput=e=>{c.name=e.target.value;saveStore()};
     card.querySelector('[data-cf=name]').onchange=()=>refreshContrast();
     card.querySelector('[data-cf=role]').onchange=e=>{c.role=e.target.value;saveStore();renderEditor()}});
-  $('#addfont').onclick=()=>{s.fonts.push({id:uid(),role:s.fonts.some(f=>f.role==='Body')?'Display':'Body',family:'',weights:'400, 600'});saveStore();renderEditor()};
+  $('#addfont').onclick=()=>{s.fonts.push({id:uid(),role:FILL_ORDER.find(r=>!s.fonts.some(f=>f.role===r))||'Custom',family:'',weights:[400,700]});saveStore();renderEditor()};
   m.querySelectorAll('[data-rmfont]').forEach(b=>b.onclick=()=>{s.fonts=s.fonts.filter(f=>f.id!==b.dataset.rmfont);saveStore();renderEditor()});
-  m.querySelectorAll('.fontrow').forEach(row=>{const f=s.fonts.find(x=>x.id===row.dataset.fid);row.querySelectorAll('[data-ff]').forEach(i=>i.onchange=()=>{f[i.dataset.ff]=i.value;saveStore();renderEditor()})});
-  m.querySelectorAll('[data-usepair]').forEach(b=>b.onclick=()=>{const e=DATA.find(x=>x.id===b.dataset.usepair);s.fonts=e.roles.map(r=>({id:uid(),role:r.role==='display'?'Display':r.role==='mono'?'Mono':'Body',family:r.family,weights:r.weights.join(', ')}));saveStore();renderEditor();toast('Applied '+e.name)});
+  m.querySelectorAll('.fontrow').forEach(row=>{const f=s.fonts.find(x=>x.id===row.dataset.fid);
+    row.querySelector('[data-ff=rolesel]').onchange=e=>{f.role=e.target.value==='__custom'?'Custom':e.target.value;saveStore();renderEditor()};
+    const rc=row.querySelector('[data-ff=rolecustom]');if(rc)rc.onchange=e=>{f.role=e.target.value.trim()||'Custom';saveStore();renderEditor()};
+    row.querySelector('[data-ff=family]').onchange=e=>{f.family=e.target.value;saveStore();renderEditor()};
+    row.querySelectorAll('[data-fw]').forEach(i=>i.onchange=()=>{const w=new Set(f.weights);i.checked?w.add(+i.dataset.fw):w.delete(+i.dataset.fw);f.weights=[...w].sort((a,b)=>a-b);saveStore();renderEditor()})});
+  m.querySelectorAll('[data-usepair]').forEach(b=>b.onclick=()=>{const e=DATA.find(x=>x.id===b.dataset.usepair);s.fonts=e.roles.map(r=>({id:uid(),role:r.role==='display'?'Display':r.role==='mono'?'Mono':'Body',family:r.family,weights:r.weights.slice()}));saveStore();renderEditor();toast('Applied '+e.name)});
   $('#x-json').onclick=()=>download(slug(s.name)+'.tokens.json',JSON.stringify(tokens(s),null,2),'application/json');
   $('#x-css').onclick=()=>download(slug(s.name)+'.css',cssVars(s),'text/css');
   $('#x-copy').onclick=()=>copy(JSON.stringify(tokens(s),null,2),'tokens JSON');
   $('#x-del').onclick=()=>{if(!confirm('Delete "'+s.name+'"? This cannot be undone.'))return;S.systems=S.systems.filter(x=>x.id!==s.id);S.checked.delete(s.id);S.active=null;saveStore();renderTree();renderEditor()};
 }
+
+/* ---------- colour hover overlay ---------- */
+const tip=document.createElement('div');tip.className='ctip';tip.hidden=true;tip.setAttribute('aria-hidden','true');document.body.appendChild(tip);
+function showTip(el){
+  let d;try{d=JSON.parse(el.dataset.tip)}catch{return}
+  const rows=d.o.filter(o=>normHex(o.h)).slice(0,12).map(o=>{const r=ratio(d.h,o.h);const t=(v)=>r>=v?'✓':'✕';return `<div class="r"><i style="background:${esc(o.h)};color:${esc(d.h)}">Aa</i><span>${esc(o.n)} ${esc(o.h)}</span><em>${r.toFixed(2)}:1 AA ${t(4.5)} AAA ${t(7)}</em></div>`}).join('');
+  tip.innerHTML=`<b>${esc(d.n)}</b> <span style="opacity:.7">${esc(d.h)}</span>${rows?`<div style="opacity:.7;margin:4px 0 2px">This color on top of:</div>${rows}`:''}${d.o.length>12?`<div style="opacity:.7;padding-top:3px">+${d.o.length-12} more</div>`:''}`;
+  tip.hidden=false;
+  const b=el.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;
+  let x=Math.min(Math.max(8,b.left),innerWidth-w-8),y=b.bottom+8;if(y+h>innerHeight-8)y=Math.max(8,b.top-h-8);
+  tip.style.left=x+'px';tip.style.top=y+'px';
+}
+document.addEventListener('mouseover',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t)showTip(t)});
+document.addEventListener('mouseout',e=>{if(e.target.closest&&e.target.closest('[data-tip]'))tip.hidden=true});
+document.addEventListener('focusin',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t)showTip(t)});
+document.addEventListener('focusout',()=>{tip.hidden=true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')tip.hidden=true});
+window.addEventListener('scroll',()=>{tip.hidden=true},{passive:true});
 
 /* ---------- app shell ---------- */
 function render(){
