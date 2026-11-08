@@ -1,1 +1,26 @@
-# mambo-database
+# Mambo Database
+
+An open, structured library of UI components, color palettes and font pairings, written for designers and AI assistants.
+
+## How it works
+Every entry is one JSON file in `entries/`. Run the build and everything else is generated:
+
+    node scripts/build.js
+
+| Output | Purpose |
+|---|---|
+| `dist/site/index.html` | Searchable site (open it directly in a browser) |
+| `dist/entries/**/*.md` | One small Markdown file per entry, for AI to read |
+| `dist/llms.txt` | Index for AI tools that read `llms.txt` |
+| `dist/data/library.json` | All data in one file |
+| `dist/skill/mambo-database/` | A ready-made agent skill (`SKILL.md` + references). Copy the folder into your skills directory |
+
+Requires Node 18+. No dependencies.
+
+## Add an entry
+Copy `entries/components/modal-dialog.json`, edit it, run the build. Required fields are in `schema/component.schema.json`. The build checks them. Palette contrast ratios are computed automatically.
+
+## Honest limits of this starter
+- "Copy HTML + CSS" is meant for Figma importer plugins. It is not a native Figma paste. A real one-click paste into Figma is a later step.
+- "My design systems" stores tokens in the browser only. There is no account or sync yet, and it cannot generate a `.fig` file. Export the JSON or CSS variables and bring them into Figma with a tokens plugin.
+- Only 4 sample entries exist. Preview rendering assumes simple HTML and CSS.

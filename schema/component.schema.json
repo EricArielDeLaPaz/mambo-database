@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Component entry",
+  "type": "object",
+  "required": ["id", "type", "name", "category", "summary", "anatomy", "variants", "whenToUse", "whenNotToUse", "accessibility", "code"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "type": { "const": "component" },
+    "name": { "type": "string" },
+    "category": { "type": "string", "description": "e.g. overlays, buttons, navigation, forms, cards" },
+    "level": { "enum": ["atom", "molecule", "organism", "template", "page"] },
+    "platforms": { "type": "array", "items": { "enum": ["desktop", "mobile-web", "mobile-app"] } },
+    "summary": { "type": "string", "maxLength": 240 },
+    "anatomy": { "type": "array", "items": { "type": "object", "required": ["part", "required", "purpose"] } },
+    "variants": { "type": "array", "items": { "type": "object", "required": ["id", "name", "use", "contentLimits"] } },
+    "whenToUse": { "type": "array", "items": { "type": "string" } },
+    "whenNotToUse": { "type": "array", "items": { "type": "string" } },
+    "alternatives": { "type": "array", "items": { "type": "string" } },
+    "tokens": { "type": "array", "items": { "type": "string" } },
+    "accessibility": { "type": "object", "required": ["role", "keyboard", "focus"] },
+    "related": { "type": "array", "items": { "type": "string" } },
+    "code": { "type": "object", "required": ["html", "css"] }
+  }
+}
