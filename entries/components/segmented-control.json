@@ -1,0 +1,121 @@
+{
+  "id": "segmented-control",
+  "type": "component",
+  "name": "Segmented control",
+  "category": "buttons",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "switch",
+    "view"
+  ],
+  "summary": "A row of 2 to 5 connected buttons where exactly one is selected. Switches the view of the same content.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Outlined group; role=radiogroup or tablist."
+    },
+    {
+      "part": "segment",
+      "required": true,
+      "purpose": "Each option, equal width, 44px tall."
+    },
+    {
+      "part": "selected-indicator",
+      "required": true,
+      "purpose": "Filled background plus a non-color cue such as weight."
+    }
+  ],
+  "variants": [
+    {
+      "id": "text",
+      "name": "Text segments",
+      "use": "Labels like Day, Week, Month.",
+      "contentLimits": {
+        "segments": "2 to 5",
+        "label": "max 12 characters"
+      }
+    },
+    {
+      "id": "icon",
+      "name": "Icon segments",
+      "use": "Familiar icons like list and grid.",
+      "contentLimits": {
+        "segments": "2 to 4",
+        "label": "icons need aria-labels"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Switching between views of the same data.",
+    "A short, mutually exclusive choice."
+  ],
+  "whenNotToUse": [
+    "More than 5 options: use a select.",
+    "Different content areas: use tabs.",
+    "An on/off setting: use a toggle."
+  ],
+  "alternatives": [
+    "tabs",
+    "radio",
+    "toggle-switch"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.primary-text",
+    "color.border.strong",
+    "radius.pill"
+  ],
+  "accessibility": {
+    "role": "radiogroup with radio inputs",
+    "keyboard": [
+      "Arrow keys move selection inside the group.",
+      "Tab enters and leaves the group."
+    ],
+    "focus": "Focus ring on the active segment.",
+    "notes": [
+      "Selected state must not rely on color alone.",
+      "Group needs an accessible name (aria-label)."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.seg__opt input:not(:checked):hover+span{background:#f0f0f0}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".seg__opt input:focus-visible+span{outline:2px solid #1d4ed8;outline-offset:-4px}"
+    },
+    {
+      "id": "selected",
+      "label": "Selected",
+      "when": "all",
+      "note": "",
+      "css": ".seg__opt input:checked+span{font-weight:700}"
+    }
+  ],
+  "related": [
+    "tabs",
+    "radio",
+    "toggle-switch"
+  ],
+  "code": {
+    "html": "<div class=\"seg\" role=\"radiogroup\" aria-label=\"Range\">\n  <label class=\"seg__opt\"><input type=\"radio\" name=\"r\" checked><span>Day</span></label>\n  <label class=\"seg__opt\"><input type=\"radio\" name=\"r\"><span>Week</span></label>\n  <label class=\"seg__opt\"><input type=\"radio\" name=\"r\"><span>Month</span></label>\n</div>",
+    "css": ".seg{display:inline-flex;border:1px solid #8a8a8a;border-radius:999px;overflow:hidden;font:600 14px system-ui,sans-serif}\n.seg__opt{position:relative}\n.seg__opt input{position:absolute;opacity:0;inset:0;cursor:pointer}\n.seg__opt span{display:block;padding:0 18px;line-height:42px;min-width:72px;text-align:center}\n.seg__opt input:checked+span{background:#0a0a0a;color:#fff}"
+  }
+}

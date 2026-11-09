@@ -1,0 +1,107 @@
+{
+  "id": "accordion",
+  "type": "component",
+  "name": "Accordion",
+  "category": "navigation",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "disclosure",
+    "faq"
+  ],
+  "summary": "A list of headings that each expand to reveal a section of content.",
+  "anatomy": [
+    {
+      "part": "header",
+      "required": true,
+      "purpose": "Button that toggles one section. Chevron on the right."
+    },
+    {
+      "part": "panel",
+      "required": true,
+      "purpose": "Content shown when expanded."
+    },
+    {
+      "part": "chevron",
+      "required": true,
+      "purpose": "Rotates to show state."
+    }
+  ],
+  "variants": [
+    {
+      "id": "single",
+      "name": "Single open",
+      "use": "FAQs.",
+      "contentLimits": {
+        "items": "3 to 8",
+        "title": "max 80 characters"
+      }
+    },
+    {
+      "id": "multiple",
+      "name": "Multiple open",
+      "use": "Settings groups.",
+      "contentLimits": {
+        "items": "3 to 8",
+        "title": "max 60 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Long pages where people want only some sections."
+  ],
+  "whenNotToUse": [
+    "Content everyone needs: show it open.",
+    "Switching views: use tabs."
+  ],
+  "alternatives": [
+    "tabs"
+  ],
+  "tokens": [
+    "color.border.default",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "button with aria-expanded controlling a region",
+    "keyboard": [
+      "Enter or Space toggles.",
+      "Tab moves between headers."
+    ],
+    "focus": "Focus ring on each header.",
+    "notes": [
+      "Use real <button> in a heading.",
+      "Keep chevron visible and consistent.",
+      "Use <details> where simple."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.acc__h:hover{background:#fafafa}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".acc__h:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "tabs"
+  ],
+  "code": {
+    "html": "<div class=\"acc\">\n  <h3><button class=\"acc__h\" aria-expanded=\"true\" aria-controls=\"a1\">How do I export?</button></h3>\n  <div id=\"a1\" class=\"acc__p\">Use the Export button in the top right.</div>\n</div>",
+    "css": ".acc{max-width:480px;border-top:1px solid #d4d4d4;font-family:system-ui,sans-serif}\n.acc h3{margin:0}\n.acc__h{display:flex;justify-content:space-between;width:100%;min-height:52px;padding:0;border:0;border-bottom:1px solid #d4d4d4;background:none;font:600 16px system-ui,sans-serif;text-align:left;cursor:pointer}\n.acc__p{padding:12px 0;font-size:15px}"
+  }
+}

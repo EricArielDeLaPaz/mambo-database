@@ -114,8 +114,22 @@ Consult this library before inventing a component, color set or font pairing.
 `);
 w(path.join(out, 'data/library.json'), JSON.stringify(entries.map(({ md: _m, ...e }) => e), null, 2));
 
+// ---------- create-design-system skill ----------
+const dsSkill = path.join(root, 'skills/create-design-system'), dsOut = path.join(out, 'skill/create-design-system');
+const copyDir = (a, d) => fs.readdirSync(a, { withFileTypes: true }).forEach(f => f.isDirectory() ? copyDir(path.join(a, f.name), path.join(d, f.name)) : (fs.mkdirSync(d, { recursive: true }), fs.copyFileSync(path.join(a, f.name), path.join(d, f.name))));
+copyDir(dsSkill, dsOut);
+w(path.join(dsOut, 'library-lite.json'), JSON.stringify({
+  colors: entries.filter(e => e.type === 'color').map(e => ({ id: e.id, name: e.name, mood: e.mood, industries: e.industries, roles: e.roles })),
+  typography: entries.filter(e => e.type === 'font-pairing').map(e => ({ id: e.id, name: e.name, industries: e.industries, roles: e.roles.map(r => ({ role: r.role, family: r.family, weights: r.weights })) })),
+  components: entries.filter(e => e.type === 'component').map(e => ({ id: e.id, name: e.name, category: e.category, platforms: e.platforms, states: (e.states || []).map(s => s.id) }))
+}, null, 1));
+
 // ---------- site ----------
 const tpl = fs.readFileSync(path.join(root, 'site-src/template.html'), 'utf8');
 fs.copyFileSync(path.join(root, 'site-src/mambo.png'), (fs.mkdirSync(path.join(out, 'site'), { recursive: true }), path.join(out, 'site/mambo.png')));
-w(path.join(out, 'site/index.html'), tpl.replace('/*__DATA__*/[]', JSON.stringify(entries).replace(/</g, '\\u003c')));
+const src = f => fs.readFileSync(path.join(root, 'site-src', f), 'utf8');
+const fonts = JSON.parse(fs.readFileSync(path.join(root, 'data/google-fonts.json'), 'utf8'));
+let js = ['core.js', 'store.js', 'browse.js', 'systems.js', 'app.js'].map(src).join('\n');
+js = js.replace('/*__DATA__*/[]', () => JSON.stringify(entries).replace(/</g, '\\u003c')).replace('/*__FONTS__*/[]', () => JSON.stringify(fonts));
+w(path.join(out, 'site/index.html'), tpl.replace('/*__CSS__*/', () => src('styles.css')).replace('/*__JS__*/', () => js.replace(/<\/script/gi, '<\\/script')));
 console.log(`Built ${entries.length} entries -> dist/ (site, llms.txt, skill, markdown, json)`);

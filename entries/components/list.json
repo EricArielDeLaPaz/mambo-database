@@ -1,0 +1,122 @@
+{
+  "id": "list",
+  "type": "component",
+  "name": "List",
+  "category": "data",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "data",
+    "rows"
+  ],
+  "summary": "A vertical stack of rows, each describing one item, with optional icon, secondary text and action.",
+  "anatomy": [
+    {
+      "part": "row",
+      "required": true,
+      "purpose": "One item, 56 to 72px tall."
+    },
+    {
+      "part": "leading",
+      "required": false,
+      "purpose": "Icon or avatar."
+    },
+    {
+      "part": "primary-text",
+      "required": true,
+      "purpose": "The item name, one line."
+    },
+    {
+      "part": "secondary-text",
+      "required": false,
+      "purpose": "Supporting detail, one line."
+    },
+    {
+      "part": "trailing",
+      "required": false,
+      "purpose": "Chevron, value or action."
+    }
+  ],
+  "variants": [
+    {
+      "id": "simple",
+      "name": "Simple",
+      "use": "Text only.",
+      "contentLimits": {
+        "rows": "any",
+        "primary": "max 60 characters"
+      }
+    },
+    {
+      "id": "two-line",
+      "name": "Two-line",
+      "use": "Name plus detail.",
+      "contentLimits": {
+        "rows": "any",
+        "primary": "max 60",
+        "secondary": "max 80"
+      }
+    },
+    {
+      "id": "interactive",
+      "name": "Interactive",
+      "use": "Each row is a link or button.",
+      "contentLimits": {
+        "rows": "any",
+        "primary": "max 60"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Scanning similar items in order."
+  ],
+  "whenNotToUse": [
+    "Comparing many attributes: use a table.",
+    "Rich content: use cards."
+  ],
+  "alternatives": [
+    "table",
+    "card"
+  ],
+  "tokens": [
+    "color.border.default",
+    "space.3",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "list/listitem, or links inside",
+    "keyboard": [
+      "Interactive rows are Tab stops."
+    ],
+    "focus": "Focus ring around the whole row.",
+    "notes": [
+      "Use <ul> or <ol>.",
+      "Whole row is the hit area when interactive (44px+).",
+      "Do not nest interactive controls."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.ls__r:hover{background:#fafafa}}"
+    }
+  ],
+  "related": [
+    "table",
+    "card"
+  ],
+  "code": {
+    "html": "<ul class=\"ls\">\n  <li class=\"ls__r\"><span class=\"ls__p\">Account</span><span class=\"ls__s\">Profile and security</span></li>\n  <li class=\"ls__r\"><span class=\"ls__p\">Notifications</span><span class=\"ls__s\">Email and push</span></li>\n</ul>",
+    "css": ".ls{list-style:none;margin:0;padding:0;max-width:420px;border:1px solid #d4d4d4;border-radius:12px;font-family:system-ui,sans-serif}\n.ls__r{display:grid;padding:12px 16px;border-bottom:1px solid #d4d4d4}\n.ls__r:last-child{border-bottom:0}\n.ls__p{font-weight:600}\n.ls__s{font-size:13px;color:#525252}"
+  }
+}

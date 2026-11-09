@@ -88,7 +88,6 @@
     "On mobile, for long forms or menus: use a bottom sheet instead."
   ],
   "alternatives": [
-    "bottom-sheet",
     "drawer",
     "popover",
     "toast",
@@ -120,7 +119,6 @@
     ]
   },
   "related": [
-    "bottom-sheet",
     "drawer",
     "popover",
     "toast"
@@ -137,5 +135,14 @@
     "overlay",
     "decision",
     "focus-trap"
+  ],
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".modal :focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
   ]
 }

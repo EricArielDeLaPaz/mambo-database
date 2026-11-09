@@ -1,0 +1,133 @@
+{
+  "id": "top-navigation-bar",
+  "type": "component",
+  "name": "Top navigation bar",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "desktop",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "navigation",
+    "header",
+    "pill"
+  ],
+  "summary": "The bar at the top of a site or app with the logo, main links and key actions.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Fixed or sticky bar, 56 to 72px tall."
+    },
+    {
+      "part": "logo",
+      "required": true,
+      "purpose": "Links to home."
+    },
+    {
+      "part": "links",
+      "required": true,
+      "purpose": "3 to 6 destinations."
+    },
+    {
+      "part": "actions",
+      "required": false,
+      "purpose": "Search, account or a primary call to action."
+    },
+    {
+      "part": "menu-button",
+      "required": false,
+      "purpose": "Collapses links on narrow screens."
+    }
+  ],
+  "variants": [
+    {
+      "id": "full",
+      "name": "Full links",
+      "use": "Desktop with up to 6 links.",
+      "contentLimits": {
+        "links": "3 to 6",
+        "label": "max 16 characters"
+      }
+    },
+    {
+      "id": "collapsed",
+      "name": "Collapsed menu",
+      "use": "Mobile web.",
+      "contentLimits": {
+        "links": "in a drawer",
+        "label": "max 20 characters"
+      }
+    },
+    {
+      "id": "floating-pill",
+      "name": "Floating pill",
+      "use": "Portfolio and marketing sites.",
+      "contentLimits": {
+        "links": "2 to 5",
+        "label": "max 14 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Main navigation for any site or web app."
+  ],
+  "whenNotToUse": [
+    "Mobile apps with 3 to 5 top destinations: use a bottom tab bar.",
+    "Deep page structure: add breadcrumbs."
+  ],
+  "alternatives": [
+    "bottom-tab-bar",
+    "breadcrumbs",
+    "drawer"
+  ],
+  "tokens": [
+    "color.surface.default",
+    "color.border.default",
+    "radius.pill",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "navigation landmark (<nav>)",
+    "keyboard": [
+      "Tab moves through links in order.",
+      "Escape closes an open menu."
+    ],
+    "focus": "Visible focus ring on every link.",
+    "notes": [
+      "Wrap in <nav aria-label>.",
+      "Mark the current page with aria-current=page.",
+      "Skip link as the first focusable element.",
+      "Collapsed menu button needs aria-expanded."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.topnav a:not([aria-current]):hover{background:#f0f0f0;color:#0a0a0a}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".topnav a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "bottom-tab-bar",
+    "breadcrumbs",
+    "drawer"
+  ],
+  "code": {
+    "html": "<nav class=\"topnav\" aria-label=\"Main\">\n  <a class=\"topnav__logo\" href=\"#\">Brand</a>\n  <a href=\"#\" aria-current=\"page\">Home</a>\n  <a href=\"#\">About</a>\n  <a href=\"#\">Work</a>\n</nav>",
+    "css": ".topnav{display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #d4d4d4;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif;width:max-content}\n.topnav a{padding:8px 14px;border-radius:999px;color:#525252;text-decoration:none}\n.topnav__logo{font-weight:800;color:#0a0a0a!important}\n.topnav a[aria-current=page]{background:#0a0a0a;color:#fff}"
+  }
+}

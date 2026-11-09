@@ -1,0 +1,98 @@
+{
+  "id": "badge",
+  "type": "component",
+  "name": "Badge",
+  "category": "feedback",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "tag",
+    "status"
+  ],
+  "summary": "A small square-cornered label that shows status, count or category.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Small rectangle with 4px corners. Tags are square; pills are only for buttons."
+    },
+    {
+      "part": "text",
+      "required": true,
+      "purpose": "1 to 2 words or a number."
+    },
+    {
+      "part": "icon",
+      "required": false,
+      "purpose": "Optional glyph for status."
+    }
+  ],
+  "variants": [
+    {
+      "id": "neutral",
+      "name": "Neutral",
+      "use": "Categories and tags.",
+      "contentLimits": {
+        "text": "max 16 characters"
+      }
+    },
+    {
+      "id": "status",
+      "name": "Status",
+      "use": "Active, pending, failed. Pair with an icon or word.",
+      "contentLimits": {
+        "text": "max 12 characters"
+      }
+    },
+    {
+      "id": "count",
+      "name": "Count",
+      "use": "Unread numbers.",
+      "contentLimits": {
+        "text": "up to 99+"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Labeling or counting items."
+  ],
+  "whenNotToUse": [
+    "Interactive filters: use a button or chip with a clear action.",
+    "Long text."
+  ],
+  "alternatives": [
+    "avatar"
+  ],
+  "tokens": [
+    "color.border.default",
+    "radius.sm",
+    "font.mono.700"
+  ],
+  "accessibility": {
+    "role": "no role by default (text)",
+    "keyboard": [
+      "None unless it is clickable."
+    ],
+    "focus": "If clickable, treat as a button with a focus ring.",
+    "notes": [
+      "Do not use color alone to show status.",
+      "Text needs 4.5:1.",
+      "Give counts an accessible description, such as 3 unread."
+    ]
+  },
+  "states": [],
+  "related": [
+    "avatar"
+  ],
+  "code": {
+    "html": "<span class=\"bdg\">Case study</span>\n<span class=\"bdg bdg--status\">✓ Active</span>",
+    "css": ".bdg{display:inline-block;padding:2px 8px;border:1px solid #d4d4d4;border-radius:4px;background:#fafafa;color:#525252;font:700 12px ui-monospace,monospace}\n.bdg--status{background:#0a0a0a;border-color:#0a0a0a;color:#fff}"
+  }
+}

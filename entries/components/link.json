@@ -1,0 +1,120 @@
+{
+  "id": "link",
+  "type": "component",
+  "name": "Link",
+  "category": "buttons",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "navigation",
+    "text"
+  ],
+  "summary": "Text that goes to another page or location. Underlined so it is never confused with plain text.",
+  "anatomy": [
+    {
+      "part": "text",
+      "required": true,
+      "purpose": "Descriptive words that make sense out of context."
+    },
+    {
+      "part": "underline",
+      "required": true,
+      "purpose": "Visible underline, or another non-color cue."
+    },
+    {
+      "part": "external-icon",
+      "required": false,
+      "purpose": "Small arrow when the link leaves the site."
+    }
+  ],
+  "variants": [
+    {
+      "id": "inline",
+      "name": "Inline",
+      "use": "Inside a sentence.",
+      "contentLimits": {
+        "text": "the destination, not 'click here'"
+      }
+    },
+    {
+      "id": "standalone",
+      "name": "Standalone",
+      "use": "A line on its own such as Read more.",
+      "contentLimits": {
+        "text": "max 4 words"
+      }
+    },
+    {
+      "id": "external",
+      "name": "External",
+      "use": "Opens another site.",
+      "contentLimits": {
+        "icon": "arrow after the text"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Moving to another page or a section on the page.",
+    "Inside body text."
+  ],
+  "whenNotToUse": [
+    "Triggering an action such as save: use a button."
+  ],
+  "alternatives": [
+    "button"
+  ],
+  "tokens": [
+    "color.link",
+    "color.text.primary",
+    "space.1"
+  ],
+  "accessibility": {
+    "role": "link (native <a href>)",
+    "keyboard": [
+      "Enter activates it."
+    ],
+    "focus": "Visible focus ring.",
+    "notes": [
+      "Link text must be meaningful alone: avoid 'click here'.",
+      "Do not rely on color alone: keep the underline.",
+      "Warn when a link opens a new tab."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.lnk:hover{text-decoration-thickness:2px}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "Required for keyboard users (WCAG 2.4.7).",
+      "css": ".lnk:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "visited",
+      "label": "Visited",
+      "when": "all",
+      "note": "",
+      "css": ".lnk:visited{color:#525252}"
+    }
+  ],
+  "related": [
+    "button"
+  ],
+  "code": {
+    "html": "<p>Read our <a class=\"lnk\" href=\"#\">accessibility statement</a> or <a class=\"lnk\" href=\"#\" rel=\"noopener\">visit the docs<span aria-hidden=\"true\"> ↗</span></a>.</p>",
+    "css": ".lnk{color:#0a0a0a;text-decoration:underline;text-underline-offset:3px;font-weight:600}"
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "id": "toggle-switch",
+  "type": "component",
+  "name": "Toggle switch",
+  "category": "forms",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "form",
+    "settings"
+  ],
+  "summary": "An on/off switch for a setting that takes effect immediately.",
+  "anatomy": [
+    {
+      "part": "track",
+      "required": true,
+      "purpose": "Pill-shaped track, at least 44x24px."
+    },
+    {
+      "part": "thumb",
+      "required": true,
+      "purpose": "Circle that moves to show state."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Names the setting, not the state."
+    },
+    {
+      "part": "state-text",
+      "required": false,
+      "purpose": "Optional On or Off text so color is not the only cue."
+    }
+  ],
+  "variants": [
+    {
+      "id": "default",
+      "name": "Default",
+      "use": "Settings lists.",
+      "contentLimits": {
+        "label": "max 40 characters"
+      }
+    },
+    {
+      "id": "with-description",
+      "name": "With description",
+      "use": "Settings that need explaining.",
+      "contentLimits": {
+        "label": "max 40 characters",
+        "description": "max 100 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Settings that apply instantly: notifications, dark mode."
+  ],
+  "whenNotToUse": [
+    "The change needs a Save button: use a checkbox.",
+    "A choice among several: use radios or a segmented control."
+  ],
+  "alternatives": [
+    "checkbox",
+    "segmented-control"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.border.strong",
+    "radius.pill"
+  ],
+  "accessibility": {
+    "role": "switch (button role=switch or checkbox with role=switch)",
+    "keyboard": [
+      "Space toggles it."
+    ],
+    "focus": "Focus ring around the track.",
+    "notes": [
+      "Use role=switch with aria-checked.",
+      "The label describes the setting; do not change it when toggled.",
+      "On state needs more than color: thumb position plus an optional On label."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".sw input:focus-visible+.sw__track{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".sw input:disabled+.sw__track{opacity:.4}"
+    }
+  ],
+  "related": [
+    "checkbox",
+    "segmented-control"
+  ],
+  "code": {
+    "html": "<label class=\"sw\">\n  <input type=\"checkbox\" role=\"switch\" checked>\n  <span class=\"sw__track\" aria-hidden=\"true\"><span class=\"sw__thumb\"></span></span>\n  Push notifications\n</label>",
+    "css": ".sw{display:inline-flex;align-items:center;gap:12px;min-height:44px;font:15px system-ui,sans-serif;cursor:pointer}\n.sw input{position:absolute;opacity:0}\n.sw__track{position:relative;width:46px;height:26px;border-radius:999px;background:#8a8a8a}\n.sw__thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .15s}\n.sw input:checked+.sw__track{background:#0a0a0a}\n.sw input:checked+.sw__track .sw__thumb{transform:translateX(20px)}"
+  }
+}

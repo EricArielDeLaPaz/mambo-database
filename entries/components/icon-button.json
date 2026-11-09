@@ -1,0 +1,141 @@
+{
+  "id": "icon-button",
+  "type": "component",
+  "name": "Icon button",
+  "category": "buttons",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "icon",
+    "toolbar"
+  ],
+  "summary": "A square or circular button that shows only an icon. For compact, familiar actions like close, search or more.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "44px minimum hit area, even if the icon is smaller."
+    },
+    {
+      "part": "icon",
+      "required": true,
+      "purpose": "20 to 24px glyph with a clear shape."
+    },
+    {
+      "part": "accessible-name",
+      "required": true,
+      "purpose": "aria-label that names the action, since there is no visible text."
+    },
+    {
+      "part": "tooltip",
+      "required": false,
+      "purpose": "Shows the name on hover and focus for pointer and keyboard users."
+    }
+  ],
+  "variants": [
+    {
+      "id": "plain",
+      "name": "Plain",
+      "use": "Toolbars and dense headers.",
+      "contentLimits": {
+        "icon": "24px",
+        "hit": "44px"
+      }
+    },
+    {
+      "id": "outlined",
+      "name": "Outlined",
+      "use": "When the icon needs a visible boundary.",
+      "contentLimits": {
+        "icon": "20 to 24px",
+        "hit": "44px"
+      }
+    },
+    {
+      "id": "filled",
+      "name": "Filled",
+      "use": "The main action of a compact surface.",
+      "contentLimits": {
+        "icon": "24px",
+        "hit": "48px"
+      }
+    }
+  ],
+  "whenToUse": [
+    "The icon is universally understood: close, search, menu, share, delete.",
+    "Space is tight, such as toolbars and cards."
+  ],
+  "whenNotToUse": [
+    "The meaning is not obvious: add a text label.",
+    "It is the main call to action: use a labeled button."
+  ],
+  "alternatives": [
+    "button",
+    "floating-action-button",
+    "tooltip"
+  ],
+  "tokens": [
+    "color.text.primary",
+    "color.border.strong",
+    "radius.pill",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "button (native <button>)",
+    "keyboard": [
+      "Enter and Space activate it."
+    ],
+    "focus": "Visible focus ring around the full hit area.",
+    "notes": [
+      "Always set aria-label or visually hidden text.",
+      "Hide the decorative SVG with aria-hidden=true.",
+      "A toggle icon button needs aria-pressed."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.ib:hover{background:#f0f0f0}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "Required for keyboard users (WCAG 2.4.7).",
+      "css": ".ib:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".ib:active{background:#e5e5e5}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".ib:disabled{opacity:.4;cursor:not-allowed}"
+    }
+  ],
+  "related": [
+    "button",
+    "floating-action-button",
+    "tooltip"
+  ],
+  "code": {
+    "html": "<button class=\"ib\" type=\"button\" aria-label=\"Search\">\n  <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg>\n</button>\n<button class=\"ib ib--outlined\" type=\"button\" aria-label=\"Close\">\n  <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg>\n</button>",
+    "css": ".ib{display:inline-grid;place-items:center;width:44px;height:44px;border:1px solid transparent;border-radius:999px;background:none;color:#0a0a0a;cursor:pointer}\n.ib--outlined{border-color:#8a8a8a}"
+  }
+}

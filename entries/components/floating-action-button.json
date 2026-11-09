@@ -1,0 +1,123 @@
+{
+  "id": "floating-action-button",
+  "type": "component",
+  "name": "Floating action button",
+  "category": "buttons",
+  "level": "atom",
+  "platforms": [
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "mobile",
+    "primary-action"
+  ],
+  "summary": "A round button that floats above content for the single most important action on a screen, such as Compose or Add.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "56px circle, fixed to a corner above the content."
+    },
+    {
+      "part": "icon",
+      "required": true,
+      "purpose": "24px glyph."
+    },
+    {
+      "part": "label",
+      "required": false,
+      "purpose": "Extended variant adds a short text label."
+    }
+  ],
+  "variants": [
+    {
+      "id": "regular",
+      "name": "Regular",
+      "use": "One clear primary action.",
+      "contentLimits": {
+        "size": "56px"
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "use": "Secondary placement or dense screens.",
+      "contentLimits": {
+        "size": "40px"
+      }
+    },
+    {
+      "id": "extended",
+      "name": "Extended",
+      "use": "When an icon alone is unclear.",
+      "contentLimits": {
+        "label": "1 to 2 words"
+      }
+    }
+  ],
+  "whenToUse": [
+    "There is one dominant action users repeat, such as create.",
+    "Mobile lists and feeds."
+  ],
+  "whenNotToUse": [
+    "Several equally important actions: use a toolbar.",
+    "It would cover content or a bottom tab bar."
+  ],
+  "alternatives": [
+    "button",
+    "bottom-tab-bar"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.primary-text",
+    "shadow.overlay",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "button (native <button>)",
+    "keyboard": [
+      "Enter and Space activate it."
+    ],
+    "focus": "Visible focus ring.",
+    "notes": [
+      "Needs an accessible name (aria-label).",
+      "Keep 16px from screen edges and clear of the system gesture area.",
+      "Use only one per screen."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "Required for keyboard users (WCAG 2.4.7).",
+      "css": ".fab:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".fab:active{transform:scale(.96)}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".fab:disabled{opacity:.4}"
+    }
+  ],
+  "related": [
+    "button",
+    "bottom-tab-bar"
+  ],
+  "code": {
+    "html": "<button class=\"fab\" type=\"button\" aria-label=\"Add item\">\n  <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg>\n</button>",
+    "css": ".fab{display:grid;place-items:center;width:56px;height:56px;border:0;border-radius:50%;background:#0a0a0a;color:#fff;box-shadow:0 10px 24px -6px rgba(0,0,0,.4);cursor:pointer}"
+  }
+}

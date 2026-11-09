@@ -116,7 +116,7 @@
   "related": [
     "modal-dialog",
     "drawer",
-    "toast"
+    "popover"
   ],
   "code": {
     "html": "<div class=\"sheet-scrim\"></div>\n<section class=\"sheet\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"sheet-title\">\n  <div class=\"sheet__handle\" aria-hidden=\"true\"></div>\n  <h2 id=\"sheet-title\" class=\"sheet__title\">Photo options</h2>\n  <ul class=\"sheet__list\">\n    <li><button type=\"button\">Share</button></li>\n    <li><button type=\"button\">Edit</button></li>\n    <li><button type=\"button\">Delete</button></li>\n    <li><button type=\"button\">Cancel</button></li>\n  </ul>\n</section>",
@@ -130,5 +130,21 @@
     "overlay",
     "mobile",
     "gesture"
+  ],
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".sheet :focus-visible{outline:2px solid #1d4ed8;outline-offset:-2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".sheet__list button:active{background:#f0f0f0}"
+    }
   ]
 }

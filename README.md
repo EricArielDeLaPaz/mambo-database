@@ -13,6 +13,7 @@ Every entry is one JSON file in `entries/`. Run the build and everything else is
 | `dist/entries/**/*.md` | One small Markdown file per entry, for AI to read |
 | `dist/llms.txt` | Index for AI tools that read `llms.txt` |
 | `dist/data/library.json` | All data in one file |
+| `dist/skill/create-design-system/` | The `/create-design-system` skill: interviews you about the feel and platform, then picks accessible colors, type and optional components |
 | `dist/skill/mambo-database/` | A ready-made agent skill (`SKILL.md` + references). Copy the folder into your skills directory |
 
 Requires Node 18+. No dependencies.

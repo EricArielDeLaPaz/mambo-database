@@ -17,27 +17,27 @@
     "cta",
     "pill"
   ],
-  "summary": "A control that starts an action. Pill-shaped buttons, with a solid primary and an outlined secondary.",
+  "summary": "A control that starts an action. Pill-shaped, with solid, outline, text and destructive styles.",
   "anatomy": [
     {
       "part": "container",
       "required": true,
-      "purpose": "The pill-shaped hit area. Minimum 44px tall on touch screens."
+      "purpose": "Pill-shaped hit area, 44px tall on touch screens."
     },
     {
       "part": "label",
       "required": true,
-      "purpose": "Verb-first text, 1 to 3 words. Describes the result, not the click."
+      "purpose": "Verb-first text, 1 to 3 words. Says the result, not the click."
     },
     {
       "part": "leading-icon",
       "required": false,
-      "purpose": "Optional icon before the label. Decorative; the label carries the meaning."
+      "purpose": "Optional decorative icon before the label."
     },
     {
       "part": "loading-indicator",
       "required": false,
-      "purpose": "Replaces the icon while an action runs. Keep the label and width so the layout does not jump."
+      "purpose": "Replaces the icon while an action runs. Keep width so the layout does not jump."
     }
   ],
   "variants": [
@@ -53,16 +53,16 @@
     {
       "id": "outline",
       "name": "Outline (secondary)",
-      "use": "Supporting actions next to a primary.",
+      "use": "Supporting actions beside a primary.",
       "contentLimits": {
-        "label": "1 to 3 words, max 24 characters",
+        "label": "1 to 3 words",
         "count": "up to 3 per view"
       }
     },
     {
       "id": "text",
       "name": "Text (tertiary)",
-      "use": "Low-emphasis actions such as Cancel or Learn more.",
+      "use": "Low-emphasis actions such as Cancel.",
       "contentLimits": {
         "label": "1 to 3 words",
         "count": "as needed"
@@ -71,26 +71,26 @@
     {
       "id": "destructive",
       "name": "Destructive",
-      "use": "Delete or remove actions. Pair with a confirmation.",
+      "use": "Delete or remove. Pair with a confirmation.",
       "contentLimits": {
-        "label": "name the object, for example Delete project",
+        "label": "name the object, e.g. Delete project",
         "count": "rare"
       }
     }
   ],
   "whenToUse": [
-    "The person triggers an action on the current page: save, send, add, delete.",
+    "The person triggers an action on this page: save, send, add.",
     "A form needs a submit control."
   ],
   "whenNotToUse": [
-    "The control moves to another page: use a link instead.",
-    "A choice among options: use radio buttons, a toggle or a segmented control.",
-    "Several equal-weight actions: use a menu."
+    "The control goes to another page: use a link.",
+    "A choice among options: use radios, a toggle or a segmented control.",
+    "Several equal actions: use a popover menu."
   ],
   "alternatives": [
     "link",
-    "toggle",
-    "menu"
+    "toggle-switch",
+    "popover"
   ],
   "tokens": [
     "color.primary",
@@ -98,29 +98,66 @@
     "color.border.strong",
     "radius.pill",
     "space.2",
-    "space.4",
-    "font.body.600"
+    "space.4"
   ],
   "accessibility": {
-    "role": "button (use the native <button> element)",
+    "role": "button (native <button>)",
     "keyboard": [
       "Enter and Space activate it.",
       "Tab reaches it in reading order."
     ],
-    "focus": "Always show a visible focus ring with 3:1 contrast against its surroundings. Do not remove the outline.",
+    "focus": "Always show a visible focus ring with 3:1 contrast. Do not remove the outline.",
     "notes": [
       "Use a real <button>, not a div.",
-      "Disabled state still needs 3:1 for the outline if it must be seen; explain why it is disabled nearby.",
-      "Touch targets are at least 44x44px (WCAG 2.2 minimum is 24x24).",
-      "Hover styles apply to desktop only. On mobile-only products, design pressed and focus states instead."
+      "Touch targets are at least 44x44px.",
+      "Explain why a control is disabled nearby.",
+      "Hover applies to pointer devices only; on mobile design pressed and focus."
     ]
   },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.btn--solid:hover{background:#262626}.btn--outline:hover{background:#f5f5f5}.btn--destructive:hover{background:#991b1b}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "Required for keyboard users (WCAG 2.4.7).",
+      "css": ".btn:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".btn:active{transform:translateY(1px)}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".btn:disabled{opacity:.5;cursor:not-allowed}"
+    },
+    {
+      "id": "loading",
+      "label": "Loading",
+      "when": "all",
+      "note": "",
+      "css": ".btn[aria-busy=true]{opacity:.7;cursor:progress}"
+    }
+  ],
   "related": [
-    "text-input",
-    "modal-dialog"
+    "link",
+    "toggle-switch",
+    "popover"
   ],
   "code": {
-    "html": "<button class=\"btn btn--solid\" type=\"button\">Save changes</button>\n<button class=\"btn btn--outline\" type=\"button\">Preview</button>\n<button class=\"btn btn--text\" type=\"button\">Cancel</button>",
-    "css": ".btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid #0a0a0a;border-radius:999px;font:600 14px/1 system-ui,sans-serif;cursor:pointer}\n.btn--solid{background:#0a0a0a;color:#fff}\n.btn--outline{background:#fff;color:#0a0a0a}\n.btn--text{border-color:transparent;background:none;color:#0a0a0a;text-decoration:underline}\n.btn:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}\n@media (hover:hover){.btn--solid:hover{background:#262626}.btn--outline:hover{background:#f5f5f5}}\n.btn:disabled{opacity:.5;cursor:not-allowed}"
+    "html": "<div class=\"row\">\n  <button class=\"btn btn--solid\" type=\"button\">Save changes</button>\n  <button class=\"btn btn--outline\" type=\"button\">Preview</button>\n  <button class=\"btn btn--text\" type=\"button\">Cancel</button>\n  <button class=\"btn btn--destructive\" type=\"button\">Delete project</button>\n</div>",
+    "css": ".row{display:flex;flex-wrap:wrap;gap:8px}\n.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid #0a0a0a;border-radius:999px;font:600 14px/1 system-ui,sans-serif;cursor:pointer}\n.btn--solid{background:#0a0a0a;color:#fff}\n.btn--outline{background:#fff;color:#0a0a0a}\n.btn--text{border-color:transparent;background:none;text-decoration:underline;color:#0a0a0a}\n.btn--destructive{background:#b91c1c;border-color:#b91c1c;color:#fff}"
   }
 }

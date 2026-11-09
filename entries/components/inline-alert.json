@@ -1,0 +1,128 @@
+{
+  "id": "inline-alert",
+  "type": "component",
+  "name": "Inline alert",
+  "category": "feedback",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "feedback",
+    "status"
+  ],
+  "summary": "A message placed in the page flow that explains a status: information, success, warning or error.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Bordered block with a left bar."
+    },
+    {
+      "part": "icon",
+      "required": true,
+      "purpose": "Different shape per type, so color is not the only cue."
+    },
+    {
+      "part": "title",
+      "required": false,
+      "purpose": "Short heading."
+    },
+    {
+      "part": "message",
+      "required": true,
+      "purpose": "What happened and what to do next."
+    },
+    {
+      "part": "action",
+      "required": false,
+      "purpose": "One link or button."
+    }
+  ],
+  "variants": [
+    {
+      "id": "info",
+      "name": "Information",
+      "use": "Neutral help.",
+      "contentLimits": {
+        "message": "max 200 characters"
+      }
+    },
+    {
+      "id": "success",
+      "name": "Success",
+      "use": "A task completed.",
+      "contentLimits": {
+        "message": "max 120 characters"
+      }
+    },
+    {
+      "id": "warning",
+      "name": "Warning",
+      "use": "Something needs attention.",
+      "contentLimits": {
+        "message": "max 200 characters"
+      }
+    },
+    {
+      "id": "error",
+      "name": "Error",
+      "use": "Something failed.",
+      "contentLimits": {
+        "message": "what failed and how to fix it, max 200 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "The message belongs to this part of the page and should stay until resolved."
+  ],
+  "whenNotToUse": [
+    "Brief confirmations: use a toast.",
+    "A decision is required: use a modal dialog."
+  ],
+  "alternatives": [
+    "toast",
+    "modal-dialog"
+  ],
+  "tokens": [
+    "color.success",
+    "color.warning",
+    "color.danger",
+    "color.info",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "alert for errors, status for others",
+    "keyboard": [
+      "Any actions inside are reachable by Tab."
+    ],
+    "focus": "Do not steal focus; for errors after submit, move focus to the first error.",
+    "notes": [
+      "Icon plus text conveys type, not color only.",
+      "Error alerts use role=alert; others role=status.",
+      "Text and icon need 4.5:1 / 3:1."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".al a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "toast",
+    "modal-dialog"
+  ],
+  "code": {
+    "html": "<div class=\"al al--error\" role=\"alert\">\n  <strong>Payment failed.</strong> Check your card number and try again.\n</div>",
+    "css": ".al{padding:14px 16px;border:1px solid #8a8a8a;border-left:6px solid #0a0a0a;border-radius:8px;background:#fff;font:15px system-ui,sans-serif;max-width:480px}\n.al::before{content:'';}\n.al--error{border-left-color:#b91c1c}\n.al--error strong::before{content:'\\2715  '}"
+  }
+}

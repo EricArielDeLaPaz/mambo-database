@@ -1,0 +1,101 @@
+{
+  "id": "avatar",
+  "type": "component",
+  "name": "Avatar",
+  "category": "feedback",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "people",
+    "identity"
+  ],
+  "summary": "A round image or initials that represents a person or organisation.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Circle sized 24, 32, 40 or 56px."
+    },
+    {
+      "part": "image",
+      "required": false,
+      "purpose": "Photo with alt text."
+    },
+    {
+      "part": "initials",
+      "required": false,
+      "purpose": "Fallback of 1 to 2 letters."
+    },
+    {
+      "part": "status-dot",
+      "required": false,
+      "purpose": "Online or away, with a text alternative."
+    }
+  ],
+  "variants": [
+    {
+      "id": "image",
+      "name": "Image",
+      "use": "When a photo exists.",
+      "contentLimits": {
+        "size": "24 to 56px"
+      }
+    },
+    {
+      "id": "initials",
+      "name": "Initials",
+      "use": "No photo.",
+      "contentLimits": {
+        "text": "1 to 2 characters"
+      }
+    },
+    {
+      "id": "group",
+      "name": "Group",
+      "use": "Stacked list of people.",
+      "contentLimits": {
+        "count": "up to 4 then +N"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Representing people in lists, comments and headers."
+  ],
+  "whenNotToUse": [
+    "Decoration with no meaning."
+  ],
+  "alternatives": [
+    "badge"
+  ],
+  "tokens": [
+    "radius.pill",
+    "color.surface.default"
+  ],
+  "accessibility": {
+    "role": "img with alt text (or aria-hidden if decorative next to a name)",
+    "keyboard": [
+      "None unless clickable."
+    ],
+    "focus": "If clickable, wrap in a button or link with a focus ring.",
+    "notes": [
+      "Alt text is the person's name.",
+      "Initials need 4.5:1 contrast.",
+      "Status dot needs text, not color alone."
+    ]
+  },
+  "states": [],
+  "related": [
+    "badge"
+  ],
+  "code": {
+    "html": "<span class=\"av\" role=\"img\" aria-label=\"Eric Ariel De La Paz\">EA</span>",
+    "css": ".av{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#0a0a0a;color:#fff;font:700 14px system-ui,sans-serif}"
+  }
+}

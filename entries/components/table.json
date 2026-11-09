@@ -1,0 +1,126 @@
+{
+  "id": "table",
+  "type": "component",
+  "name": "Data table",
+  "category": "data",
+  "level": "organism",
+  "platforms": [
+    "desktop",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "data",
+    "grid"
+  ],
+  "summary": "Rows and columns for comparing structured data with sorting and optional pagination.",
+  "anatomy": [
+    {
+      "part": "header-row",
+      "required": true,
+      "purpose": "Column labels, sticky when long."
+    },
+    {
+      "part": "row",
+      "required": true,
+      "purpose": "One item per row, 48px tall."
+    },
+    {
+      "part": "cell",
+      "required": true,
+      "purpose": "Left-align text, right-align numbers."
+    },
+    {
+      "part": "sort-control",
+      "required": false,
+      "purpose": "Button in the header with an arrow."
+    },
+    {
+      "part": "empty-state",
+      "required": false,
+      "purpose": "Message when there is no data."
+    }
+  ],
+  "variants": [
+    {
+      "id": "basic",
+      "name": "Basic",
+      "use": "Read-only data.",
+      "contentLimits": {
+        "columns": "2 to 7"
+      }
+    },
+    {
+      "id": "sortable",
+      "name": "Sortable",
+      "use": "When order matters.",
+      "contentLimits": {
+        "columns": "2 to 7"
+      }
+    },
+    {
+      "id": "selectable",
+      "name": "Selectable",
+      "use": "Bulk actions.",
+      "contentLimits": {
+        "columns": "2 to 6, first is a checkbox"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Comparing many attributes across items."
+  ],
+  "whenNotToUse": [
+    "A few facts about one item: use a list or card.",
+    "Phones: use cards or a stacked layout."
+  ],
+  "alternatives": [
+    "list",
+    "card"
+  ],
+  "tokens": [
+    "color.border.default",
+    "space.3",
+    "font.mono.700"
+  ],
+  "accessibility": {
+    "role": "table with th scope and caption",
+    "keyboard": [
+      "Tab reaches sort buttons.",
+      "Arrow keys are not required for static tables."
+    ],
+    "focus": "Visible focus on sort buttons.",
+    "notes": [
+      "Use real <table>, <th scope>.",
+      "Add a caption.",
+      "aria-sort on the sorted column.",
+      "Make wide tables scrollable with keyboard access."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.tbl tbody tr:hover{background:#fafafa}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".tbl button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "list",
+    "card"
+  ],
+  "code": {
+    "html": "<table class=\"tbl\">\n  <caption>Components</caption>\n  <thead><tr><th scope=\"col\">Name</th><th scope=\"col\">Type</th><th scope=\"col\" class=\"n\">Count</th></tr></thead>\n  <tbody><tr><td>Button</td><td>Action</td><td class=\"n\">4</td></tr><tr><td>Card</td><td>Container</td><td class=\"n\">3</td></tr></tbody>\n</table>",
+    "css": ".tbl{border-collapse:collapse;width:100%;max-width:520px;font:14px system-ui,sans-serif}\n.tbl caption{text-align:left;font-weight:700;padding-bottom:8px}\n.tbl th,.tbl td{text-align:left;padding:12px;border-bottom:1px solid #d4d4d4}\n.tbl th{font:700 12px ui-monospace,monospace;text-transform:uppercase;color:#525252}\n.tbl .n{text-align:right}"
+  }
+}

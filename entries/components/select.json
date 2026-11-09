@@ -1,0 +1,148 @@
+{
+  "id": "select",
+  "type": "component",
+  "name": "Select (dropdown)",
+  "category": "forms",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "form",
+    "dropdown",
+    "listbox"
+  ],
+  "summary": "A control that opens a list so someone can choose one option from many.",
+  "anatomy": [
+    {
+      "part": "trigger",
+      "required": true,
+      "purpose": "Looks like a field, with the chosen value and a chevron."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Visible label above the trigger."
+    },
+    {
+      "part": "listbox",
+      "required": true,
+      "purpose": "The opened white panel with square-rounded corners."
+    },
+    {
+      "part": "option",
+      "required": true,
+      "purpose": "Rows 44px tall; the selected one shows a check."
+    },
+    {
+      "part": "group-heading",
+      "required": false,
+      "purpose": "Non-selectable heading that groups options."
+    }
+  ],
+  "variants": [
+    {
+      "id": "native",
+      "name": "Native",
+      "use": "Default choice. Best on mobile and for accessibility.",
+      "contentLimits": {
+        "options": "up to 15 without search"
+      }
+    },
+    {
+      "id": "custom",
+      "name": "Custom listbox",
+      "use": "When rows need icons or extra info.",
+      "contentLimits": {
+        "options": "up to 15 without search",
+        "row": "1 line plus optional icon"
+      }
+    },
+    {
+      "id": "searchable",
+      "name": "Searchable",
+      "use": "Long lists such as countries or fonts.",
+      "contentLimits": {
+        "options": "more than 15",
+        "search": "filter as you type"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Choosing one from 5 or more options.",
+    "Space is limited."
+  ],
+  "whenNotToUse": [
+    "2 to 4 options: use radios or a segmented control.",
+    "Navigating pages: use a menu or links."
+  ],
+  "alternatives": [
+    "radio",
+    "segmented-control",
+    "popover"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.border.strong",
+    "radius.md",
+    "shadow.overlay"
+  ],
+  "accessibility": {
+    "role": "native <select>, or button with aria-haspopup=listbox plus role=listbox",
+    "keyboard": [
+      "Enter, Space or Arrow Down opens it.",
+      "Arrow keys move; Enter selects; Escape closes.",
+      "Typing jumps to a matching option."
+    ],
+    "focus": "Focus returns to the trigger on close.",
+    "notes": [
+      "Prefer native <select> unless rows need rich content.",
+      "Selected option needs a check mark, not just color.",
+      "Keep the arrow visible and consistent."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.sel:hover{border-color:#0a0a0a}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".sel:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".sel:disabled{opacity:.5}"
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "when": "all",
+      "note": "",
+      "css": ".sel[aria-invalid=true]{border-color:#b91c1c}"
+    }
+  ],
+  "related": [
+    "radio",
+    "segmented-control",
+    "popover"
+  ],
+  "code": {
+    "html": "<label class=\"selwrap\">\n  <span class=\"sel__label\">Industry</span>\n  <select class=\"sel\">\n    <option>All</option><option>Finance</option><option>Healthcare</option>\n  </select>\n</label>",
+    "css": ".selwrap{display:grid;gap:6px;max-width:260px;font:14px system-ui,sans-serif}\n.sel__label{font-weight:600}\n.sel{appearance:none;min-height:44px;padding:0 40px 0 14px;border:1px solid #8a8a8a;border-radius:8px;background:#fff url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230a0a0a' stroke-width='2.4' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\") no-repeat right 14px center;font:16px system-ui,sans-serif}"
+  }
+}

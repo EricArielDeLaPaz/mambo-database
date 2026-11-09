@@ -1,0 +1,122 @@
+{
+  "id": "pagination",
+  "type": "component",
+  "name": "Pagination",
+  "category": "navigation",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "navigation",
+    "list"
+  ],
+  "summary": "Controls that split a long list into pages with previous, next and page numbers.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "A nav landmark."
+    },
+    {
+      "part": "page-button",
+      "required": true,
+      "purpose": "Number links, 44px tall."
+    },
+    {
+      "part": "previous-next",
+      "required": true,
+      "purpose": "Previous and Next with text."
+    },
+    {
+      "part": "current",
+      "required": true,
+      "purpose": "Marked with aria-current=page."
+    },
+    {
+      "part": "ellipsis",
+      "required": false,
+      "purpose": "Hides far pages on long lists."
+    }
+  ],
+  "variants": [
+    {
+      "id": "numbered",
+      "name": "Numbered",
+      "use": "Searchable results.",
+      "contentLimits": {
+        "pages": "up to 7 buttons shown"
+      }
+    },
+    {
+      "id": "simple",
+      "name": "Previous / Next",
+      "use": "Mobile or small sets.",
+      "contentLimits": {
+        "buttons": "2"
+      }
+    },
+    {
+      "id": "load-more",
+      "name": "Load more",
+      "use": "Feeds.",
+      "contentLimits": {
+        "button": "1"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Large result sets people need to move through predictably."
+  ],
+  "whenNotToUse": [
+    "Social feeds: use infinite scroll with a Load more button.",
+    "Few items: show them all."
+  ],
+  "alternatives": [
+    "tabs"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.border.strong",
+    "radius.md"
+  ],
+  "accessibility": {
+    "role": "navigation (aria-label=Pagination)",
+    "keyboard": [
+      "Tab moves between controls."
+    ],
+    "focus": "Visible focus ring.",
+    "notes": [
+      "Current page uses aria-current=page.",
+      "Label arrows with text or aria-labels.",
+      "Disabled Previous on page 1."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.pg a:not([aria-current]):hover{background:#f0f0f0}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".pg a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "tabs"
+  ],
+  "code": {
+    "html": "<nav aria-label=\"Pagination\" class=\"pg\">\n  <a href=\"#\" aria-label=\"Previous page\">‹</a>\n  <a href=\"#\">1</a><a href=\"#\" aria-current=\"page\">2</a><a href=\"#\">3</a>\n  <a href=\"#\" aria-label=\"Next page\">›</a>\n</nav>",
+    "css": ".pg{display:flex;gap:6px;font:600 14px system-ui,sans-serif}\n.pg a{display:grid;place-items:center;min-width:44px;height:44px;border:1px solid #8a8a8a;border-radius:8px;color:#0a0a0a;text-decoration:none}\n.pg a[aria-current=page]{background:#0a0a0a;color:#fff;border-color:#0a0a0a}"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "id": "popover",
+  "type": "component",
+  "name": "Popover",
+  "category": "overlays",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "overlay",
+    "menu"
+  ],
+  "summary": "A small floating panel attached to a trigger. Holds a menu, filters or a short form.",
+  "anatomy": [
+    {
+      "part": "trigger",
+      "required": true,
+      "purpose": "A button with aria-expanded."
+    },
+    {
+      "part": "panel",
+      "required": true,
+      "purpose": "White square-rounded surface with a border and shadow."
+    },
+    {
+      "part": "content",
+      "required": true,
+      "purpose": "Menu items, a short form or details."
+    },
+    {
+      "part": "arrow",
+      "required": false,
+      "purpose": "Points to the trigger."
+    }
+  ],
+  "variants": [
+    {
+      "id": "menu",
+      "name": "Menu",
+      "use": "A list of actions.",
+      "contentLimits": {
+        "items": "2 to 8, 44px rows"
+      }
+    },
+    {
+      "id": "form",
+      "name": "Form",
+      "use": "A few fields, such as filters.",
+      "contentLimits": {
+        "fields": "up to 3"
+      }
+    },
+    {
+      "id": "info",
+      "name": "Info",
+      "use": "Extra detail.",
+      "contentLimits": {
+        "text": "max 160 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Contextual choices near their trigger without leaving the page."
+  ],
+  "whenNotToUse": [
+    "Critical decisions: use a modal.",
+    "Phones with long content: use a bottom sheet."
+  ],
+  "alternatives": [
+    "modal-dialog",
+    "bottom-sheet",
+    "tooltip"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.border.default",
+    "radius.md",
+    "shadow.overlay"
+  ],
+  "accessibility": {
+    "role": "dialog or menu, opened by a button with aria-expanded",
+    "keyboard": [
+      "Escape closes and returns focus.",
+      "Arrow keys move inside a menu.",
+      "Tab leaves a non-modal popover."
+    ],
+    "focus": "Move focus inside on open; return to trigger on close.",
+    "notes": [
+      "Set aria-haspopup and aria-expanded on the trigger.",
+      "Close on outside click and Escape.",
+      "Keep inside the viewport."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.pop__i:hover{background:#f0f0f0}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".pop__i:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "modal-dialog",
+    "bottom-sheet",
+    "tooltip"
+  ],
+  "code": {
+    "html": "<button class=\"pt\" aria-expanded=\"true\" aria-haspopup=\"menu\">Options</button>\n<div class=\"pop\" role=\"menu\">\n  <button role=\"menuitem\" class=\"pop__i\">Edit</button>\n  <button role=\"menuitem\" class=\"pop__i\">Duplicate</button>\n  <button role=\"menuitem\" class=\"pop__i\">Delete</button>\n</div>",
+    "css": ".pt{min-height:44px;padding:0 18px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif}\n.pop{display:grid;width:200px;margin-top:8px;padding:6px;border:1px solid #d4d4d4;border-radius:12px;background:#fff;box-shadow:0 18px 40px -12px rgba(0,0,0,.25)}\n.pop__i{min-height:44px;padding:0 12px;border:0;border-radius:8px;background:none;text-align:left;font:500 14px system-ui,sans-serif}"
+  }
+}

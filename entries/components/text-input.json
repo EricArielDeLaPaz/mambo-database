@@ -22,22 +22,22 @@
     {
       "part": "label",
       "required": true,
-      "purpose": "Always visible above the field. Placeholder text is not a label."
+      "purpose": "Always visible above the field. A placeholder is not a label."
     },
     {
       "part": "field",
       "required": true,
-      "purpose": "The input box. Border needs 3:1 contrast against the background."
+      "purpose": "The input box with a border that has 3:1 contrast."
     },
     {
       "part": "hint",
       "required": false,
-      "purpose": "Short help below the label, such as the expected format."
+      "purpose": "Short help such as the expected format."
     },
     {
       "part": "error-message",
       "required": false,
-      "purpose": "Appears below the field with an icon and text. Says what is wrong and how to fix it."
+      "purpose": "Icon plus text that says what is wrong and how to fix it."
     },
     {
       "part": "character-count",
@@ -59,20 +59,20 @@
     {
       "id": "with-icon",
       "name": "With leading icon",
-      "use": "Search or currency fields where an icon adds meaning.",
+      "use": "Search or currency fields.",
       "contentLimits": {
         "label": "max 40 characters",
-        "icon": "decorative, 20px"
+        "icon": "decorative 20px"
       }
     },
     {
       "id": "textarea",
       "name": "Multi-line",
-      "use": "Comments or messages over one line.",
+      "use": "Comments or messages.",
       "contentLimits": {
         "label": "max 40 characters",
-        "rows": "min 3 rows",
-        "count": "show a character count above 200 characters"
+        "rows": "min 3",
+        "count": "show above 200 characters"
       }
     }
   ],
@@ -81,40 +81,72 @@
   ],
   "whenNotToUse": [
     "A small fixed set of options: use radios, select or a segmented control.",
-    "Dates or numbers with strict format: use a specialized input."
+    "Strict formats such as dates: use a specialized input."
   ],
   "alternatives": [
     "select",
-    "segmented-control"
+    "segmented-control",
+    "search-field"
   ],
   "tokens": [
     "color.border.strong",
     "color.text.primary",
     "color.danger",
     "radius.md",
-    "space.2",
-    "space.3"
+    "space.2"
   ],
   "accessibility": {
     "role": "textbox (native <input>)",
     "keyboard": [
       "Tab moves between fields.",
-      "Enter submits the form from a single-line input."
+      "Enter submits a single-line form."
     ],
-    "focus": "Show a 2px focus ring. Do not hide it on click.",
+    "focus": "2px focus ring that stays on click.",
     "notes": [
       "Associate the label with for/id.",
       "Link hint and error with aria-describedby; set aria-invalid=true on error.",
-      "Error text must have 4.5:1 contrast and include an icon or the word Error, not just red color.",
-      "Use the right type and autocomplete values (email, tel, one-time-code).",
-      "Mobile text size must be 16px or larger to stop iOS from zooming."
+      "Error text needs 4.5:1 and an icon or the word Error.",
+      "Use the right type and autocomplete values.",
+      "Use 16px text on mobile to stop iOS zoom."
     ]
   },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.field__input:hover{border-color:#0a0a0a}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".field__input:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "when": "all",
+      "note": "",
+      "css": ".field__input[aria-invalid=true]{border-color:#b91c1c}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".field__input:disabled{background:#f5f5f5;color:#737373;cursor:not-allowed}"
+    }
+  ],
   "related": [
-    "button"
+    "select",
+    "segmented-control",
+    "search-field"
   ],
   "code": {
     "html": "<label class=\"field\">\n  <span class=\"field__label\">Email</span>\n  <input class=\"field__input\" type=\"email\" autocomplete=\"email\" aria-describedby=\"email-hint\">\n  <span id=\"email-hint\" class=\"field__hint\">We only use it to send your receipt.</span>\n</label>",
-    "css": ".field{display:grid;gap:6px;font-family:system-ui,sans-serif;max-width:360px}\n.field__label{font-weight:600;font-size:14px}\n.field__input{min-height:44px;padding:0 14px;border:1px solid #8a8a8a;border-radius:8px;font-size:16px}\n.field__input:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}\n.field__input[aria-invalid=true]{border-color:#b91c1c}\n.field__hint{font-size:13px;color:#525252}"
+    "css": ".field{display:grid;gap:6px;font-family:system-ui,sans-serif;max-width:360px}\n.field__label{font-weight:600;font-size:14px}\n.field__input{min-height:44px;padding:0 14px;border:1px solid #8a8a8a;border-radius:8px;font-size:16px}\n.field__hint{font-size:13px;color:#525252}"
   }
 }

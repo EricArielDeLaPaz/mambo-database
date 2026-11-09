@@ -1,0 +1,138 @@
+{
+  "id": "checkbox",
+  "type": "component",
+  "name": "Checkbox",
+  "category": "forms",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "form",
+    "selection"
+  ],
+  "summary": "A box that turns one option on or off, or selects several items from a list.",
+  "anatomy": [
+    {
+      "part": "box",
+      "required": true,
+      "purpose": "20 to 24px square with a 3:1 border."
+    },
+    {
+      "part": "check",
+      "required": true,
+      "purpose": "Tick mark in the checked state; a dash when partly checked."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Clickable text beside the box. The whole row is the hit area (44px)."
+    },
+    {
+      "part": "hint",
+      "required": false,
+      "purpose": "Extra help under the label."
+    }
+  ],
+  "variants": [
+    {
+      "id": "single",
+      "name": "Single",
+      "use": "One agreement or setting.",
+      "contentLimits": {
+        "label": "max 80 characters"
+      }
+    },
+    {
+      "id": "group",
+      "name": "Group",
+      "use": "Pick any number from a list.",
+      "contentLimits": {
+        "items": "2 to 7 per group",
+        "label": "max 60 characters"
+      }
+    },
+    {
+      "id": "indeterminate",
+      "name": "Indeterminate",
+      "use": "A parent whose children are partly selected.",
+      "contentLimits": {
+        "label": "select all"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Choosing zero, one or many options.",
+    "Agreeing to terms."
+  ],
+  "whenNotToUse": [
+    "Exactly one option: use radios.",
+    "An immediate on/off setting: use a toggle."
+  ],
+  "alternatives": [
+    "radio",
+    "toggle-switch"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "color.primary",
+    "radius.sm",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "checkbox (native <input type=checkbox>)",
+    "keyboard": [
+      "Space toggles it."
+    ],
+    "focus": "Focus ring around the box and label.",
+    "notes": [
+      "Use a native input.",
+      "Group related boxes in a fieldset with a legend.",
+      "Checked state must be visible without color (tick shape).",
+      "Never pre-check consent boxes."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.cb:hover .cb__box{border-color:#0a0a0a}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".cb input:focus-visible+.cb__box{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".cb input:disabled+.cb__box{opacity:.4}"
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "when": "all",
+      "note": "",
+      "css": ".cb input[aria-invalid=true]+.cb__box{border-color:#b91c1c}"
+    }
+  ],
+  "related": [
+    "radio",
+    "toggle-switch"
+  ],
+  "code": {
+    "html": "<fieldset class=\"cg\"><legend>Notifications</legend>\n  <label class=\"cb\"><input type=\"checkbox\" checked><span class=\"cb__box\" aria-hidden=\"true\"></span>Email</label>\n  <label class=\"cb\"><input type=\"checkbox\"><span class=\"cb__box\" aria-hidden=\"true\"></span>Text message</label>\n</fieldset>",
+    "css": ".cg{border:0;padding:0;font:15px system-ui,sans-serif}.cg legend{font-weight:700;margin-bottom:6px}\n.cb{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}\n.cb input{position:absolute;opacity:0}\n.cb__box{width:22px;height:22px;border:2px solid #8a8a8a;border-radius:4px;display:grid;place-items:center;background:#fff}\n.cb input:checked+.cb__box{background:#0a0a0a;border-color:#0a0a0a}\n.cb input:checked+.cb__box::after{content:'';width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}"
+  }
+}

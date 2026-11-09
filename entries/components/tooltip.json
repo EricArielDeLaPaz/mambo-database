@@ -1,0 +1,93 @@
+{
+  "id": "tooltip",
+  "type": "component",
+  "name": "Tooltip",
+  "category": "overlays",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "overlay",
+    "hint"
+  ],
+  "summary": "A small label that appears on hover or focus to name or briefly explain a control.",
+  "anatomy": [
+    {
+      "part": "trigger",
+      "required": true,
+      "purpose": "The element that has focus or hover."
+    },
+    {
+      "part": "bubble",
+      "required": true,
+      "purpose": "Short text, one or two lines."
+    },
+    {
+      "part": "arrow",
+      "required": false,
+      "purpose": "Points to the trigger."
+    }
+  ],
+  "variants": [
+    {
+      "id": "label",
+      "name": "Label",
+      "use": "Names an icon button.",
+      "contentLimits": {
+        "text": "max 30 characters"
+      }
+    },
+    {
+      "id": "hint",
+      "name": "Hint",
+      "use": "Explains one thing briefly.",
+      "contentLimits": {
+        "text": "max 80 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Naming icon-only controls and giving a short extra hint."
+  ],
+  "whenNotToUse": [
+    "Important information: put it on the page.",
+    "Touch devices: there is no hover, so do not depend on tooltips."
+  ],
+  "alternatives": [
+    "popover",
+    "icon-button"
+  ],
+  "tokens": [
+    "color.surface.inverse",
+    "color.text.inverse",
+    "radius.md",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "tooltip, linked with aria-describedby",
+    "keyboard": [
+      "Appears on keyboard focus.",
+      "Escape dismisses it."
+    ],
+    "focus": "Do not move focus into the tooltip.",
+    "notes": [
+      "Stay visible while hovered (WCAG 1.4.13).",
+      "Dismissible and persistent until hover ends.",
+      "Never put links or buttons inside."
+    ]
+  },
+  "states": [],
+  "related": [
+    "popover",
+    "icon-button"
+  ],
+  "code": {
+    "html": "<button class=\"ttb\" aria-describedby=\"tt1\">Hover me</button>\n<span role=\"tooltip\" id=\"tt1\" class=\"tt\">Saves your changes</span>",
+    "css": ".ttb{min-height:44px;padding:0 18px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif}\n.tt{display:inline-block;margin-left:8px;padding:6px 10px;border-radius:8px;background:#0a0a0a;color:#fff;font:500 12.5px system-ui,sans-serif}"
+  }
+}

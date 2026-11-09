@@ -1,0 +1,126 @@
+{
+  "id": "radio",
+  "type": "component",
+  "name": "Radio button",
+  "category": "forms",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "form",
+    "selection"
+  ],
+  "summary": "A round control for choosing exactly one option from a short list.",
+  "anatomy": [
+    {
+      "part": "circle",
+      "required": true,
+      "purpose": "22px ring with a 3:1 border."
+    },
+    {
+      "part": "dot",
+      "required": true,
+      "purpose": "Filled center in the selected state."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Clickable text; whole row is 44px tall."
+    },
+    {
+      "part": "group-label",
+      "required": true,
+      "purpose": "A legend that names the question."
+    }
+  ],
+  "variants": [
+    {
+      "id": "vertical",
+      "name": "Vertical list",
+      "use": "2 to 6 options, best for scanning.",
+      "contentLimits": {
+        "items": "2 to 6",
+        "label": "max 60 characters"
+      }
+    },
+    {
+      "id": "card",
+      "name": "Card option",
+      "use": "Plans or shipping choices with detail.",
+      "contentLimits": {
+        "items": "2 to 4",
+        "label": "title plus 1 line"
+      }
+    }
+  ],
+  "whenToUse": [
+    "One choice from a short, visible set."
+  ],
+  "whenNotToUse": [
+    "More than 6 options: use a select.",
+    "Several choices allowed: use checkboxes.",
+    "Switching views: use a segmented control."
+  ],
+  "alternatives": [
+    "checkbox",
+    "select",
+    "segmented-control"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "color.primary",
+    "radius.pill",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "radiogroup with native radio inputs",
+    "keyboard": [
+      "Arrow keys move and select.",
+      "Tab enters and leaves the group."
+    ],
+    "focus": "Focus ring around the circle and label.",
+    "notes": [
+      "Share one name attribute.",
+      "Wrap in fieldset with a legend.",
+      "Preselect the safest default when one exists."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.rd:hover .rd__dot{border-color:#0a0a0a}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".rd input:focus-visible+.rd__dot{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".rd input:disabled+.rd__dot{opacity:.4}"
+    }
+  ],
+  "related": [
+    "checkbox",
+    "select",
+    "segmented-control"
+  ],
+  "code": {
+    "html": "<fieldset class=\"rg\"><legend>Delivery</legend>\n  <label class=\"rd\"><input type=\"radio\" name=\"d\" checked><span class=\"rd__dot\" aria-hidden=\"true\"></span>Standard (3 to 5 days)</label>\n  <label class=\"rd\"><input type=\"radio\" name=\"d\"><span class=\"rd__dot\" aria-hidden=\"true\"></span>Express (1 to 2 days)</label>\n</fieldset>",
+    "css": ".rg{border:0;padding:0;font:15px system-ui,sans-serif}.rg legend{font-weight:700;margin-bottom:6px}\n.rd{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}\n.rd input{position:absolute;opacity:0}\n.rd__dot{width:22px;height:22px;border:2px solid #8a8a8a;border-radius:50%;background:#fff;display:grid;place-items:center}\n.rd input:checked+.rd__dot{border-color:#0a0a0a}\n.rd input:checked+.rd__dot::after{content:'';width:10px;height:10px;border-radius:50%;background:#0a0a0a}"
+  }
+}

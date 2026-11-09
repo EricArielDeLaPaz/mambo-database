@@ -1,0 +1,115 @@
+{
+  "id": "bottom-tab-bar",
+  "type": "component",
+  "name": "Bottom tab bar",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "mobile",
+    "navigation"
+  ],
+  "summary": "A bar fixed to the bottom of a phone screen with 3 to 5 top-level destinations.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Fixed bar that respects the bottom safe area."
+    },
+    {
+      "part": "tab",
+      "required": true,
+      "purpose": "Icon plus label, 48px tall minimum."
+    },
+    {
+      "part": "active-state",
+      "required": true,
+      "purpose": "Filled icon, bold label and an indicator."
+    },
+    {
+      "part": "badge",
+      "required": false,
+      "purpose": "Count or dot for new items."
+    }
+  ],
+  "variants": [
+    {
+      "id": "labeled",
+      "name": "Icon + label",
+      "use": "Default; labels aid recognition.",
+      "contentLimits": {
+        "tabs": "3 to 5",
+        "label": "max 10 characters"
+      }
+    },
+    {
+      "id": "icon-only",
+      "name": "Icon only",
+      "use": "Very familiar destinations only.",
+      "contentLimits": {
+        "tabs": "3 to 5",
+        "label": "aria-label required"
+      }
+    }
+  ],
+  "whenToUse": [
+    "The 3 to 5 sections people switch between often on mobile."
+  ],
+  "whenNotToUse": [
+    "More than 5 destinations: use a menu or a More tab.",
+    "Desktop layouts: use a top navigation bar."
+  ],
+  "alternatives": [
+    "top-navigation-bar",
+    "tabs"
+  ],
+  "tokens": [
+    "color.surface.default",
+    "color.text.primary",
+    "color.border.default",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "navigation with links or buttons",
+    "keyboard": [
+      "External keyboards: Tab moves between tabs."
+    ],
+    "focus": "Focus ring on the focused tab.",
+    "notes": [
+      "Mark current with aria-current=page.",
+      "Touch targets at least 48x48px.",
+      "Do not hide labels without aria-labels.",
+      "Keep above the home indicator (safe area)."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".btb a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".btb a:active{background:#f0f0f0}"
+    }
+  ],
+  "related": [
+    "top-navigation-bar",
+    "tabs"
+  ],
+  "code": {
+    "html": "<nav class=\"btb\" aria-label=\"Primary\">\n  <a href=\"#\" aria-current=\"page\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 3l9 8h-3v9h-12v-9h-3z\"/></svg><span>Home</span></a>\n  <a href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg><span>Search</span></a>\n  <a href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21c0-4 4-6 8-6s8 2 8 6\"/></svg><span>Profile</span></a>\n</nav>",
+    "css": ".btb{display:flex;justify-content:space-around;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-top:1px solid #d4d4d4;background:#fff;font:600 12px system-ui,sans-serif;max-width:390px}\n.btb a{display:grid;justify-items:center;gap:2px;min-width:64px;min-height:48px;padding:4px 8px;border-radius:8px;color:#525252;text-decoration:none}\n.btb a[aria-current=page]{color:#0a0a0a;font-weight:700}"
+  }
+}

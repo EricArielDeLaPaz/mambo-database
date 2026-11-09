@@ -1,0 +1,95 @@
+{
+  "id": "progress-bar",
+  "type": "component",
+  "name": "Progress bar",
+  "category": "feedback",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "loading",
+    "status"
+  ],
+  "summary": "A bar that shows how much of a task is done, or that something is loading.",
+  "anatomy": [
+    {
+      "part": "track",
+      "required": true,
+      "purpose": "Full-length background."
+    },
+    {
+      "part": "fill",
+      "required": true,
+      "purpose": "The completed portion."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Says what is progressing."
+    },
+    {
+      "part": "value",
+      "required": false,
+      "purpose": "Percentage or step text."
+    }
+  ],
+  "variants": [
+    {
+      "id": "determinate",
+      "name": "Determinate",
+      "use": "The amount is known.",
+      "contentLimits": {
+        "value": "0 to 100%"
+      }
+    },
+    {
+      "id": "indeterminate",
+      "name": "Indeterminate",
+      "use": "The amount is unknown.",
+      "contentLimits": {
+        "value": "animated"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Uploads, multi-step forms and long operations."
+  ],
+  "whenNotToUse": [
+    "Waits under 1 second: show nothing.",
+    "Content loading shapes: use a skeleton."
+  ],
+  "alternatives": [
+    "skeleton"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.border.default",
+    "radius.pill"
+  ],
+  "accessibility": {
+    "role": "progressbar with aria-valuenow",
+    "keyboard": [
+      "None; it is not interactive."
+    ],
+    "focus": "Not focusable.",
+    "notes": [
+      "Set aria-valuemin, aria-valuemax and aria-valuenow.",
+      "Show the value as text too.",
+      "Animation respects prefers-reduced-motion."
+    ]
+  },
+  "states": [],
+  "related": [
+    "skeleton"
+  ],
+  "code": {
+    "html": "<div class=\"pb\" role=\"progressbar\" aria-label=\"Upload\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"60\"><span style=\"width:60%\"></span></div>\n<p class=\"pbt\">60% uploaded</p>",
+    "css": ".pb{height:10px;border-radius:999px;background:#e5e5e5;overflow:hidden;max-width:360px}\n.pb span{display:block;height:100%;background:#0a0a0a;border-radius:999px}\n.pbt{font:13px system-ui,sans-serif;color:#525252}"
+  }
+}

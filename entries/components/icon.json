@@ -1,0 +1,99 @@
+{
+  "id": "icon",
+  "type": "component",
+  "name": "Icon",
+  "category": "foundations",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "icon",
+    "foundation"
+  ],
+  "summary": "A small symbol that supports text. Rules for size, stroke, labeling and consistency.",
+  "anatomy": [
+    {
+      "part": "glyph",
+      "required": true,
+      "purpose": "Drawn on a 24px grid with a consistent 2px stroke."
+    },
+    {
+      "part": "container",
+      "required": false,
+      "purpose": "A 44px hit area when the icon is a control."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Visible text, or aria-label when interactive."
+    }
+  ],
+  "variants": [
+    {
+      "id": "outline",
+      "name": "Outline",
+      "use": "Default.",
+      "contentLimits": {
+        "size": "16, 20, 24px",
+        "stroke": "2px"
+      }
+    },
+    {
+      "id": "filled",
+      "name": "Filled",
+      "use": "Active or selected state.",
+      "contentLimits": {
+        "size": "20, 24px"
+      }
+    },
+    {
+      "id": "decorative",
+      "name": "Decorative",
+      "use": "Next to text that already says the same.",
+      "contentLimits": {
+        "aria": "aria-hidden=true"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Reinforcing text or labeling a familiar action."
+  ],
+  "whenNotToUse": [
+    "Replacing text for unfamiliar actions.",
+    "Mixing outline and filled styles randomly."
+  ],
+  "alternatives": [
+    "icon-button"
+  ],
+  "tokens": [
+    "color.text.primary",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "img (informative) or none (decorative)",
+    "keyboard": [
+      "Not focusable unless inside a control."
+    ],
+    "focus": "Focus is on the control, not the glyph.",
+    "notes": [
+      "Decorative icons: aria-hidden=true.",
+      "Informative icons need alt or aria-label.",
+      "Meaning needs 3:1 contrast.",
+      "One style and stroke weight across the product."
+    ]
+  },
+  "states": [],
+  "related": [
+    "icon-button"
+  ],
+  "code": {
+    "html": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0a0a0a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\">\n  <path d=\"M5 12l5 5L20 7\"/>\n</svg>",
+    "css": "svg{display:block}"
+  }
+}

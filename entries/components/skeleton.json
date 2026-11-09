@@ -1,0 +1,84 @@
+{
+  "id": "skeleton",
+  "type": "component",
+  "name": "Skeleton loader",
+  "category": "feedback",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "loading",
+    "placeholder"
+  ],
+  "summary": "Gray placeholder shapes that hold the layout while content loads.",
+  "anatomy": [
+    {
+      "part": "block",
+      "required": true,
+      "purpose": "Shapes that match the final text, image or avatar."
+    },
+    {
+      "part": "shimmer",
+      "required": false,
+      "purpose": "Soft moving highlight. Off for reduced motion."
+    }
+  ],
+  "variants": [
+    {
+      "id": "text",
+      "name": "Text lines",
+      "use": "Paragraphs.",
+      "contentLimits": {
+        "lines": "2 to 4"
+      }
+    },
+    {
+      "id": "card",
+      "name": "Card",
+      "use": "Cards and lists.",
+      "contentLimits": {
+        "blocks": "media + 2 lines"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Loads of 1 to 10 seconds where the layout is predictable."
+  ],
+  "whenNotToUse": [
+    "Very short waits.",
+    "Unknown length uploads: use a progress bar."
+  ],
+  "alternatives": [
+    "progress-bar"
+  ],
+  "tokens": [
+    "color.border.default",
+    "radius.md"
+  ],
+  "accessibility": {
+    "role": "aria-busy region",
+    "keyboard": [
+      "None."
+    ],
+    "focus": "Not focusable.",
+    "notes": [
+      "Set aria-busy=true on the loading region.",
+      "Announce completion with a live region.",
+      "Stop animation for prefers-reduced-motion."
+    ]
+  },
+  "states": [],
+  "related": [
+    "progress-bar"
+  ],
+  "code": {
+    "html": "<div class=\"sk\" aria-busy=\"true\" aria-label=\"Loading\">\n  <div class=\"sk__line\" style=\"width:60%\"></div><div class=\"sk__line\"></div><div class=\"sk__line\" style=\"width:80%\"></div>\n</div>",
+    "css": ".sk{display:grid;gap:10px;max-width:360px}\n.sk__line{height:14px;border-radius:6px;background:#e5e5e5}\n@media (prefers-reduced-motion:no-preference){.sk__line{animation:pulse 1.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.5}}}"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "id": "drawer",
+  "type": "component",
+  "name": "Drawer",
+  "category": "overlays",
+  "level": "organism",
+  "platforms": [
+    "desktop",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "overlay",
+    "side-panel"
+  ],
+  "summary": "A panel that slides in from the side. Holds navigation, filters or details beside the page.",
+  "anatomy": [
+    {
+      "part": "scrim",
+      "required": true,
+      "purpose": "Dims the page for modal drawers."
+    },
+    {
+      "part": "panel",
+      "required": true,
+      "purpose": "Fixed-width surface (320 to 480px)."
+    },
+    {
+      "part": "header",
+      "required": true,
+      "purpose": "Title and a close button."
+    },
+    {
+      "part": "body",
+      "required": true,
+      "purpose": "Scrolls independently."
+    },
+    {
+      "part": "footer",
+      "required": false,
+      "purpose": "Sticky actions."
+    }
+  ],
+  "variants": [
+    {
+      "id": "navigation",
+      "name": "Navigation",
+      "use": "Mobile web menu.",
+      "contentLimits": {
+        "width": "80% up to 320px"
+      }
+    },
+    {
+      "id": "filters",
+      "name": "Filters",
+      "use": "Result filters.",
+      "contentLimits": {
+        "width": "320 to 400px"
+      }
+    },
+    {
+      "id": "details",
+      "name": "Details",
+      "use": "Item detail beside a list.",
+      "contentLimits": {
+        "width": "400 to 480px"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Secondary content that needs more room than a popover but should keep context."
+  ],
+  "whenNotToUse": [
+    "Quick yes/no: use a modal.",
+    "Phones with short content: use a bottom sheet."
+  ],
+  "alternatives": [
+    "modal-dialog",
+    "bottom-sheet",
+    "popover"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.scrim",
+    "shadow.overlay",
+    "space.6"
+  ],
+  "accessibility": {
+    "role": "dialog (modal) or complementary (persistent)",
+    "keyboard": [
+      "Escape closes it.",
+      "Tab stays inside a modal drawer."
+    ],
+    "focus": "Focus moves in on open and returns on close.",
+    "notes": [
+      "Provide a visible close button.",
+      "Make the page inert when modal.",
+      "Respect prefers-reduced-motion for the slide."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".dr__x:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "modal-dialog",
+    "bottom-sheet",
+    "popover"
+  ],
+  "code": {
+    "html": "<aside class=\"dr\" role=\"dialog\" aria-modal=\"false\" aria-labelledby=\"dr-t\">\n  <header class=\"dr__h\"><h2 id=\"dr-t\" class=\"dr__t\">Filters</h2><button aria-label=\"Close\" class=\"dr__x\">&times;</button></header>\n  <div class=\"dr__b\">Drawer content goes here.</div>\n</aside>",
+    "css": ".dr{width:320px;border:1px solid #d4d4d4;border-radius:12px;background:#fff;box-shadow:0 18px 40px -12px rgba(0,0,0,.25);font-family:system-ui,sans-serif}\n.dr__h{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #d4d4d4}\n.dr__t{margin:0;font-size:18px}\n.dr__x{border:0;background:none;font-size:24px;cursor:pointer;min-width:44px;min-height:44px}\n.dr__b{padding:16px;font-size:15px}"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "id": "tabs",
+  "type": "component",
+  "name": "Tabs",
+  "category": "navigation",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [
+    "navigation",
+    "switch"
+  ],
+  "summary": "A row of labels that switches between panels of related content in the same place.",
+  "anatomy": [
+    {
+      "part": "tablist",
+      "required": true,
+      "purpose": "The row of tabs."
+    },
+    {
+      "part": "tab",
+      "required": true,
+      "purpose": "One label, 44px tall, one line."
+    },
+    {
+      "part": "active-indicator",
+      "required": true,
+      "purpose": "Underline or filled background plus bold text."
+    },
+    {
+      "part": "panel",
+      "required": true,
+      "purpose": "The content that belongs to the active tab."
+    }
+  ],
+  "variants": [
+    {
+      "id": "underline",
+      "name": "Underline",
+      "use": "Page sections.",
+      "contentLimits": {
+        "tabs": "2 to 6",
+        "label": "max 20 characters"
+      }
+    },
+    {
+      "id": "pill",
+      "name": "Pill",
+      "use": "Compact filters inside a card.",
+      "contentLimits": {
+        "tabs": "2 to 5",
+        "label": "max 16 characters"
+      }
+    },
+    {
+      "id": "scrollable",
+      "name": "Scrollable",
+      "use": "Many tabs on mobile.",
+      "contentLimits": {
+        "tabs": "up to 10",
+        "label": "max 16 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Content groups people switch between without leaving the page."
+  ],
+  "whenNotToUse": [
+    "Steps in order: use a stepper.",
+    "Pages: use navigation links.",
+    "Two exclusive views of the same data: use a segmented control."
+  ],
+  "alternatives": [
+    "segmented-control",
+    "accordion",
+    "breadcrumbs"
+  ],
+  "tokens": [
+    "color.text.primary",
+    "color.primary",
+    "color.border.default",
+    "space.3"
+  ],
+  "accessibility": {
+    "role": "tablist, tab and tabpanel",
+    "keyboard": [
+      "Arrow Left/Right moves between tabs.",
+      "Home/End jump to first/last.",
+      "Tab moves into the active panel."
+    ],
+    "focus": "Focus ring on the active tab.",
+    "notes": [
+      "Use aria-selected and aria-controls.",
+      "Only the active tab is in the tab order (roving tabindex).",
+      "Active state needs more than color."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.tab:hover{color:#0a0a0a;background:#f5f5f5}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".tab:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "selected",
+      "label": "Selected",
+      "when": "all",
+      "note": "",
+      "css": ".tab[aria-selected=true]{background:#fafafa}"
+    }
+  ],
+  "related": [
+    "segmented-control",
+    "accordion",
+    "breadcrumbs"
+  ],
+  "code": {
+    "html": "<div class=\"tabs\" role=\"tablist\" aria-label=\"Project\">\n  <button role=\"tab\" aria-selected=\"true\" aria-controls=\"p1\" id=\"t1\" class=\"tab\">Overview</button>\n  <button role=\"tab\" aria-selected=\"false\" aria-controls=\"p2\" id=\"t2\" class=\"tab\" tabindex=\"-1\">Activity</button>\n</div>\n<div id=\"p1\" role=\"tabpanel\" aria-labelledby=\"t1\" class=\"tabpanel\">Overview content.</div>",
+    "css": ".tabs{display:flex;gap:4px;border-bottom:1px solid #d4d4d4;font:600 14px system-ui,sans-serif}\n.tab{min-height:44px;padding:0 16px;border:0;border-bottom:3px solid transparent;background:none;color:#525252;cursor:pointer}\n.tab[aria-selected=true]{color:#0a0a0a;border-bottom-color:#0a0a0a;font-weight:700}\n.tabpanel{padding:16px 0;font:15px system-ui,sans-serif}"
+  }
+}
