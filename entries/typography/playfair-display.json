@@ -6,8 +6,9 @@
   "summary": "A high-contrast transitional serif with editorial elegance.",
   "industries": [
     "media",
-    "hospitality",
-    "retail"
+    "legal",
+    "education",
+    "hospitality"
   ],
   "roles": [
     "display",
@@ -21,7 +22,90 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2017 The Playfair Display Project Authors (https://github.com/clauseggers/Playfair-Display), with Reserved Font Name \"Playfair Display\"",
+  "designer": "Claus Eggers Sørensen",
+  "dateAdded": "2011-11-16",
+  "apiVersion": "v40",
+  "fontVersion": "1.203",
+  "lastModified": "2025-09-11",
+  "woff2": "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKdFvXDXbtM.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 421,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian",
+    "Danish",
+    "Wolaytta (Latin)"
+  ],
+  "reserved": true,
   "source": "https://fonts.google.com/specimen/Playfair+Display",
   "pairings": [
     {
@@ -61,6 +145,19 @@
       "bodyWeights": [
         400,
         500
+      ]
+    },
+    {
+      "id": "mulish",
+      "family": "Mulish",
+      "role": "body",
+      "why": "A dramatic serif headline over a minimalist, even body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
       ]
     }
   ],

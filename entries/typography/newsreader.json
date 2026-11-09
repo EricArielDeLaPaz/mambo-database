@@ -1,0 +1,168 @@
+{
+  "id": "newsreader",
+  "type": "typeface",
+  "name": "Newsreader",
+  "category": "serif",
+  "summary": "A serif for news and long-form reading with optical sizes.",
+  "industries": [
+    "media",
+    "legal",
+    "education",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 The Newsreader Project Authors (http://github.com/productiontype/Newsreader)",
+  "designer": "Production Type",
+  "dateAdded": "2020-07-01",
+  "apiVersion": "v26",
+  "fontVersion": "1.003",
+  "lastModified": "2025-09-08",
+  "woff2": "https://fonts.gstatic.com/s/newsreader/v26/cY9qfjOCX1hbuyalUrK49dLac06G1ZGsZBtoBCzBDXXD9JVF438weI_wC-ZF.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 397,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Guarani"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Newsreader",
+  "pairings": [
+    {
+      "id": "public-sans",
+      "family": "Public Sans",
+      "role": "body",
+      "why": "A text serif for headlines with a neutral, civic-minded sans body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "albert-sans",
+      "family": "Albert Sans",
+      "role": "display",
+      "why": "A restrained sans heading with a text serif body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "hanken-grotesk",
+      "family": "Hanken Grotesk",
+      "role": "display",
+      "why": "A clean grotesque heading over a text serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "commissioner",
+      "family": "Commissioner",
+      "role": "display",
+      "why": "A flexible sans heading over a text serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Newsreader', Georgia, serif;\n}"
+}

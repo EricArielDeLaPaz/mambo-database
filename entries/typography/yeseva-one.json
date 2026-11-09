@@ -1,0 +1,121 @@
+{
+  "id": "yeseva-one",
+  "type": "typeface",
+  "name": "Yeseva One",
+  "category": "display",
+  "summary": "A decorative serif with a feminine, high-contrast look.",
+  "industries": [
+    "entertainment",
+    "retail",
+    "media",
+    "gaming"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2012 The Yeseva One Project Authors (lemonad@jovanny.ru), with Reserved Font Name \"Yeseva\".",
+  "designer": "Jovanny Lemonad",
+  "dateAdded": "2011-07-13",
+  "apiVersion": "v24",
+  "fontVersion": "2.000",
+  "lastModified": "2025-09-16",
+  "woff2": "https://fonts.gstatic.com/s/yesevaone/v24/OpNJno4ck8vc-xYpwWWxli1VWw.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 412,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Quechua",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/Yeseva+One",
+  "pairings": [
+    {
+      "id": "lato",
+      "family": "Lato",
+      "role": "body",
+      "why": "A decorative serif heading over a gentle sans.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap');\n:root {\n  --font-main: 'Yeseva One', system-ui, sans-serif;\n}"
+}

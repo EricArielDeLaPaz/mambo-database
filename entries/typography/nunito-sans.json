@@ -5,9 +5,10 @@
   "category": "sans-serif",
   "summary": "The non-rounded sibling of Nunito: calm, clear and neutral.",
   "industries": [
+    "technology",
+    "retail",
     "education",
-    "healthcare",
-    "nonprofit"
+    "finance"
   ],
   "roles": [
     "display",
@@ -23,7 +24,91 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2016 The Nunito Sans Project Authors (https://github.com/Fonthausen/NunitoSans)",
+  "designer": "Vernon Adams, Jacques Le Bailly, Manvel Shmavonyan, Alexei Vanyashin",
+  "dateAdded": "2016-10-06",
+  "apiVersion": "v19",
+  "fontVersion": "3.101",
+  "lastModified": "2025-09-16",
+  "woff2": "https://fonts.gstatic.com/s/nunitosans/v19/pe1mMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp5F5bxqqtQ1yiU4G1ilXs1Ul.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 514,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Nigerian Fulfulde",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Tajik",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/Nunito+Sans",
   "pairings": [
     {
@@ -44,6 +129,58 @@
       "family": "Caveat",
       "role": "display",
       "why": "A handwritten accent over a calm body, for a personal touch.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "gabarito",
+      "family": "Gabarito",
+      "role": "display",
+      "why": "A bold, playful heading over a calm, clear body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "rozha-one",
+      "family": "Rozha One",
+      "role": "display",
+      "why": "A heavy, dramatic serif heading over a calm body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "righteous",
+      "family": "Righteous",
+      "role": "display",
+      "why": "An art-deco display face over a calm body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "kalam",
+      "family": "Kalam",
+      "role": "display",
+      "why": "A handwritten accent with Devanagari over a calm body.",
       "displayWeights": [
         700
       ],

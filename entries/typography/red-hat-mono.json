@@ -1,0 +1,121 @@
+{
+  "id": "red-hat-mono",
+  "type": "typeface",
+  "name": "Red Hat Mono",
+  "category": "monospace",
+  "summary": "A monospace sibling of the Red Hat family.",
+  "industries": [
+    "technology",
+    "data",
+    "gaming"
+  ],
+  "roles": [
+    "mono",
+    "display"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2024 The Red Hat Project Authors (https://github.com/RedHatOfficial/RedHatFont)",
+  "designer": "MCKL",
+  "dateAdded": "2021-06-10",
+  "apiVersion": "v16",
+  "fontVersion": "1.030",
+  "lastModified": "2025-09-10",
+  "woff2": "https://fonts.gstatic.com/s/redhatmono/v16/jVyY7nDnA2uf2zVvFAhhzEs-VMSjJpBTfgjwQV3Iy7bHuA.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 359,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Red+Hat+Mono",
+  "pairings": [
+    {
+      "id": "red-hat-display",
+      "family": "Red Hat Display",
+      "role": "display",
+      "why": "Brand-family headings with a matching mono for labels and code.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@400;500;600;700&display=swap');\n:root {\n  --font-mono: 'Red Hat Mono', ui-monospace, monospace;\n}"
+}

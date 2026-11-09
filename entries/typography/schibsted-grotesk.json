@@ -1,0 +1,123 @@
+{
+  "id": "schibsted-grotesk",
+  "type": "typeface",
+  "name": "Schibsted Grotesk",
+  "category": "sans-serif",
+  "summary": "A grotesque created for a Scandinavian media house: clear, newsy and modern.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2023 The Schibsted-Grotesk Project Authors (https://github.com/schibsted/schibsted-grotesk)",
+  "designer": "Bakken & Bæck, Henrik Kongsvoll",
+  "dateAdded": "2023-03-03",
+  "apiVersion": "v7",
+  "fontVersion": "1.100",
+  "lastModified": "2025-09-05",
+  "woff2": "https://fonts.gstatic.com/s/schibstedgrotesk/v7/JqzK5SSPQuCQF3t8uOwiUL-taUTtarVKQ9vZ6pJJWlMNIsEwSMhv.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 398,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Guarani"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Schibsted+Grotesk",
+  "pairings": [
+    {
+      "id": "libre-baskerville",
+      "family": "Libre Baskerville",
+      "role": "body",
+      "why": "A clear, newsy grotesque heading over a classic book serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Schibsted Grotesk', system-ui, sans-serif;\n}"
+}

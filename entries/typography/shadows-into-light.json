@@ -1,0 +1,117 @@
+{
+  "id": "shadows-into-light",
+  "type": "typeface",
+  "name": "Shadows Into Light",
+  "category": "handwriting",
+  "summary": "A light, informal handwriting for notes and quick accents.",
+  "industries": [
+    "creative",
+    "education",
+    "food-beverage",
+    "entertainment"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright (c) 2010, Kimberly Geswein (kimberlygeswein.com)",
+  "designer": "Kimberly Geswein",
+  "dateAdded": "2011-06-08",
+  "apiVersion": "v22",
+  "fontVersion": "001.000",
+  "lastModified": "2025-09-10",
+  "woff2": "https://fonts.gstatic.com/s/shadowsintolight/v22/UqyNK9UOIntux_czAvDQx_ZcHqZXBNQzdcD5.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 306,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Somali",
+    "Zulu",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin",
+    "Tsonga",
+    "Balinese",
+    "Norwegian",
+    "Kalenjin",
+    "Kamba",
+    "Banjar",
+    "Makhuwa",
+    "Ndau",
+    "Sidamo",
+    "Achinese"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Shadows+Into+Light",
+  "pairings": [
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "A light handwriting accent over a readable body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light:wght@400&display=swap');\n:root {\n  --font-main: 'Shadows Into Light', system-ui, sans-serif;\n}"
+}

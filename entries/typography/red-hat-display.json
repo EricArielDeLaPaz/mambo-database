@@ -1,0 +1,137 @@
+{
+  "id": "red-hat-display",
+  "type": "typeface",
+  "name": "Red Hat Display",
+  "category": "sans-serif",
+  "summary": "A geometric sans for headlines, from the Red Hat brand family.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2024 The Red Hat Project Authors (https://github.com/RedHatOfficial/RedHatFont)",
+  "designer": "MCKL",
+  "dateAdded": "2019-04-10",
+  "apiVersion": "v21",
+  "fontVersion": "1.030",
+  "lastModified": "2025-09-10",
+  "woff2": "https://fonts.gstatic.com/s/redhatdisplay/v21/8vIf7wUr0m80wwYf0QCXZzYzUoTK8RZQvRd-D1NYbmyWQk8z-A.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 359,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Red+Hat+Display",
+  "pairings": [
+    {
+      "id": "red-hat-text",
+      "family": "Red Hat Text",
+      "role": "body",
+      "why": "The same brand family cut for headlines and for text.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "red-hat-mono",
+      "family": "Red Hat Mono",
+      "role": "body",
+      "why": "Brand-family headings with a matching mono for labels and code.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Red Hat Display', system-ui, sans-serif;\n}"
+}

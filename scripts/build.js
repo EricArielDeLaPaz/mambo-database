@@ -73,7 +73,7 @@ ${e.code.js ? '```js\n' + e.code.js + '\n```' : ''}
 Related: ${(e.related || []).join(', ')}
 `;
   if (e.type === 'color') return `# ${e.name} (color set)\n\n${e.summary}\n\nIndustries: ${(e.industries||[]).join(', ')} | Mood: ${e.mood||'-'}\n\n## Roles\n${Object.entries(e.roles).map(([k, v]) => `- ${k}: ${v}`).join('\n')}\n\n## Contrast checks (WCAG 2.2)\n${e.contrast.map(c => `- ${c.fg} on ${c.bg}: ${c.ratio}:1 | normal text ${c.normalText ? 'PASS' : 'FAIL'} | large text/UI ${c.largeTextAndUI ? 'PASS' : 'FAIL'}`).join('\n')}\n\n## Guidance\n${list(e.guidance)}\n`;
-  if (e.type === 'typeface') return `# ${e.name} (typeface)\n\n${e.summary}\n\nCategory: ${e.category} | Roles: ${e.roles.join(', ')} | Weights: ${e.weights.join(', ')} | License: ${e.license} | Industries: ${(e.industries||[]).join(', ')}\nSource: ${e.source}\n\n## Pairings\nVerified: both fonts are on Google Fonts and the suggested weights exist.\n${e.pairings.map(p => `- **${p.family}** works as the ${p.role === 'body' ? 'body' : 'header / display'} font for ${e.name} (display weights ${p.displayWeights.join(', ')}; body weights ${p.bodyWeights.join(', ')}). ${p.why}`).join('\n')}\n\n## CSS\n\`\`\`css\n${e.css}\n\`\`\`\n`;
+  if (e.type === 'typeface') return `# ${e.name} (typeface)\n\n${e.summary}\n\nCategory: ${e.category} | Roles: ${e.roles.join(', ')} | Weights: ${e.weights.join(', ')} | Industries: ${(e.industries||[]).join(', ')}\n\n## Details\n- Designer: ${e.designer}\n- Font version: ${e.fontVersion || 'n/a'}; Google Fonts file version ${e.apiVersion} (updated ${e.lastModified})\n- Scripts: ${e.scripts.join(', ')}\n- Languages supported: ${e.languageCount} (examples: ${e.languages.slice(0, 15).join(', ')})\n- Web font (.woff2, ${e.woff2Subset} subset, weight ${e.woff2Weight}): ${e.woff2}\n- License: SIL Open Font License 1.1 (https://openfontlicense.org/)\n- Copyright: ${e.copyright}\n- Source: ${e.source}\n\n## Pairings\nVerified: both fonts are on Google Fonts and the suggested weights exist.\n${e.pairings.map(p => `- **${p.family}** works as the ${p.role === 'body' ? 'body' : 'header / display'} font for ${e.name} (display weights ${p.displayWeights.join(', ')}; body weights ${p.bodyWeights.join(', ')}). ${p.why}`).join('\n')}\n\n## CSS\n\`\`\`css\n${e.css}\n\`\`\`\n`;
 }
 fs.rmSync(out, { recursive: true, force: true });
 const folder = { component: 'components', color: 'colors', typeface: 'typography' };
@@ -113,6 +113,12 @@ Consult this library before inventing a component, color set or font pairing.
 - Prefer the smallest component that fits the content; check content limits before choosing.
 `);
 w(path.join(out, 'data/library.json'), JSON.stringify(entries.map(({ md: _m, ...e }) => e), null, 2));
+
+// ---------- third-party notices (font credits) ----------
+const tf = entries.filter(e => e.type === 'typeface').sort((a, b) => a.name.localeCompare(b.name));
+const notices = `# Third-party notices\n\nMambo Database lists and links to open source typefaces. Every typeface below is licensed under the SIL Open Font License, Version 1.1 (see licenses/OFL-1.1.txt and https://openfontlicense.org/). The font files are not stored in this repository; previews load from Google Fonts (https://fonts.google.com).\n\nCopyright notices are taken from each font's OFL.txt in https://github.com/google/fonts. Designers are from the Google Fonts METADATA.\n\n${tf.map(f => `## ${f.name}\n- Copyright: ${f.copyright}\n- Designer: ${f.designer}\n- Version: ${f.fontVersion || 'n/a'} (Google Fonts file version ${f.apiVersion})\n- License: SIL OFL 1.1${f.reserved ? ' (has a Reserved Font Name)' : ''}\n- Source: ${f.source}\n`).join('\n')}`;
+w(path.join(root, 'THIRD_PARTY_NOTICES.md'), notices); w(path.join(out, 'THIRD_PARTY_NOTICES.md'), notices);
+fs.mkdirSync(path.join(out, 'site/licenses'), { recursive: true }); fs.copyFileSync(path.join(root, 'licenses/OFL-1.1.txt'), path.join(out, 'site/licenses/OFL-1.1.txt'));
 
 // ---------- create-design-system skill ----------
 const dsSkill = path.join(root, 'skills/create-design-system'), dsOut = path.join(out, 'skill/create-design-system');

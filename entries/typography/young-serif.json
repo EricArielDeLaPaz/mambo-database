@@ -1,0 +1,118 @@
+{
+  "id": "young-serif",
+  "type": "typeface",
+  "name": "Young Serif",
+  "category": "serif",
+  "summary": "A sturdy, friendly old-style serif for warm headlines.",
+  "industries": [
+    "media",
+    "legal",
+    "education",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2023 The Young Serif Project Authors (https://github.com/noirblancrouge/YoungSerif)",
+  "designer": "Bastien Sozeau",
+  "dateAdded": "2023-08-30",
+  "apiVersion": "v2",
+  "fontVersion": "3.003",
+  "lastModified": "2025-05-30",
+  "woff2": "https://fonts.gstatic.com/s/youngserif/v2/3qTpojO2nS2VtkB3KtkQZ1t93kY.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 399,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Igbo",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Young+Serif",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A warm old-style serif heading over a neutral body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Young+Serif:wght@400&display=swap');\n:root {\n  --font-main: 'Young Serif', Georgia, serif;\n}"
+}

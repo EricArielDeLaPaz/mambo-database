@@ -1,0 +1,145 @@
+{
+  "id": "exo-2",
+  "type": "typeface",
+  "name": "Exo 2",
+  "category": "sans-serif",
+  "summary": "A contemporary geometric sans with a techy, futuristic feel.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2013 The Exo 2 Project Authors (https://github.com/googlefonts/Exo-2.0)",
+  "designer": "Natanael Gama",
+  "dateAdded": "2013-12-04",
+  "apiVersion": "v26",
+  "fontVersion": "2.010",
+  "lastModified": "2025-09-02",
+  "woff2": "https://fonts.gstatic.com/s/exo2/v26/7cH1v4okm5zmbvwkAx_sfcEuiD8jvvKsOdC_.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 485,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Tajik",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Exo+2",
+  "pairings": [
+    {
+      "id": "source-sans-3",
+      "family": "Source Sans 3",
+      "role": "body",
+      "why": "A futuristic heading over a quiet humanist body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "orbitron",
+      "family": "Orbitron",
+      "role": "display",
+      "why": "A sci-fi display face over a related, readable sans.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Exo 2', system-ui, sans-serif;\n}"
+}

@@ -1,0 +1,145 @@
+{
+  "id": "noto-serif",
+  "type": "typeface",
+  "name": "Noto Serif",
+  "category": "serif",
+  "summary": "A neutral serif from Google's Noto family, built to cover every language.",
+  "industries": [
+    "all"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2022 The Noto Project Authors (https://github.com/notofonts/latin-greek-cyrillic)",
+  "designer": "Google",
+  "dateAdded": "2013-02-27",
+  "apiVersion": "v33",
+  "fontVersion": "2.015",
+  "lastModified": "2025-09-06",
+  "woff2": "https://fonts.gstatic.com/s/notoserif/v33/ga6iaw1J5X9T9RW6j9bNVls-hfgvz8JcMofYTa32J4wsL2JAlAhZqFCTx8cK.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "greek-ext",
+    "latin",
+    "latin-ext",
+    "math",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Greek",
+    "Latin"
+  ],
+  "languageCount": 969,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Hakka Chinese (Latin)",
+    "Nigerian Pidgin",
+    "Polish",
+    "Hausa",
+    "Oromo",
+    "Sudanese Arabic",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Yoruba",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Nigerian Fulfulde",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Greek",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Fanti",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Tunisian Darija",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Bambara"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Noto+Serif",
+  "pairings": [
+    {
+      "id": "be-vietnam-pro",
+      "family": "Be Vietnam Pro",
+      "role": "display",
+      "why": "A contemporary sans heading over a broad-coverage serif body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "noto-sans",
+      "family": "Noto Sans",
+      "role": "display",
+      "why": "A matched sans and serif for projects that must cover many languages.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Noto Serif', Georgia, serif;\n}"
+}

@@ -22,7 +22,94 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)",
+  "designer": "Rasmus Andersson",
+  "dateAdded": "2020-01-24",
+  "apiVersion": "v20",
+  "fontVersion": "4.001",
+  "lastModified": "2025-09-10",
+  "woff2": "https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hiA.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "greek-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Greek",
+    "Latin"
+  ],
+  "languageCount": 884,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Hakka Chinese (Latin)",
+    "Nigerian Pidgin",
+    "Polish",
+    "Hausa",
+    "Oromo",
+    "Sudanese Arabic",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Yoruba",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Nigerian Fulfulde",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Greek",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Fanti",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Tunisian Darija",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Bambara"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/Inter",
   "pairings": [
     {
@@ -194,6 +281,212 @@
       "why": "A condensed elegant serif for statement headlines over a neutral body.",
       "displayWeights": [
         400
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "urbanist",
+      "family": "Urbanist",
+      "role": "display",
+      "why": "A geometric heading over a neutral UI body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "syne",
+      "family": "Syne",
+      "role": "display",
+      "why": "An expressive display sans over a neutral body.",
+      "displayWeights": [
+        700,
+        800
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "unbounded",
+      "family": "Unbounded",
+      "role": "display",
+      "why": "A wide, rounded display face over a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "heebo",
+      "family": "Heebo",
+      "role": "display",
+      "why": "A clear sans with Hebrew coverage paired with a neutral Latin UI body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "bricolage-grotesque",
+      "family": "Bricolage Grotesque",
+      "role": "display",
+      "why": "A quirky grotesque heading with a neutral UI body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "spline-sans",
+      "family": "Spline Sans",
+      "role": "display",
+      "why": "A friendly product-style heading over a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "spectral",
+      "family": "Spectral",
+      "role": "display",
+      "why": "A screen-first serif heading over a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "bodoni-moda",
+      "family": "Bodoni Moda",
+      "role": "display",
+      "why": "A high-fashion Didone heading over a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "young-serif",
+      "family": "Young Serif",
+      "role": "display",
+      "why": "A warm old-style serif heading over a neutral body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "besley",
+      "family": "Besley",
+      "role": "display",
+      "why": "A Clarendon-style heading over a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "playpen-sans",
+      "family": "Playpen Sans",
+      "role": "display",
+      "why": "A friendly handwriting-style heading over a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "inconsolata",
+      "family": "Inconsolata",
+      "role": "body",
+      "why": "A neutral heading with a humanist mono for code-heavy content.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "martian-mono",
+      "family": "Martian Mono",
+      "role": "display",
+      "why": "A wide mono heading for technical brands over a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "noto-sans-kr",
+      "family": "Noto Sans KR",
+      "role": "display",
+      "why": "Korean headings with a neutral Latin UI body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "noto-sans-sc",
+      "family": "Noto Sans SC",
+      "role": "display",
+      "why": "Simplified Chinese headings with a neutral Latin UI body.",
+      "displayWeights": [
+        700
       ],
       "bodyWeights": [
         400,

@@ -1,0 +1,121 @@
+{
+  "id": "lobster",
+  "type": "typeface",
+  "name": "Lobster",
+  "category": "display",
+  "summary": "A bold casual script popular for logos and food branding.",
+  "industries": [
+    "entertainment",
+    "retail",
+    "media",
+    "gaming"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2010 The Lobster Project Authors (https://github.com/impallari/The-Lobster-Font), with Reserved Font Name \"Lobster\".",
+  "designer": "Impallari Type",
+  "dateAdded": "2010-05-17",
+  "apiVersion": "v32",
+  "fontVersion": "2.100",
+  "lastModified": "2025-09-08",
+  "woff2": "https://fonts.gstatic.com/s/lobster/v32/neILzCirqoswsqX9zoKmMw.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 471,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/Lobster",
+  "pairings": [
+    {
+      "id": "lato",
+      "family": "Lato",
+      "role": "body",
+      "why": "A bold casual script for one short line over a gentle body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Lobster:wght@400&display=swap');\n:root {\n  --font-main: 'Lobster', system-ui, sans-serif;\n}"
+}

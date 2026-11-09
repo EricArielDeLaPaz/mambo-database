@@ -6,7 +6,8 @@
   "summary": "A contemporary serif with calligraphic roots. Warm and readable in long text.",
   "industries": [
     "media",
-    "nonprofit",
+    "legal",
+    "education",
     "hospitality"
   ],
   "roles": [
@@ -19,7 +20,93 @@
     600,
     700
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2011 The Lora Project Authors (https://github.com/cyrealtype/Lora-Cyrillic), with Reserved Font Name \"Lora\".",
+  "designer": "Cyreal",
+  "dateAdded": "2011-07-06",
+  "apiVersion": "v37",
+  "fontVersion": "3.008",
+  "lastModified": "2025-09-11",
+  "woff2": "https://fonts.gstatic.com/s/lora/v37/0QI6MX1D_JOuGQbT0gvTJPa787weuxJBkq0.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "latin",
+    "latin-ext",
+    "math",
+    "symbols",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 468,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Tajik",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian",
+    "Danish"
+  ],
+  "reserved": true,
   "source": "https://fonts.google.com/specimen/Lora",
   "pairings": [
     {
@@ -95,6 +182,129 @@
       "why": "A friendly sans heading over a warm serif for long articles.",
       "displayWeights": [
         600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "karla",
+      "family": "Karla",
+      "role": "display",
+      "why": "A quirky grotesque heading over a warm serif body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "cabin",
+      "family": "Cabin",
+      "role": "display",
+      "why": "A humanist sans heading over a warm serif for long reading.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "figtree",
+      "family": "Figtree",
+      "role": "display",
+      "why": "A friendly geometric heading over a literary serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "mukta",
+      "family": "Mukta",
+      "role": "display",
+      "why": "A humanist sans heading over a warm serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "league-spartan",
+      "family": "League Spartan",
+      "role": "display",
+      "why": "A bold geometric heading over a warm serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "readex-pro",
+      "family": "Readex Pro",
+      "role": "display",
+      "why": "A readable sans with Arabic support over a warm serif body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "kumbh-sans",
+      "family": "Kumbh Sans",
+      "role": "display",
+      "why": "A friendly geometric sans heading over a literary serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "cinzel",
+      "family": "Cinzel",
+      "role": "display",
+      "why": "Stately Roman capitals over a warm serif body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "amatic-sc",
+      "family": "Amatic SC",
+      "role": "display",
+      "why": "Hand-drawn caps for short headings over a warm serif.",
+      "displayWeights": [
         700
       ],
       "bodyWeights": [

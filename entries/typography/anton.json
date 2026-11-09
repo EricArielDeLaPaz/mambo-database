@@ -1,0 +1,119 @@
+{
+  "id": "anton",
+  "type": "typeface",
+  "name": "Anton",
+  "category": "sans-serif",
+  "summary": "A tall, condensed, heavy sans for impactful headlines.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 The Anton Project Authors (https://github.com/googlefonts/AntonFont.git)",
+  "designer": "Vernon Adams",
+  "dateAdded": "2011-02-23",
+  "apiVersion": "v27",
+  "fontVersion": "2.116",
+  "lastModified": "2025-09-16",
+  "woff2": "https://fonts.gstatic.com/s/anton/v27/1Ptgg87LROyAm3Kz-C8.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 879,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Hakka Chinese (Latin)",
+    "Nigerian Pidgin",
+    "Polish",
+    "Hausa",
+    "Oromo",
+    "Sudanese Arabic",
+    "Sundanese",
+    "Dutch",
+    "Yoruba",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Nigerian Fulfulde",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Fanti",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Tunisian Darija",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Bambara",
+    "Haitian Creole",
+    "Kanuri",
+    "Kanuri, Central",
+    "Catalan",
+    "Mossi"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Anton",
+  "pairings": [
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "Tall, heavy headlines over a friendly body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Anton:wght@400&display=swap');\n:root {\n  --font-main: 'Anton', system-ui, sans-serif;\n}"
+}

@@ -5,9 +5,10 @@
   "category": "serif",
   "summary": "A soft, old-style display serif with wonky character.",
   "industries": [
-    "food-beverage",
-    "creative",
-    "retail"
+    "media",
+    "legal",
+    "education",
+    "hospitality"
   ],
   "roles": [
     "display",
@@ -24,7 +25,88 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2018 The Fraunces Project Authors (https://github.com/undercasetype/Fraunces)",
+  "designer": "Undercase Type, Phaedra Charles, Flavia Zimbardi",
+  "dateAdded": "2020-10-29",
+  "apiVersion": "v38",
+  "fontVersion": "1.000",
+  "lastModified": "2025-09-10",
+  "woff2": "https://fonts.gstatic.com/s/fraunces/v38/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib1603gg7S2nfgRYIctxuTCf7T.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 406,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/Fraunces",
   "pairings": [
     {
@@ -39,6 +121,20 @@
       "bodyWeights": [
         400,
         500
+      ]
+    },
+    {
+      "id": "atkinson-hyperlegible",
+      "family": "Atkinson Hyperlegible",
+      "role": "body",
+      "why": "A characterful serif heading over a body face built for legibility.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
       ]
     }
   ],

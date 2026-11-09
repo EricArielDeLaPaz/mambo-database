@@ -1,0 +1,144 @@
+{
+  "id": "heebo",
+  "type": "typeface",
+  "name": "Heebo",
+  "category": "sans-serif",
+  "summary": "A clear sans with Latin and Hebrew, based on Roboto.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2014 The Heebo Project Authors (https://github.com/OdedEzer/heebo)",
+  "designer": "Oded Ezer",
+  "dateAdded": "2016-06-20",
+  "apiVersion": "v28",
+  "fontVersion": "3.100",
+  "lastModified": "2025-09-10",
+  "woff2": "https://fonts.gstatic.com/s/heebo/v28/NGSpv5_NC0k9P_v6ZUCbLRAHxK1EiSysdUmm.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "hebrew",
+    "latin",
+    "latin-ext",
+    "math",
+    "symbols"
+  ],
+  "scripts": [
+    "Hebrew",
+    "Latin"
+  ],
+  "languageCount": 337,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Catalan",
+    "Hebrew",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Heebo",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A clear sans with Hebrew coverage paired with a neutral Latin UI body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "noto-sans-hebrew",
+      "family": "Noto Sans Hebrew",
+      "role": "display",
+      "why": "A Hebrew heading with a clear sans body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Heebo', system-ui, sans-serif;\n}"
+}

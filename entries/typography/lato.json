@@ -5,9 +5,10 @@
   "category": "sans-serif",
   "summary": "Soft, semi-rounded sans with a balanced, calm feel.",
   "industries": [
+    "technology",
     "retail",
-    "wellness",
-    "hospitality"
+    "education",
+    "finance"
   ],
   "roles": [
     "display",
@@ -20,7 +21,89 @@
     700,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright (c) 2010-2014 by tyPoland Lukasz Dziedzic (team@latofonts.com) with Reserved Font Name \"Lato\"",
+  "designer": "Łukasz Dziedzic",
+  "dateAdded": "2010-12-15",
+  "apiVersion": "v25",
+  "fontVersion": "2.015",
+  "lastModified": "2025-09-16",
+  "woff2": "https://fonts.gstatic.com/s/lato/v25/S6uyw4BMUTPHjx4wXg.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Greek",
+    "Latin"
+  ],
+  "languageCount": 924,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Hakka Chinese (Latin)",
+    "Nigerian Pidgin",
+    "Polish",
+    "Hausa",
+    "Oromo",
+    "Sudanese Arabic",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Yoruba",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Nigerian Fulfulde",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Greek",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Fanti",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Tunisian Darija",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Bambara"
+  ],
+  "reserved": true,
   "source": "https://fonts.google.com/specimen/Lato",
   "pairings": [
     {
@@ -57,6 +140,71 @@
       "why": "A dramatic Didone headline over a gentle sans.",
       "displayWeights": [
         400
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "arvo",
+      "family": "Arvo",
+      "role": "display",
+      "why": "A friendly slab headline over a calm, rounded body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "old-standard-tt",
+      "family": "Old Standard TT",
+      "role": "display",
+      "why": "A scholarly 19th-century serif heading over a gentle sans.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "yeseva-one",
+      "family": "Yeseva One",
+      "role": "display",
+      "why": "A decorative serif heading over a gentle sans.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "lobster",
+      "family": "Lobster",
+      "role": "display",
+      "why": "A bold casual script for one short line over a gentle body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "dancing-script",
+      "family": "Dancing Script",
+      "role": "display",
+      "why": "A lively script accent over a gentle sans.",
+      "displayWeights": [
+        700
       ],
       "bodyWeights": [
         400,

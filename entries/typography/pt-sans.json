@@ -1,0 +1,122 @@
+{
+  "id": "pt-sans",
+  "type": "typeface",
+  "name": "PT Sans",
+  "category": "sans-serif",
+  "summary": "A humanist sans designed for public use across Russian languages and Latin.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright (c) 2010, ParaType Ltd. (http://www.paratype.com/public), with Reserved Font Names \"PT Sans\" and \"ParaType\".",
+  "designer": "ParaType",
+  "dateAdded": "2010-09-21",
+  "apiVersion": "v18",
+  "fontVersion": "2.003W OFL",
+  "lastModified": "2025-09-05",
+  "woff2": "https://fonts.gstatic.com/s/ptsans/v18/jizaRExUiTo99u79D0KExQ.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 392,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malay (Latin)",
+    "Romanian",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Tajik",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Norwegian Bokmål"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/PT+Sans",
+  "pairings": [
+    {
+      "id": "pt-serif",
+      "family": "PT Serif",
+      "role": "display",
+      "why": "Designed together for public use: serif headlines and sans text.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');\n:root {\n  --font-main: 'PT Sans', system-ui, sans-serif;\n}"
+}

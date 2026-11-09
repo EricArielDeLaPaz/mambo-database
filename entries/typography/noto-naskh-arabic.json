@@ -1,0 +1,123 @@
+{
+  "id": "noto-naskh-arabic",
+  "type": "typeface",
+  "name": "Noto Naskh Arabic",
+  "category": "serif",
+  "summary": "A Naskh-style Arabic text face from the Noto family.",
+  "industries": [
+    "all"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2022 The Noto Project Authors (https://github.com/notofonts/arabic)",
+  "designer": "Google",
+  "dateAdded": "2020-11-19",
+  "apiVersion": "v43",
+  "fontVersion": "2.021",
+  "lastModified": "2025-11-20",
+  "woff2": "https://fonts.gstatic.com/s/notonaskharabic/v43/RrQ5bpV-9Dd1b1OAGA6M9PkyDuVBePeKNaxcsss0Y7bwvc5Uq6cy.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "arabic",
+    "latin",
+    "latin-ext",
+    "math",
+    "symbols"
+  ],
+  "scripts": [
+    "Arabic",
+    "Latin"
+  ],
+  "languageCount": 328,
+  "languages": [
+    "English",
+    "Spanish",
+    "Arabic",
+    "Urdu",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Punjabi (Arabic)",
+    "German",
+    "Javanese",
+    "Persian",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Pashto",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Sindhi",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Somali (Arabic)",
+    "Romanian",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Central Kurdish",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Baluchi",
+    "Iloko",
+    "Xhosa",
+    "Dari",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Uyghur",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Tswana"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Noto+Naskh+Arabic",
+  "pairings": [
+    {
+      "id": "noto-sans-arabic",
+      "family": "Noto Sans Arabic",
+      "role": "body",
+      "why": "A Naskh headline with a modern sans body for Arabic text.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Noto Naskh Arabic', Georgia, serif;\n}"
+}

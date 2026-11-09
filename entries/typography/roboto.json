@@ -3,11 +3,12 @@
   "type": "typeface",
   "name": "Roboto",
   "category": "sans-serif",
-  "summary": "Friendly and mechanical at once. Familiar from Android and Google products.",
+  "summary": "A friendly, mechanical sans familiar from Android and Google products.",
   "industries": [
     "technology",
-    "data",
-    "all"
+    "retail",
+    "education",
+    "finance"
   ],
   "roles": [
     "display",
@@ -24,15 +25,132 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2011 The Roboto Project Authors (https://github.com/googlefonts/roboto-classic)",
+  "designer": "Christian Robertson, ParaType, Font Bureau",
+  "dateAdded": "2013-01-09",
+  "apiVersion": "v50",
+  "fontVersion": "3.015",
+  "lastModified": "2025-11-18",
+  "woff2": "https://fonts.gstatic.com/s/roboto/v50/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiAo.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "greek-ext",
+    "latin",
+    "latin-ext",
+    "math",
+    "symbols",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Greek",
+    "Latin"
+  ],
+  "languageCount": 455,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Greek",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Tajik",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian",
+    "Danish"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/Roboto",
   "pairings": [
     {
-      "id": "roboto-slab",
-      "family": "Roboto Slab",
+      "id": "roboto-serif",
+      "family": "Roboto Serif",
       "role": "display",
-      "why": "A slab headline and its sans sibling. Consistent skeleton, clear contrast.",
+      "why": "A serif and sans built from one design system: same skeleton, clear contrast.",
       "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "roboto-condensed",
+      "family": "Roboto Condensed",
+      "role": "display",
+      "why": "A narrower headline cut of the same family as the body text.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "roboto-mono",
+      "family": "Roboto Mono",
+      "role": "body",
+      "why": "The sans and its mono sibling for UI plus code and data.",
+      "displayWeights": [
+        500,
         700
       ],
       "bodyWeights": [

@@ -1,0 +1,123 @@
+{
+  "id": "orbitron",
+  "type": "typeface",
+  "name": "Orbitron",
+  "category": "sans-serif",
+  "summary": "A geometric display face with a futuristic, sci-fi feel.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2018 The Orbitron Project Authors (https://github.com/theleagueof/orbitron), with Reserved Font Name: \"Orbitron\"",
+  "designer": "Matt McInerney",
+  "dateAdded": "2010-12-15",
+  "apiVersion": "v35",
+  "fontVersion": "2.001",
+  "lastModified": "2025-09-05",
+  "woff2": "https://fonts.gstatic.com/s/orbitron/v35/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1nyGy6BoWgz.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 257,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Italian",
+    "Filipino",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Malay (Latin)",
+    "Somali",
+    "Zulu",
+    "Swedish",
+    "Kituba",
+    "Shona",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Kimbundu",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin",
+    "Tsonga",
+    "Balinese",
+    "Kalenjin",
+    "Banjar",
+    "Makhuwa",
+    "Ndau",
+    "Sidamo",
+    "Achinese",
+    "Galician",
+    "Tiv",
+    "Bikol",
+    "Waray",
+    "Tonga",
+    "Sango",
+    "Anaang",
+    "Aymara",
+    "Nyankole",
+    "Hmong",
+    "Jamaican Creole English",
+    "Gusii"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/Orbitron",
+  "pairings": [
+    {
+      "id": "exo-2",
+      "family": "Exo 2",
+      "role": "body",
+      "why": "A sci-fi display face over a related, readable sans.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Orbitron', system-ui, sans-serif;\n}"
+}

@@ -1,0 +1,121 @@
+{
+  "id": "instrument-sans",
+  "type": "typeface",
+  "name": "Instrument Sans",
+  "category": "sans-serif",
+  "summary": "A modern grotesque designed alongside Instrument Serif.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2022 The Instrument Sans Project Authors (https://github.com/Instrument/instrument-sans)",
+  "designer": "Rodrigo Fuenzalida, Jordan Egstad",
+  "dateAdded": "2023-04-13",
+  "apiVersion": "v4",
+  "fontVersion": "1.000",
+  "lastModified": "2025-09-05",
+  "woff2": "https://fonts.gstatic.com/s/instrumentsans/v4/pximypc9vsFDm051Uf6KVwgkfoSxQ0GsQv8ToedPibnr-yp2JGEJOH9npSTF-Tfykyw.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 333,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Instrument+Sans",
+  "pairings": [
+    {
+      "id": "instrument-serif",
+      "family": "Instrument Serif",
+      "role": "display",
+      "why": "Designed together: an elegant serif display with a modern grotesque body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Instrument Sans', system-ui, sans-serif;\n}"
+}

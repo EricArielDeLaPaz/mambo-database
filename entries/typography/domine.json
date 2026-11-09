@@ -1,0 +1,121 @@
+{
+  "id": "domine",
+  "type": "typeface",
+  "name": "Domine",
+  "category": "serif",
+  "summary": "A serif designed for body text on screens with strong, clear forms.",
+  "industries": [
+    "media",
+    "legal",
+    "education",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 The Domine Project Authors (https://github.com/googlefonts/domine) Copyright (c) 2012, Pablo Impallari (www.impallari.com|impallari@gmail.com), Copyright (c) 2012, Pablo Impallari (www.impallari.com|impallari@gmail.com), Copyright (c) 2012, Rodrigo Fuenzalida (www.rfuenzalida.com|hello@rfuenzalida.com), Copyright (c) 2012, Brenda Gallo (gbrenda1987@gmail.com), with Reserved Font Name Domine.",
+  "designer": "Impallari Type",
+  "dateAdded": "2012-11-30",
+  "apiVersion": "v25",
+  "fontVersion": "2.000",
+  "lastModified": "2025-09-11",
+  "woff2": "https://fonts.gstatic.com/s/domine/v25/L0xhDFMnlVwD4h3Lt9JWnbX3jG-2X3LAE1ofEw.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 388,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Igbo",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Guarani",
+    "Finnish"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/Domine",
+  "pairings": [
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "A sturdy text serif heading over a light, open body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Domine:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Domine', Georgia, serif;\n}"
+}

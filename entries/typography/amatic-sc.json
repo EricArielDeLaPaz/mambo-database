@@ -1,0 +1,123 @@
+{
+  "id": "amatic-sc",
+  "type": "typeface",
+  "name": "Amatic SC",
+  "category": "handwriting",
+  "summary": "A hand-drawn, all-caps display face for short, charming headings.",
+  "industries": [
+    "creative",
+    "education",
+    "food-beverage",
+    "entertainment"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2015 The Amatic SC Project Authors (https://github.com/googlefonts/AmaticSC)",
+  "designer": "Vernon Adams, Ben Nathan, Thomas Jockin",
+  "dateAdded": "2011-10-12",
+  "apiVersion": "v28",
+  "fontVersion": "2.505",
+  "lastModified": "2025-09-16",
+  "woff2": "https://fonts.gstatic.com/s/amaticsc/v28/TUZyzwprpvBS1izr_vOECuSf.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "hebrew",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Hebrew",
+    "Latin"
+  ],
+  "languageCount": 431,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Hebrew",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Amatic+SC",
+  "pairings": [
+    {
+      "id": "lora",
+      "family": "Lora",
+      "role": "body",
+      "why": "Hand-drawn caps for short headings over a warm serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');\n:root {\n  --font-main: 'Amatic SC', system-ui, sans-serif;\n}"
+}

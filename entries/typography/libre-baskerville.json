@@ -5,9 +5,10 @@
   "category": "serif",
   "summary": "A classic Baskerville revised for body text on screens.",
   "industries": [
-    "legal",
     "media",
-    "education"
+    "legal",
+    "education",
+    "hospitality"
   ],
   "roles": [
     "display",
@@ -19,7 +20,87 @@
     600,
     700
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2012 The Libre Baskerville Project Authors (https://github.com/impallari/Libre-Baskerville) with Reserved Font Name Libre Baskerville.",
+  "designer": "Impallari Type",
+  "dateAdded": "2012-11-30",
+  "apiVersion": "v24",
+  "fontVersion": "2.005",
+  "lastModified": "2025-11-20",
+  "woff2": "https://fonts.gstatic.com/s/librebaskerville/v24/kmKUZrc3Hgbbcjq75U4uslyuy4kn0olVQ-LglH6T17uj8Q4iDgNP.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 802,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Hausa",
+    "Oromo",
+    "Sudanese Arabic",
+    "Sundanese",
+    "Dutch",
+    "Yoruba",
+    "Igbo",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Nigerian Fulfulde",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Fanti",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Bambara",
+    "Haitian Creole",
+    "Kanuri",
+    "Kanuri, Central",
+    "Catalan",
+    "Mossi",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German"
+  ],
+  "reserved": true,
   "source": "https://fonts.google.com/specimen/Libre+Baskerville",
   "pairings": [
     {
@@ -46,6 +127,46 @@
       "bodyWeights": [
         400,
         500
+      ]
+    },
+    {
+      "id": "libre-franklin",
+      "family": "Libre Franklin",
+      "role": "display",
+      "why": "A newsy gothic headline over a classic book serif.",
+      "displayWeights": [
+        700,
+        800
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "chivo",
+      "family": "Chivo",
+      "role": "display",
+      "why": "A sturdy grotesque heading over a classic book serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "schibsted-grotesk",
+      "family": "Schibsted Grotesk",
+      "role": "display",
+      "why": "A clear, newsy grotesque heading over a classic book serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
       ]
     }
   ],

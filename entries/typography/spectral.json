@@ -1,0 +1,142 @@
+{
+  "id": "spectral",
+  "type": "typeface",
+  "name": "Spectral",
+  "category": "serif",
+  "summary": "A screen-first serif designed for long reading, from Production Type.",
+  "industries": [
+    "media",
+    "legal",
+    "education",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2017 The Spectral Project Authors (https://github.com/productiontype/Spectral)",
+  "designer": "Production Type",
+  "dateAdded": "2017-10-10",
+  "apiVersion": "v15",
+  "fontVersion": "2.005",
+  "lastModified": "2025-09-11",
+  "woff2": "https://fonts.gstatic.com/s/spectral/v15/rnCr-xNNww_2s0amA9M5kng.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 452,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Tajik",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Spectral",
+  "pairings": [
+    {
+      "id": "archivo",
+      "family": "Archivo",
+      "role": "display",
+      "why": "A flexible grotesque heading over a screen-first serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A screen-first serif heading over a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Spectral', Georgia, serif;\n}"
+}

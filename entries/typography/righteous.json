@@ -1,0 +1,117 @@
+{
+  "id": "righteous",
+  "type": "typeface",
+  "name": "Righteous",
+  "category": "display",
+  "summary": "A geometric display face with art-deco flavor.",
+  "industries": [
+    "entertainment",
+    "retail",
+    "media",
+    "gaming"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright (c) 2011 by Brian J. Bonislawsky DBA Astigmatic (AOETI) (astigma@astigmatic.com), with Reserved Font Names \"Righteous\"",
+  "designer": "Astigmatic",
+  "dateAdded": "2011-11-23",
+  "apiVersion": "v18",
+  "fontVersion": "1.000",
+  "lastModified": "2025-06-02",
+  "woff2": "https://fonts.gstatic.com/s/righteous/v18/1cXxaUPXBpj2rGoU7C9WiHGF.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 336,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin",
+    "Sukuma",
+    "Tsonga",
+    "Balinese",
+    "Norwegian"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/Righteous",
+  "pairings": [
+    {
+      "id": "nunito-sans",
+      "family": "Nunito Sans",
+      "role": "body",
+      "why": "An art-deco display face over a calm body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Righteous:wght@400&display=swap');\n:root {\n  --font-main: 'Righteous', system-ui, sans-serif;\n}"
+}

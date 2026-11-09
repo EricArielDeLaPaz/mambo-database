@@ -1,0 +1,120 @@
+{
+  "id": "dm-mono",
+  "type": "typeface",
+  "name": "DM Mono",
+  "category": "monospace",
+  "summary": "A monospace companion to DM Sans with a friendly feel.",
+  "industries": [
+    "technology",
+    "data",
+    "gaming"
+  ],
+  "roles": [
+    "mono",
+    "display"
+  ],
+  "weights": [
+    300,
+    400,
+    500
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 The DM Mono Project Authors (https://www.github.com/googlefonts/dm-mono)",
+  "designer": "Colophon Foundry",
+  "dateAdded": "2020-04-15",
+  "apiVersion": "v16",
+  "fontVersion": "1.000",
+  "lastModified": "2025-09-16",
+  "woff2": "https://fonts.gstatic.com/s/dmmono/v16/aFTU7PB1QTsUX8KYthqQBA.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 338,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin",
+    "Sukuma",
+    "Tsonga"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/DM+Mono",
+  "pairings": [
+    {
+      "id": "dm-sans",
+      "family": "DM Sans",
+      "role": "display",
+      "why": "A friendly geometric sans with its matching mono.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap');\n:root {\n  --font-mono: 'DM Mono', ui-monospace, monospace;\n}"
+}

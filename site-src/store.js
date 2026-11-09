@@ -4,7 +4,7 @@ const ROLES = Object.values(ROLE_GROUPS).flat();
 const BRAND = ROLE_GROUPS.Brand, NEUTRAL = ROLE_GROUPS.Neutral, FEEDBACK = ROLE_GROUPS.Feedback, BGROLES = ['Background', 'Surface', 'Surface variant', 'Overlay'];
 const STATE_LIST = [['default', 'Default'], ['hover', 'Hover (pointer devices)'], ['focus', 'Focus (keyboard)'], ['pressed', 'Pressed / active'], ['disabled', 'Disabled'], ['loading', 'Loading'], ['error', 'Error'], ['selected', 'Selected']];
 const KEY = 'mambo-database.systems.v2', OLD = 'mambo-database.systems.v1';
-const S = { folders: ['Unsorted'], systems: [], active: null, checked: new Set(), collapsed: new Set() };
+const S = { last: null, folders: ['Unsorted'], systems: [], active: null, checked: new Set(), collapsed: new Set() };
 
 function flat(o, p = []) { return Object.entries(o || {}).flatMap(([k, v]) => v && typeof v === 'object' && !('$value' in v) ? flat(v, [...p, k]) : [[[...p, k].join('-'), v && v.$value !== undefined ? v.$value : v]]) }
 function newSystem(o = {}) {
@@ -14,13 +14,16 @@ function loadStore() {
   try {
     const d = JSON.parse(localStorage.getItem(KEY));
     if (d && d.systems) {
-      S.folders = d.folders && d.folders.length ? d.folders : ['Unsorted']; if (!S.folders.includes('Unsorted')) S.folders.unshift('Unsorted'); S.systems = d.systems; S.active = d.active || null;
+      S.folders = d.folders && d.folders.length ? d.folders : ['Unsorted']; if (!S.folders.includes('Unsorted')) S.folders.unshift('Unsorted'); S.systems = d.systems; S.active = d.active || null; S.last = d.last || S.active;
       S.systems.forEach(sy => { sy.components = sy.components || []; sy.fonts.forEach(f => { if (!Array.isArray(f.weights)) f.weights = String(f.weights || '').split(',').map(x => parseInt(x, 10)).filter(Boolean) }) }); return
     }
   } catch { }
   try { (JSON.parse(localStorage.getItem(OLD)) || []).forEach(o => { const cols = flat(o.tokens).filter(([k, v]) => normHex(v)).map(([k, v]) => ({ id: uid(), name: k, hex: normHex(v), role: 'Other' })); S.systems.push(newSystem({ name: o.name, colors: cols })) }) } catch { }
 }
-function saveStore() { try { localStorage.setItem(KEY, JSON.stringify({ folders: S.folders, systems: S.systems, active: S.active })) } catch { toast('Storage unavailable in this browser.') } }
+let prevActive = null;
+/* S.last = the system the person last picked or edited. It is the default for every Add to dropdown. */
+function saveStore() { if (S.active && S.systems.some(x => x.id === S.active) && (S.active !== prevActive || (typeof route === 'function' && route().view === 'systems'))) S.last = S.active; prevActive = S.active; try { localStorage.setItem(KEY, JSON.stringify({ folders: S.folders, systems: S.systems, active: S.active, last: S.last })) } catch { toast('Storage unavailable in this browser.') } }
+const lastSysId = () => [S.last, S.active].find(id => id && S.systems.some(x => x.id === id)) || (S.systems[0] && S.systems[0].id) || '__new';
 const cur = () => S.systems.find(s => s.id === S.active);
 const mobileOnly = s => s.platforms.length > 0 && s.platforms.every(p => p !== 'desktop');
 const industryMatch = e => { const s = cur(); if (!s || s.industry === 'all') return true; const i = e.industries || ['all']; return i.includes('all') || i.includes(s.industry) };

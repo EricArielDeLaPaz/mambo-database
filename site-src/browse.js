@@ -33,8 +33,8 @@ function renderFilters() {
   <label for="q" class="eyebrow">Search</label>
   <input id="q" type="search" placeholder="${B.scope === 'name' ? 'Search names' : 'Search descriptions'}" autocomplete="off" value="${esc(B.q)}">
   <div class="scope" role="group" aria-label="Search in">${[['name', 'Name'], ['description', 'Description']].map(([k, l]) => `<button type="button" class="chip" data-scope="${k}" aria-pressed="${B.scope === k}">${l}</button>`).join('')}</div>
-  <fieldset><legend class="eyebrow">Type</legend>${Object.keys(TYPE).map(t => checkbox('types', t, TYPE_PLURAL[t], types[t] || 0, B.types.has(t))).join('')}</fieldset>
-  <fieldset><legend class="eyebrow">Category</legend>${catList.map(c => checkbox('cats', c, c, cats[c], B.cats.has(c))).join('')}</fieldset>
+  <fieldset><legend class="eyebrow">Type</legend>${[['', 'All', DATA.length]].concat(Object.keys(TYPE).map(t => [t, TYPE_PLURAL[t], types[t] || 0])).map(([v, l, n]) => `<label class="chk"><input type="radio" name="type" data-type value="${v}" ${(B.types.has(v) || (!v && !B.types.size)) ? 'checked' : ''}><span>${esc(l)}</span><span class="n">${n}</span></label>`).join('')}</fieldset>
+  ${B.types.size === 1 ? `<fieldset><legend class="eyebrow">${esc(TYPE_PLURAL[[...B.types][0]])} category</legend>${catList.map(c => checkbox('cats', c, c, cats[c], B.cats.has(c))).join('')}</fieldset>` : ''}
   <fieldset><legend class="eyebrow">Platform <span class="note" style="text-transform:none;letter-spacing:0;font-family:var(--font-body)">(components)</span></legend>${Object.keys(PLAT).map(p => checkbox('plats', p, PLAT[p], plats[p] || 0, B.plats.has(p))).join('')}</fieldset>
   <fieldset><legend class="eyebrow">Industry</legend>${INDUSTRIES.slice(1).map(([k, l]) => checkbox('inds', k, l, inds[k] || 0, B.inds.has(k))).join('')}</fieldset>
   <div class="row"><button class="btn sm" id="clear" ${filtersActive() ? "" : "disabled"}>Clear filters</button></div>`;
@@ -42,7 +42,8 @@ function renderFilters() {
   $$('[data-scope]', $('#side')).forEach(b => b.onclick = () => { B.scope = b.dataset.scope; renderFilters(); if (route().id) go('#/'); else renderResults() });
   $('#syssel').onchange = ev => { S.active = ev.target.value || null; saveStore(); if (route().id) renderBrowse(); else renderResults() };
   $('#q').oninput = ev => { B.q = ev.target.value; afterFilter(false); const c = $('#clear'); if (c) c.disabled = !filtersActive() };
-  $$('input[data-grp]', $('#side')).forEach(i => i.onchange = () => { const s = B[i.dataset.grp]; i.checked ? s.add(i.value) : s.delete(i.value); if (i.dataset.grp === 'types') { B.cats.forEach(c => { if (B.types.size && !DATA.some(e => e.category === c && B.types.has(e.type))) B.cats.delete(c) }) } afterFilter(true) });
+  $$('input[data-type]', $('#side')).forEach(i => i.onchange = () => { B.types = i.value ? new Set([i.value]) : new Set(); B.cats.clear(); afterFilter(true) });
+  $$('input[data-grp]', $('#side')).forEach(i => i.onchange = () => { const s = B[i.dataset.grp]; i.checked ? s.add(i.value) : s.delete(i.value); afterFilter(true) });
   $('#clear').onclick = () => { B.q = ''; B.types.clear(); B.cats.clear(); B.plats.clear(); B.inds.clear(); if (route().id) go('#/'); else { renderFilters(); renderResults() } };
 }
 function afterFilter(refresh) { if (route().id) { go('#/') } else { if (refresh) renderFilters(); renderResults() } }
@@ -51,9 +52,9 @@ function renderResults() {
   const items = DATA.filter(matches).sort((a, b) => sortVal(a, B.sort).localeCompare(sortVal(b, B.sort)) * B.dir);
   const th = (k, l) => `<th scope="col" aria-sort="${B.sort === k ? (B.dir > 0 ? 'ascending' : 'descending') : 'none'}"><button data-sort="${k}">${l}${B.sort === k ? `<span class="sortc ${B.dir > 0 ? '' : 'flip'}">${CHEV}</span>` : ''}</button></th>`;
   $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries</p></div>
-  ${items.length ? `<table class="db"><thead><tr>${th('name', 'Name')}${th('type', 'Type')}${th('category', 'Category')}${th('platforms', 'Platforms')}${th('industries', 'Industries')}</tr></thead><tbody>${items.map(e => `<tr>
+  ${items.length ? `<table class="db"><thead><tr>${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', 'Category') : ''}${th('platforms', 'Platforms')}${th('industries', 'Industries')}</tr></thead><tbody>${items.map(e => `<tr>
    <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
-   <td data-l="Type">${TYPE[e.type]}</td><td data-l="Category">${esc(e.category)}</td>
+   <td data-l="Type">${TYPE[e.type]}</td>${B.types.size === 1 ? `<td data-l="Category">${esc(e.category)}</td>` : ''}
    <td data-l="Platforms">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('') || '<span class="empty">Any</span>'}</td>
    <td data-l="Industries">${(e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('')}</td></tr>`).join('')}</tbody></table>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
   $$('[data-sort]', $('#main')).forEach(b => b.onclick = () => { const k = b.dataset.sort; if (B.sort === k) B.dir *= -1; else { B.sort = k; B.dir = 1 } renderResults() });
@@ -66,9 +67,29 @@ function previewDoc(e, ids) {
   return `<!doctype html><meta charset=utf-8><style>${compCss(e, ids)}\n${fix}</style><div class="pv">${e.code.html.replace('<dialog ', '<dialog open ')}</div>`;
 }
 const meta = e => `<div class="meta">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('')}${(e.industries || ['all']).map(i => `<span class="tag">Industry: ${esc(indLabel(i))}</span>`).join('')}</div>`;
+const sysOptions = () => { const def = lastSysId(); return S.systems.map(s => `<option value="${s.id}" ${def === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('') + `<option value="__new" ${def === '__new' ? 'selected' : ''}>+ New design system</option>` };
 function addToSystemRow(kind) {
-  const def = S.active || (S.systems[0] && S.systems[0].id) || '__new';
+  const def = lastSysId();
   return `<div class="panel addrow"><h2 style="font-size:16px;margin:0 0 8px">Add to a design system</h2><div class="row" style="margin:0;align-items:end"><label class="f" style="min-width:220px"><span class="f-t">Design system</span><select id="addsys">${S.systems.map(s => `<option value="${s.id}" ${def === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}<option value="__new" ${def === '__new' ? 'selected' : ''}>+ New design system</option></select></label><button class="btn solid" id="addbtn">${kind}</button><span id="addmsg" role="status" class="empty"></span></div></div>`;
+}
+const OFL_URL = 'https://openfontlicense.org/', OFL_FILE = 'licenses/OFL-1.1.txt';
+const cssLink = e => `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${e.name.replace(/ /g, '+')}:wght@${e.weights.filter(w => [400, 500, 600, 700].includes(w)).join(';') || e.weights[0]}&display=swap">`;
+const drow = (k, v) => `<tr><th scope="row">${k}</th><td>${v}</td></tr>`;
+function typeDetails(e) {
+  return `<table class="detail"><tbody>
+  ${drow('Designer', esc(e.designer))}
+  ${drow('Font version', esc(e.fontVersion || 'n/a') + ' <span class="note">(version recorded in the font file)</span>')}
+  ${drow('Google Fonts file version', esc(e.apiVersion) + ' <span class="note">(updated ' + esc(e.lastModified) + ', added ' + esc(e.dateAdded) + ')</span>')}
+  ${drow('Weights', e.weights.join(', '))}
+  ${drow('Scripts', esc(e.scripts.join(', ')))}
+  ${drow('Subsets served', esc(e.subsets.filter(x => x !== 'menu').join(', ')))}
+  ${drow('Languages', `${e.languageCount.toLocaleString()} supported <details class="src"><summary>See languages</summary><p class="note">The ${e.languages.length} most widely spoken are listed. Support means the font includes every letter in a language's standard alphabet.</p><p>${esc(e.languages.join(', '))}${e.languageCount > e.languages.length ? ', and ' + (e.languageCount - e.languages.length).toLocaleString() + ' more' : ''}.</p></details>`)}
+  ${drow('Web font (.woff2)', `<code class="url">${esc(e.woff2)}</code> <button class="btn sm" data-copy="woff2">Copy URL</button><div class="note">${esc(e.woff2Subset)} subset, weight ${e.woff2Weight}, file version ${esc(e.apiVersion)}. This file path changes when Google publishes a new version. For production, use the stylesheet below, or download the family from Google Fonts and host it yourself (the license allows both).</div>`)}
+  ${drow('Stylesheet', `<code class="url">${esc(cssLink(e))}</code> <button class="btn sm" data-copy="csslink">Copy link tag</button>`)}
+  ${drow('License', `<a href="${OFL_FILE}">SIL Open Font License 1.1</a> · free for personal and commercial use · <a href="${OFL_URL}" target="_blank" rel="noopener">FAQ</a>`)}
+  ${drow('Copyright', esc(e.copyright) + (e.reserved ? '<div class="note">This font has a Reserved Font Name. Modified versions must use a different name.</div>' : ''))}
+  ${drow('Source', `<a href="${esc(e.source)}" target="_blank" rel="noopener">View ${esc(e.name)} on Google Fonts</a>`)}
+  </tbody></table>`;
 }
 function renderEntry(e) {
   Object.keys(clipStore).forEach(k => delete clipStore[k]);
@@ -102,7 +123,7 @@ function renderEntry(e) {
   <h2>Contrast checks</h2><table><thead><tr><th>Pair</th><th>Ratio</th><th>Normal text (4.5)</th><th>Large text / UI (3)</th></tr></thead><tbody>${e.contrast.map(c => `<tr><td>${esc(c.fg)} on ${esc(c.bg)}</td><td>${c.ratio}:1</td><td class="${c.normalText ? 'pass' : 'fail'}">${c.normalText ? '✓ Pass' : '✕ Fail'}</td><td class="${c.largeTextAndUI ? 'pass' : 'fail'}">${c.largeTextAndUI ? '✓ Pass' : '✕ Fail'}</td></tr>`).join('')}</tbody></table>
   <h2>Guidance</h2>${ul(e.guidance)}`;
   }
-  clipStore.css = e.css; loadFontCss(e.name);
+  clipStore.css = e.css; clipStore.woff2 = e.woff2; clipStore.csslink = cssLink(e); loadFontCss(e.name);
   const fb = f => ({ serif: 'Georgia, serif', monospace: 'ui-monospace, monospace' }[(FONTMAP.get(f) || [])[1]] || 'system-ui, sans-serif');
   const pairCard = p => { const mineIsDisplay = p.role === 'body'; const dispF = mineIsDisplay ? e.name : p.family, bodyF = mineIsDisplay ? p.family : e.name; loadFontCss(p.family);
     return `<article class="pair"><div class="pair-h"><button class="name-btn" data-open="${esc(p.id)}">${esc(p.family)}</button><span class="tag">${p.role === 'body' ? 'Body font' : 'Header / Display font'}</span></div>
@@ -110,12 +131,12 @@ function renderEntry(e) {
     <p>${esc(p.why)}</p>
     <div class="pair-pv"><div style="font:700 26px/1.2 '${esc(dispF)}',${fb(dispF)}">The quick brown fox</div><div style="font:400 16px/1.6 '${esc(bodyF)}',${fb(bodyF)}">Body text sits underneath the heading. Good typography is mostly about readable spacing and clear hierarchy.</div></div>
     <p class="note">Suggested weights: ${esc(dispF)} ${p.displayWeights.join(', ')} · ${esc(bodyF)} ${p.bodyWeights.join(', ')}</p>
-    <div class="row" style="margin:8px 0 0"><button class="btn sm" data-usepair="${esc(p.id)}">Use this pairing</button></div></article>` };
+    <div class="row addpair"><label class="f"><span class="f-t">Add to</span><select data-pairsys aria-label="Design system for the ${esc(p.family)} pairing">${sysOptions()}</select></label><button class="btn solid sm" data-usepair="${esc(p.id)}">Add pairing</button><span class="empty" role="status" data-pairmsg></span></div></article>` };
   return `${back}<p class="eyebrow">Typography · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>${meta(e)}
   <div class="row"><button class="btn solid" data-copy="css">Copy CSS</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button><a class="btn" href="${esc(e.source)}" target="_blank" rel="noopener">View on Google Fonts</a></div>
   ${addToSystemRow('Add typeface')}
   <h2>Preview</h2><div class="fsample" style="font-family:'${esc(e.name)}',${fb(e.name)};font-size:32px;line-height:1.3">${esc(e.name)}<br><span style="font-size:18px">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</span></div>
-  <p class="note">Weights available: ${e.weights.join(', ')} · License: ${esc(e.license === 'OFL' ? 'SIL Open Font License (free for commercial use)' : e.license)} · Built into Figma.</p>
+  <h2>Typography details</h2>${typeDetails(e)}
   <h2>Pairings (${e.pairings.length})</h2><p class="note">Every pairing is checked: both fonts are on Google Fonts, the suggested weights exist, and the body font is a text face. Open one to see its own pairings.</p>
   <div class="pairs">${e.pairings.map(pairCard).join('')}</div>
   <h2>CSS</h2>${codeBlock('CSS', e.css, 'css')}`;
@@ -133,15 +154,18 @@ function wireEntry(e) {
     $('#figma-copy').onclick = async () => { await copy(clipStore.both, 'HTML + CSS'); showFigma('html') };
     $('#dl-html').onclick = () => { download(e.id + '.html', compDoc(e, curStates), 'text/html'); showFigma('html') };
   }
-  const targetSystem = async () => { const id = $('#addsys').value; if (id === '__new') { const n = await ask({ title: 'Name your design system', input: { label: 'Name', value: 'My design system' }, confirm: 'Create' }); if (!n) return null; const s = newSystem({ name: n }); S.systems.push(s); return s } return S.systems.find(x => x.id === id) };
-  $$('[data-usepair]').forEach(b => b.onclick = async () => { const s = await targetSystem(); if (!s) return; const p = e.pairings.find(x => x.id === b.dataset.usepair), pd = p.role === 'body'; const mk = (role, fam, w) => ({ id: uid(), role, family: fam, weights: w.slice() }); s.fonts = s.fonts.filter(f => !['Display', 'Body'].includes(f.role)); s.fonts.unshift(mk('Display', pd ? e.name : p.family, p.displayWeights), mk('Body', pd ? p.family : e.name, p.bodyWeights)); S.active = s.id; saveStore(); toast('Applied to ' + s.name); $('#addmsg').innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>` });
+  const systemFrom = async sel => { const id = sel.value; if (id === '__new') { const n = await ask({ title: 'Name your design system', input: { label: 'Name', value: 'My design system' }, confirm: 'Create' }); if (!n) return null; const s = newSystem({ name: n }); S.systems.push(s); return s } return S.systems.find(x => x.id === id) };
+  const targetSystem = () => systemFrom($('#addsys'));
+  const syncSys = (v, from) => { S.last = v; saveStore(); $$('#addsys,[data-pairsys]').forEach(sel => { if (sel !== from && sel.value !== v && [...sel.options].some(o => o.value === v)) { sel.value = v; sel.dispatchEvent(new Event('change')) } }) };
+  $$('#addsys,[data-pairsys]').forEach(sel => sel.addEventListener('change', () => { if (sel.value !== '__new') syncSys(sel.value, sel) }));
+  $$('[data-usepair]').forEach(b => b.onclick = async () => { const sel = $('[data-pairsys]', b.closest('.pair')), s = await systemFrom(sel); if (!s) return; const p = e.pairings.find(x => x.id === b.dataset.usepair), pd = p.role === 'body'; const mk = (role, fam, w) => ({ id: uid(), role, family: fam, weights: w.slice() }); s.fonts = s.fonts.filter(f => !['Display', 'Body'].includes(f.role)); s.fonts.unshift(mk('Display', pd ? e.name : p.family, p.displayWeights), mk('Body', pd ? p.family : e.name, p.bodyWeights)); S.last = s.id; S.active = s.id; saveStore(); toast('Pairing added to ' + s.name); $('[data-pairmsg]', b.closest('.pair')).innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>` });
   $$('.pair [data-open]').forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
   $('#addbtn').onclick = async () => {
     const s = await targetSystem(); if (!s) return;
     if (e.type === 'component') { s.components = s.components.filter(c => c.id !== e.id); s.components.push({ id: e.id, states: curStates.slice() }) }
     else if (e.type === 'color') { Object.entries(e.roles).forEach(([k, v]) => { if (k === 'border') return; const role = SET_ROLE[k] || 'Other'; if (!s.colors.some(c => c.hex === v && c.role === role)) s.colors.push({ id: uid(), name: role, hex: v, role, source: e.name }) }) }
     else { const role = e.roles[0] === 'display' ? 'Display' : e.roles[0] === 'mono' ? 'Mono' : 'Body'; s.fonts = s.fonts.filter(f => f.role !== role); s.fonts.push({ id: uid(), role, family: e.name, weights: keepThree(e.weights.filter(w => [400, 500, 600, 700].includes(w))) }) }
-    S.active = s.id; saveStore(); $('#addmsg').innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>`; toast('Added to ' + s.name);
+    S.last = s.id; S.active = s.id; saveStore(); $('#addmsg').innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>`; toast('Added to ' + s.name);
   };
   $('#main').addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase().split(' (')[0]) });
   $('#main').focus({ preventScroll: true }); window.scrollTo(0, 0);

@@ -1,0 +1,123 @@
+{
+  "id": "spline-sans",
+  "type": "typeface",
+  "name": "Spline Sans",
+  "category": "sans-serif",
+  "summary": "A friendly geometric sans with a modern, tech-product tone.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2021 The Spline Sans Project Authors (https://github.com/SorkinType/SplineSans)",
+  "designer": "Eben Sorkin, Mirko Velimirović",
+  "dateAdded": "2021-11-22",
+  "apiVersion": "v16",
+  "fontVersion": "1.001",
+  "lastModified": "2025-09-10",
+  "woff2": "https://fonts.gstatic.com/s/splinesans/v16/_6_sED73Uf-2WfU2LzycEZousNzn1a1lKWRpOFnoFdHk.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 359,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Spline+Sans",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A friendly product-style heading over a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Spline Sans', system-ui, sans-serif;\n}"
+}

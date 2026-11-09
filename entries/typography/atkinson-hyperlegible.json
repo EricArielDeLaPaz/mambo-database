@@ -1,0 +1,120 @@
+{
+  "id": "atkinson-hyperlegible",
+  "type": "typeface",
+  "name": "Atkinson Hyperlegible",
+  "category": "sans-serif",
+  "summary": "A typeface from the Braille Institute that makes similar letters easy to tell apart.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 Braille Institute of America, Inc.",
+  "designer": "Braille Institute, Applied Design Works, Elliott Scott, Megan Eiswerth, Linus Boman, Theodore Petrosky",
+  "dateAdded": "2021-04-30",
+  "apiVersion": "v12",
+  "fontVersion": "1.006",
+  "lastModified": "2025-09-05",
+  "woff2": "https://fonts.gstatic.com/s/atkinsonhyperlegible/v12/9Bt23C1KxNDXMspQ1lPyU89-1h6ONRlW45G04pIo.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 299,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malay (Latin)",
+    "Romanian",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin",
+    "Sukuma",
+    "Tsonga",
+    "Balinese",
+    "Norwegian",
+    "Kalenjin",
+    "Banjar",
+    "Makhuwa",
+    "Ndau",
+    "Bosnian"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Atkinson+Hyperlegible",
+  "pairings": [
+    {
+      "id": "fraunces",
+      "family": "Fraunces",
+      "role": "display",
+      "why": "A characterful serif heading over a body face built for legibility.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');\n:root {\n  --font-main: 'Atkinson Hyperlegible', system-ui, sans-serif;\n}"
+}

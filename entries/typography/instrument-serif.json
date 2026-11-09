@@ -5,8 +5,9 @@
   "category": "serif",
   "summary": "A condensed, elegant display serif with a modern editorial feel.",
   "industries": [
-    "creative",
     "media",
+    "legal",
+    "education",
     "hospitality"
   ],
   "roles": [
@@ -16,7 +17,87 @@
   "weights": [
     400
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif)",
+  "designer": "Rodrigo Fuenzalida, Jordan Egstad",
+  "dateAdded": "2023-03-22",
+  "apiVersion": "v5",
+  "fontVersion": "1.000",
+  "lastModified": "2025-09-05",
+  "woff2": "https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjg.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 333,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/Instrument+Serif",
   "pairings": [
     {
@@ -24,6 +105,19 @@
       "family": "Inter",
       "role": "body",
       "why": "A condensed elegant serif for statement headlines over a neutral body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "instrument-sans",
+      "family": "Instrument Sans",
+      "role": "body",
+      "why": "Designed together: an elegant serif display with a modern grotesque body.",
       "displayWeights": [
         400
       ],

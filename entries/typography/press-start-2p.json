@@ -1,0 +1,122 @@
+{
+  "id": "press-start-2p",
+  "type": "typeface",
+  "name": "Press Start 2P",
+  "category": "display",
+  "summary": "A pixel font based on classic arcade games. Use for games and retro.",
+  "industries": [
+    "entertainment",
+    "retail",
+    "media",
+    "gaming"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2012 The Press Start 2P Project Authors (cody@zone38.net), with Reserved Font Name \"Press Start 2P\".",
+  "designer": "CodeMan38",
+  "dateAdded": "2012-04-04",
+  "apiVersion": "v16",
+  "fontVersion": "3.000",
+  "lastModified": "2025-09-16",
+  "woff2": "https://fonts.gstatic.com/s/pressstart2p/v16/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Greek",
+    "Latin"
+  ],
+  "languageCount": 398,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malay (Latin)",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Greek",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/Press+Start+2P",
+  "pairings": [
+    {
+      "id": "space-mono",
+      "family": "Space Mono",
+      "role": "body",
+      "why": "A pixel display font with a mono body for a retro games feel.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P:wght@400&display=swap');\n:root {\n  --font-main: 'Press Start 2P', system-ui, sans-serif;\n}"
+}

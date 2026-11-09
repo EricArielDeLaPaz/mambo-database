@@ -1,0 +1,118 @@
+{
+  "id": "marcellus",
+  "type": "typeface",
+  "name": "Marcellus",
+  "category": "serif",
+  "summary": "A flared, Roman-inspired serif with an elegant, classical feel.",
+  "industries": [
+    "media",
+    "legal",
+    "education",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright (c) 2012, Brian J. Bonislawsky DBA Astigmatic (AOETI) (astigma@astigmatic.com), with Reserved Font Names \"Marcellus\"",
+  "designer": "Astigmatic",
+  "dateAdded": "2012-05-09",
+  "apiVersion": "v14",
+  "fontVersion": "1.000",
+  "lastModified": "2025-09-11",
+  "woff2": "https://fonts.gstatic.com/s/marcellus/v14/wEO_EBrOk8hQLDvIAF81VvoK.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 336,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin",
+    "Sukuma",
+    "Tsonga",
+    "Balinese",
+    "Norwegian"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/Marcellus",
+  "pairings": [
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "A classical flared serif heading over a very readable body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Marcellus:wght@400&display=swap');\n:root {\n  --font-main: 'Marcellus', Georgia, serif;\n}"
+}

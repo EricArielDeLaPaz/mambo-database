@@ -6,8 +6,9 @@
   "summary": "Adobe's clean humanist sans, designed for user interfaces and long reading.",
   "industries": [
     "technology",
-    "finance",
-    "education"
+    "retail",
+    "education",
+    "finance"
   ],
   "roles": [
     "display",
@@ -23,7 +24,94 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2010-2020 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'. All Rights Reserved. Source is a trademark of Adobe in the United States and/or other countries.",
+  "designer": "Paul D. Hunt",
+  "dateAdded": "2021-09-17",
+  "apiVersion": "v19",
+  "fontVersion": "3.052",
+  "lastModified": "2025-09-05",
+  "woff2": "https://fonts.gstatic.com/s/sourcesans3/v19/nwpBtKy2OAdR1K-IwhWudF-R9QMylBJAV3Bo8Ky462EK9Cs.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "greek-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Greek",
+    "Latin"
+  ],
+  "languageCount": 723,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Hakka Chinese (Latin)",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sudanese Arabic",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Yoruba",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Nigerian Fulfulde",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Greek",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Fanti",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Tunisian Darija",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Tajik"
+  ],
+  "reserved": true,
   "source": "https://fonts.google.com/specimen/Source+Sans+3",
   "pairings": [
     {
@@ -89,6 +177,61 @@
       "bodyWeights": [
         400,
         600
+      ]
+    },
+    {
+      "id": "exo-2",
+      "family": "Exo 2",
+      "role": "display",
+      "why": "A futuristic heading over a quiet humanist body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "vollkorn",
+      "family": "Vollkorn",
+      "role": "display",
+      "why": "A hearty serif heading over a clean humanist body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "gloock",
+      "family": "Gloock",
+      "role": "display",
+      "why": "A high-contrast display serif over a quiet humanist body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "source-code-pro",
+      "family": "Source Code Pro",
+      "role": "body",
+      "why": "A humanist sans with Adobe's matching code face.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
       ]
     }
   ],

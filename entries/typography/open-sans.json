@@ -19,7 +19,98 @@
     700,
     800
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)",
+  "designer": "Steve Matteson",
+  "dateAdded": "2011-02-02",
+  "apiVersion": "v44",
+  "fontVersion": "3.003",
+  "lastModified": "2025-09-16",
+  "woff2": "https://fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4gaVI.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "greek-ext",
+    "hebrew",
+    "latin",
+    "latin-ext",
+    "math",
+    "symbols",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Greek",
+    "Hebrew",
+    "Latin"
+  ],
+  "languageCount": 458,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Greek",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Tajik",
+    "Catalan",
+    "Hebrew",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian",
+    "Danish"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/Open+Sans",
   "pairings": [
     {
@@ -95,6 +186,127 @@
       "displayWeights": [
         600,
         700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "zilla-slab",
+      "family": "Zilla Slab",
+      "role": "display",
+      "why": "A handcrafted slab headline over a very readable body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "rubik",
+      "family": "Rubik",
+      "role": "display",
+      "why": "Softly rounded headlines over a neutral humanist body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "titillium-web",
+      "family": "Titillium Web",
+      "role": "display",
+      "why": "A sleek, squared heading over a friendly, readable body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "rajdhani",
+      "family": "Rajdhani",
+      "role": "display",
+      "why": "A squared, technical heading over a readable body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "domine",
+      "family": "Domine",
+      "role": "display",
+      "why": "A sturdy text serif heading over a light, open body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "marcellus",
+      "family": "Marcellus",
+      "role": "display",
+      "why": "A classical flared serif heading over a very readable body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "anton",
+      "family": "Anton",
+      "role": "display",
+      "why": "Tall, heavy headlines over a friendly body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "bangers",
+      "family": "Bangers",
+      "role": "display",
+      "why": "A comic-style display face over a very readable body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "shadows-into-light",
+      "family": "Shadows Into Light",
+      "role": "display",
+      "why": "A light handwriting accent over a readable body.",
+      "displayWeights": [
+        400
       ],
       "bodyWeights": [
         400,

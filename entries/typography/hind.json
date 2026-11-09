@@ -1,0 +1,139 @@
+{
+  "id": "hind",
+  "type": "typeface",
+  "name": "Hind",
+  "category": "sans-serif",
+  "summary": "A sans with Latin and Devanagari, made for clear interface text.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright (c) 2014, Indian Type Foundry (info@indiantypefoundry.com).",
+  "designer": "Indian Type Foundry",
+  "dateAdded": "2014-06-25",
+  "apiVersion": "v18",
+  "fontVersion": "2.001",
+  "lastModified": "2025-09-05",
+  "woff2": "https://fonts.gstatic.com/s/hind/v18/5aU69_a8oxmIdGl4BA.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "devanagari",
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Devanagari",
+    "Latin"
+  ],
+  "languageCount": 327,
+  "languages": [
+    "English",
+    "Hindi",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Marathi",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malay (Latin)",
+    "Romanian",
+    "Nepali",
+    "Maithili",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Quechua",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin",
+    "Sukuma",
+    "Konkani"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Hind",
+  "pairings": [
+    {
+      "id": "source-serif-4",
+      "family": "Source Serif 4",
+      "role": "body",
+      "why": "A clear sans heading with Devanagari support over a calm serif body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "noto-sans-devanagari",
+      "family": "Noto Sans Devanagari",
+      "role": "display",
+      "why": "A Devanagari heading with a clear sans body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Hind', system-ui, sans-serif;\n}"
+}

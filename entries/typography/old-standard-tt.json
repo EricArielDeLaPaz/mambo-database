@@ -1,0 +1,123 @@
+{
+  "id": "old-standard-tt",
+  "type": "typeface",
+  "name": "Old Standard TT",
+  "category": "serif",
+  "summary": "A faithful revival of a late 19th-century scholarly serif.",
+  "industries": [
+    "media",
+    "legal",
+    "education",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2011 The Old Standard Project Authors (amkryukov@gmail.com)",
+  "designer": "Alexey Kryukov",
+  "dateAdded": "2010-05-18",
+  "apiVersion": "v22",
+  "fontVersion": "3.000",
+  "lastModified": "2025-09-11",
+  "woff2": "https://fonts.gstatic.com/s/oldstandardtt/v22/MwQubh3o1vLImiwAVvYawgcf2eVeqlq4.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 465,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Bulgarian",
+    "Rundi",
+    "Serbian"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Old+Standard+TT",
+  "pairings": [
+    {
+      "id": "lato",
+      "family": "Lato",
+      "role": "body",
+      "why": "A scholarly 19th-century serif heading over a gentle sans.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&display=swap');\n:root {\n  --font-main: 'Old Standard TT', Georgia, serif;\n}"
+}

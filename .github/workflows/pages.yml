@@ -32,6 +32,7 @@ jobs:
           mkdir _site
           cp -r dist/site/. _site/
           cp dist/llms.txt _site/llms.txt
+          cp THIRD_PARTY_NOTICES.md _site/THIRD_PARTY_NOTICES.md
           cp -r dist/entries dist/data _site/
           (cd dist/skill && zip -qr ../../_site/mambo-database-skill.zip mambo-database)
           (cd dist/skill && zip -qr ../../_site/create-design-system-skill.zip create-design-system)

@@ -259,3 +259,16 @@ mark{background:#0a0a0a;color:#fff;border-radius:2px;padding:0 2px}
 .mv button:focus-visible{outline:2px solid var(--focus)}
 .mv svg{width:12px;height:12px}
 .colortop{grid-template-columns:auto auto minmax(110px,1fr) minmax(100px,140px) minmax(140px,180px) auto}
+
+.foot{border-top:1px solid var(--border);background:var(--surface);padding:28px clamp(16px,4vw,48px) 40px;font-size:13.5px;color:var(--text-2)}
+.foot-in{max-width:980px}
+.foot h2{margin:0 0 10px;font-size:16px;color:var(--text)}
+.foot p{margin:0 0 10px}
+.foot summary{cursor:pointer;font-weight:600;color:var(--text)}
+.notices{margin:10px 0;padding-left:18px;columns:1;display:grid;gap:4px}
+table.detail{margin:8px 0}
+table.detail th[scope=row]{width:190px;text-transform:none;letter-spacing:0;font:700 13px var(--font-body);color:var(--text)}
+code.url{display:inline-block;max-width:100%;overflow-wrap:anywhere;font:400 12px/1.5 var(--font-mono);background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:2px 6px;margin-right:6px}
+.addpair{align-items:end;margin:10px 0 0}
+.addpair label.f{min-width:200px}
+@media (max-width:820px){table.detail th[scope=row]{width:auto;display:block;border:0;padding-bottom:0}table.detail td{display:block}}

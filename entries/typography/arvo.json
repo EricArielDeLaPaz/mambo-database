@@ -1,0 +1,118 @@
+{
+  "id": "arvo",
+  "type": "typeface",
+  "name": "Arvo",
+  "category": "serif",
+  "summary": "A geometric slab serif that is friendly and legible.",
+  "industries": [
+    "media",
+    "legal",
+    "education",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright (c) 2010-2013, Anton Koovit (anton@korkork.com), with Reserved Font Name 'Arvo'",
+  "designer": "Anton Koovit",
+  "dateAdded": "2010-11-17",
+  "apiVersion": "v23",
+  "fontVersion": "1.006 2010 beta release",
+  "lastModified": "2025-06-02",
+  "woff2": "https://fonts.gstatic.com/s/arvo/v23/tDbD2oWUg0MKqScQ7Q.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 270,
+  "languages": [
+    "English",
+    "Spanish",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Javanese",
+    "Italian",
+    "Filipino",
+    "Oromo",
+    "Sundanese",
+    "Cebuano",
+    "Malay (Latin)",
+    "Somali",
+    "Zulu",
+    "Swedish",
+    "Kituba",
+    "Shona",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin",
+    "Tsonga",
+    "Balinese",
+    "Norwegian",
+    "Kalenjin",
+    "Banjar",
+    "Makhuwa",
+    "Ndau",
+    "Sidamo",
+    "Achinese",
+    "Galician",
+    "Tiv",
+    "Bikol",
+    "Waray",
+    "Tonga",
+    "Sango",
+    "Anaang",
+    "Aymara",
+    "Nyankole",
+    "Hmong"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/Arvo",
+  "pairings": [
+    {
+      "id": "lato",
+      "family": "Lato",
+      "role": "body",
+      "why": "A friendly slab headline over a calm, rounded body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&display=swap');\n:root {\n  --font-main: 'Arvo', Georgia, serif;\n}"
+}

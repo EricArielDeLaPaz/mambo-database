@@ -6,8 +6,8 @@
   "summary": "A quirky monospace used for labels, code and data.",
   "industries": [
     "technology",
-    "creative",
-    "data"
+    "data",
+    "gaming"
   ],
   "roles": [
     "mono",
@@ -17,7 +17,88 @@
     400,
     700
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono)",
+  "designer": "Colophon Foundry",
+  "dateAdded": "2016-06-20",
+  "apiVersion": "v17",
+  "fontVersion": "1.003",
+  "lastModified": "2025-06-25",
+  "woff2": "https://fonts.gstatic.com/s/spacemono/v17/i7dPIFZifjKcF5UAWdDRYEF8RQ.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 396,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Igbo",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/Space+Mono",
   "pairings": [
     {
@@ -44,6 +125,19 @@
       "bodyWeights": [
         400,
         500
+      ]
+    },
+    {
+      "id": "press-start-2p",
+      "family": "Press Start 2P",
+      "role": "display",
+      "why": "A pixel display font with a mono body for a retro games feel.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        700
       ]
     }
   ],

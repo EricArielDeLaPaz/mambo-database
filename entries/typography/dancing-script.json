@@ -1,0 +1,121 @@
+{
+  "id": "dancing-script",
+  "type": "typeface",
+  "name": "Dancing Script",
+  "category": "handwriting",
+  "summary": "A lively casual script with bouncing letters.",
+  "industries": [
+    "creative",
+    "education",
+    "food-beverage",
+    "entertainment"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2016 The Dancing Script Project Authors (https://github.com/googlefonts/DancingScript), with Reserved Font Name 'Dancing Script'.",
+  "designer": "Impallari Type",
+  "dateAdded": "2011-05-18",
+  "apiVersion": "v29",
+  "fontVersion": "2.001",
+  "lastModified": "2025-09-08",
+  "woff2": "https://fonts.gstatic.com/s/dancingscript/v29/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3Sup8.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 397,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Guarani"
+  ],
+  "reserved": true,
+  "source": "https://fonts.google.com/specimen/Dancing+Script",
+  "pairings": [
+    {
+      "id": "lato",
+      "family": "Lato",
+      "role": "body",
+      "why": "A lively script accent over a gentle sans.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Dancing Script', system-ui, sans-serif;\n}"
+}

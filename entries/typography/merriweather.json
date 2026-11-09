@@ -6,8 +6,9 @@
   "summary": "A sturdy serif made for reading on screens, with wide letters.",
   "industries": [
     "media",
+    "legal",
     "education",
-    "nonprofit"
+    "hospitality"
   ],
   "roles": [
     "display",
@@ -22,7 +23,91 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 The Merriweather Project Authors (https://github.com/EbenSorkin/Merriweather4) with Reserved Font Name \"Merriweather\".",
+  "designer": "Sorkin Type",
+  "dateAdded": "2011-05-11",
+  "apiVersion": "v33",
+  "fontVersion": "2.100",
+  "lastModified": "2025-09-02",
+  "woff2": "https://fonts.gstatic.com/s/merriweather/v33/u-4D0qyriQwlOrhSvowK_l5UcA6zuSYEqOzpPe3HOZJ5eX1WtLaQwmYiScCmDxhtNOKl8yDr3icaFF31.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Latin"
+  ],
+  "languageCount": 966,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Hakka Chinese (Latin)",
+    "Nigerian Pidgin",
+    "Polish",
+    "Hausa",
+    "Oromo",
+    "Sudanese Arabic",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Yoruba",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Nigerian Fulfulde",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Fanti",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Tunisian Darija",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Bambara",
+    "Haitian Creole"
+  ],
+  "reserved": true,
   "source": "https://fonts.google.com/specimen/Merriweather",
   "pairings": [
     {
@@ -57,6 +142,20 @@
       "role": "display",
       "why": "Matching proportions: sans for headlines, serif for long text.",
       "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "josefin-sans",
+      "family": "Josefin Sans",
+      "role": "display",
+      "why": "A tall, vintage sans heading over a sturdy serif body.",
+      "displayWeights": [
+        600,
         700
       ],
       "bodyWeights": [

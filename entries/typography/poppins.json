@@ -5,9 +5,10 @@
   "category": "sans-serif",
   "summary": "A geometric sans with round forms and many weights. Clean and contemporary.",
   "industries": [
-    "retail",
     "technology",
-    "entertainment"
+    "retail",
+    "education",
+    "finance"
   ],
   "roles": [
     "display",
@@ -24,7 +25,89 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins)",
+  "designer": "Indian Type Foundry, Jonny Pinhorn, Ninad Kale",
+  "dateAdded": "2015-06-03",
+  "apiVersion": "v24",
+  "fontVersion": "4.004",
+  "lastModified": "2025-09-16",
+  "woff2": "https://fonts.gstatic.com/s/poppins/v24/pxiEyp8kv8JHgFVrJJfecg.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "devanagari",
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Devanagari",
+    "Latin"
+  ],
+  "languageCount": 358,
+  "languages": [
+    "English",
+    "Hindi",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "Marathi",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nepali",
+    "Maithili",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Quechua",
+    "Kinyarwanda",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/Poppins",
   "pairings": [
     {
@@ -51,6 +134,19 @@
       "bodyWeights": [
         400,
         600
+      ]
+    },
+    {
+      "id": "literata",
+      "family": "Literata",
+      "role": "body",
+      "why": "A geometric heading over a serif made for long reading.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        500
       ]
     }
   ],

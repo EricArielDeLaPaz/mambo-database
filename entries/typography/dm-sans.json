@@ -6,8 +6,9 @@
   "summary": "A low-contrast geometric sans with a friendly, modern tone.",
   "industries": [
     "technology",
-    "creative",
-    "retail"
+    "retail",
+    "education",
+    "finance"
   ],
   "roles": [
     "display",
@@ -24,7 +25,87 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)",
+  "designer": "Colophon Foundry",
+  "dateAdded": "2019-06-12",
+  "apiVersion": "v17",
+  "fontVersion": "4.004",
+  "lastModified": "2025-09-11",
+  "woff2": "https://fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAopxRSW32.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 356,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/DM+Sans",
   "pairings": [
     {
@@ -52,6 +133,20 @@
       "bodyWeights": [
         400,
         600
+      ]
+    },
+    {
+      "id": "dm-mono",
+      "family": "DM Mono",
+      "role": "body",
+      "why": "A friendly geometric sans with its matching mono.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
       ]
     }
   ],

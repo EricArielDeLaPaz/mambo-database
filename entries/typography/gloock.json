@@ -1,0 +1,119 @@
+{
+  "id": "gloock",
+  "type": "typeface",
+  "name": "Gloock",
+  "category": "serif",
+  "summary": "A high-contrast display serif with strong, rounded forms.",
+  "industries": [
+    "media",
+    "legal",
+    "education",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2022 The Gloock Project Authors (https://github.com/duartp/gloock)",
+  "designer": "Duarte Pinto",
+  "dateAdded": "2023-01-06",
+  "apiVersion": "v8",
+  "fontVersion": "1.000",
+  "lastModified": "2025-09-08",
+  "woff2": "https://fonts.gstatic.com/s/gloock/v8/Iurb6YFw84WUY4NJiBak.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic-ext",
+    "latin",
+    "latin-ext"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 333,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Afrikaans",
+    "Hiligaynon",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Finnish",
+    "Ganda",
+    "Norwegian Bokmål",
+    "Bemba",
+    "Northern Sotho",
+    "Luo",
+    "Tok Pisin"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Gloock",
+  "pairings": [
+    {
+      "id": "source-sans-3",
+      "family": "Source Sans 3",
+      "role": "body",
+      "why": "A high-contrast display serif over a quiet humanist body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Gloock:wght@400&display=swap');\n:root {\n  --font-main: 'Gloock', Georgia, serif;\n}"
+}

@@ -1,0 +1,123 @@
+{
+  "id": "familjen-grotesk",
+  "type": "typeface",
+  "name": "Familjen Grotesk",
+  "category": "sans-serif",
+  "summary": "A characterful grotesque with quirky details and a warm tone.",
+  "industries": [
+    "technology",
+    "retail",
+    "education",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2021 The Familjen Grotesk Project Authors (https://github.com/Familjen-Sthlm/Familjen-Grotesk)",
+  "designer": "Familjen STHLM AB",
+  "dateAdded": "2022-03-02",
+  "apiVersion": "v11",
+  "fontVersion": "2.002",
+  "lastModified": "2025-09-11",
+  "woff2": "https://fonts.gstatic.com/s/familjengrotesk/v11/Qw3LZR9ZHiDnImG6-NEMQ41wby8WRnYsfkunR_eGfMGJaRzqeVk.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Latin"
+  ],
+  "languageCount": 397,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Kituba",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German",
+    "Rundi",
+    "Danish",
+    "Wolaytta (Latin)",
+    "Albanian",
+    "Croatian",
+    "Slovak",
+    "Southern Sotho",
+    "Tswana",
+    "Luyia",
+    "Guarani"
+  ],
+  "reserved": false,
+  "source": "https://fonts.google.com/specimen/Familjen+Grotesk",
+  "pairings": [
+    {
+      "id": "source-serif-4",
+      "family": "Source Serif 4",
+      "role": "body",
+      "why": "A characterful grotesque heading over a quiet serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Familjen Grotesk', system-ui, sans-serif;\n}"
+}

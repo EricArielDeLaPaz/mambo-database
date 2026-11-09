@@ -6,8 +6,9 @@
   "summary": "A transitional serif for text and display with a calm, bookish tone.",
   "industries": [
     "media",
+    "legal",
     "education",
-    "legal"
+    "hospitality"
   ],
   "roles": [
     "display",
@@ -23,7 +24,93 @@
     800,
     900
   ],
-  "license": "OFL",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2014 The Source Serif 4 Project Authors (https://github.com/adobe-fonts/source-serif)",
+  "designer": "Frank Grießhammer",
+  "dateAdded": "2021-11-16",
+  "apiVersion": "v14",
+  "fontVersion": "4.004",
+  "lastModified": "2025-09-11",
+  "woff2": "https://fonts.gstatic.com/s/sourceserif4/v14/vEFy2_tTDB4M7-auWDN0ahZJW3IX2ih5nk3AucvUHf6OAVIJmeUDygwjihdqnhtdDg.woff2",
+  "woff2Weight": 400,
+  "woff2Subset": "latin",
+  "subsets": [
+    "cyrillic",
+    "cyrillic-ext",
+    "greek",
+    "latin",
+    "latin-ext",
+    "vietnamese"
+  ],
+  "scripts": [
+    "Cyrillic",
+    "Greek",
+    "Latin"
+  ],
+  "languageCount": 468,
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "Portuguese",
+    "Russian",
+    "Swahili",
+    "Indonesian",
+    "German",
+    "Javanese",
+    "Vietnamese",
+    "Turkish",
+    "Italian",
+    "Filipino",
+    "Nigerian Pidgin",
+    "Polish",
+    "Oromo",
+    "Sundanese",
+    "Dutch",
+    "Ukrainian",
+    "Yoruba",
+    "Igbo",
+    "Uzbek",
+    "Cebuano",
+    "Kurdish (Latin)",
+    "Malagasy",
+    "Malay (Latin)",
+    "Romanian",
+    "Nyanja",
+    "Madurese",
+    "Somali",
+    "Zulu",
+    "Czech",
+    "Swedish",
+    "Hungarian",
+    "Greek",
+    "Kituba",
+    "Kazakh",
+    "Shona",
+    "Low German",
+    "Quechua",
+    "Kinyarwanda",
+    "Wolof",
+    "Swahili, Congo",
+    "Turkmen (Latin)",
+    "Iloko",
+    "Xhosa",
+    "Belarusian",
+    "Luba-Lulua",
+    "Azerbaijani",
+    "Umbundu",
+    "Afrikaans",
+    "Hiligaynon",
+    "Kikuyu",
+    "Haitian Creole",
+    "Tajik",
+    "Catalan",
+    "Kimbundu",
+    "Serbian (Latin)",
+    "Minangkabau",
+    "Swiss German"
+  ],
+  "reserved": false,
   "source": "https://fonts.google.com/specimen/Source+Serif+4",
   "pairings": [
     {
@@ -84,6 +171,76 @@
       "family": "Work Sans",
       "role": "display",
       "why": "A workmanlike grotesque heading over a bookish serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "epilogue",
+      "family": "Epilogue",
+      "role": "display",
+      "why": "A heavy grotesque headline over a calm serif body.",
+      "displayWeights": [
+        700,
+        800
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "jost",
+      "family": "Jost",
+      "role": "display",
+      "why": "A Futura-like headline over a quiet serif.",
+      "displayWeights": [
+        500,
+        600
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "hind",
+      "family": "Hind",
+      "role": "display",
+      "why": "A clear sans heading with Devanagari support over a calm serif body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "onest",
+      "family": "Onest",
+      "role": "display",
+      "why": "A clean sans heading with Cyrillic support over a calm serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "familjen-grotesk",
+      "family": "Familjen Grotesk",
+      "role": "display",
+      "why": "A characterful grotesque heading over a quiet serif.",
       "displayWeights": [
         600,
         700
