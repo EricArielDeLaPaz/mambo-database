@@ -1,0 +1,90 @@
+{
+  "id": "divider",
+  "type": "component",
+  "name": "Divider",
+  "category": "layout",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A thin line that separates groups of content. Use space first and a divider only when space is not enough.",
+  "anatomy": [
+    {
+      "part": "line",
+      "required": true,
+      "purpose": "1px line using the border color."
+    },
+    {
+      "part": "label",
+      "required": false,
+      "purpose": "Optional centered text such as OR."
+    }
+  ],
+  "variants": [
+    {
+      "id": "horizontal",
+      "name": "Horizontal",
+      "use": "Between sections or list rows.",
+      "contentLimits": {
+        "thickness": "1px"
+      }
+    },
+    {
+      "id": "vertical",
+      "name": "Vertical",
+      "use": "Between toolbar groups.",
+      "contentLimits": {
+        "height": "matches content"
+      }
+    },
+    {
+      "id": "labeled",
+      "name": "With label",
+      "use": "Sign in options.",
+      "contentLimits": {
+        "label": "max 6 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Separating groups that spacing alone cannot."
+  ],
+  "whenNotToUse": [
+    "Between every list row when spacing works.",
+    "As decoration."
+  ],
+  "alternatives": [
+    "list",
+    "card"
+  ],
+  "tokens": [
+    "color.border.default",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "separator (role=separator), or none if purely visual",
+    "keyboard": [
+      "Not focusable."
+    ],
+    "focus": "None.",
+    "notes": [
+      "Decorative lines use aria-hidden or CSS borders.",
+      "Do not use a divider as the only cue between groups.",
+      "Border color is decorative, so it may be lighter than 3:1."
+    ]
+  },
+  "states": [],
+  "related": [
+    "list",
+    "card"
+  ],
+  "code": {
+    "html": "<p>Sign in</p>\n<div class=\"dv\" role=\"separator\"><span>OR</span></div>\n<p>Continue with email</p>",
+    "css": ".dv{display:flex;align-items:center;gap:12px;margin:12px 0;color:#525252;font:700 12px ui-monospace,monospace}\n.dv::before,.dv::after{content:'';flex:1;height:1px;background:#d4d4d4}"
+  }
+}

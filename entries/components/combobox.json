@@ -1,0 +1,130 @@
+{
+  "id": "combobox",
+  "type": "component",
+  "name": "Combobox",
+  "category": "forms",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A text field with a filtered list of suggestions. Choose from the list or type to narrow it.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Names the field."
+    },
+    {
+      "part": "input",
+      "required": true,
+      "purpose": "Text field that filters the list."
+    },
+    {
+      "part": "list",
+      "required": true,
+      "purpose": "Options that match what was typed."
+    },
+    {
+      "part": "option",
+      "required": true,
+      "purpose": "One choice, 44px tall."
+    },
+    {
+      "part": "empty-state",
+      "required": true,
+      "purpose": "'No results' text."
+    }
+  ],
+  "variants": [
+    {
+      "id": "select-only",
+      "name": "Select only",
+      "use": "Pick one from a long list (countries).",
+      "contentLimits": {
+        "options": "10 to 500",
+        "value": "must be in list"
+      }
+    },
+    {
+      "id": "free-text",
+      "name": "Free text",
+      "use": "Suggestions, but any text is allowed.",
+      "contentLimits": {
+        "options": "up to 10 shown",
+        "value": "any"
+      }
+    },
+    {
+      "id": "multi",
+      "name": "Multi-select",
+      "use": "Tags and people.",
+      "contentLimits": {
+        "selected": "shown as removable tags"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Long lists where scanning is slow."
+  ],
+  "whenNotToUse": [
+    "Fewer than 7 options: use a select or radio buttons.",
+    "Searching a whole site: use a search field."
+  ],
+  "alternatives": [
+    "select",
+    "search-field",
+    "radio"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "color.surface.overlay",
+    "radius.md",
+    "shadow.overlay"
+  ],
+  "accessibility": {
+    "role": "combobox with a listbox popup",
+    "keyboard": [
+      "Arrow Down opens and moves through options.",
+      "Enter chooses.",
+      "Escape closes, then clears.",
+      "Typing filters."
+    ],
+    "focus": "Focus stays in the input; the active option uses aria-activedescendant.",
+    "notes": [
+      "Set aria-expanded, aria-controls and aria-autocomplete.",
+      "Announce the result count.",
+      "Highlight the matching text.",
+      "Selected item needs a check, not color alone."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.cb__list li:hover{background:#f5f5f5}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".cb input:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "select",
+    "search-field",
+    "radio"
+  ],
+  "code": {
+    "html": "<label for=\"cb\" class=\"cb__l\">Country</label>\n<div class=\"cb\">\n  <input id=\"cb\" role=\"combobox\" aria-expanded=\"true\" aria-controls=\"cb-list\" aria-autocomplete=\"list\" value=\"Ca\">\n  <ul id=\"cb-list\" role=\"listbox\" class=\"cb__list\">\n    <li role=\"option\" aria-selected=\"true\">Canada</li>\n    <li role=\"option\">Cameroon</li>\n  </ul>\n</div>",
+    "css": ".cb__l{display:block;margin-bottom:6px;font:600 14px system-ui,sans-serif}\n.cb{position:relative;width:260px;font:15px system-ui,sans-serif}\n.cb input{width:100%;min-height:44px;padding:8px 12px;border:1px solid #8a8a8a;border-radius:8px;font:inherit}\n.cb__list{position:absolute;inset:48px 0 auto;margin:0;padding:4px;list-style:none;background:#fff;border:1px solid #8a8a8a;border-radius:8px;box-shadow:0 14px 34px -10px rgba(0,0,0,.3)}\n.cb__list li{padding:10px;border-radius:6px}\n.cb__list li[aria-selected=true]{background:#f0f0f0;font-weight:600}"
+  }
+}

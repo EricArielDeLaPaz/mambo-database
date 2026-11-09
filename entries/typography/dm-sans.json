@@ -1,0 +1,59 @@
+{
+  "id": "dm-sans",
+  "type": "typeface",
+  "name": "DM Sans",
+  "category": "sans-serif",
+  "summary": "A low-contrast geometric sans with a friendly, modern tone.",
+  "industries": [
+    "technology",
+    "creative",
+    "retail"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/DM+Sans",
+  "pairings": [
+    {
+      "id": "dm-serif-display",
+      "family": "DM Serif Display",
+      "role": "display",
+      "why": "Designed to be used together: serif display, geometric sans body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "lora",
+      "family": "Lora",
+      "role": "body",
+      "why": "A friendly sans heading over a warm serif for long articles.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'DM Sans', system-ui, sans-serif;\n}"
+}

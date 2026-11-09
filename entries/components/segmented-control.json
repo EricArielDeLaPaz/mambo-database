@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "switch",
-    "view"
-  ],
   "summary": "A row of 2 to 5 connected buttons where exactly one is selected. Switches the view of the same content.",
   "anatomy": [
     {

@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "search",
-    "query"
-  ],
   "summary": "A text input specialised for queries, with a search icon and a clear button.",
   "anatomy": [
     {

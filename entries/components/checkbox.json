@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "form",
-    "selection"
-  ],
   "summary": "A box that turns one option on or off, or selects several items from a list.",
   "anatomy": [
     {

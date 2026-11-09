@@ -1,0 +1,59 @@
+{
+  "id": "midnight-sky",
+  "type": "color",
+  "name": "Midnight sky",
+  "category": "dark",
+  "summary": "Deep navy surfaces with a sky-blue primary and a pink accent.",
+  "mood": "Calm, cinematic",
+  "industries": [
+    "technology",
+    "entertainment",
+    "media"
+  ],
+  "roles": {
+    "bg": "#0f172a",
+    "surface": "#1e293b",
+    "ink": "#f1f5f9",
+    "text-secondary": "#94a3b8",
+    "primary": "#38bdf8",
+    "primary-text": "#0f172a",
+    "accent": "#f472b6",
+    "danger": "#f87171"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Body text needs 4.5:1 against its background; large text and UI parts need 3:1.",
+    "Every text pair listed here was checked at 4.5:1 or higher.",
+    "Use primary-text on primary fills; never put text-secondary on primary.",
+    "Keep status meaning in text or an icon too, not color alone."
+  ]
+}

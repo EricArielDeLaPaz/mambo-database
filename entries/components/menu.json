@@ -1,0 +1,129 @@
+{
+  "id": "menu",
+  "type": "component",
+  "name": "Menu",
+  "category": "overlays",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A list of actions that opens from a button, such as More options.",
+  "anatomy": [
+    {
+      "part": "trigger",
+      "required": true,
+      "purpose": "Button with aria-haspopup=menu."
+    },
+    {
+      "part": "menu",
+      "required": true,
+      "purpose": "Floating list, min width 180px."
+    },
+    {
+      "part": "item",
+      "required": true,
+      "purpose": "One action, 40 to 44px tall."
+    },
+    {
+      "part": "separator",
+      "required": false,
+      "purpose": "Groups related actions."
+    },
+    {
+      "part": "danger-item",
+      "required": false,
+      "purpose": "Destructive action, last, with text not only color."
+    }
+  ],
+  "variants": [
+    {
+      "id": "actions",
+      "name": "Actions",
+      "use": "More options on a row.",
+      "contentLimits": {
+        "items": "3 to 8",
+        "label": "max 24 characters"
+      }
+    },
+    {
+      "id": "with-icons",
+      "name": "With icons",
+      "use": "Frequent actions.",
+      "contentLimits": {
+        "items": "3 to 8"
+      }
+    },
+    {
+      "id": "context",
+      "name": "Context menu",
+      "use": "Right-click on desktop.",
+      "contentLimits": {
+        "items": "up to 10"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Secondary actions that would crowd the screen."
+  ],
+  "whenNotToUse": [
+    "Choosing a value: use a select.",
+    "Primary actions: show them as buttons.",
+    "Navigation: use navigation links."
+  ],
+  "alternatives": [
+    "popover",
+    "select",
+    "drawer"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.border.strong",
+    "radius.md",
+    "shadow.overlay"
+  ],
+  "accessibility": {
+    "role": "menu with menuitem",
+    "keyboard": [
+      "Enter/Space/Arrow Down opens.",
+      "Arrows move; Home/End jump.",
+      "Escape closes and returns focus to the trigger.",
+      "Typing jumps to an item."
+    ],
+    "focus": "Focus moves to the first item on open and returns to the trigger on close.",
+    "notes": [
+      "Do not put form controls inside.",
+      "Disabled items stay visible with aria-disabled.",
+      "Destructive items are last and labeled in text."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.mn__m button:hover{background:#f0f0f0}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".mn__m button,.mn__t:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "popover",
+    "select",
+    "drawer"
+  ],
+  "code": {
+    "html": "<div class=\"mn\">\n  <button type=\"button\" aria-haspopup=\"menu\" aria-expanded=\"true\" class=\"mn__t\">More</button>\n  <div role=\"menu\" class=\"mn__m\">\n    <button role=\"menuitem\">Rename</button>\n    <button role=\"menuitem\">Duplicate</button>\n    <button role=\"menuitem\" class=\"mn__d\">Delete</button>\n  </div>\n</div>",
+    "css": ".mn{position:relative;display:inline-block;font:14px system-ui,sans-serif}\n.mn__t{min-height:40px;padding:0 16px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif}\n.mn__m{display:grid;min-width:180px;margin-top:6px;padding:4px;background:#fff;border:1px solid #8a8a8a;border-radius:8px;box-shadow:0 14px 34px -10px rgba(0,0,0,.3)}\n.mn__m button{text-align:left;min-height:40px;padding:0 12px;border:0;border-radius:6px;background:none;font:inherit;cursor:pointer}\n.mn__d{color:#b91c1c}"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "id": "empty-state",
+  "type": "component",
+  "name": "Empty state",
+  "category": "feedback",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "What a list, table or screen shows when it has nothing yet. It explains why and gives one next step.",
+  "anatomy": [
+    {
+      "part": "illustration",
+      "required": false,
+      "purpose": "Simple icon or picture, decorative."
+    },
+    {
+      "part": "title",
+      "required": true,
+      "purpose": "Says what is empty, max 40 characters."
+    },
+    {
+      "part": "description",
+      "required": true,
+      "purpose": "One sentence on why, or what to do."
+    },
+    {
+      "part": "action",
+      "required": false,
+      "purpose": "One button that fixes it."
+    }
+  ],
+  "variants": [
+    {
+      "id": "first-use",
+      "name": "First use",
+      "use": "Nothing created yet.",
+      "contentLimits": {
+        "title": "max 40 characters",
+        "action": "Create the first one"
+      }
+    },
+    {
+      "id": "no-results",
+      "name": "No results",
+      "use": "Search or filter returned nothing.",
+      "contentLimits": {
+        "action": "Clear filters"
+      }
+    },
+    {
+      "id": "error",
+      "name": "Error or offline",
+      "use": "Could not load.",
+      "contentLimits": {
+        "action": "Try again"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Any screen that can have zero items."
+  ],
+  "whenNotToUse": [
+    "Short loads: use a skeleton.",
+    "Errors that block the whole page: use an error page."
+  ],
+  "alternatives": [
+    "skeleton",
+    "inline-alert",
+    "card"
+  ],
+  "tokens": [
+    "color.text.secondary",
+    "space.6",
+    "radius.lg"
+  ],
+  "accessibility": {
+    "role": "none or a status region for dynamic changes",
+    "keyboard": [
+      "Action button is the first focusable item."
+    ],
+    "focus": "Move focus to the heading if the state appears after an action.",
+    "notes": [
+      "Use real headings.",
+      "Illustrations are decorative with empty alt.",
+      "Keep the tone helpful, never blaming."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.es button:hover{background:#262626}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".es button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "skeleton",
+    "inline-alert",
+    "card"
+  ],
+  "code": {
+    "html": "<section class=\"es\">\n  <h3>No projects yet</h3>\n  <p>Create a project to start collecting your work.</p>\n  <button type=\"button\">New project</button>\n</section>",
+    "css": ".es{max-width:320px;padding:32px 24px;border:1px dashed #8a8a8a;border-radius:12px;text-align:center;font:15px/1.5 system-ui,sans-serif}\n.es h3{margin:0 0 6px;font-size:18px}\n.es p{margin:0 0 16px;color:#525252}\n.es button{min-height:44px;padding:0 20px;border:1px solid #0a0a0a;border-radius:999px;background:#0a0a0a;color:#fff;font:600 14px system-ui,sans-serif}"
+  }
+}

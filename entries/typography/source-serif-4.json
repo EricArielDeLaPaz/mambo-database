@@ -1,0 +1,98 @@
+{
+  "id": "source-serif-4",
+  "type": "typeface",
+  "name": "Source Serif 4",
+  "category": "serif",
+  "summary": "A transitional serif for text and display with a calm, bookish tone.",
+  "industries": [
+    "media",
+    "education",
+    "legal"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Source+Serif+4",
+  "pairings": [
+    {
+      "id": "oswald",
+      "family": "Oswald",
+      "role": "display",
+      "why": "Tight condensed headlines over a calm serif.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "lexend",
+      "family": "Lexend",
+      "role": "display",
+      "why": "A reading-friendly sans heading over a bookish serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "archivo-black",
+      "family": "Archivo Black",
+      "role": "display",
+      "why": "A heavy grotesque headline over a calm serif for contrast.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "manrope",
+      "family": "Manrope",
+      "role": "display",
+      "why": "A modern sans headline over a serif body for editorial products.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "work-sans",
+      "family": "Work Sans",
+      "role": "display",
+      "why": "A workmanlike grotesque heading over a bookish serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Source Serif 4', Georgia, serif;\n}"
+}

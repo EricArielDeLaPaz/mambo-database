@@ -126,11 +126,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "overlay",
-    "mobile",
-    "gesture"
-  ],
   "states": [
     {
       "id": "focus",

@@ -131,11 +131,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "overlay",
-    "decision",
-    "focus-trap"
-  ],
   "states": [
     {
       "id": "focus",

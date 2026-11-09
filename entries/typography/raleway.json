@@ -1,0 +1,45 @@
+{
+  "id": "raleway",
+  "type": "typeface",
+  "name": "Raleway",
+  "category": "sans-serif",
+  "summary": "An elegant, thin-stroked sans that works best large.",
+  "industries": [
+    "hospitality",
+    "creative",
+    "retail"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Raleway",
+  "pairings": [
+    {
+      "id": "lora",
+      "family": "Lora",
+      "role": "body",
+      "why": "Light, elegant sans headlines over a warm serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Raleway', system-ui, sans-serif;\n}"
+}

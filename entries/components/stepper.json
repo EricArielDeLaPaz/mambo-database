@@ -1,0 +1,103 @@
+{
+  "id": "stepper",
+  "type": "component",
+  "name": "Stepper",
+  "category": "navigation",
+  "level": "molecule",
+  "platforms": [
+    "desktop",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "Shows progress through an ordered process such as checkout or onboarding, with the current step highlighted.",
+  "anatomy": [
+    {
+      "part": "list",
+      "required": true,
+      "purpose": "Ordered list of steps."
+    },
+    {
+      "part": "step",
+      "required": true,
+      "purpose": "Number or check plus a short label."
+    },
+    {
+      "part": "connector",
+      "required": false,
+      "purpose": "Line between steps."
+    },
+    {
+      "part": "current",
+      "required": true,
+      "purpose": "Marked with aria-current=step."
+    }
+  ],
+  "variants": [
+    {
+      "id": "horizontal",
+      "name": "Horizontal",
+      "use": "Desktop forms with 3 to 6 steps.",
+      "contentLimits": {
+        "steps": "3 to 6",
+        "label": "max 16 characters"
+      }
+    },
+    {
+      "id": "vertical",
+      "name": "Vertical",
+      "use": "Long steps or mobile.",
+      "contentLimits": {
+        "steps": "3 to 8"
+      }
+    },
+    {
+      "id": "compact",
+      "name": "Compact text",
+      "use": "Mobile: 'Step 2 of 4'.",
+      "contentLimits": {
+        "label": "Step n of N"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Linear flows where order matters."
+  ],
+  "whenNotToUse": [
+    "Switching views: use tabs.",
+    "More than 7 steps: group them."
+  ],
+  "alternatives": [
+    "tabs",
+    "progress-bar",
+    "breadcrumbs"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.border.default",
+    "space.3"
+  ],
+  "accessibility": {
+    "role": "ordered list with aria-current=step",
+    "keyboard": [
+      "Tab moves through clickable completed steps."
+    ],
+    "focus": "Focus ring on interactive steps.",
+    "notes": [
+      "Completed steps need a check icon, not color alone.",
+      "Provide 'Step 2 of 4' text.",
+      "Do not allow jumping forward past required steps."
+    ]
+  },
+  "states": [],
+  "related": [
+    "tabs",
+    "progress-bar",
+    "breadcrumbs"
+  ],
+  "code": {
+    "html": "<ol class=\"st\" aria-label=\"Checkout\">\n  <li class=\"done\">Cart</li>\n  <li aria-current=\"step\">Shipping</li>\n  <li>Payment</li>\n</ol>",
+    "css": ".st{display:flex;gap:20px;list-style:none;margin:0;padding:0;font:600 14px system-ui,sans-serif;color:#525252;counter-reset:s}\n.st li{display:flex;align-items:center;gap:8px;counter-increment:s}\n.st li::before{content:counter(s);display:grid;place-items:center;width:28px;height:28px;border:2px solid #8a8a8a;border-radius:50%;font-size:13px}\n.st .done::before{content:'\\2713';background:#0a0a0a;border-color:#0a0a0a;color:#fff}\n.st [aria-current=step]{color:#0a0a0a}\n.st [aria-current=step]::before{border-color:#0a0a0a;color:#0a0a0a}"
+  }
+}

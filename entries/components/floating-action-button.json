@@ -11,10 +11,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "mobile",
-    "primary-action"
-  ],
   "summary": "A round button that floats above content for the single most important action on a screen, such as Compose or Add.",
   "anatomy": [
     {

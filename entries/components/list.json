@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "data",
-    "rows"
-  ],
   "summary": "A vertical stack of rows, each describing one item, with optional icon, secondary text and action.",
   "anatomy": [
     {

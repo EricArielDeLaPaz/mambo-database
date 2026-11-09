@@ -1,0 +1,205 @@
+{
+  "id": "inter",
+  "type": "typeface",
+  "name": "Inter",
+  "category": "sans-serif",
+  "summary": "A neutral, highly legible sans built for screens. The safe default for interface and body text.",
+  "industries": [
+    "all"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Inter",
+  "pairings": [
+    {
+      "id": "playfair-display",
+      "family": "Playfair Display",
+      "role": "display",
+      "why": "Elegant headlines with a neutral interface body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "poppins",
+      "family": "Poppins",
+      "role": "display",
+      "why": "Round geometric headlines over a precise UI body.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "plus-jakarta-sans",
+      "family": "Plus Jakarta Sans",
+      "role": "display",
+      "why": "Friendly geometric display over a highly legible UI sans.",
+      "displayWeights": [
+        700,
+        800
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "space-grotesk",
+      "family": "Space Grotesk",
+      "role": "display",
+      "why": "A techy grotesque for headlines and a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "fraunces",
+      "family": "Fraunces",
+      "role": "display",
+      "why": "A soft, characterful serif headline over a clean sans.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "sora",
+      "family": "Sora",
+      "role": "display",
+      "why": "Modern geometric headlines over a neutral body for fintech and software.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "outfit",
+      "family": "Outfit",
+      "role": "display",
+      "why": "Clean, round headings over a neutral interface sans.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "space-mono",
+      "family": "Space Mono",
+      "role": "display",
+      "why": "A mono label or headline over a neutral body, for technical products.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "jetbrains-mono",
+      "family": "JetBrains Mono",
+      "role": "display",
+      "why": "Code-flavored headings and labels over a neutral body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "crimson-pro",
+      "family": "Crimson Pro",
+      "role": "display",
+      "why": "A refined serif headline over a neutral sans.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "eb-garamond",
+      "family": "EB Garamond",
+      "role": "display",
+      "why": "A literary Garamond headline over a clean modern body.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "bitter",
+      "family": "Bitter",
+      "role": "display",
+      "why": "Slab headlines for character with a neutral body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "instrument-serif",
+      "family": "Instrument Serif",
+      "role": "display",
+      "why": "A condensed elegant serif for statement headlines over a neutral body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Inter', system-ui, sans-serif;\n}"
+}

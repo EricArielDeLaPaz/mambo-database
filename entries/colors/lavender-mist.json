@@ -1,0 +1,59 @@
+{
+  "id": "lavender-mist",
+  "type": "color",
+  "name": "Lavender mist",
+  "category": "pastel",
+  "summary": "A light lavender canvas with a violet primary and a teal accent.",
+  "mood": "Soft, creative",
+  "industries": [
+    "wellness",
+    "creative",
+    "education"
+  ],
+  "roles": {
+    "bg": "#faf5ff",
+    "surface": "#f3e8ff",
+    "ink": "#2e1065",
+    "text-secondary": "#5b4b7a",
+    "primary": "#6d28d9",
+    "primary-text": "#ffffff",
+    "accent": "#0f766e",
+    "danger": "#b91c1c"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Body text needs 4.5:1 against its background; large text and UI parts need 3:1.",
+    "Every text pair listed here was checked at 4.5:1 or higher.",
+    "Use primary-text on primary fills; never put text-secondary on primary.",
+    "Keep status meaning in text or an icon too, not color alone."
+  ]
+}

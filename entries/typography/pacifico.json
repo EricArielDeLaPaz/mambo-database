@@ -1,0 +1,36 @@
+{
+  "id": "pacifico",
+  "type": "typeface",
+  "name": "Pacifico",
+  "category": "handwriting",
+  "summary": "A casual brush script. Use for a short logo or accent, never for body text.",
+  "industries": [
+    "food-beverage",
+    "entertainment",
+    "retail"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Pacifico",
+  "pairings": [
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "A brush script for one short accent over a very readable body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Pacifico:wght@400&display=swap');\n:root {\n  --font-main: 'Pacifico', system-ui, sans-serif;\n}"
+}

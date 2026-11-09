@@ -1,0 +1,37 @@
+{
+  "id": "dm-serif-display",
+  "type": "typeface",
+  "name": "DM Serif Display",
+  "category": "serif",
+  "summary": "A high-contrast serif display face designed to pair with DM Sans.",
+  "industries": [
+    "hospitality",
+    "retail",
+    "creative"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/DM+Serif+Display",
+  "pairings": [
+    {
+      "id": "dm-sans",
+      "family": "DM Sans",
+      "role": "body",
+      "why": "Designed to be used together: serif display, geometric sans body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:wght@400&display=swap');\n:root {\n  --font-main: 'DM Serif Display', Georgia, serif;\n}"
+}

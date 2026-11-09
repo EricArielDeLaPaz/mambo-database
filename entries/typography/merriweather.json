@@ -1,0 +1,69 @@
+{
+  "id": "merriweather",
+  "type": "typeface",
+  "name": "Merriweather",
+  "category": "serif",
+  "summary": "A sturdy serif made for reading on screens, with wide letters.",
+  "industries": [
+    "media",
+    "education",
+    "nonprofit"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Merriweather",
+  "pairings": [
+    {
+      "id": "montserrat",
+      "family": "Montserrat",
+      "role": "display",
+      "why": "A wide geometric sans over a sturdy serif. Strong contrast in style and structure.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "A sturdy serif headline with a lightweight, open sans body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "merriweather-sans",
+      "family": "Merriweather Sans",
+      "role": "display",
+      "why": "Matching proportions: sans for headlines, serif for long text.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Merriweather', Georgia, serif;\n}"
+}

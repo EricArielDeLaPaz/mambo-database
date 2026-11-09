@@ -1,0 +1,53 @@
+{
+  "id": "libre-baskerville",
+  "type": "typeface",
+  "name": "Libre Baskerville",
+  "category": "serif",
+  "summary": "A classic Baskerville revised for body text on screens.",
+  "industries": [
+    "legal",
+    "media",
+    "education"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Libre+Baskerville",
+  "pairings": [
+    {
+      "id": "source-sans-3",
+      "family": "Source Sans 3",
+      "role": "body",
+      "why": "A classic serif headline over a clean humanist sans.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "montserrat",
+      "family": "Montserrat",
+      "role": "body",
+      "why": "Traditional serif headlines with a wide geometric body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Libre Baskerville', Georgia, serif;\n}"
+}

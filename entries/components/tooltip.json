@@ -11,10 +11,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "overlay",
-    "hint"
-  ],
   "summary": "A small label that appears on hover or focus to name or briefly explain a control.",
   "anatomy": [
     {

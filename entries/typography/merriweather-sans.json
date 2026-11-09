@@ -1,0 +1,41 @@
+{
+  "id": "merriweather-sans",
+  "type": "typeface",
+  "name": "Merriweather Sans",
+  "category": "sans-serif",
+  "summary": "The sans companion to Merriweather, with matching proportions.",
+  "industries": [
+    "media",
+    "education"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Merriweather+Sans",
+  "pairings": [
+    {
+      "id": "merriweather",
+      "family": "Merriweather",
+      "role": "body",
+      "why": "Matching proportions: sans for headlines, serif for long text.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Merriweather Sans', system-ui, sans-serif;\n}"
+}

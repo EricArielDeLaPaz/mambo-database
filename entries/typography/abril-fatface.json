@@ -1,0 +1,36 @@
+{
+  "id": "abril-fatface",
+  "type": "typeface",
+  "name": "Abril Fatface",
+  "category": "display",
+  "summary": "A fat, high-contrast Didone for dramatic headlines.",
+  "industries": [
+    "media",
+    "retail",
+    "hospitality"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Abril+Fatface",
+  "pairings": [
+    {
+      "id": "lato",
+      "family": "Lato",
+      "role": "body",
+      "why": "A dramatic Didone headline over a gentle sans.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface:wght@400&display=swap');\n:root {\n  --font-main: 'Abril Fatface', system-ui, sans-serif;\n}"
+}

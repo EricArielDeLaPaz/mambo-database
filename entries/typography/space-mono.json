@@ -1,0 +1,51 @@
+{
+  "id": "space-mono",
+  "type": "typeface",
+  "name": "Space Mono",
+  "category": "monospace",
+  "summary": "A quirky monospace used for labels, code and data.",
+  "industries": [
+    "technology",
+    "creative",
+    "data"
+  ],
+  "roles": [
+    "mono",
+    "display"
+  ],
+  "weights": [
+    400,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Space+Mono",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A mono label or headline over a neutral body, for technical products.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "space-grotesk",
+      "family": "Space Grotesk",
+      "role": "body",
+      "why": "Mono for labels and a grotesque body. A designer favorite.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');\n:root {\n  --font-mono: 'Space Mono', ui-monospace, monospace;\n}"
+}

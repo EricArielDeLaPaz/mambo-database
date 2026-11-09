@@ -1,0 +1,42 @@
+{
+  "id": "cormorant-garamond",
+  "type": "typeface",
+  "name": "Cormorant Garamond",
+  "category": "serif",
+  "summary": "A delicate display Garamond with sharp detail. Best at large sizes.",
+  "industries": [
+    "hospitality",
+    "creative",
+    "retail"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Cormorant+Garamond",
+  "pairings": [
+    {
+      "id": "lato",
+      "family": "Lato",
+      "role": "body",
+      "why": "Delicate display serif at large sizes over sturdy, calm body text.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Cormorant Garamond', Georgia, serif;\n}"
+}

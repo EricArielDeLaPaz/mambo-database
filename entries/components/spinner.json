@@ -1,0 +1,93 @@
+{
+  "id": "spinner",
+  "type": "component",
+  "name": "Spinner",
+  "category": "feedback",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A rotating indicator for a short wait of unknown length. Pair it with text if the wait is longer than a few seconds.",
+  "anatomy": [
+    {
+      "part": "ring",
+      "required": true,
+      "purpose": "Rotating arc."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Hidden text 'Loading', or visible text for long waits."
+    }
+  ],
+  "variants": [
+    {
+      "id": "inline",
+      "name": "Inline",
+      "use": "Inside a button while saving.",
+      "contentLimits": {
+        "size": "16 to 20px"
+      }
+    },
+    {
+      "id": "block",
+      "name": "Block",
+      "use": "Loading a section.",
+      "contentLimits": {
+        "size": "32 to 48px",
+        "label": "optional visible text"
+      }
+    },
+    {
+      "id": "page",
+      "name": "Full page",
+      "use": "First load.",
+      "contentLimits": {
+        "size": "48px",
+        "label": "visible text"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Waits under about 10 seconds where progress is unknown."
+  ],
+  "whenNotToUse": [
+    "Known progress: use a progress bar.",
+    "Content-shaped loading: use a skeleton."
+  ],
+  "alternatives": [
+    "progress-bar",
+    "skeleton"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.border.default",
+    "motion.duration.slow"
+  ],
+  "accessibility": {
+    "role": "status with a text label",
+    "keyboard": [
+      "Not focusable."
+    ],
+    "focus": "Move focus to the new content when loading ends.",
+    "notes": [
+      "Provide role=status and a text label.",
+      "Respect prefers-reduced-motion by slowing or swapping to a pulse.",
+      "Do not use it for more than a few seconds without text."
+    ]
+  },
+  "states": [],
+  "related": [
+    "progress-bar",
+    "skeleton"
+  ],
+  "code": {
+    "html": "<div class=\"sp\" role=\"status\"><span class=\"sr\">Loading</span></div>",
+    "css": ".sp{width:32px;height:32px;border:4px solid #d4d4d4;border-top-color:#0a0a0a;border-radius:50%;animation:spin .8s linear infinite}\n.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}\n@keyframes spin{to{transform:rotate(360deg)}}\n@media (prefers-reduced-motion:reduce){.sp{animation-duration:2s}}"
+  }
+}

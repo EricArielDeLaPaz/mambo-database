@@ -1,0 +1,46 @@
+{
+  "id": "barlow",
+  "type": "typeface",
+  "name": "Barlow",
+  "category": "sans-serif",
+  "summary": "A slightly rounded grotesk inspired by California road signs.",
+  "industries": [
+    "technology",
+    "media",
+    "data"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Barlow",
+  "pairings": [
+    {
+      "id": "barlow-condensed",
+      "family": "Barlow Condensed",
+      "role": "display",
+      "why": "One family, two widths. Compact headings with a standard body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Barlow', system-ui, sans-serif;\n}"
+}

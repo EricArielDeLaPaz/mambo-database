@@ -1,0 +1,46 @@
+{
+  "id": "barlow-condensed",
+  "type": "typeface",
+  "name": "Barlow Condensed",
+  "category": "sans-serif",
+  "summary": "A condensed grotesk for compact, strong headlines.",
+  "industries": [
+    "media",
+    "gaming",
+    "retail"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Barlow+Condensed",
+  "pairings": [
+    {
+      "id": "barlow",
+      "family": "Barlow",
+      "role": "body",
+      "why": "One family, two widths. Compact headings with a standard body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Barlow Condensed', system-ui, sans-serif;\n}"
+}

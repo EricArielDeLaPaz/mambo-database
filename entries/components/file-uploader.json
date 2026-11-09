@@ -1,0 +1,133 @@
+{
+  "id": "file-uploader",
+  "type": "component",
+  "name": "File uploader",
+  "category": "forms",
+  "level": "organism",
+  "platforms": [
+    "desktop",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A drop zone and button for adding files, with progress and a way to remove each file.",
+  "anatomy": [
+    {
+      "part": "dropzone",
+      "required": true,
+      "purpose": "Dashed area that accepts drops; the button inside is the real control."
+    },
+    {
+      "part": "button",
+      "required": true,
+      "purpose": "Choose files; works without dragging."
+    },
+    {
+      "part": "rules",
+      "required": true,
+      "purpose": "Accepted types and max size."
+    },
+    {
+      "part": "file-row",
+      "required": true,
+      "purpose": "Name, size, progress and Remove."
+    },
+    {
+      "part": "error",
+      "required": false,
+      "purpose": "Which file failed and why."
+    }
+  ],
+  "variants": [
+    {
+      "id": "dropzone",
+      "name": "Drop zone",
+      "use": "Documents and images on desktop.",
+      "contentLimits": {
+        "files": "1 to 20",
+        "rules": "types and max size shown"
+      }
+    },
+    {
+      "id": "button",
+      "name": "Button only",
+      "use": "Mobile and simple forms.",
+      "contentLimits": {
+        "files": "1 to 5"
+      }
+    },
+    {
+      "id": "avatar",
+      "name": "Avatar",
+      "use": "Profile picture with preview.",
+      "contentLimits": {
+        "files": "1",
+        "preview": "required"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Adding files to a form or a library."
+  ],
+  "whenNotToUse": [
+    "Text content: use a textarea.",
+    "Photos on mobile: let the system picker open."
+  ],
+  "alternatives": [
+    "inline-alert",
+    "progress-bar",
+    "button"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "radius.lg",
+    "space.6"
+  ],
+  "accessibility": {
+    "role": "button that opens a file input; a list of files",
+    "keyboard": [
+      "Enter or Space on the button opens the file dialog.",
+      "Remove buttons are in the tab order."
+    ],
+    "focus": "Focus ring on the button.",
+    "notes": [
+      "Dragging is never required.",
+      "Announce completed uploads and errors with a live region.",
+      "Show types and size limits before upload.",
+      "Remove buttons need labels: Remove report.pdf."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.up__b:hover{background:#262626}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".up__b:focus-within:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "dragover",
+      "label": "Drag over",
+      "when": "all",
+      "note": "",
+      "css": ".up.is-over{background:#f0f0f0;border-color:#0a0a0a}"
+    }
+  ],
+  "related": [
+    "inline-alert",
+    "progress-bar",
+    "button"
+  ],
+  "code": {
+    "html": "<div class=\"up\">\n  <p><b>Drop files here</b> or</p>\n  <label class=\"up__b\">Choose files<input type=\"file\" multiple hidden></label>\n  <p class=\"up__r\">PDF or PNG, up to 10 MB</p>\n</div>",
+    "css": ".up{display:grid;justify-items:center;gap:8px;max-width:360px;padding:28px 20px;border:2px dashed #8a8a8a;border-radius:12px;font:14px system-ui,sans-serif;text-align:center}\n.up p{margin:0}\n.up__r{color:#525252}\n.up__b{display:inline-flex;align-items:center;min-height:44px;padding:0 20px;border:1px solid #0a0a0a;border-radius:999px;background:#0a0a0a;color:#fff;font-weight:600;cursor:pointer}"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "instrument-serif",
+  "type": "typeface",
+  "name": "Instrument Serif",
+  "category": "serif",
+  "summary": "A condensed, elegant display serif with a modern editorial feel.",
+  "industries": [
+    "creative",
+    "media",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Instrument+Serif",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A condensed elegant serif for statement headlines over a neutral body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400&display=swap');\n:root {\n  --font-main: 'Instrument Serif', Georgia, serif;\n}"
+}

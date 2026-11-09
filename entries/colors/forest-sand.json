@@ -1,0 +1,60 @@
+{
+  "id": "forest-sand",
+  "type": "color",
+  "name": "Forest and sand",
+  "category": "earthy",
+  "summary": "Forest green on warm sand with a clay accent. Natural without looking childish.",
+  "mood": "Grounded, natural",
+  "industries": [
+    "sustainability",
+    "agriculture",
+    "hospitality",
+    "nonprofit"
+  ],
+  "roles": {
+    "bg": "#faf7f0",
+    "surface": "#f2ede1",
+    "ink": "#1c2b1f",
+    "text-secondary": "#4d5a4f",
+    "primary": "#166534",
+    "primary-text": "#ffffff",
+    "accent": "#b45309",
+    "danger": "#b91c1c"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Body text needs 4.5:1 against its background; large text and UI parts need 3:1.",
+    "Every text pair listed here was checked at 4.5:1 or higher.",
+    "Use primary-text on primary fills; never put text-secondary on primary.",
+    "Keep status meaning in text or an icon too, not color alone."
+  ]
+}

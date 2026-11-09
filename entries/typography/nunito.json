@@ -1,0 +1,44 @@
+{
+  "id": "nunito",
+  "type": "typeface",
+  "name": "Nunito",
+  "category": "sans-serif",
+  "summary": "A rounded sans that feels approachable and soft.",
+  "industries": [
+    "education",
+    "wellness",
+    "nonprofit"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Nunito",
+  "pairings": [
+    {
+      "id": "lora",
+      "family": "Lora",
+      "role": "body",
+      "why": "A soft sans heading over a warm serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Nunito', system-ui, sans-serif;\n}"
+}

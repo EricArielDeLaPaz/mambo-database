@@ -12,11 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "form",
-    "field",
-    "validation"
-  ],
   "summary": "A single-line field with a visible label, optional hint and an error message.",
   "anatomy": [
     {

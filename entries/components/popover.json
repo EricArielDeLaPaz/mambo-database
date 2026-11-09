@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "overlay",
-    "menu"
-  ],
   "summary": "A small floating panel attached to a trigger. Holds a menu, filters or a short form.",
   "anatomy": [
     {

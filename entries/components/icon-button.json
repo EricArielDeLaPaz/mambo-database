@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "icon",
-    "toolbar"
-  ],
   "summary": "A square or circular button that shows only an icon. For compact, familiar actions like close, search or more.",
   "anatomy": [
     {

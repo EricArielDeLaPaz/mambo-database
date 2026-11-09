@@ -11,10 +11,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "data",
-    "grid"
-  ],
   "summary": "Rows and columns for comparing structured data with sorting and optional pagination.",
   "anatomy": [
     {

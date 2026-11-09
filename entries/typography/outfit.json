@@ -1,0 +1,46 @@
+{
+  "id": "outfit",
+  "type": "typeface",
+  "name": "Outfit",
+  "category": "sans-serif",
+  "summary": "A geometric sans with clean, round shapes and a modern voice.",
+  "industries": [
+    "technology",
+    "retail",
+    "creative"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Outfit",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "Clean, round headings over a neutral interface sans.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Outfit', system-ui, sans-serif;\n}"
+}

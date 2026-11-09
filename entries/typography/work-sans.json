@@ -1,0 +1,46 @@
+{
+  "id": "work-sans",
+  "type": "typeface",
+  "name": "Work Sans",
+  "category": "sans-serif",
+  "summary": "A grotesque sans tuned for screens, with an even, workmanlike texture.",
+  "industries": [
+    "technology",
+    "media",
+    "data"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Work+Sans",
+  "pairings": [
+    {
+      "id": "source-serif-4",
+      "family": "Source Serif 4",
+      "role": "body",
+      "why": "A workmanlike grotesque heading over a bookish serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Work Sans', system-ui, sans-serif;\n}"
+}

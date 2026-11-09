@@ -1,0 +1,139 @@
+{
+  "id": "textarea",
+  "type": "component",
+  "name": "Textarea",
+  "category": "forms",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A multi-line text field for longer answers such as messages, notes and descriptions.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Visible label above the field."
+    },
+    {
+      "part": "field",
+      "required": true,
+      "purpose": "Resizable box, minimum 3 rows."
+    },
+    {
+      "part": "hint",
+      "required": false,
+      "purpose": "Rules or an example, below the label."
+    },
+    {
+      "part": "counter",
+      "required": false,
+      "purpose": "Characters used, only when there is a limit."
+    },
+    {
+      "part": "error",
+      "required": false,
+      "purpose": "Message with an icon, below the field."
+    }
+  ],
+  "variants": [
+    {
+      "id": "default",
+      "name": "Default",
+      "use": "Free text.",
+      "contentLimits": {
+        "label": "max 40 characters",
+        "rows": "3 to 8"
+      }
+    },
+    {
+      "id": "counted",
+      "name": "With counter",
+      "use": "A hard limit such as 280 characters.",
+      "contentLimits": {
+        "counter": "used / limit",
+        "error": "say how many to remove"
+      }
+    },
+    {
+      "id": "auto-grow",
+      "name": "Auto-grow",
+      "use": "Chat and comments.",
+      "contentLimits": {
+        "rows": "1 up to 6"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Answers longer than one line."
+  ],
+  "whenNotToUse": [
+    "Short single-line values: use a text input.",
+    "Rich formatting: use an editor."
+  ],
+  "alternatives": [
+    "text-input",
+    "search-field"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "color.text.primary",
+    "radius.md",
+    "space.3"
+  ],
+  "accessibility": {
+    "role": "textbox (multiline)",
+    "keyboard": [
+      "Tab enters and leaves; Enter adds a new line."
+    ],
+    "focus": "Focus ring around the field.",
+    "notes": [
+      "Always keep a visible label.",
+      "Link the hint and error with aria-describedby.",
+      "Do not block paste.",
+      "Never use placeholder as the label."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.ta__f:hover{border-color:#0a0a0a}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ta__f:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "when": "all",
+      "note": "",
+      "css": ".ta__f[aria-invalid=true]{border-color:#b91c1c;border-width:2px}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".ta__f:disabled{background:#f5f5f5;color:#737373;cursor:not-allowed}"
+    }
+  ],
+  "related": [
+    "text-input",
+    "search-field"
+  ],
+  "code": {
+    "html": "<label class=\"ta\" for=\"msg\">Message</label>\n<textarea id=\"msg\" class=\"ta__f\" rows=\"4\" aria-describedby=\"msg-h\"></textarea>\n<p id=\"msg-h\" class=\"ta__h\">Tell us what you need. 280 characters max.</p>",
+    "css": ".ta{display:block;margin-bottom:6px;font:600 14px system-ui,sans-serif;color:#0a0a0a}\n.ta__f{width:100%;max-width:360px;min-height:96px;padding:10px 12px;border:1px solid #8a8a8a;border-radius:8px;font:16px/1.5 system-ui,sans-serif;resize:vertical}\n.ta__h{margin:6px 0 0;font:13px system-ui,sans-serif;color:#525252}"
+  }
+}

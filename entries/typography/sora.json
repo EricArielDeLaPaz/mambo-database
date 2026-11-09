@@ -1,0 +1,45 @@
+{
+  "id": "sora",
+  "type": "typeface",
+  "name": "Sora",
+  "category": "sans-serif",
+  "summary": "A geometric sans with open forms for fintech and web3 interfaces.",
+  "industries": [
+    "technology",
+    "finance",
+    "data"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Sora",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "Modern geometric headlines over a neutral body for fintech and software.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Sora', system-ui, sans-serif;\n}"
+}

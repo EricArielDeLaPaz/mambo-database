@@ -1,0 +1,106 @@
+{
+  "id": "open-sans",
+  "type": "typeface",
+  "name": "Open Sans",
+  "category": "sans-serif",
+  "summary": "A warm, open humanist sans that stays readable at small sizes.",
+  "industries": [
+    "all"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Open+Sans",
+  "pairings": [
+    {
+      "id": "montserrat",
+      "family": "Montserrat",
+      "role": "display",
+      "why": "A familiar pairing: geometric headlines over very readable body copy.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "oswald",
+      "family": "Oswald",
+      "role": "display",
+      "why": "Compact headlines with an open, friendly body.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "bebas-neue",
+      "family": "Bebas Neue",
+      "role": "display",
+      "why": "Poster-style headlines over a friendly, readable body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "merriweather",
+      "family": "Merriweather",
+      "role": "display",
+      "why": "A sturdy serif headline with a lightweight, open sans body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "pacifico",
+      "family": "Pacifico",
+      "role": "display",
+      "why": "A brush script for one short accent over a very readable body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "lora",
+      "family": "Lora",
+      "role": "display",
+      "why": "A warm serif heading over a lightweight sans body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Open Sans', system-ui, sans-serif;\n}"
+}

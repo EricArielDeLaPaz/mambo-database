@@ -1,0 +1,68 @@
+{
+  "id": "playfair-display",
+  "type": "typeface",
+  "name": "Playfair Display",
+  "category": "serif",
+  "summary": "A high-contrast transitional serif with editorial elegance.",
+  "industries": [
+    "media",
+    "hospitality",
+    "retail"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Playfair+Display",
+  "pairings": [
+    {
+      "id": "source-sans-3",
+      "family": "Source Sans 3",
+      "role": "body",
+      "why": "A high-contrast serif headline over a quiet humanist sans. Classic editorial pairing.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "lato",
+      "family": "Lato",
+      "role": "body",
+      "why": "The sharp serif is balanced by Lato's soft, open body text.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "Elegant headlines with a neutral interface body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Playfair Display', Georgia, serif;\n}"
+}

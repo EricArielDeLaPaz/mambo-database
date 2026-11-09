@@ -1,0 +1,55 @@
+{
+  "id": "oswald",
+  "type": "typeface",
+  "name": "Oswald",
+  "category": "sans-serif",
+  "summary": "A condensed gothic that reads clearly in tall, tight headlines.",
+  "industries": [
+    "media",
+    "retail",
+    "gaming"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Oswald",
+  "pairings": [
+    {
+      "id": "source-serif-4",
+      "family": "Source Serif 4",
+      "role": "body",
+      "why": "Tight condensed headlines over a calm serif.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "Compact headlines with an open, friendly body.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Oswald', system-ui, sans-serif;\n}"
+}

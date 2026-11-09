@@ -1,0 +1,44 @@
+{
+  "id": "jetbrains-mono",
+  "type": "typeface",
+  "name": "JetBrains Mono",
+  "category": "monospace",
+  "summary": "A monospace made for reading code, with tall lowercase letters.",
+  "industries": [
+    "technology",
+    "data",
+    "gaming"
+  ],
+  "roles": [
+    "mono",
+    "display"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/JetBrains+Mono",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "Code-flavored headings and labels over a neutral body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');\n:root {\n  --font-mono: 'JetBrains Mono', ui-monospace, monospace;\n}"
+}

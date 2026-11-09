@@ -1,0 +1,96 @@
+{
+  "id": "source-sans-3",
+  "type": "typeface",
+  "name": "Source Sans 3",
+  "category": "sans-serif",
+  "summary": "Adobe's clean humanist sans, designed for user interfaces and long reading.",
+  "industries": [
+    "technology",
+    "finance",
+    "education"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Source+Sans+3",
+  "pairings": [
+    {
+      "id": "playfair-display",
+      "family": "Playfair Display",
+      "role": "display",
+      "why": "A high-contrast serif headline over a quiet humanist sans. Classic editorial pairing.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "bebas-neue",
+      "family": "Bebas Neue",
+      "role": "display",
+      "why": "Loud condensed caps for short headlines over a quiet body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "libre-baskerville",
+      "family": "Libre Baskerville",
+      "role": "display",
+      "why": "A classic serif headline over a clean humanist sans.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "quicksand",
+      "family": "Quicksand",
+      "role": "display",
+      "why": "Light, rounded headlines over a steady body face.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "bitter",
+      "family": "Bitter",
+      "role": "display",
+      "why": "A sturdy slab headline over a humanist body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Source Sans 3', system-ui, sans-serif;\n}"
+}

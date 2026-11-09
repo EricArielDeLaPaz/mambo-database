@@ -1,6 +1,6 @@
 # Mambo Database
 
-An open, structured library of UI components, color palettes and font pairings, written for designers and AI assistants.
+An open, structured library of UI components, color sets and typefaces with verified pairings, written for designers and AI assistants.
 
 ## How it works
 Every entry is one JSON file in `entries/`. Run the build and everything else is generated:

@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "loading",
-    "status"
-  ],
   "summary": "A bar that shows how much of a task is done, or that something is loading.",
   "anatomy": [
     {

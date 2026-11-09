@@ -25,6 +25,7 @@ Ask these in one short message, offering the options in brackets. Skip anything 
 
 ## 3. Choose typography
 - At most 2 typefaces plus an optional mono, and at most 3 weights each (for example 400, 600, 700).
+- Open `library-lite.json` `typography`. Each typeface lists `pairsWith`: partners that work as its `body` or `display` (header) font, with verified weights. Choose a verified pair rather than inventing one.
 - Prefer Google Fonts: open source, free for commercial use, and built into Figma. Say so when a font is not on Google Fonts, because it must be installed locally to use in Figma.
 - Body text is 16px or larger on mobile. Give a type scale (xs to 2xl) with line heights.
 

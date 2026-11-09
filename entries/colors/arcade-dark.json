@@ -1,0 +1,58 @@
+{
+  "id": "arcade-dark",
+  "type": "color",
+  "name": "Arcade dark",
+  "category": "dark",
+  "summary": "Charcoal with hot pink and cyan. Made for games and entertainment.",
+  "mood": "Playful, loud",
+  "industries": [
+    "gaming",
+    "entertainment"
+  ],
+  "roles": {
+    "bg": "#111827",
+    "surface": "#1f2937",
+    "ink": "#f9fafb",
+    "text-secondary": "#9ca3af",
+    "primary": "#f472b6",
+    "primary-text": "#111827",
+    "accent": "#22d3ee",
+    "danger": "#fb7185"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Body text needs 4.5:1 against its background; large text and UI parts need 3:1.",
+    "Every text pair listed here was checked at 4.5:1 or higher.",
+    "Use primary-text on primary fills; never put text-secondary on primary.",
+    "Keep status meaning in text or an icon too, not color alone."
+  ]
+}

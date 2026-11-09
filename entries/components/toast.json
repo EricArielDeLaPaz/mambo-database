@@ -12,11 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "notification",
-    "transient",
-    "status"
-  ],
   "summary": "A short message that appears briefly to confirm something happened, without blocking the page.",
   "anatomy": [
     {

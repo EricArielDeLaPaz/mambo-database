@@ -1,0 +1,43 @@
+{
+  "id": "ibm-plex-mono",
+  "type": "typeface",
+  "name": "IBM Plex Mono",
+  "category": "monospace",
+  "summary": "A neutral, technical monospace for code and data.",
+  "industries": [
+    "technology",
+    "data",
+    "finance"
+  ],
+  "roles": [
+    "mono",
+    "display"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/IBM+Plex+Mono",
+  "pairings": [
+    {
+      "id": "ibm-plex-sans",
+      "family": "IBM Plex Sans",
+      "role": "display",
+      "why": "Sans headings with a matching monospace for code and data.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');\n:root {\n  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;\n}"
+}

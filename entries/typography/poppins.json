@@ -1,0 +1,58 @@
+{
+  "id": "poppins",
+  "type": "typeface",
+  "name": "Poppins",
+  "category": "sans-serif",
+  "summary": "A geometric sans with round forms and many weights. Clean and contemporary.",
+  "industries": [
+    "retail",
+    "technology",
+    "entertainment"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Poppins",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "Round geometric headlines over a precise UI body.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "lora",
+      "family": "Lora",
+      "role": "body",
+      "why": "A geometric sans heading over a readable serif.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Poppins', system-ui, sans-serif;\n}"
+}

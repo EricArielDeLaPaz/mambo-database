@@ -35,7 +35,7 @@ for (const e of entries) if (e.type === 'color') e.contrast = e.pairs.map(([fg, 
 const list = a => (a || []).map(x => '- ' + x).join('\n');
 function md(e) {
   if (e.type === 'component') return `# ${e.name}
-Category: ${e.category} | Level: ${e.level || '-'} | Platforms: ${(e.platforms || []).join(', ')} | Industries: ${(e.industries || ['all']).join(', ')} | Tags: ${(e.tags || []).join(', ')}
+Category: ${e.category} | Level: ${e.level || '-'} | Platforms: ${(e.platforms || []).join(', ')} | Industries: ${(e.industries || ['all']).join(', ')}
 
 ${e.summary}
 
@@ -72,11 +72,11 @@ ${e.code.css}
 ${e.code.js ? '```js\n' + e.code.js + '\n```' : ''}
 Related: ${(e.related || []).join(', ')}
 `;
-  if (e.type === 'color') return `# ${e.name} (color set)\n\n${e.summary}\n\nIndustries: ${(e.industries||[]).join(', ')} | Mood: ${e.mood||'-'} | Tags: ${(e.tags||[]).join(', ')}\n\n## Roles\n${Object.entries(e.roles).map(([k, v]) => `- ${k}: ${v}`).join('\n')}\n\n## Contrast checks (WCAG 2.2)\n${e.contrast.map(c => `- ${c.fg} on ${c.bg}: ${c.ratio}:1 | normal text ${c.normalText ? 'PASS' : 'FAIL'} | large text/UI ${c.largeTextAndUI ? 'PASS' : 'FAIL'}`).join('\n')}\n\n## Guidance\n${list(e.guidance)}\n`;
-  if (e.type === 'font-pairing') return `# ${e.name} (font pairing)\n\n${e.summary}\n\nIndustries: ${(e.industries||[]).join(', ')} | Tags: ${(e.tags||[]).join(', ')}\n\n## Roles\n${e.roles.map(r => `- ${r.role}: ${r.family} (${r.weights.join(', ')}), ${r.use}`).join('\n')}\n\n## Type scale\n${e.scale.map(s => `- ${s.token}: ${s.size} / ${s.lineHeight}`).join('\n')}\n\n## Why it works\n${e.whyItWorks}\n\n## Avoid\n${list(e.avoid)}\n\n## CSS\n\`\`\`css\n${e.css}\n\`\`\`\n`;
+  if (e.type === 'color') return `# ${e.name} (color set)\n\n${e.summary}\n\nIndustries: ${(e.industries||[]).join(', ')} | Mood: ${e.mood||'-'}\n\n## Roles\n${Object.entries(e.roles).map(([k, v]) => `- ${k}: ${v}`).join('\n')}\n\n## Contrast checks (WCAG 2.2)\n${e.contrast.map(c => `- ${c.fg} on ${c.bg}: ${c.ratio}:1 | normal text ${c.normalText ? 'PASS' : 'FAIL'} | large text/UI ${c.largeTextAndUI ? 'PASS' : 'FAIL'}`).join('\n')}\n\n## Guidance\n${list(e.guidance)}\n`;
+  if (e.type === 'typeface') return `# ${e.name} (typeface)\n\n${e.summary}\n\nCategory: ${e.category} | Roles: ${e.roles.join(', ')} | Weights: ${e.weights.join(', ')} | License: ${e.license} | Industries: ${(e.industries||[]).join(', ')}\nSource: ${e.source}\n\n## Pairings\nVerified: both fonts are on Google Fonts and the suggested weights exist.\n${e.pairings.map(p => `- **${p.family}** works as the ${p.role === 'body' ? 'body' : 'header / display'} font for ${e.name} (display weights ${p.displayWeights.join(', ')}; body weights ${p.bodyWeights.join(', ')}). ${p.why}`).join('\n')}\n\n## CSS\n\`\`\`css\n${e.css}\n\`\`\`\n`;
 }
 fs.rmSync(out, { recursive: true, force: true });
-const folder = { component: 'components', color: 'colors', 'font-pairing': 'typography' };
+const folder = { component: 'components', color: 'colors', typeface: 'typography' };
 const skillRef = path.join(out, 'skill/mambo-database/references');
 for (const e of entries) { const rel = `${folder[e.type]}/${e.id}.md`; e.md = md(e); w(path.join(out, 'entries', rel), e.md); w(path.join(skillRef, rel), e.md); }
 
@@ -104,7 +104,7 @@ Consult this library before inventing a component, color set or font pairing.
 ## Branches
 - \`references/components/\` for overlays, buttons, cards and other parts, each with variants and code
 - \`references/colors/\` for color sets with contrast results and the industries they suit
-- \`references/typography/\` for font pairings and type scales
+- \`references/typography/\` for single typefaces, each with its verified header/display and body pairings
 - Desktop and mobile patterns are noted in each component's \`platforms\` field
 
 ## Rules
@@ -120,7 +120,7 @@ const copyDir = (a, d) => fs.readdirSync(a, { withFileTypes: true }).forEach(f =
 copyDir(dsSkill, dsOut);
 w(path.join(dsOut, 'library-lite.json'), JSON.stringify({
   colors: entries.filter(e => e.type === 'color').map(e => ({ id: e.id, name: e.name, mood: e.mood, industries: e.industries, roles: e.roles })),
-  typography: entries.filter(e => e.type === 'font-pairing').map(e => ({ id: e.id, name: e.name, industries: e.industries, roles: e.roles.map(r => ({ role: r.role, family: r.family, weights: r.weights })) })),
+  typography: entries.filter(e => e.type === 'typeface').map(e => ({ id: e.id, name: e.name, category: e.category, roles: e.roles, industries: e.industries, pairsWith: e.pairings.map(p => ({ family: p.family, as: p.role === 'body' ? 'body' : 'display', displayWeights: p.displayWeights, bodyWeights: p.bodyWeights })) })),
   components: entries.filter(e => e.type === 'component').map(e => ({ id: e.id, name: e.name, category: e.category, platforms: e.platforms, states: (e.states || []).map(s => s.id) }))
 }, null, 1));
 

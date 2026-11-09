@@ -233,3 +233,29 @@ ol.steps{margin:10px 0;padding-left:22px;display:grid;gap:8px;font-size:14.5px}
 .sw{cursor:default}
 .sw:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .sw:hover{border-color:var(--text)}
+/* v3 */
+mark{background:#0a0a0a;color:#fff;border-radius:2px;padding:0 2px}
+.scope{display:flex;gap:6px;margin:8px 0 0}
+.scope .chip{border-radius:999px;padding:3px 12px}
+.pairs{display:grid;gap:14px}
+.pair{border:1px solid var(--border);border-radius:12px;padding:16px}
+.pair-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.pair-h .name-btn{font:700 18px var(--font-display)}
+.pair-pv{border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin:10px 0;background:var(--surface)}
+.pair-pv>div+div{margin-top:6px}
+.inl{all:unset!important;box-sizing:border-box;flex:1;min-width:0;width:100%;font:inherit!important;font-weight:600!important;color:var(--text)!important;caret-color:var(--text);padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;cursor:text}
+.folder-h .inl{font:700 12px var(--font-mono)!important;text-transform:uppercase;letter-spacing:.06em}
+.colorcard.dragging{opacity:.4}.colorcard.over-top{box-shadow:0 -3px 0 var(--text)}.colorcard.over-bot{box-shadow:0 3px 0 var(--text)}
+.colorcard.flash{animation:flash 1.2s ease}
+@keyframes flash{0%,60%{background:#f0f0f0;box-shadow:0 0 0 3px var(--text)}100%{background:transparent;box-shadow:none}}
+.grip{all:unset;cursor:grab;display:grid;place-items:center;width:28px;height:28px;border-radius:6px;color:var(--text-2)}
+.grip:hover{background:var(--surface);color:var(--text)}
+.grip:focus-visible{outline:2px solid var(--focus)}
+.grip svg{width:16px;height:16px}
+.mv{display:flex;gap:2px}
+.mv button{all:unset;cursor:pointer;display:grid;place-items:center;width:28px;height:28px;border-radius:6px}
+.mv button:hover:not(:disabled){background:var(--surface)}
+.mv button:disabled{opacity:.3;cursor:not-allowed}
+.mv button:focus-visible{outline:2px solid var(--focus)}
+.mv svg{width:12px;height:12px}
+.colortop{grid-template-columns:auto auto minmax(110px,1fr) minmax(100px,140px) minmax(140px,180px) auto}

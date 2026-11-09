@@ -1,0 +1,59 @@
+{
+  "id": "olive-stone",
+  "type": "color",
+  "name": "Olive and stone",
+  "category": "earthy",
+  "summary": "Olive green on stone with a rust accent.",
+  "mood": "Calm, craft",
+  "industries": [
+    "agriculture",
+    "sustainability",
+    "creative"
+  ],
+  "roles": {
+    "bg": "#f7f7f2",
+    "surface": "#ecece2",
+    "ink": "#1f2410",
+    "text-secondary": "#55593f",
+    "primary": "#3f6212",
+    "primary-text": "#ffffff",
+    "accent": "#9a3412",
+    "danger": "#991b1b"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Body text needs 4.5:1 against its background; large text and UI parts need 3:1.",
+    "Every text pair listed here was checked at 4.5:1 or higher.",
+    "Use primary-text on primary fills; never put text-secondary on primary.",
+    "Keep status meaning in text or an icon too, not color alone."
+  ]
+}

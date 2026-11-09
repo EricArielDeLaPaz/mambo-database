@@ -1,0 +1,119 @@
+{
+  "id": "carousel",
+  "type": "component",
+  "name": "Carousel",
+  "category": "data-display",
+  "level": "organism",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A row of slides that scroll sideways. Use for a few related images or cards, never for critical content.",
+  "anatomy": [
+    {
+      "part": "viewport",
+      "required": true,
+      "purpose": "Scrolling container with scroll snap."
+    },
+    {
+      "part": "slide",
+      "required": true,
+      "purpose": "One item."
+    },
+    {
+      "part": "controls",
+      "required": true,
+      "purpose": "Previous and next buttons, 44px."
+    },
+    {
+      "part": "indicators",
+      "required": false,
+      "purpose": "Dots showing the position."
+    },
+    {
+      "part": "pause",
+      "required": false,
+      "purpose": "Required if it autoplays."
+    }
+  ],
+  "variants": [
+    {
+      "id": "cards",
+      "name": "Card row",
+      "use": "Products on mobile and desktop.",
+      "contentLimits": {
+        "slides": "3 to 12",
+        "peek": "show part of the next card"
+      }
+    },
+    {
+      "id": "hero",
+      "name": "Hero images",
+      "use": "Marketing.",
+      "contentLimits": {
+        "slides": "2 to 5",
+        "autoplay": "avoid"
+      }
+    },
+    {
+      "id": "fullwidth",
+      "name": "Full width",
+      "use": "Galleries.",
+      "contentLimits": {
+        "slides": "up to 12",
+        "controls": "required"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Browsing related media in limited space."
+  ],
+  "whenNotToUse": [
+    "Important content or calls to action.",
+    "Autoplaying messages."
+  ],
+  "alternatives": [
+    "card",
+    "tabs"
+  ],
+  "tokens": [
+    "radius.lg",
+    "space.4",
+    "motion.duration.base"
+  ],
+  "accessibility": {
+    "role": "region with aria-roledescription=carousel",
+    "keyboard": [
+      "Previous/Next buttons are focusable.",
+      "Arrow keys scroll when the viewport is focused."
+    ],
+    "focus": "Focus ring on controls and the viewport.",
+    "notes": [
+      "Never autoplay without a pause button.",
+      "Hide off-screen slides from the tab order.",
+      "Each slide has a label such as 2 of 5.",
+      "Respect prefers-reduced-motion."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ca__v:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "card",
+    "tabs"
+  ],
+  "code": {
+    "html": "<section class=\"ca\" aria-roledescription=\"carousel\" aria-label=\"Featured\">\n  <div class=\"ca__v\" tabindex=\"0\">\n    <article class=\"ca__s\">One</article><article class=\"ca__s\">Two</article><article class=\"ca__s\">Three</article>\n  </div>\n</section>",
+    "css": ".ca{max-width:360px}\n.ca__v{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}\n.ca__s{flex:0 0 80%;scroll-snap-align:start;display:grid;place-items:center;height:140px;border:1px solid #d4d4d4;border-radius:12px;background:#fafafa;font:700 18px system-ui,sans-serif}"
+  }
+}

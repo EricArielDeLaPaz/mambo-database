@@ -1,0 +1,70 @@
+{
+  "id": "ibm-plex-sans",
+  "type": "typeface",
+  "name": "IBM Plex Sans",
+  "category": "sans-serif",
+  "summary": "A precise, engineered sans with a technical but warm character.",
+  "industries": [
+    "technology",
+    "data",
+    "finance"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/IBM+Plex+Sans",
+  "pairings": [
+    {
+      "id": "space-grotesk",
+      "family": "Space Grotesk",
+      "role": "display",
+      "why": "Two engineered sans faces with different personalities.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "ibm-plex-serif",
+      "family": "IBM Plex Serif",
+      "role": "display",
+      "why": "One engineered family in two voices. Serif headlines, sans body.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "ibm-plex-mono",
+      "family": "IBM Plex Mono",
+      "role": "body",
+      "why": "Sans headings with a matching monospace for code and data.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'IBM Plex Sans', system-ui, sans-serif;\n}"
+}

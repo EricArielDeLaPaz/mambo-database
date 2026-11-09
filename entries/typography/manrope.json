@@ -1,0 +1,43 @@
+{
+  "id": "manrope",
+  "type": "typeface",
+  "name": "Manrope",
+  "category": "sans-serif",
+  "summary": "A modern semi-condensed sans with a professional, open look.",
+  "industries": [
+    "finance",
+    "technology",
+    "data"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Manrope",
+  "pairings": [
+    {
+      "id": "source-serif-4",
+      "family": "Source Serif 4",
+      "role": "body",
+      "why": "A modern sans headline over a serif body for editorial products.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Manrope', system-ui, sans-serif;\n}"
+}

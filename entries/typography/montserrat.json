@@ -1,0 +1,84 @@
+{
+  "id": "montserrat",
+  "type": "typeface",
+  "name": "Montserrat",
+  "category": "sans-serif",
+  "summary": "A wide geometric sans inspired by Buenos Aires street signs. Confident headlines.",
+  "industries": [
+    "retail",
+    "hospitality",
+    "creative"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Montserrat",
+  "pairings": [
+    {
+      "id": "merriweather",
+      "family": "Merriweather",
+      "role": "body",
+      "why": "A wide geometric sans over a sturdy serif. Strong contrast in style and structure.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "lora",
+      "family": "Lora",
+      "role": "body",
+      "why": "Confident headlines with a warm serif for long reading.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "A familiar pairing: geometric headlines over very readable body copy.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "libre-baskerville",
+      "family": "Libre Baskerville",
+      "role": "display",
+      "why": "Traditional serif headlines with a wide geometric body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Montserrat', system-ui, sans-serif;\n}"
+}

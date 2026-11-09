@@ -1,0 +1,59 @@
+{
+  "id": "honey-amber",
+  "type": "color",
+  "name": "Honey amber",
+  "category": "warm",
+  "summary": "Amber on a pale butter background with a navy accent.",
+  "mood": "Cozy, optimistic",
+  "industries": [
+    "food-beverage",
+    "hospitality",
+    "retail"
+  ],
+  "roles": {
+    "bg": "#fffbeb",
+    "surface": "#fef3c7",
+    "ink": "#2b1d05",
+    "text-secondary": "#6b5624",
+    "primary": "#b45309",
+    "primary-text": "#ffffff",
+    "accent": "#1e3a8a",
+    "danger": "#b91c1c"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Body text needs 4.5:1 against its background; large text and UI parts need 3:1.",
+    "Every text pair listed here was checked at 4.5:1 or higher.",
+    "Use primary-text on primary fills; never put text-secondary on primary.",
+    "Keep status meaning in text or an icon too, not color alone."
+  ]
+}

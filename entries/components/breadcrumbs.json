@@ -11,10 +11,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "navigation",
-    "hierarchy"
-  ],
   "summary": "A trail of links that shows where the page sits in the site and lets people go back up.",
   "anatomy": [
     {

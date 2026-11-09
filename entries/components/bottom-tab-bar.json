@@ -11,10 +11,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "mobile",
-    "navigation"
-  ],
   "summary": "A bar fixed to the bottom of a phone screen with 3 to 5 top-level destinations.",
   "anatomy": [
     {

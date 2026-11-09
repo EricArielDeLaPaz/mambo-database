@@ -1,0 +1,38 @@
+{
+  "id": "caveat",
+  "type": "typeface",
+  "name": "Caveat",
+  "category": "handwriting",
+  "summary": "A handwritten script for notes and personal touches.",
+  "industries": [
+    "creative",
+    "education"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Caveat",
+  "pairings": [
+    {
+      "id": "nunito-sans",
+      "family": "Nunito Sans",
+      "role": "body",
+      "why": "A handwritten accent over a calm body, for a personal touch.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Caveat', system-ui, sans-serif;\n}"
+}

@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "navigation",
-    "switch"
-  ],
   "summary": "A row of labels that switches between panels of related content in the same place.",
   "anatomy": [
     {

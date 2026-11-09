@@ -1,0 +1,43 @@
+{
+  "id": "ibm-plex-serif",
+  "type": "typeface",
+  "name": "IBM Plex Serif",
+  "category": "serif",
+  "summary": "A serif voice for the IBM Plex family: studious and engineered.",
+  "industries": [
+    "technology",
+    "finance",
+    "legal"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/IBM+Plex+Serif",
+  "pairings": [
+    {
+      "id": "ibm-plex-sans",
+      "family": "IBM Plex Sans",
+      "role": "body",
+      "why": "One engineered family in two voices. Serif headlines, sans body.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'IBM Plex Serif', Georgia, serif;\n}"
+}

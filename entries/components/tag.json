@@ -1,0 +1,106 @@
+{
+  "id": "tag",
+  "type": "component",
+  "name": "Tag",
+  "category": "data-display",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A small square label that describes or categorizes an item. Tags are not buttons, so they are square, not pills.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Square-cornered box, 4px radius."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "One to three words."
+    },
+    {
+      "part": "remove",
+      "required": false,
+      "purpose": "Close button when the tag can be removed."
+    }
+  ],
+  "variants": [
+    {
+      "id": "static",
+      "name": "Static",
+      "use": "Categories on a card.",
+      "contentLimits": {
+        "label": "max 20 characters"
+      }
+    },
+    {
+      "id": "removable",
+      "name": "Removable",
+      "use": "Selected filters.",
+      "contentLimits": {
+        "label": "max 20 characters",
+        "remove": "44px touch area"
+      }
+    },
+    {
+      "id": "selectable",
+      "name": "Selectable",
+      "use": "Filter chips; use aria-pressed.",
+      "contentLimits": {
+        "label": "max 20 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Labeling and filtering items."
+  ],
+  "whenNotToUse": [
+    "Showing a status or count: use a badge.",
+    "Actions: use a button."
+  ],
+  "alternatives": [
+    "badge",
+    "toggle-button"
+  ],
+  "tokens": [
+    "color.border.default",
+    "color.surface.subtle",
+    "radius.sm",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "none for static; button for removable or selectable",
+    "keyboard": [
+      "Removable: Delete or Backspace removes; Tab to the remove button."
+    ],
+    "focus": "Focus ring on interactive tags.",
+    "notes": [
+      "Remove buttons need aria-labels: Remove Design.",
+      "Text 4.5:1 on its background.",
+      "Do not use color alone for category."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".tg:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "badge",
+    "toggle-button"
+  ],
+  "code": {
+    "html": "<span class=\"tg\">Design</span> <span class=\"tg\">Accessibility</span>",
+    "css": ".tg{display:inline-block;padding:2px 10px;border:1px solid #d4d4d4;border-radius:4px;background:#fafafa;color:#525252;font:700 12px ui-monospace,monospace}"
+  }
+}

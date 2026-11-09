@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "tag",
-    "status"
-  ],
   "summary": "A small square-cornered label that shows status, count or category.",
   "anatomy": [
     {

@@ -30,8 +30,8 @@ function fixFg(fg, bg, target) {
 }
 
 /* ---------- constants ---------- */
-const TYPE = { component: 'Component', color: 'Color', 'font-pairing': 'Typography' };
-const TYPE_PLURAL = { component: 'Components', color: 'Colors', 'font-pairing': 'Typography' };
+const TYPE = { component: 'Component', color: 'Color', typeface: 'Typography' };
+const TYPE_PLURAL = { component: 'Components', color: 'Colors', typeface: 'Typography' };
 const PLAT = { desktop: 'Desktop', 'mobile-web': 'Mobile web', 'mobile-app': 'Mobile app' };
 const INDUSTRIES = [['all', 'All'], ['finance', 'Finance & fintech'], ['insurance', 'Insurance'], ['legal', 'Legal'], ['healthcare', 'Healthcare'], ['wellness', 'Wellness & fitness'], ['education', 'Education'], ['retail', 'Retail & e-commerce'], ['food-beverage', 'Food & beverage'], ['hospitality', 'Travel & hospitality'], ['technology', 'Technology & SaaS'], ['data', 'Data & analytics'], ['entertainment', 'Entertainment'], ['gaming', 'Gaming'], ['creative', 'Creative & media'], ['media', 'Publishing & media'], ['nonprofit', 'Nonprofit'], ['sustainability', 'Sustainability'], ['agriculture', 'Agriculture']];
 const indLabel = k => (INDUSTRIES.find(i => i[0] === k) || [k, k])[1];
@@ -134,7 +134,7 @@ const tip = document.createElement('div'); tip.className = 'ctip'; tip.hidden = 
 const tipData = (name, hex, others, sys) => esc(JSON.stringify({ n: name, h: hex, sys: sys ? 1 : 0, o: others.map(o => ({ n: o.name, h: o.hex })) }));
 let tipSys = null, tipEl = null, hideT = 0;
 function sysCompare(d) {
-  if (!S.systems.length) return '<div class="sysbox"><div class="mut">Create a design system in My design systems to see how this color fits.</div></div>';
+  if (!S.systems.length) return '<div class="sysbox"><div class="mut">Create a design system in Design Systems to see how this color fits.</div></div>';
   const sys = S.systems.find(x => x.id === (tipSys || S.active)) || S.systems[0];
   const rows = sys.colors.filter(o => normHex(o.hex)).slice(0, 10).map(o => { const r = ratio(d.h, o.hex), t = v => r >= v ? '✓' : '✕'; return `<div class="r"><i style="background:${esc(o.hex)};color:${esc(d.h)}">Aa</i><span>${esc(o.name)} ${esc(o.hex)}</span><em>${r.toFixed(2)}:1 AA ${t(4.5)} AAA ${t(7)}</em></div>` }).join('');
   return `<div class="sysbox"><label class="f"><span class="f-t">Try it in</span><select id="tipsys" aria-label="Design system to compare with">${S.systems.map(x => `<option value="${x.id}" ${x.id === sys.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></label>${rows ? `<div class="mut" style="margin:6px 0 2px">With <b>${esc(sys.name)}</b> colors:</div>${rows}` : '<div class="mut" style="margin-top:6px">This system has no colors yet.</div>'}</div>`;

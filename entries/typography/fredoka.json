@@ -1,0 +1,41 @@
+{
+  "id": "fredoka",
+  "type": "typeface",
+  "name": "Fredoka",
+  "category": "sans-serif",
+  "summary": "A rounded, bubbly display sans. Playful and legible.",
+  "industries": [
+    "education",
+    "entertainment",
+    "gaming"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Fredoka",
+  "pairings": [
+    {
+      "id": "nunito-sans",
+      "family": "Nunito Sans",
+      "role": "body",
+      "why": "Bubbly headlines over a calm, clear body. Friendly and readable.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Fredoka', system-ui, sans-serif;\n}"
+}

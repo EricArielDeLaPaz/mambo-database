@@ -12,11 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "form",
-    "dropdown",
-    "listbox"
-  ],
   "summary": "A control that opens a list so someone can choose one option from many.",
   "anatomy": [
     {

@@ -1,0 +1,46 @@
+{
+  "id": "fraunces",
+  "type": "typeface",
+  "name": "Fraunces",
+  "category": "serif",
+  "summary": "A soft, old-style display serif with wonky character.",
+  "industries": [
+    "food-beverage",
+    "creative",
+    "retail"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Fraunces",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A soft, characterful serif headline over a clean sans.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Fraunces', Georgia, serif;\n}"
+}

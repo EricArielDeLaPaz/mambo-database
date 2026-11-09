@@ -1,0 +1,59 @@
+{
+  "id": "plum-luxury",
+  "type": "color",
+  "name": "Plum luxury",
+  "category": "vivid",
+  "summary": "Deep plum with a gold accent on a soft off-white.",
+  "mood": "Rich, indulgent",
+  "industries": [
+    "hospitality",
+    "retail",
+    "creative"
+  ],
+  "roles": {
+    "bg": "#faf8fb",
+    "surface": "#f1ecf4",
+    "ink": "#2a0f3a",
+    "text-secondary": "#5f4a6e",
+    "primary": "#581c87",
+    "primary-text": "#ffffff",
+    "accent": "#a16207",
+    "danger": "#b91c1c"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Body text needs 4.5:1 against its background; large text and UI parts need 3:1.",
+    "Every text pair listed here was checked at 4.5:1 or higher.",
+    "Use primary-text on primary fills; never put text-secondary on primary.",
+    "Keep status meaning in text or an icon too, not color alone."
+  ]
+}

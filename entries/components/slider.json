@@ -1,0 +1,125 @@
+{
+  "id": "slider",
+  "type": "component",
+  "name": "Slider",
+  "category": "forms",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A track with a draggable handle for choosing a value or range by feel.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Names the value."
+    },
+    {
+      "part": "track",
+      "required": true,
+      "purpose": "The full range line, 4 to 8px thick."
+    },
+    {
+      "part": "fill",
+      "required": true,
+      "purpose": "Filled part up to the handle."
+    },
+    {
+      "part": "handle",
+      "required": true,
+      "purpose": "Draggable thumb, 24px minimum (44px touch area)."
+    },
+    {
+      "part": "value",
+      "required": true,
+      "purpose": "Current value as text."
+    }
+  ],
+  "variants": [
+    {
+      "id": "single",
+      "name": "Single",
+      "use": "Volume, brightness.",
+      "contentLimits": {
+        "steps": "continuous or stepped"
+      }
+    },
+    {
+      "id": "range",
+      "name": "Range",
+      "use": "Price filter with two handles.",
+      "contentLimits": {
+        "handles": "2",
+        "value": "min to max"
+      }
+    },
+    {
+      "id": "stepped",
+      "name": "Stepped with ticks",
+      "use": "A few named levels.",
+      "contentLimits": {
+        "steps": "3 to 7"
+      }
+    }
+  ],
+  "whenToUse": [
+    "A value where 'about right' is good enough."
+  ],
+  "whenNotToUse": [
+    "Exact numbers: add a number input beside it.",
+    "Few discrete choices: use radio buttons or a segmented control."
+  ],
+  "alternatives": [
+    "number-input",
+    "segmented-control"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.border.strong",
+    "radius.pill"
+  ],
+  "accessibility": {
+    "role": "slider",
+    "keyboard": [
+      "Arrow keys change by one step.",
+      "Page Up/Down by a larger step.",
+      "Home/End jump to min/max."
+    ],
+    "focus": "Focus ring around the handle.",
+    "notes": [
+      "Show the value as text; do not rely on position.",
+      "Set aria-valuemin, max and now.",
+      "Touch area at least 44px.",
+      "Offer a text alternative for precision."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".sl:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".sl:disabled{opacity:.4;cursor:not-allowed}"
+    }
+  ],
+  "related": [
+    "number-input",
+    "segmented-control"
+  ],
+  "code": {
+    "html": "<label for=\"vol\" class=\"sl__l\">Volume <output id=\"vo\">40</output></label>\n<input id=\"vol\" class=\"sl\" type=\"range\" min=\"0\" max=\"100\" value=\"40\" oninput=\"vo.textContent=this.value\">",
+    "css": ".sl__l{display:flex;justify-content:space-between;width:260px;margin-bottom:6px;font:600 14px system-ui,sans-serif}\n.sl{width:260px;accent-color:#0a0a0a;height:24px}"
+  }
+}

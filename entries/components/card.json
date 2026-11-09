@@ -12,11 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "container",
-    "content",
-    "list-item"
-  ],
   "summary": "A bordered container that groups related content about one thing, such as a product, article or project.",
   "anatomy": [
     {

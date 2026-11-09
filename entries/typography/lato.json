@@ -1,0 +1,68 @@
+{
+  "id": "lato",
+  "type": "typeface",
+  "name": "Lato",
+  "category": "sans-serif",
+  "summary": "Soft, semi-rounded sans with a balanced, calm feel.",
+  "industries": [
+    "retail",
+    "wellness",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    300,
+    400,
+    700,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Lato",
+  "pairings": [
+    {
+      "id": "playfair-display",
+      "family": "Playfair Display",
+      "role": "display",
+      "why": "The sharp serif is balanced by Lato's soft, open body text.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "cormorant-garamond",
+      "family": "Cormorant Garamond",
+      "role": "display",
+      "why": "Delicate display serif at large sizes over sturdy, calm body text.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "id": "abril-fatface",
+      "family": "Abril Fatface",
+      "role": "display",
+      "why": "A dramatic Didone headline over a gentle sans.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        700
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');\n:root {\n  --font-main: 'Lato', system-ui, sans-serif;\n}"
+}

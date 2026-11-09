@@ -1,0 +1,41 @@
+{
+  "id": "quicksand",
+  "type": "typeface",
+  "name": "Quicksand",
+  "category": "sans-serif",
+  "summary": "A light, rounded geometric sans. Gentle and modern.",
+  "industries": [
+    "wellness",
+    "education",
+    "nonprofit"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Quicksand",
+  "pairings": [
+    {
+      "id": "source-sans-3",
+      "family": "Source Sans 3",
+      "role": "body",
+      "why": "Light, rounded headlines over a steady body face.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Quicksand', system-ui, sans-serif;\n}"
+}

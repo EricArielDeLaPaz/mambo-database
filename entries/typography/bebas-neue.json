@@ -1,0 +1,49 @@
+{
+  "id": "bebas-neue",
+  "type": "typeface",
+  "name": "Bebas Neue",
+  "category": "sans-serif",
+  "summary": "All-caps condensed display type. Loud, short headlines only.",
+  "industries": [
+    "entertainment",
+    "gaming",
+    "media"
+  ],
+  "roles": [
+    "display"
+  ],
+  "weights": [
+    400
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Bebas+Neue",
+  "pairings": [
+    {
+      "id": "source-sans-3",
+      "family": "Source Sans 3",
+      "role": "body",
+      "why": "Loud condensed caps for short headlines over a quiet body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "Poster-style headlines over a friendly, readable body.",
+      "displayWeights": [
+        400
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&display=swap');\n:root {\n  --font-main: 'Bebas Neue', system-ui, sans-serif;\n}"
+}

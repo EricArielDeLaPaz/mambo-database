@@ -1,0 +1,107 @@
+{
+  "id": "lora",
+  "type": "typeface",
+  "name": "Lora",
+  "category": "serif",
+  "summary": "A contemporary serif with calligraphic roots. Warm and readable in long text.",
+  "industries": [
+    "media",
+    "nonprofit",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Lora",
+  "pairings": [
+    {
+      "id": "montserrat",
+      "family": "Montserrat",
+      "role": "display",
+      "why": "Confident headlines with a warm serif for long reading.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "raleway",
+      "family": "Raleway",
+      "role": "display",
+      "why": "Light, elegant sans headlines over a warm serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "poppins",
+      "family": "Poppins",
+      "role": "display",
+      "why": "A geometric sans heading over a readable serif.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "nunito",
+      "family": "Nunito",
+      "role": "display",
+      "why": "A soft sans heading over a warm serif.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "open-sans",
+      "family": "Open Sans",
+      "role": "body",
+      "why": "A warm serif heading over a lightweight sans body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "dm-sans",
+      "family": "DM Sans",
+      "role": "display",
+      "why": "A friendly sans heading over a warm serif for long articles.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Lora', Georgia, serif;\n}"
+}

@@ -11,10 +11,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "navigation",
-    "list"
-  ],
   "summary": "Controls that split a long list into pages with previous, next and page numbers.",
   "anatomy": [
     {

@@ -1,0 +1,133 @@
+{
+  "id": "number-input",
+  "type": "component",
+  "name": "Number input",
+  "category": "forms",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A field for a quantity with minus and plus buttons, for small whole numbers.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Names the value."
+    },
+    {
+      "part": "decrease",
+      "required": true,
+      "purpose": "Minus button, 44px square."
+    },
+    {
+      "part": "field",
+      "required": true,
+      "purpose": "Numeric text field, centered."
+    },
+    {
+      "part": "increase",
+      "required": true,
+      "purpose": "Plus button, 44px square."
+    },
+    {
+      "part": "unit",
+      "required": false,
+      "purpose": "Unit text such as kg or items."
+    }
+  ],
+  "variants": [
+    {
+      "id": "stepper",
+      "name": "Stepper",
+      "use": "Quantities from 0 to 99.",
+      "contentLimits": {
+        "range": "0 to 99",
+        "step": "1"
+      }
+    },
+    {
+      "id": "plain",
+      "name": "Plain field",
+      "use": "Large or exact values.",
+      "contentLimits": {
+        "range": "any",
+        "keyboard": "numeric"
+      }
+    },
+    {
+      "id": "compact",
+      "name": "Compact",
+      "use": "Dense tables.",
+      "contentLimits": {
+        "range": "0 to 99",
+        "height": "32px"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Quantities, counts and small adjustable values."
+  ],
+  "whenNotToUse": [
+    "Picking from a range by feel: use a slider.",
+    "Phone numbers, IDs, zip codes: use a text input."
+  ],
+  "alternatives": [
+    "slider",
+    "text-input"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "radius.md",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "spinbutton, or a textbox with inputmode=numeric plus labeled buttons",
+    "keyboard": [
+      "Arrow Up/Down change the value.",
+      "Home/End jump to min/max."
+    ],
+    "focus": "Focus ring on the field and on each button.",
+    "notes": [
+      "Buttons need aria-labels such as Decrease quantity.",
+      "Disable a button at min or max.",
+      "Allow typing, not only the buttons.",
+      "Announce the new value."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.num button:hover{background:#f0f0f0}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".num button,.num input:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".num button:disabled{color:#a3a3a3;cursor:not-allowed}"
+    }
+  ],
+  "related": [
+    "slider",
+    "text-input"
+  ],
+  "code": {
+    "html": "<div class=\"num\" role=\"group\" aria-label=\"Quantity\">\n  <button type=\"button\" aria-label=\"Decrease quantity\">&minus;</button>\n  <input type=\"text\" inputmode=\"numeric\" value=\"1\" aria-label=\"Quantity\">\n  <button type=\"button\" aria-label=\"Increase quantity\">+</button>\n</div>",
+    "css": ".num{display:inline-flex;border:1px solid #8a8a8a;border-radius:8px;overflow:hidden;font:600 16px system-ui,sans-serif}\n.num button{width:44px;height:44px;border:0;background:#fff;color:#0a0a0a;font-size:20px;cursor:pointer}\n.num input{width:56px;border:0;border-inline:1px solid #d4d4d4;text-align:center;font:inherit}"
+  }
+}

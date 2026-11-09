@@ -1,0 +1,69 @@
+{
+  "id": "space-grotesk",
+  "type": "typeface",
+  "name": "Space Grotesk",
+  "category": "sans-serif",
+  "summary": "A quirky grotesque with a techy edge, derived from Space Mono.",
+  "industries": [
+    "technology",
+    "gaming",
+    "creative"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Space+Grotesk",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A techy grotesque for headlines and a neutral body.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "ibm-plex-sans",
+      "family": "IBM Plex Sans",
+      "role": "body",
+      "why": "Two engineered sans faces with different personalities.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": "space-mono",
+      "family": "Space Mono",
+      "role": "display",
+      "why": "Mono for labels and a grotesque body. A designer favorite.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Space Grotesk', system-ui, sans-serif;\n}"
+}

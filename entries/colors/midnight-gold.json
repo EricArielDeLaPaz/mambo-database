@@ -1,0 +1,60 @@
+{
+  "id": "midnight-gold",
+  "type": "color",
+  "name": "Midnight and gold",
+  "category": "warm",
+  "summary": "Deep slate with a muted gold accent. Feels established and a little luxurious.",
+  "mood": "Premium, assured",
+  "industries": [
+    "finance",
+    "legal",
+    "hospitality",
+    "insurance"
+  ],
+  "roles": {
+    "bg": "#ffffff",
+    "surface": "#f8f7f4",
+    "ink": "#1e293b",
+    "text-secondary": "#57534e",
+    "primary": "#1e293b",
+    "primary-text": "#ffffff",
+    "accent": "#b45309",
+    "danger": "#b91c1c"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "accent",
+      "bg"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Body text needs 4.5:1 against its background; large text and UI parts need 3:1.",
+    "Every text pair listed here was checked at 4.5:1 or higher.",
+    "Use primary-text on primary fills; never put text-secondary on primary.",
+    "Keep status meaning in text or an icon too, not color alone."
+  ]
+}

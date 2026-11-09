@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "feedback",
-    "status"
-  ],
   "summary": "A message placed in the page flow that explains a status: information, success, warning or error.",
   "anatomy": [
     {

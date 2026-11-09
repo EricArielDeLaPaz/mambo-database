@@ -1,0 +1,111 @@
+{
+  "id": "rating",
+  "type": "component",
+  "name": "Rating",
+  "category": "forms",
+  "level": "atom",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "Stars or a scale that lets people give or read a score, such as 1 to 5.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Names what is rated."
+    },
+    {
+      "part": "items",
+      "required": true,
+      "purpose": "5 stars or numbers, 44px touch area when input."
+    },
+    {
+      "part": "value",
+      "required": true,
+      "purpose": "Current score as text, such as 4 out of 5."
+    },
+    {
+      "part": "count",
+      "required": false,
+      "purpose": "Number of ratings."
+    }
+  ],
+  "variants": [
+    {
+      "id": "display",
+      "name": "Display only",
+      "use": "Read an average.",
+      "contentLimits": {
+        "value": "4.5 of 5 plus the count"
+      }
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "use": "Give a score.",
+      "contentLimits": {
+        "items": "5",
+        "touch": "44px each"
+      }
+    },
+    {
+      "id": "numeric",
+      "name": "Numeric scale",
+      "use": "Surveys 0 to 10.",
+      "contentLimits": {
+        "items": "5 to 11"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Quick opinion scores."
+  ],
+  "whenNotToUse": [
+    "Detailed feedback: use a textarea.",
+    "Binary choices: use thumbs or a toggle."
+  ],
+  "alternatives": [
+    "segmented-control",
+    "toggle-button"
+  ],
+  "tokens": [
+    "color.text.primary",
+    "color.border.strong",
+    "space.1"
+  ],
+  "accessibility": {
+    "role": "radiogroup for input; img with text alternative for display",
+    "keyboard": [
+      "Arrow keys change the score.",
+      "Tab enters and leaves the group."
+    ],
+    "focus": "Focus ring around the active item.",
+    "notes": [
+      "Do not use color alone: filled vs outlined stars.",
+      "Say '4 out of 5 stars' to screen readers.",
+      "Do not show half stars for input."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".rt:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "segmented-control",
+    "toggle-button"
+  ],
+  "code": {
+    "html": "<div class=\"rt\" role=\"img\" aria-label=\"4 out of 5 stars\">★★★★☆</div>\n<span class=\"rt__c\">(128 reviews)</span>",
+    "css": ".rt{display:inline-block;font-size:22px;letter-spacing:2px;color:#0a0a0a}\n.rt__c{margin-left:6px;font:13px system-ui,sans-serif;color:#525252}"
+  }
+}

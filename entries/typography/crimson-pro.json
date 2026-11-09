@@ -1,0 +1,45 @@
+{
+  "id": "crimson-pro",
+  "type": "typeface",
+  "name": "Crimson Pro",
+  "category": "serif",
+  "summary": "A refined old-style serif for books and long reading.",
+  "industries": [
+    "media",
+    "education",
+    "creative"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Crimson+Pro",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A refined serif headline over a neutral sans.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Crimson Pro', Georgia, serif;\n}"
+}

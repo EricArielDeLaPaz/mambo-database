@@ -1,0 +1,44 @@
+{
+  "id": "plus-jakarta-sans",
+  "type": "typeface",
+  "name": "Plus Jakarta Sans",
+  "category": "sans-serif",
+  "summary": "A friendly geometric display face with strong weights. Suits product sites and apps.",
+  "industries": [
+    "technology",
+    "creative",
+    "retail"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Plus+Jakarta+Sans",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "Friendly geometric display over a highly legible UI sans.",
+      "displayWeights": [
+        700,
+        800
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;\n}"
+}

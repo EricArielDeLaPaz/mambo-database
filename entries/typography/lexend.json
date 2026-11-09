@@ -1,0 +1,46 @@
+{
+  "id": "lexend",
+  "type": "typeface",
+  "name": "Lexend",
+  "category": "sans-serif",
+  "summary": "A sans designed to improve reading fluency by adjusting letter width.",
+  "industries": [
+    "education",
+    "healthcare",
+    "technology"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Lexend",
+  "pairings": [
+    {
+      "id": "source-serif-4",
+      "family": "Source Serif 4",
+      "role": "body",
+      "why": "A reading-friendly sans heading over a bookish serif.",
+      "displayWeights": [
+        600,
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Lexend', system-ui, sans-serif;\n}"
+}

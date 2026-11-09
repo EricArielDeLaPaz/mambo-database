@@ -2,18 +2,13 @@
   "id": "playful-violet",
   "type": "color",
   "name": "Playful violet",
-  "category": "bold",
+  "category": "vivid",
   "summary": "Violet with a pink accent. Reads as creative and playful.",
   "industries": [
     "entertainment",
     "gaming",
     "education",
     "creative"
-  ],
-  "tags": [
-    "violet",
-    "playful",
-    "bold"
   ],
   "mood": "Creative, playful",
   "roles": {

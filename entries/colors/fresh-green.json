@@ -2,18 +2,13 @@
   "id": "fresh-green",
   "type": "color",
   "name": "Fresh green",
-  "category": "natural",
+  "category": "earthy",
   "summary": "Forest green with a golden accent. Reads as natural and responsible.",
   "industries": [
     "sustainability",
     "nonprofit",
     "wellness",
     "agriculture"
-  ],
-  "tags": [
-    "green",
-    "natural",
-    "eco"
   ],
   "mood": "Natural, responsible",
   "roles": {

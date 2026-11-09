@@ -1,5 +1,5 @@
 /* ===== Browse: database view ===== */
-const B = { q: '', types: new Set(), cats: new Set(), plats: new Set(), industry: 'all', tags: new Set(), sort: 'name', dir: 1 };
+const B = { q: '', types: new Set(), cats: new Set(), plats: new Set(), inds: new Set(), scope: 'name', sort: 'name', dir: 1 };
 const clipStore = {}; let curStates = [];
 const route = () => { const h = location.hash.replace(/^#\/?/, ''); if (h === 'systems') return { view: 'systems' }; if (h.startsWith('entry/')) return { view: 'browse', id: h.slice(6) }; return { view: 'browse' } };
 const go = h => { location.hash = h };
@@ -7,12 +7,14 @@ const go = h => { location.hash = h };
 function matches(e) {
   if (B.types.size && !B.types.has(e.type)) return false;
   if (B.cats.size && !B.cats.has(e.category)) return false;
-  if (B.plats.size) { const p = e.platforms || []; if (![...B.plats].some(x => p.includes(x))) return false }
-  if (B.industry !== 'all') { const i = e.industries || ['all']; if (!(i.includes('all') || i.includes(B.industry))) return false }
-  if (B.tags.size) { const t = e.tags || []; if (![...B.tags].every(x => t.includes(x))) return false }
+  if (!platOk(e)) return false;
+  if (B.inds.size) { const i = e.industries || ['all']; if (!(i.includes('all') || [...B.inds].some(x => i.includes(x)))) return false }
   const q = B.q.trim().toLowerCase(); if (!q) return true;
-  return (e.name + ' ' + e.summary + ' ' + (e.category || '') + ' ' + (e.tags || []).join(' ') + ' ' + (e.md || '')).toLowerCase().includes(q);
+  return (B.scope === 'name' ? e.name : e.summary).toLowerCase().includes(q);
 }
+/* Platform only narrows components; colors and typography always show. */
+const platOk = e => !B.plats.size || e.type !== 'component' || (e.platforms || []).some(x => B.plats.has(x));
+const hl = t => { const q = B.q.trim(); if (!q) return esc(t); const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); return String(t).split(re).map((x, i) => i % 2 ? '<mark>' + esc(x) + '</mark>' : esc(x)).join('') };
 const countBy = (fn, items) => { const m = {}; items.forEach(e => [].concat(fn(e) || []).forEach(k => m[k] = (m[k] || 0) + 1)); return m };
 const checkbox = (grp, val, label, n, on) => `<label class="chk"><input type="checkbox" data-grp="${grp}" value="${esc(val)}" ${on ? 'checked' : ''}><span>${esc(label)}</span><span class="n">${n}</span></label>`;
 
@@ -22,38 +24,37 @@ function renderBrowse() {
   renderFilters();
   if (e) { $('#main').innerHTML = renderEntry(e); wireEntry(e); upgradeSelects($('#main')) } else renderResults();
 }
-const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || B.plats.size || B.tags.size || B.industry !== 'all');
+const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || B.plats.size || B.inds.size);
 function renderFilters() {
-  const types = countBy(e => e.type, DATA), cats = countBy(e => e.category, DATA.filter(e => !B.types.size || B.types.has(e.type))), plats = countBy(e => e.platforms, DATA), tags = countBy(e => e.tags, DATA);
+  const types = countBy(e => e.type, DATA), cats = countBy(e => e.category, DATA.filter(e => (!B.types.size || B.types.has(e.type)) && platOk(e))), plats = countBy(e => e.platforms, DATA.filter(e => e.type === 'component')), inds = countBy(e => (e.industries || ['all']).includes('all') ? INDUSTRIES.slice(1).map(i => i[0]) : e.industries, DATA);
   const catList = Object.keys(cats).sort();
   $('#side').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
   <label class="f" style="margin-bottom:10px"><span class="eyebrow f-t">Design system</span><select id="syssel"><option value="">None</option>${S.systems.map(s => `<option value="${s.id}" ${S.active === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}</select></label>
   <label for="q" class="eyebrow">Search</label>
-  <input id="q" type="search" placeholder="modal, contrast, finance..." autocomplete="off" value="${esc(B.q)}">
+  <input id="q" type="search" placeholder="${B.scope === 'name' ? 'Search names' : 'Search descriptions'}" autocomplete="off" value="${esc(B.q)}">
+  <div class="scope" role="group" aria-label="Search in">${[['name', 'Name'], ['description', 'Description']].map(([k, l]) => `<button type="button" class="chip" data-scope="${k}" aria-pressed="${B.scope === k}">${l}</button>`).join('')}</div>
   <fieldset><legend class="eyebrow">Type</legend>${Object.keys(TYPE).map(t => checkbox('types', t, TYPE_PLURAL[t], types[t] || 0, B.types.has(t))).join('')}</fieldset>
   <fieldset><legend class="eyebrow">Category</legend>${catList.map(c => checkbox('cats', c, c, cats[c], B.cats.has(c))).join('')}</fieldset>
-  <fieldset><legend class="eyebrow">Platform</legend>${Object.keys(PLAT).map(p => checkbox('plats', p, PLAT[p], plats[p] || 0, B.plats.has(p))).join('')}</fieldset>
-  <fieldset><legend class="eyebrow"><label for="ind">Industry</label></legend><select id="ind">${INDUSTRIES.map(([k, l]) => `<option value="${k}" ${B.industry === k ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></fieldset>
-  <fieldset><legend class="eyebrow">Tags</legend><div class="chips">${Object.keys(tags).sort().map(t => `<button class="chip" aria-pressed="${B.tags.has(t)}" data-tag="${esc(t)}">${esc(t)}</button>`).join('')}</div></fieldset>
+  <fieldset><legend class="eyebrow">Platform <span class="note" style="text-transform:none;letter-spacing:0;font-family:var(--font-body)">(components)</span></legend>${Object.keys(PLAT).map(p => checkbox('plats', p, PLAT[p], plats[p] || 0, B.plats.has(p))).join('')}</fieldset>
+  <fieldset><legend class="eyebrow">Industry</legend>${INDUSTRIES.slice(1).map(([k, l]) => checkbox('inds', k, l, inds[k] || 0, B.inds.has(k))).join('')}</fieldset>
   <div class="row"><button class="btn sm" id="clear" ${filtersActive() ? "" : "disabled"}>Clear filters</button></div>`;
   upgradeSelects($('#side'));
+  $$('[data-scope]', $('#side')).forEach(b => b.onclick = () => { B.scope = b.dataset.scope; renderFilters(); if (route().id) go('#/'); else renderResults() });
   $('#syssel').onchange = ev => { S.active = ev.target.value || null; saveStore(); if (route().id) renderBrowse(); else renderResults() };
   $('#q').oninput = ev => { B.q = ev.target.value; afterFilter(false); const c = $('#clear'); if (c) c.disabled = !filtersActive() };
-  $$('input[data-grp]', $('#side')).forEach(i => i.onchange = () => { const s = B[i.dataset.grp]; i.checked ? s.add(i.value) : s.delete(i.value); if (i.dataset.grp === 'types') { B.cats.forEach(c => { if (B.types.size && !DATA.some(e => e.category === c && B.types.has(e.type))) B.cats.delete(c) }) } afterFilter(i.dataset.grp === 'types') });
-  $('#ind').onchange = ev => { B.industry = ev.target.value; afterFilter(false); const c = $('#clear'); if (c) c.disabled = !filtersActive() };
-  $$('[data-tag]', $('#side')).forEach(b => b.onclick = () => { const t = b.dataset.tag; B.tags.has(t) ? B.tags.delete(t) : B.tags.add(t); afterFilter(true) });
-  $('#clear').onclick = () => { B.q = ''; B.types.clear(); B.cats.clear(); B.plats.clear(); B.tags.clear(); B.industry = 'all'; if (route().id) go('#/'); else { renderFilters(); renderResults() } };
+  $$('input[data-grp]', $('#side')).forEach(i => i.onchange = () => { const s = B[i.dataset.grp]; i.checked ? s.add(i.value) : s.delete(i.value); if (i.dataset.grp === 'types') { B.cats.forEach(c => { if (B.types.size && !DATA.some(e => e.category === c && B.types.has(e.type))) B.cats.delete(c) }) } afterFilter(true) });
+  $('#clear').onclick = () => { B.q = ''; B.types.clear(); B.cats.clear(); B.plats.clear(); B.inds.clear(); if (route().id) go('#/'); else { renderFilters(); renderResults() } };
 }
 function afterFilter(refresh) { if (route().id) { go('#/') } else { if (refresh) renderFilters(); renderResults() } }
 const sortVal = (e, k) => k === 'name' ? e.name : k === 'type' ? TYPE[e.type] : k === 'category' ? e.category : k === 'platforms' ? (e.platforms || []).join() : (e.industries || ['all']).join();
 function renderResults() {
   const items = DATA.filter(matches).sort((a, b) => sortVal(a, B.sort).localeCompare(sortVal(b, B.sort)) * B.dir);
   const th = (k, l) => `<th scope="col" aria-sort="${B.sort === k ? (B.dir > 0 ? 'ascending' : 'descending') : 'none'}"><button data-sort="${k}">${l}${B.sort === k ? `<span class="sortc ${B.dir > 0 ? '' : 'flip'}">${CHEV}</span>` : ''}</button></th>`;
-  $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries${B.industry !== 'all' ? ' · industry: ' + esc(indLabel(B.industry)) : ''}</p></div>
+  $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries</p></div>
   ${items.length ? `<table class="db"><thead><tr>${th('name', 'Name')}${th('type', 'Type')}${th('category', 'Category')}${th('platforms', 'Platforms')}${th('industries', 'Industries')}</tr></thead><tbody>${items.map(e => `<tr>
-   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${esc(e.name)}</button><span class="sum">${esc(e.summary)}</span>${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
+   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
    <td data-l="Type">${TYPE[e.type]}</td><td data-l="Category">${esc(e.category)}</td>
-   <td data-l="Platforms">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('') || '<span class="empty">n/a</span>'}</td>
+   <td data-l="Platforms">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('') || '<span class="empty">Any</span>'}</td>
    <td data-l="Industries">${(e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('')}</td></tr>`).join('')}</tbody></table>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
   $$('[data-sort]', $('#main')).forEach(b => b.onclick = () => { const k = b.dataset.sort; if (B.sort === k) B.dir *= -1; else { B.sort = k; B.dir = 1 } renderResults() });
   $$('[data-open]', $('#main')).forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
@@ -64,7 +65,7 @@ function previewDoc(e, ids) {
   const fix = 'html,body{min-height:100%}body{margin:0;padding:32px;box-sizing:border-box;background:#fafafa;font-family:system-ui,sans-serif}.pv{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:240px}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}';
   return `<!doctype html><meta charset=utf-8><style>${compCss(e, ids)}\n${fix}</style><div class="pv">${e.code.html.replace('<dialog ', '<dialog open ')}</div>`;
 }
-const meta = e => `<div class="meta">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('')}${(e.industries || ['all']).map(i => `<span class="tag">Industry: ${esc(indLabel(i))}</span>`).join('')}${(e.tags || []).map(t => `<span class="tag">#${esc(t)}</span>`).join('')}</div>`;
+const meta = e => `<div class="meta">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('')}${(e.industries || ['all']).map(i => `<span class="tag">Industry: ${esc(indLabel(i))}</span>`).join('')}</div>`;
 function addToSystemRow(kind) {
   const def = S.active || (S.systems[0] && S.systems[0].id) || '__new';
   return `<div class="panel addrow"><h2 style="font-size:16px;margin:0 0 8px">Add to a design system</h2><div class="row" style="margin:0;align-items:end"><label class="f" style="min-width:220px"><span class="f-t">Design system</span><select id="addsys">${S.systems.map(s => `<option value="${s.id}" ${def === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}<option value="__new" ${def === '__new' ? 'selected' : ''}>+ New design system</option></select></label><button class="btn solid" id="addbtn">${kind}</button><span id="addmsg" role="status" class="empty"></span></div></div>`;
@@ -101,14 +102,23 @@ function renderEntry(e) {
   <h2>Contrast checks</h2><table><thead><tr><th>Pair</th><th>Ratio</th><th>Normal text (4.5)</th><th>Large text / UI (3)</th></tr></thead><tbody>${e.contrast.map(c => `<tr><td>${esc(c.fg)} on ${esc(c.bg)}</td><td>${c.ratio}:1</td><td class="${c.normalText ? 'pass' : 'fail'}">${c.normalText ? '✓ Pass' : '✕ Fail'}</td><td class="${c.largeTextAndUI ? 'pass' : 'fail'}">${c.largeTextAndUI ? '✓ Pass' : '✕ Fail'}</td></tr>`).join('')}</tbody></table>
   <h2>Guidance</h2>${ul(e.guidance)}`;
   }
-  clipStore.css = e.css;
+  clipStore.css = e.css; loadFontCss(e.name);
+  const fb = f => ({ serif: 'Georgia, serif', monospace: 'ui-monospace, monospace' }[(FONTMAP.get(f) || [])[1]] || 'system-ui, sans-serif');
+  const pairCard = p => { const mineIsDisplay = p.role === 'body'; const dispF = mineIsDisplay ? e.name : p.family, bodyF = mineIsDisplay ? p.family : e.name; loadFontCss(p.family);
+    return `<article class="pair"><div class="pair-h"><button class="name-btn" data-open="${esc(p.id)}">${esc(p.family)}</button><span class="tag">${p.role === 'body' ? 'Body font' : 'Header / Display font'}</span></div>
+    <p class="note">This works as the ${p.role === 'body' ? 'body' : 'header / display'} font for ${esc(e.name)}.</p>
+    <p>${esc(p.why)}</p>
+    <div class="pair-pv"><div style="font:700 26px/1.2 '${esc(dispF)}',${fb(dispF)}">The quick brown fox</div><div style="font:400 16px/1.6 '${esc(bodyF)}',${fb(bodyF)}">Body text sits underneath the heading. Good typography is mostly about readable spacing and clear hierarchy.</div></div>
+    <p class="note">Suggested weights: ${esc(dispF)} ${p.displayWeights.join(', ')} · ${esc(bodyF)} ${p.bodyWeights.join(', ')}</p>
+    <div class="row" style="margin:8px 0 0"><button class="btn sm" data-usepair="${esc(p.id)}">Use this pairing</button></div></article>` };
   return `${back}<p class="eyebrow">Typography · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>${meta(e)}
-  <div class="row"><button class="btn solid" data-copy="css">Copy CSS</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button></div>
-  ${addToSystemRow('Use pairing')}
-  <h2>Roles</h2><table><thead><tr><th>Role</th><th>Family</th><th>Weights</th><th>Use</th></tr></thead><tbody>${e.roles.map(r => `<tr><td>${esc(r.role)}</td><td>${esc(r.family)}</td><td>${r.weights.join(', ')}</td><td>${esc(r.use)}</td></tr>`).join('')}</tbody></table>
-  <h2>Type scale</h2><table><thead><tr><th>Token</th><th>Size</th><th>Line height</th></tr></thead><tbody>${e.scale.map(s => `<tr><td>${esc(s.token)}</td><td>${esc(s.size)}</td><td>${esc(s.lineHeight)}</td></tr>`).join('')}</tbody></table>
-  <h2>Why it works</h2><p>${esc(e.whyItWorks)}</p><h2>Avoid</h2>${ul(e.avoid)}<h2>CSS</h2>${codeBlock('CSS', e.css, 'css')}
-  <p class="note">All three families are on Google Fonts, which are open source and built into Figma.</p>`;
+  <div class="row"><button class="btn solid" data-copy="css">Copy CSS</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button><a class="btn" href="${esc(e.source)}" target="_blank" rel="noopener">View on Google Fonts</a></div>
+  ${addToSystemRow('Add typeface')}
+  <h2>Preview</h2><div class="fsample" style="font-family:'${esc(e.name)}',${fb(e.name)};font-size:32px;line-height:1.3">${esc(e.name)}<br><span style="font-size:18px">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</span></div>
+  <p class="note">Weights available: ${e.weights.join(', ')} · License: ${esc(e.license === 'OFL' ? 'SIL Open Font License (free for commercial use)' : e.license)} · Built into Figma.</p>
+  <h2>Pairings (${e.pairings.length})</h2><p class="note">Every pairing is checked: both fonts are on Google Fonts, the suggested weights exist, and the body font is a text face. Open one to see its own pairings.</p>
+  <div class="pairs">${e.pairings.map(pairCard).join('')}</div>
+  <h2>CSS</h2>${codeBlock('CSS', e.css, 'css')}`;
 }
 function refreshComponent(e) {
   clipStore.css = compCss(e, curStates); clipStore.both = `<!-- ${e.name} -->\n<style>\n${clipStore.css}\n</style>\n${e.code.html}`;
@@ -123,12 +133,14 @@ function wireEntry(e) {
     $('#figma-copy').onclick = async () => { await copy(clipStore.both, 'HTML + CSS'); showFigma('html') };
     $('#dl-html').onclick = () => { download(e.id + '.html', compDoc(e, curStates), 'text/html'); showFigma('html') };
   }
+  const targetSystem = async () => { const id = $('#addsys').value; if (id === '__new') { const n = await ask({ title: 'Name your design system', input: { label: 'Name', value: 'My design system' }, confirm: 'Create' }); if (!n) return null; const s = newSystem({ name: n }); S.systems.push(s); return s } return S.systems.find(x => x.id === id) };
+  $$('[data-usepair]').forEach(b => b.onclick = async () => { const s = await targetSystem(); if (!s) return; const p = e.pairings.find(x => x.id === b.dataset.usepair), pd = p.role === 'body'; const mk = (role, fam, w) => ({ id: uid(), role, family: fam, weights: w.slice() }); s.fonts = s.fonts.filter(f => !['Display', 'Body'].includes(f.role)); s.fonts.unshift(mk('Display', pd ? e.name : p.family, p.displayWeights), mk('Body', pd ? p.family : e.name, p.bodyWeights)); S.active = s.id; saveStore(); toast('Applied to ' + s.name); $('#addmsg').innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>` });
+  $$('.pair [data-open]').forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
   $('#addbtn').onclick = async () => {
-    let id = $('#addsys').value, s;
-    if (id === '__new') { const n = await ask({ title: 'Name your design system', input: { label: 'Name', value: 'My design system' }, confirm: 'Create' }); if (!n) return; s = newSystem({ name: n }); S.systems.push(s) } else s = S.systems.find(x => x.id === id);
+    const s = await targetSystem(); if (!s) return;
     if (e.type === 'component') { s.components = s.components.filter(c => c.id !== e.id); s.components.push({ id: e.id, states: curStates.slice() }) }
     else if (e.type === 'color') { Object.entries(e.roles).forEach(([k, v]) => { if (k === 'border') return; const role = SET_ROLE[k] || 'Other'; if (!s.colors.some(c => c.hex === v && c.role === role)) s.colors.push({ id: uid(), name: role, hex: v, role, source: e.name }) }) }
-    else { s.fonts = e.roles.map(r => ({ id: uid(), role: r.role === 'display' ? 'Display' : r.role === 'mono' ? 'Mono' : 'Body', family: r.family, weights: r.weights.slice() })) }
+    else { const role = e.roles[0] === 'display' ? 'Display' : e.roles[0] === 'mono' ? 'Mono' : 'Body'; s.fonts = s.fonts.filter(f => f.role !== role); s.fonts.push({ id: uid(), role, family: e.name, weights: keepThree(e.weights.filter(w => [400, 500, 600, 700].includes(w))) }) }
     S.active = s.id; saveStore(); $('#addmsg').innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>`; toast('Added to ' + s.name);
   };
   $('#main').addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase().split(' (')[0]) });

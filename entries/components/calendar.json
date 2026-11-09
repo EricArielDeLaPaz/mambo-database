@@ -1,0 +1,127 @@
+{
+  "id": "calendar",
+  "type": "component",
+  "name": "Calendar",
+  "category": "forms",
+  "level": "organism",
+  "platforms": [
+    "desktop",
+    "mobile-web",
+    "mobile-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "summary": "A month grid for choosing a day or a range of days.",
+  "anatomy": [
+    {
+      "part": "header",
+      "required": true,
+      "purpose": "Month and year with previous and next buttons."
+    },
+    {
+      "part": "weekdays",
+      "required": true,
+      "purpose": "Short weekday labels."
+    },
+    {
+      "part": "day",
+      "required": true,
+      "purpose": "A day cell, 44px square."
+    },
+    {
+      "part": "today",
+      "required": true,
+      "purpose": "Outlined, not only colored."
+    },
+    {
+      "part": "selected",
+      "required": true,
+      "purpose": "Filled with the contrast color."
+    }
+  ],
+  "variants": [
+    {
+      "id": "single",
+      "name": "Single date",
+      "use": "Booking a day.",
+      "contentLimits": {
+        "selection": "1 day"
+      }
+    },
+    {
+      "id": "range",
+      "name": "Date range",
+      "use": "Hotels and trips.",
+      "contentLimits": {
+        "selection": "start and end",
+        "range": "highlighted between"
+      }
+    },
+    {
+      "id": "inline",
+      "name": "Inline vs popup",
+      "use": "Inline for scheduling; popup from a date field.",
+      "contentLimits": {
+        "width": "280 to 340px"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Dates where seeing the month matters."
+  ],
+  "whenNotToUse": [
+    "Birthdays and far-away dates: use three fields.",
+    "Time only: use a time input."
+  ],
+  "alternatives": [
+    "date-picker",
+    "select"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.border.default",
+    "radius.sm",
+    "space.1"
+  ],
+  "accessibility": {
+    "role": "grid with gridcell buttons",
+    "keyboard": [
+      "Arrow keys move by day and week.",
+      "Page Up/Down change month.",
+      "Enter selects.",
+      "Escape closes a popup."
+    ],
+    "focus": "Focus ring on the focused day.",
+    "notes": [
+      "Selected state needs more than color: filled shape.",
+      "Disabled days stay visible with aria-disabled.",
+      "Announce the month change.",
+      "Let people also type the date."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on mobile-only products.",
+      "css": "@media (hover:hover){.cal__g button:hover{background:#f0f0f0}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".cal button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "date-picker",
+    "select"
+  ],
+  "code": {
+    "html": "<div class=\"cal\" role=\"group\" aria-label=\"November 2026\">\n  <div class=\"cal__h\"><button aria-label=\"Previous month\">&lsaquo;</button><b>November 2026</b><button aria-label=\"Next month\">&rsaquo;</button></div>\n  <div class=\"cal__g\">\n    <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>\n    <button>1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button>\n    <button>8</button><button aria-pressed=\"true\">9</button><button>10</button><button>11</button><button>12</button><button>13</button><button>14</button>\n  </div>\n</div>",
+    "css": ".cal{width:308px;padding:12px;border:1px solid #d4d4d4;border-radius:12px;font:14px system-ui,sans-serif}\n.cal__h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}\n.cal__h button{width:44px;height:44px;border:0;border-radius:8px;background:none;font-size:20px}\n.cal__g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}\n.cal__g span{font:700 11px ui-monospace,monospace;color:#525252;padding:4px}\n.cal__g button{height:40px;border:0;border-radius:8px;background:none;font:inherit;cursor:pointer}\n.cal__g button[aria-pressed=true]{background:#0a0a0a;color:#fff;font-weight:700}"
+  }
+}

@@ -12,10 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "form",
-    "settings"
-  ],
   "summary": "An on/off switch for a setting that takes effect immediately.",
   "anatomy": [
     {

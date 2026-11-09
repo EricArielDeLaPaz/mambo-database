@@ -11,11 +11,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "navigation",
-    "header",
-    "pill"
-  ],
   "summary": "The bar at the top of a site or app with the logo, main links and key actions.",
   "anatomy": [
     {

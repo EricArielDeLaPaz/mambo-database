@@ -1,0 +1,41 @@
+{
+  "id": "eb-garamond",
+  "type": "typeface",
+  "name": "EB Garamond",
+  "category": "serif",
+  "summary": "A faithful Garamond revival. Classic and literary.",
+  "industries": [
+    "media",
+    "creative",
+    "hospitality"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    400,
+    500,
+    600,
+    700,
+    800
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/EB+Garamond",
+  "pairings": [
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "A literary Garamond headline over a clean modern body.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'EB Garamond', Georgia, serif;\n}"
+}

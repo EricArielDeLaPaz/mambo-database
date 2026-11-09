@@ -12,11 +12,6 @@
   "industries": [
     "all"
   ],
-  "tags": [
-    "action",
-    "cta",
-    "pill"
-  ],
   "summary": "A control that starts an action. Pill-shaped, with solid, outline, text and destructive styles.",
   "anatomy": [
     {

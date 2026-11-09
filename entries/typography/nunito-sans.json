@@ -1,0 +1,57 @@
+{
+  "id": "nunito-sans",
+  "type": "typeface",
+  "name": "Nunito Sans",
+  "category": "sans-serif",
+  "summary": "The non-rounded sibling of Nunito: calm, clear and neutral.",
+  "industries": [
+    "education",
+    "healthcare",
+    "nonprofit"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Nunito+Sans",
+  "pairings": [
+    {
+      "id": "fredoka",
+      "family": "Fredoka",
+      "role": "display",
+      "why": "Bubbly headlines over a calm, clear body. Friendly and readable.",
+      "displayWeights": [
+        600
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "caveat",
+      "family": "Caveat",
+      "role": "display",
+      "why": "A handwritten accent over a calm body, for a personal touch.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Nunito Sans', system-ui, sans-serif;\n}"
+}

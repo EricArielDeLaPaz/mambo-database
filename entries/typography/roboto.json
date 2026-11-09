@@ -1,0 +1,45 @@
+{
+  "id": "roboto",
+  "type": "typeface",
+  "name": "Roboto",
+  "category": "sans-serif",
+  "summary": "Friendly and mechanical at once. Familiar from Android and Google products.",
+  "industries": [
+    "technology",
+    "data",
+    "all"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Roboto",
+  "pairings": [
+    {
+      "id": "roboto-slab",
+      "family": "Roboto Slab",
+      "role": "display",
+      "why": "A slab headline and its sans sibling. Consistent skeleton, clear contrast.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Roboto', system-ui, sans-serif;\n}"
+}

@@ -2,7 +2,7 @@
   "id": "neutral-ink",
   "type": "color",
   "name": "Neutral ink",
-  "category": "neutrals",
+  "category": "neutral",
   "summary": "A plain black-and-white base with one swappable accent. Start here and replace the accent with your brand color.",
   "roles": {
     "bg": "#ffffff",
@@ -57,11 +57,6 @@
   ],
   "industries": [
     "all"
-  ],
-  "tags": [
-    "neutral",
-    "black-and-white",
-    "starter"
   ],
   "mood": "Plain and flexible"
 }

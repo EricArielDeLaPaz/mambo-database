@@ -1,4 +1,4 @@
-/* ===== My design systems ===== */
+/* ===== Design Systems ===== */
 const FONT_ROLES = ['Display', 'Heading', 'Subheading', 'Body', 'Caption', 'Label', 'Button', 'Quote', 'Mono'];
 const FILL_ORDER = ['Body', 'Display', 'Heading', 'Mono', 'Caption', 'Label'];
 const WEIGHTS = [[100, 'Thin'], [200, 'Extra Light'], [300, 'Light'], [400, 'Regular'], [500, 'Medium'], [600, 'Semi Bold'], [700, 'Bold'], [800, 'Extra Bold'], [900, 'Black']];
@@ -79,10 +79,10 @@ function renderTree() {
   qa('[data-open]').forEach(b => { b.onclick = () => { if (S.active === b.dataset.open) return; S.active = b.dataset.open; saveStore(); qa('.sysrow').forEach(r => r.removeAttribute('aria-current')); b.closest('.sysrow').setAttribute('aria-current', 'true'); renderEditor() }; b.ondblclick = () => { const s = S.systems.find(x => x.id === b.dataset.open); inlineEdit(b, s.name, v => { s.name = v.trim() || s.name; saveStore(); renderTree(); renderEditor() }) } });
   qa('[data-check]').forEach(i => i.onchange = () => { i.checked ? S.checked.add(i.dataset.check) : S.checked.delete(i.dataset.check); renderTree(); renderEditor() });
   qa('[data-folder-all]').forEach(i => i.onchange = () => { folderOf(i.dataset.folderAll).forEach(s => i.checked ? S.checked.add(s.id) : S.checked.delete(s.id)); renderTree(); renderEditor() });
-  qa('[data-fold]').forEach(b => { b.onclick = () => { const f = b.dataset.fold; S.collapsed.has(f) ? S.collapsed.delete(f) : S.collapsed.add(f); renderTree() }; if (b.dataset.fold !== 'Unsorted') b.ondblclick = () => { S.collapsed.delete(b.dataset.fold); inlineEdit($('.fname', b), b.dataset.fold, v => commitFolderName(b.dataset.fold, v)) } });
+  qa('[data-fold]').forEach(b => { const f = b.dataset.fold; let t = 0; b.onclick = () => { clearTimeout(t); t = setTimeout(() => { S.collapsed.has(f) ? S.collapsed.delete(f) : S.collapsed.add(f); renderTree() }, 230) }; if (f !== 'Unsorted') b.ondblclick = () => { clearTimeout(t); S.collapsed.delete(f); inlineEdit(b, f, v => commitFolderName(f, v)) } });
   /* right-click */
   qa('.sysrow').forEach(r => r.oncontextmenu = e => { e.preventDefault(); const s = S.systems.find(x => x.id === r.dataset.sid); if (S.checked.size > 1 && S.checked.has(s.id)) ctxMenu(e.clientX, e.clientY, [{ label: `Delete ${S.checked.size} selected`, danger: true, act: () => deleteSystems([...S.checked]) }]); else systemMenu(s, e.clientX, e.clientY) });
-  qa('.folder-h').forEach(h => h.oncontextmenu = e => { e.preventDefault(); const f = h.dataset.fh; const items = [{ label: 'New system here', act: () => { const s = newSystem({ folder: f }); S.systems.push(s); S.active = s.id; saveStore(); renderTree(); renderEditor() } }]; if (f !== 'Unsorted') items.push({ label: 'Rename', act: () => renameFolderPrompt(f) }, '-', { label: 'Delete folder', danger: true, act: () => deleteFolder(f) }); ctxMenu(e.clientX, e.clientY, items) });
+  qa('.folder-h').forEach(h => h.oncontextmenu = e => { e.preventDefault(); const f = h.dataset.fh; const items = [{ label: 'New system here', act: () => { const s = newSystem({ folder: f }); S.systems.push(s); S.active = s.id; saveStore(); renderTree(); renderEditor() } }]; if (f !== 'Unsorted') items.push({ label: 'Rename', act: () => { const b = $(`[data-fold="${CSS.escape(f)}"]`, $('#sside')); b && inlineEdit(b, f, v => commitFolderName(f, v)) } }, '-', { label: 'Delete folder', danger: true, act: () => deleteFolder(f) }); ctxMenu(e.clientX, e.clientY, items) });
   /* drag and drop */
   qa('.sysrow').forEach(r => { r.ondragstart = e => { const id = r.dataset.sid; dragging.type = 'sys'; dragging.ids = S.checked.has(id) ? [...S.checked] : [id]; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', id); r.classList.add('dragging') }; r.ondragend = () => { dragging.type = null; qa('.over,.dragging').forEach(x => x.classList.remove('over', 'dragging')) };
     r.ondragover = e => { if (dragging.type === 'sys') { e.preventDefault(); r.classList.add('over-row') } }; r.ondragleave = () => r.classList.remove('over-row');
@@ -126,12 +126,17 @@ function suggestColors(s) {
   <div class="sugg">${sets.slice(0, 4).map(e => { const keys = Object.keys(e.roles); return `<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.mood || '')}</span><div class="swatchrow">${['primary', 'accent', 'ink', 'surface'].filter(k => e.roles[k]).map(k => `<button class="chip nob" data-tip="${tipData(e.name + ' ' + k, e.roles[k], keys.filter(x => x !== k).map(x => ({ name: x, hex: e.roles[x] })))}" data-addcolor="${esc(e.roles[k])}" data-src="${esc(e.name)}" data-role="${SET_ROLE[k] || 'Other'}" aria-label="Add ${esc(e.name)} ${k} ${esc(e.roles[k])}"><i style="background:${esc(e.roles[k])}"></i></button>`).join('')}</div><button class="btn sm" data-addset="${esc(e.id)}" ${Object.entries(e.roles).filter(([k]) => k !== 'border').every(([k, v]) => s.colors.some(c => c.hex === v && c.source === e.name)) ? 'disabled' : ''}>Add whole set</button></div>` }).join('') || '<p class="empty">No suggestions for this industry yet.</p>'}</div>`;
 }
 function suggestFonts(s) {
-  const sets = DATA.filter(e => e.type === 'font-pairing' && industryMatch(e));
-  return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested pairings</h3><button class="viewall" data-viewall="font-pairing">View all <span aria-hidden="true">→</span></button></div><div class="sugg">${sets.slice(0, 4).map(e => `<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.summary)}</span><div class="row" style="margin:8px 0 0"><button class="btn sm" data-usepair="${esc(e.id)}">Use this pairing</button></div></div>`).join('') || '<p class="empty">No pairings for this industry yet.</p>'}</div>`;
+  const pairs = []; DATA.filter(e => e.type === 'typeface' && industryMatch(e)).forEach(e => e.pairings.filter(p => p.role === 'body').forEach(p => pairs.push({ d: e, b: DATA.find(x => x.id === p.id), p })));
+  const picks = pairs.sort((x, y) => x.d.name.localeCompare(y.d.name)).filter((x, i, a) => a.findIndex(z => z.d.id === x.d.id) === i).slice(0, 4);
+  return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested pairings</h3><button class="viewall" data-viewall="typeface">View all <span aria-hidden="true">→</span></button></div><div class="sugg">${picks.map(x => `<div class="sugg-card"><b>${esc(x.d.name)} + ${esc(x.p.family)}</b><span class="note">Header / display + body. ${esc(x.p.why)}</span><div class="row" style="margin:8px 0 0"><button class="btn sm" data-usepair="${esc(x.d.id)}|${esc(x.p.id)}">Use this pairing</button></div></div>`).join('') || '<p class="empty">No pairings for this industry yet.</p>'}</div>`;
 }
+const sortColors = s => { const idx = r => { const i = ROLES.indexOf(r); return i < 0 ? 999 : i }; s.colors = s.colors.map((c, i) => [c, i]).sort((a, b) => idx(a[0].role) - idx(b[0].role) || a[1] - b[1]).map(x => x[0]) };
+const GRIP = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+function revealColor(id) { const el = document.getElementById('cc-' + id); if (!el) return; const r = el.getBoundingClientRect(); if (r.top < 90 || r.bottom > innerHeight - 10) el.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1300) }
 function colorCard(c, s) {
+  const same = s.colors.filter(o => o.role === c.role && (o.source || '') === (c.source || '')), pos = same.indexOf(c);
   const others = s.colors.filter(o => o.id !== c.id);
-  return `<div class="colorcard" data-cid="${c.id}" id="cc-${c.id}"><div class="colortop"><span class="pick" data-tip="${tipData(c.name, c.hex, others)}"><input type="color" value="${normHex(c.hex) || '#000000'}" data-cf="picker" aria-label="Pick color for ${esc(c.name)}"></span>
+  return `<div class="colorcard" data-grp="${esc(c.source || '')}" data-cid="${c.id}" id="cc-${c.id}"><div class="colortop"><div class="mv"><button type="button" class="grip" data-grip="${c.id}" aria-label="Drag ${esc(c.name)} to reorder" data-tiptext="Drag to reorder. Dropping on another role changes the role.">${GRIP}</button><button type="button" data-mv="-1" data-id="${c.id}" aria-label="Move ${esc(c.name)} up" ${pos <= 0 ? 'disabled' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg></button><button type="button" data-mv="1" data-id="${c.id}" aria-label="Move ${esc(c.name)} down" ${pos >= same.length - 1 ? 'disabled' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button></div><span class="pick" data-tip="${tipData(c.name, c.hex, others)}"><input type="color" value="${normHex(c.hex) || '#000000'}" data-cf="picker" aria-label="Pick color for ${esc(c.name)}"></span>
    <label class="f"><span class="f-t">Name</span><input type="text" data-cf="name" value="${esc(c.name)}"></label><label class="f"><span class="f-t">Hex</span><input type="text" data-cf="hex" value="${esc(c.hex)}" maxlength="7"></label>
    <label class="f"><span class="f-t">Role</span><select data-cf="role">${Object.entries(ROLE_GROUPS).map(([g, rs]) => `<optgroup label="${g}">${rs.map(r => `<option ${c.role === r ? 'selected' : ''}>${r}</option>`).join('')}</optgroup>`).join('')}</select></label><button class="btn sm" data-rmcolor="${c.id}">Remove</button></div>
    <div class="contrast-box" data-cb="${c.id}">${contrastBlock(c, s)}</div></div>`;
@@ -142,7 +147,7 @@ function colorGroups(s) {
   return groups.map(g => `<section class="cgroup"><div class="cg-h"><h3>${esc(g.title)} <span class="tag">${g.items.length}</span></h3>${g.src ? `<button class="btn sm" data-rmsource="${esc(g.src)}">Remove set</button>` : ''}</div>${g.items.map(c => colorCard(c, s)).join('') || '<p class="empty">No colors yet. Add one below.</p>'}</section>`).join('');
 }
 /* font picker (searchable listbox) */
-function loadFontCss(fam) { if (!FONTMAP.has(fam) || document.getElementById('gf-' + slug(fam))) return; const l = document.createElement('link'); l.id = 'gf-' + slug(fam); l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(fam).replace(/%20/g, '+') + ':wght@400;700&display=swap'; document.head.appendChild(l) }
+function loadFontCss(fam) { const g = FONTMAP.get(fam); if (!g || document.getElementById('gf-' + slug(fam))) return; const w = [400, 700].filter(x => g[2].includes(x)); const l = document.createElement('link'); l.id = 'gf-' + slug(fam); l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(fam).replace(/%20/g, '+') + ':wght@' + (w.length ? w : [g[2][0]]).join(';') + '&display=swap'; document.head.appendChild(l) }
 function fontPicker(f) {
   const inF = FONTMAP.has(f.family), known = inF || NON_FIGMA.some(n => n[0] === f.family);
   return `<div class="fp" data-fp="${f.id}"><button type="button" class="dd-btn fp-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Typeface: ${esc(f.family || 'none chosen')}"><span class="dd-val">${esc(f.family || 'Choose a typeface')}</span>${CHEV}</button>
@@ -187,8 +192,8 @@ const WHERE = '<p class="note" style="margin-top:6px">Guidance drawn from publis
 function renderEditor() {
   const main = $('#main'); const s = cur(); tip.hidden = true;
   if (S.checked.size > 1) { main.innerHTML = `<p class="eyebrow">Selection</p><h1>${S.checked.size} systems selected</h1><p>Use the actions at the bottom of the left panel to move, download or delete them. Click a system name to open and edit one.</p><ul class="plain">${S.systems.filter(x => S.checked.has(x.id)).map(x => `<li>${esc(x.name)} <span class="tag">${esc(x.folder)}</span></li>`).join('')}</ul>`; return }
-  if (!s) { main.innerHTML = `<p class="eyebrow">My design systems</p><h1>Build and keep your design systems</h1><p>Create a system from our template. It tells you what is needed, warns you when you add too much, and checks color contrast as you pick colors. Everything is saved in this browser only. Nothing is uploaded.</p><div class="row"><button class="btn solid" id="empty-new">+ New system</button></div>`; $('#empty-new').onclick = () => $('#newsys').click(); return }
-  s.fonts.forEach(f => loadFontCss(f.family));
+  if (!s) { main.innerHTML = `<p class="eyebrow">Design Systems</p><h1>Build and keep your design systems</h1><p>Create a system from our template. It tells you what is needed, warns you when you add too much, and checks color contrast as you pick colors. Everything is saved in this browser only. Nothing is uploaded.</p><div class="row"><button class="btn solid" id="empty-new">+ New system</button></div>`; $('#empty-new').onclick = () => $('#newsys').click(); return }
+  s.fonts.forEach(f => loadFontCss(f.family)); sortColors(s);
   const cntR = rs => s.colors.filter(c => rs.includes(c.role)).length;
   const mob = mobileOnly(s), brand = cntR(BRAND), neu = cntR(NEUTRAL), fb = cntR(FEEDBACK), fams = [...new Set(s.fonts.filter(f => f.role !== 'Mono' && f.family.trim()).map(f => f.family.trim().toLowerCase()))].length;
   const radii = String(s.radii).split(',').map(x => x.trim()).filter(Boolean).length;
@@ -246,14 +251,14 @@ function wireEditor(s) {
   const bindFixColor = root => $$('[data-fixcolor]', root).forEach(b => b.onclick = () => { const c = s.colors.find(x => x.id === b.dataset.fixcolor); c.hex = b.dataset.hex; saveStore(); tip.hidden = true; rerender(); toast('Color updated to ' + c.hex) });
   bindFixColor(m);
   $$('[data-goto]', m).forEach(b => b.onclick = () => { const el = document.getElementById('cc-' + b.dataset.goto); el.scrollIntoView({ block: 'center' }); $('[data-cf=name]', el).focus() });
-  $$('[data-viewall]', m).forEach(b => b.onclick = () => { B.types = new Set([b.dataset.viewall]); B.industry = s.industry; B.cats.clear(); B.tags.clear(); B.q = ''; go('#/') });
+  $$('[data-viewall]', m).forEach(b => b.onclick = () => { B.types = new Set([b.dataset.viewall]); B.inds = new Set(s.industry && s.industry !== 'all' ? [s.industry] : []); B.cats.clear(); B.plats.clear(); B.q = ''; go('#/') });
   $('#f-name').oninput = e => { set('name', e.target.value || 'Untitled system'); $('h1', m).textContent = s.name }; $('#f-name').onchange = () => renderTree();
   $('#f-folder').onchange = e => { set('folder', e.target.value); renderTree() };
   $('#f-ind').onchange = e => { set('industry', e.target.value); rerender() };
   $$('[data-plat]', m).forEach(i => i.onchange = () => { const a = new Set(s.platforms); i.checked ? a.add(i.dataset.plat) : a.delete(i.dataset.plat); set('platforms', [...a]); rerender() });
   $$('[data-state]', m).forEach(i => i.onchange = () => { const a = new Set(s.states); i.checked ? a.add(i.dataset.state) : a.delete(i.dataset.state); set('states', [...a]); rerender() });
   $('#f-space').onchange = e => { set('spacing', e.target.value); rerender() }; $('#f-radii').onchange = e => { set('radii', e.target.value); rerender() };
-  $('#addcolor').onclick = () => { s.colors.push({ id: uid(), name: 'Color ' + (s.colors.length + 1), hex: '#1d4ed8', role: 'Other' }); saveStore(); rerender(); const n = $$('.colorcard', m); $('[data-cf=name]', n[n.length - 1]).focus() };
+  $('#addcolor').onclick = () => { const nid = uid(); s.colors.push({ id: nid, name: 'Color ' + (s.colors.length + 1), hex: '#1d4ed8', role: 'Other' }); sortColors(s); saveStore(); rerender(); const last = document.getElementById('cc-' + nid); $('[data-cf=name]', last).focus({ preventScroll: true }); revealColor(nid) };
   $$('[data-addcolor]', m).forEach(b => b.onclick = () => { s.colors.push({ id: uid(), name: b.dataset.role, hex: b.dataset.addcolor, role: b.dataset.role, source: b.dataset.src }); saveStore(); rerender(); toast('Added to ' + b.dataset.src) });
   $$('[data-addset]', m).forEach(b => b.onclick = () => { const e = DATA.find(x => x.id === b.dataset.addset); Object.entries(e.roles).forEach(([k, v]) => { if (k === 'border') return; const role = SET_ROLE[k] || 'Other'; if (!s.colors.some(c => c.hex === v && c.role === role && c.source === e.name)) s.colors.push({ id: uid(), name: role, hex: v, role, source: e.name }) }); saveStore(); rerender(); toast('Added ' + e.name) });
   $$('[data-rmsource]', m).forEach(b => b.onclick = async () => { if (await ask({ title: `Remove "${b.dataset.rmsource}" colors?`, body: 'Only the colors added from this set are removed.', confirm: 'Remove', danger: true })) { s.colors = s.colors.filter(c => c.source !== b.dataset.rmsource); saveStore(); rerender() } });
@@ -264,7 +269,22 @@ function wireEditor(s) {
     $('[data-cf=picker]', card).oninput = e => { c.hex = e.target.value; $('[data-cf=hex]', card).value = c.hex; saveStore(); refresh() };
     $('[data-cf=hex]', card).oninput = e => { const h = normHex(e.target.value); if (h) { c.hex = h; $('[data-cf=picker]', card).value = h; saveStore(); refresh() } };
     $('[data-cf=name]', card).oninput = e => { c.name = e.target.value; saveStore() }; $('[data-cf=name]', card).onchange = () => refresh();
-    $('[data-cf=role]', card).onchange = e => { c.role = e.target.value; saveStore(); rerender() } });
+    $('[data-cf=role]', card).onchange = e => { c.role = e.target.value; sortColors(s); saveStore(); rerender(); revealColor(c.id) } });
+  const afterMove = id => { saveStore(); rerender(); revealColor(id) };
+  $$('[data-mv]', m).forEach(b => b.onclick = () => {
+    const c = s.colors.find(x => x.id === b.dataset.id), d = +b.dataset.mv, same = s.colors.filter(o => o.role === c.role && (o.source || '') === (c.source || '')), j = same.indexOf(c) + d, o = same[j]; if (!o) return;
+    const a = s.colors.indexOf(c), z = s.colors.indexOf(o); s.colors[a] = o; s.colors[z] = c; afterMove(c.id);
+    const nb = $(`[data-mv="${d}"][data-id="${c.id}"]`, m); (nb && !nb.disabled ? nb : $(`[data-mv="${-d}"][data-id="${c.id}"]`, m))?.focus();
+  });
+  let dragId = null;
+  $$('.colorcard', m).forEach(card => {
+    const grip = $('[data-grip]', card); grip.onmousedown = () => card.draggable = true; grip.onmouseup = () => card.draggable = false;
+    card.ondragstart = e => { dragId = card.dataset.cid; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', dragId); card.classList.add('dragging'); tip.hidden = true };
+    card.ondragend = () => { dragId = null; card.draggable = false; $$('.dragging,.over-top,.over-bot', m).forEach(x => x.classList.remove('dragging', 'over-top', 'over-bot')) };
+    card.ondragover = e => { if (!dragId || dragId === card.dataset.cid) return; const dg = s.colors.find(x => x.id === dragId); if ((dg.source || '') !== card.dataset.grp) return; e.preventDefault(); const r = card.getBoundingClientRect(), top = e.clientY < r.top + r.height / 2; card.classList.toggle('over-top', top); card.classList.toggle('over-bot', !top); if (e.clientY < 90) scrollBy(0, -18); else if (e.clientY > innerHeight - 70) scrollBy(0, 18) };
+    card.ondragleave = () => card.classList.remove('over-top', 'over-bot');
+    card.ondrop = e => { if (!dragId) return; e.preventDefault(); const dg = s.colors.find(x => x.id === dragId), tg = s.colors.find(x => x.id === card.dataset.cid); if (!dg || dg === tg || (dg.source || '') !== (tg.source || '')) return; const before = card.classList.contains('over-top'); const changed = dg.role !== tg.role; s.colors = s.colors.filter(x => x !== dg); const i = s.colors.indexOf(tg); s.colors.splice(before ? i : i + 1, 0, dg); dg.role = tg.role; sortColors(s); afterMove(dg.id); if (changed) toast('Role changed to ' + dg.role) };
+  });
   $('#addfont').onclick = () => { s.fonts.push({ id: uid(), role: FILL_ORDER.find(r => !s.fonts.some(f => f.role === r)) || 'Custom', family: '', weights: [400, 700] }); saveStore(); rerender() };
   $$('[data-rmfont]', m).forEach(b => b.onclick = () => { s.fonts = s.fonts.filter(f => f.id !== b.dataset.rmfont); saveStore(); rerender() });
   $$('.fontrow', m).forEach(row => { const f = s.fonts.find(x => x.id === row.dataset.fid);
@@ -273,9 +293,9 @@ function wireEditor(s) {
     $$('[data-fw]', row).forEach(i => i.onchange = () => { const w = new Set(f.weights); i.checked ? w.add(+i.dataset.fw) : w.delete(+i.dataset.fw); f.weights = [...w].sort((a, b) => a - b); saveStore(); rerender() }) });
   wireFontPicker(m, s, (f, fam) => pickFont(s, f, fam));
   $$('[data-figmafont]', m).forEach(a => a.onclick = () => showFigma('font'));
-  $$('[data-usepair]', m).forEach(b => b.onclick = () => { const e = DATA.find(x => x.id === b.dataset.usepair); s.fonts = e.roles.map(r => ({ id: uid(), role: r.role === 'display' ? 'Display' : r.role === 'mono' ? 'Mono' : 'Body', family: r.family, weights: r.weights.slice() })); saveStore(); rerender(); toast('Applied ' + e.name) });
+  $$('[data-usepair]', m).forEach(b => b.onclick = () => { const [di, bi] = b.dataset.usepair.split('|'), d = DATA.find(x => x.id === di), p = d.pairings.find(x => x.id === bi); const mk = (role, fam, w) => ({ id: uid(), role, family: fam, weights: w.slice() }); s.fonts = s.fonts.filter(f => !['Display', 'Body'].includes(f.role)); s.fonts.unshift(mk('Display', d.name, p.displayWeights), mk('Body', p.family, p.bodyWeights)); saveStore(); rerender(); toast('Applied ' + d.name + ' + ' + p.family) });
   $$('[data-cst]', m).forEach(i => i.onchange = () => { const c = s.components.find(x => x.id === i.closest('[data-comp]').dataset.comp), a = new Set(c.states); i.checked ? a.add(i.dataset.cst) : a.delete(i.dataset.cst); c.states = [...a]; saveStore() });
   $$('[data-rmcomp]', m).forEach(b => b.onclick = () => { s.components = s.components.filter(c => c.id !== b.dataset.rmcomp); saveStore(); rerender() });
-  $('#browsecomp').onclick = () => { B.types = new Set(['component']); B.cats.clear(); B.tags.clear(); B.q = ''; B.industry = 'all'; go('#/') };
+  $('#browsecomp').onclick = () => { B.types = new Set(['component']); B.cats.clear(); B.plats.clear(); B.q = ''; B.inds.clear(); go('#/') };
   $('#x-del').onclick = () => deleteSystems([s.id]);
 }

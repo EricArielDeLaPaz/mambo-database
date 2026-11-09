@@ -1,0 +1,44 @@
+{
+  "id": "roboto-slab",
+  "type": "typeface",
+  "name": "Roboto Slab",
+  "category": "serif",
+  "summary": "A slab serif built on the same skeleton as Roboto.",
+  "industries": [
+    "technology",
+    "media"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "Apache-2.0",
+  "source": "https://fonts.google.com/specimen/Roboto+Slab",
+  "pairings": [
+    {
+      "id": "roboto",
+      "family": "Roboto",
+      "role": "body",
+      "why": "A slab headline and its sans sibling. Consistent skeleton, clear contrast.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Roboto Slab', Georgia, serif;\n}"
+}

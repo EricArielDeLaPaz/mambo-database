@@ -1,0 +1,58 @@
+{
+  "id": "bitter",
+  "type": "typeface",
+  "name": "Bitter",
+  "category": "serif",
+  "summary": "A sturdy slab serif that holds up on screens.",
+  "industries": [
+    "media",
+    "education",
+    "technology"
+  ],
+  "roles": [
+    "display",
+    "body"
+  ],
+  "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "license": "OFL",
+  "source": "https://fonts.google.com/specimen/Bitter",
+  "pairings": [
+    {
+      "id": "source-sans-3",
+      "family": "Source Sans 3",
+      "role": "body",
+      "why": "A sturdy slab headline over a humanist body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        600
+      ]
+    },
+    {
+      "id": "inter",
+      "family": "Inter",
+      "role": "body",
+      "why": "Slab headlines for character with a neutral body.",
+      "displayWeights": [
+        700
+      ],
+      "bodyWeights": [
+        400,
+        500
+      ]
+    }
+  ],
+  "css": "@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700&display=swap');\n:root {\n  --font-main: 'Bitter', Georgia, serif;\n}"
+}
