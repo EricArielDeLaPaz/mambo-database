@@ -5,9 +5,12 @@
   "category": "buttons",
   "level": "atom",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -154,5 +157,13 @@
   "code": {
     "html": "<div class=\"row\">\n  <button class=\"btn btn--solid\" type=\"button\">Save changes</button>\n  <button class=\"btn btn--outline\" type=\"button\">Preview</button>\n  <button class=\"btn btn--text\" type=\"button\">Cancel</button>\n  <button class=\"btn btn--destructive\" type=\"button\">Delete project</button>\n</div>",
     "css": ".row{display:flex;flex-wrap:wrap;gap:8px}\n.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid #0a0a0a;border-radius:999px;font:600 14px/1 system-ui,sans-serif;cursor:pointer}\n.btn--solid{background:#0a0a0a;color:#fff}\n.btn--outline{background:#fff;color:#0a0a0a}\n.btn--text{border-color:transparent;background:none;text-decoration:underline;color:#0a0a0a}\n.btn--destructive{background:#b91c1c;border-color:#b91c1c;color:#fff}"
+  },
+  "os": {
+    "ios": {
+      "css": ".btn{border-radius:14px;min-height:50px;font:600 17px/1 -apple-system,'SF Pro Text',system-ui,sans-serif}.btn--text{text-decoration:none}"
+    },
+    "android": {
+      "css": ".btn{border-radius:999px;min-height:40px;padding:0 24px;font:500 14px/1 Roboto,system-ui,sans-serif;letter-spacing:.1px}.btn--outline{border-color:#8a8a8a}.btn--text{text-decoration:none;padding:0 12px}"
+    }
   }
 }

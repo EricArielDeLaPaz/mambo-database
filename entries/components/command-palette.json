@@ -1,0 +1,111 @@
+{
+  "id": "command-palette",
+  "type": "component",
+  "name": "Command palette",
+  "category": "overlays",
+  "level": "organism",
+  "platforms": [
+    "desktop-web",
+    "desktop-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A keyboard-first search box that opens over the app (often with Cmd/Ctrl+K) to jump anywhere or run any command.",
+  "anatomy": [
+    {
+      "part": "scrim",
+      "required": true,
+      "purpose": "Dims the page."
+    },
+    {
+      "part": "input",
+      "required": true,
+      "purpose": "Search field, focused on open."
+    },
+    {
+      "part": "results",
+      "required": true,
+      "purpose": "Grouped list: pages, actions, recent."
+    },
+    {
+      "part": "shortcut-hints",
+      "required": false,
+      "purpose": "Keys shown at the right of each result."
+    },
+    {
+      "part": "empty",
+      "required": true,
+      "purpose": "'No results' message."
+    }
+  ],
+  "variants": [
+    {
+      "id": "default",
+      "name": "Default",
+      "use": "Global jump and actions.",
+      "contentLimits": {
+        "results": "up to 8 visible",
+        "width": "560px"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Power-user shortcuts in complex apps."
+  ],
+  "whenNotToUse": [
+    "The only way to find something: add visible navigation.",
+    "Touch-only products."
+  ],
+  "alternatives": [
+    "combobox",
+    "search-field",
+    "modal-dialog"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "shadow.overlay",
+    "radius.lg"
+  ],
+  "accessibility": {
+    "role": "dialog containing a combobox and listbox",
+    "keyboard": [
+      "Cmd/Ctrl+K opens.",
+      "Up/Down moves.",
+      "Enter runs.",
+      "Escape closes."
+    ],
+    "focus": "Focus is in the input and returns to the trigger on close.",
+    "notes": [
+      "Announce result counts.",
+      "Do not hijack browser shortcuts.",
+      "Show the shortcut in the UI."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.cmd__l li:hover{background:#f5f5f5}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".cmd__in:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "combobox",
+    "search-field",
+    "modal-dialog"
+  ],
+  "code": {
+    "html": "<div class=\"cmd\" role=\"dialog\" aria-label=\"Command palette\">\n  <input class=\"cmd__in\" role=\"combobox\" aria-expanded=\"true\" aria-controls=\"cmd-l\" placeholder=\"Type a command or search\">\n  <ul id=\"cmd-l\" role=\"listbox\" class=\"cmd__l\">\n    <li role=\"option\" aria-selected=\"true\">New project <kbd>N</kbd></li>\n    <li role=\"option\">Open settings <kbd>,</kbd></li>\n  </ul>\n</div>",
+    "css": ".cmd{width:480px;border:1px solid #8a8a8a;border-radius:12px;background:#fff;box-shadow:0 24px 48px -12px rgba(0,0,0,.3);font:15px system-ui,sans-serif;overflow:hidden}\n.cmd__in{width:100%;min-height:52px;padding:0 16px;border:0;border-bottom:1px solid #d4d4d4;font:inherit}\n.cmd__l{margin:0;padding:6px;list-style:none}\n.cmd__l li{display:flex;justify-content:space-between;padding:10px;border-radius:8px}\n.cmd__l [aria-selected=true]{background:#f0f0f0;font-weight:600}\n.cmd kbd{font:12px ui-monospace,monospace;color:#525252}"
+  }
+}

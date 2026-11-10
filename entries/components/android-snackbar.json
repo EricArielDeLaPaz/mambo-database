@@ -1,0 +1,127 @@
+{
+  "id": "android-snackbar",
+  "type": "component",
+  "name": "Snackbar (Android)",
+  "category": "feedback",
+  "level": "molecule",
+  "platforms": [
+    "android",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A short message at the bottom of an Android screen with an optional action. It disappears on its own and does not block anything.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Dark surface, 48dp or taller, 4dp corners."
+    },
+    {
+      "part": "message",
+      "required": true,
+      "purpose": "One or two lines."
+    },
+    {
+      "part": "action",
+      "required": false,
+      "purpose": "A single text button such as Undo."
+    },
+    {
+      "part": "close",
+      "required": false,
+      "purpose": "Optional X for long-lived messages."
+    }
+  ],
+  "variants": [
+    {
+      "id": "single-line",
+      "name": "Single line",
+      "use": "Confirmations.",
+      "contentLimits": {
+        "message": "max 60 characters",
+        "action": "1 word"
+      }
+    },
+    {
+      "id": "two-line",
+      "name": "Two lines",
+      "use": "Longer messages.",
+      "contentLimits": {
+        "message": "max 100 characters"
+      }
+    },
+    {
+      "id": "long-action",
+      "name": "Action below",
+      "use": "Long action labels.",
+      "contentLimits": {
+        "action": "below the message"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Non-critical feedback after an action."
+  ],
+  "whenNotToUse": [
+    "Errors that need a decision: use a dialog.",
+    "iOS: use a banner or alert."
+  ],
+  "alternatives": [
+    "toast",
+    "inline-alert",
+    "modal-dialog"
+  ],
+  "tokens": [
+    "color.surface.inverse",
+    "color.text.inverse",
+    "radius.xs"
+  ],
+  "accessibility": {
+    "role": "status / alert",
+    "keyboard": [
+      "Does not take focus.",
+      "Dismisses after 4 to 10 seconds."
+    ],
+    "focus": "Action is reachable by keyboard while visible.",
+    "notes": [
+      "Keep visible at least 6 seconds, longer with an action.",
+      "Announce with a live region.",
+      "Never put required information only in a snackbar."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.snk__a:hover{background:rgba(255,255,255,.12)}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".snk__a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".snk__a:active{background:rgba(255,255,255,.2)}"
+    }
+  ],
+  "related": [
+    "toast",
+    "inline-alert",
+    "modal-dialog"
+  ],
+  "code": {
+    "html": "<div class=\"snk\" role=\"status\">\n  <span>Message archived</span>\n  <button type=\"button\" class=\"snk__a\">Undo</button>\n</div>",
+    "css": ".snk{display:flex;align-items:center;justify-content:space-between;gap:16px;width:344px;min-height:48px;padding:0 8px 0 16px;border-radius:4px;background:#1f1f1f;color:#fff;font:14px Roboto,system-ui,sans-serif}\n.snk__a{min-height:48px;padding:0 12px;border:0;background:none;color:#fff;font:600 14px Roboto,system-ui,sans-serif;text-decoration:underline;cursor:pointer}"
+  }
+}

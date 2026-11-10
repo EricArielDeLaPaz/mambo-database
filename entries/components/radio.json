@@ -5,9 +5,12 @@
   "category": "forms",
   "level": "atom",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -118,5 +121,13 @@
   "code": {
     "html": "<fieldset class=\"rg\"><legend>Delivery</legend>\n  <label class=\"rd\"><input type=\"radio\" name=\"d\" checked><span class=\"rd__dot\" aria-hidden=\"true\"></span>Standard (3 to 5 days)</label>\n  <label class=\"rd\"><input type=\"radio\" name=\"d\"><span class=\"rd__dot\" aria-hidden=\"true\"></span>Express (1 to 2 days)</label>\n</fieldset>",
     "css": ".rg{border:0;padding:0;font:15px system-ui,sans-serif}.rg legend{font-weight:700;margin-bottom:6px}\n.rd{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}\n.rd input{position:absolute;opacity:0}\n.rd__dot{width:22px;height:22px;border:2px solid #8a8a8a;border-radius:50%;background:#fff;display:grid;place-items:center}\n.rd input:checked+.rd__dot{border-color:#0a0a0a}\n.rd input:checked+.rd__dot::after{content:'';width:10px;height:10px;border-radius:50%;background:#0a0a0a}"
+  },
+  "os": {
+    "ios": {
+      "css": ".rd__dot{border-width:1.5px}"
+    },
+    "android": {
+      "css": ".rd__dot{width:20px;height:20px}"
+    }
   }
 }

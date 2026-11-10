@@ -5,9 +5,12 @@
   "category": "data-display",
   "level": "atom",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"

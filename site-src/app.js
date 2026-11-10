@@ -3,7 +3,9 @@ function render() {
   closeCtx(); tip.hidden = true; if (ddOpen) ddOpen.close();
   const r = route();
   $$('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.view === r.view));
-  r.view === 'systems' ? renderSystems() : renderBrowse();
+  if (r.view === 'systems') renderSystems();
+  else if ($('#lay')) showDetail(); /* same Browse page: only the right panel changes */
+  else renderBrowse();
 }
 $$('.tab').forEach(t => t.onclick = () => go(t.dataset.view === 'systems' ? '#/systems' : '#/'));
 window.addEventListener('hashchange', render);

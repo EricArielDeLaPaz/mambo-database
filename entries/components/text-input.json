@@ -5,9 +5,12 @@
   "category": "forms",
   "level": "molecule",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -143,5 +146,13 @@
   "code": {
     "html": "<label class=\"field\">\n  <span class=\"field__label\">Email</span>\n  <input class=\"field__input\" type=\"email\" autocomplete=\"email\" aria-describedby=\"email-hint\">\n  <span id=\"email-hint\" class=\"field__hint\">We only use it to send your receipt.</span>\n</label>",
     "css": ".field{display:grid;gap:6px;font-family:system-ui,sans-serif;max-width:360px}\n.field__label{font-weight:600;font-size:14px}\n.field__input{min-height:44px;padding:0 14px;border:1px solid #8a8a8a;border-radius:8px;font-size:16px}\n.field__hint{font-size:13px;color:#525252}"
+  },
+  "os": {
+    "ios": {
+      "css": ".field__input{border:0;border-radius:10px;min-height:44px;background:#f2f2f7;font:17px -apple-system,'SF Pro Text',system-ui,sans-serif}.field__label{font:500 13px -apple-system,'SF Pro Text',system-ui,sans-serif;text-transform:uppercase;color:#525252}"
+    },
+    "android": {
+      "css": ".field__input{border-radius:4px;min-height:56px;font:16px Roboto,system-ui,sans-serif}.field__label{font:400 12px Roboto,system-ui,sans-serif;color:#525252}"
+    }
   }
 }

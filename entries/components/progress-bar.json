@@ -5,9 +5,12 @@
   "category": "feedback",
   "level": "atom",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -87,5 +90,13 @@
   "code": {
     "html": "<div class=\"pb\" role=\"progressbar\" aria-label=\"Upload\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"60\"><span style=\"width:60%\"></span></div>\n<p class=\"pbt\">60% uploaded</p>",
     "css": ".pb{height:10px;border-radius:999px;background:#e5e5e5;overflow:hidden;max-width:360px}\n.pb span{display:block;height:100%;background:#0a0a0a;border-radius:999px}\n.pbt{font:13px system-ui,sans-serif;color:#525252}"
+  },
+  "os": {
+    "ios": {
+      "css": ".pb{height:4px;border-radius:2px}.pb span{border-radius:2px}"
+    },
+    "android": {
+      "css": ".pb{height:4px;border-radius:2px}.pb span{border-radius:2px}"
+    }
   }
 }

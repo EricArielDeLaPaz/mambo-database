@@ -5,8 +5,10 @@
   "category": "overlays",
   "level": "organism",
   "platforms": [
-    "mobile-app",
-    "mobile-web"
+    "tablet",
+    "mobile-web",
+    "ios",
+    "android"
   ],
   "summary": "A panel that slides up from the bottom edge on phones. It holds menus, short forms and details without leaving the screen.",
   "anatomy": [

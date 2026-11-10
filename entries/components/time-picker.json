@@ -1,0 +1,113 @@
+{
+  "id": "time-picker",
+  "type": "component",
+  "name": "Time picker",
+  "category": "forms",
+  "level": "molecule",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet",
+    "mobile-web",
+    "ios",
+    "android"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A control for choosing a time with hour and minute fields, and AM/PM where needed.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Names the time."
+    },
+    {
+      "part": "hour-minute",
+      "required": true,
+      "purpose": "Two numeric fields."
+    },
+    {
+      "part": "period",
+      "required": false,
+      "purpose": "AM / PM segmented control."
+    },
+    {
+      "part": "clock-button",
+      "required": false,
+      "purpose": "Opens a list or dial."
+    }
+  ],
+  "variants": [
+    {
+      "id": "fields",
+      "name": "Fields",
+      "use": "Typed entry.",
+      "contentLimits": {
+        "fields": "hour, minute, period"
+      }
+    },
+    {
+      "id": "list",
+      "name": "List",
+      "use": "Pick from 15 or 30 minute slots.",
+      "contentLimits": {
+        "options": "up to 48"
+      }
+    },
+    {
+      "id": "native",
+      "name": "Native input",
+      "use": "type=time on mobile web.",
+      "contentLimits": {}
+    }
+  ],
+  "whenToUse": [
+    "Scheduling and reminders."
+  ],
+  "whenNotToUse": [
+    "Durations: use a number input.",
+    "Date and time together: pair with a date picker."
+  ],
+  "alternatives": [
+    "date-picker",
+    "select",
+    "number-input"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "radius.md"
+  ],
+  "accessibility": {
+    "role": "group with labeled fields",
+    "keyboard": [
+      "Arrow keys change values.",
+      "Typing advances to minutes."
+    ],
+    "focus": "Focus ring on each field.",
+    "notes": [
+      "Label each field.",
+      "Show the 12/24 hour format.",
+      "Validate impossible times with a clear message."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".tp input,.tp select:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "date-picker",
+    "select",
+    "number-input"
+  ],
+  "code": {
+    "html": "<fieldset class=\"tp\"><legend>Start time</legend>\n  <input aria-label=\"Hour\" inputmode=\"numeric\" value=\"09\"><span aria-hidden=\"true\">:</span><input aria-label=\"Minute\" inputmode=\"numeric\" value=\"30\">\n  <select aria-label=\"AM or PM\"><option>AM</option><option>PM</option></select>\n</fieldset>",
+    "css": ".tp{display:flex;align-items:center;gap:6px;border:0;padding:0;font:600 14px system-ui,sans-serif}\n.tp legend{margin-bottom:6px}\n.tp input,.tp select{height:44px;border:1px solid #8a8a8a;border-radius:8px;text-align:center;font:16px system-ui,sans-serif}\n.tp input{width:56px}"
+  }
+}

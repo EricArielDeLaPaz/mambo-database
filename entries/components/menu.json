@@ -5,9 +5,12 @@
   "category": "overlays",
   "level": "molecule",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -123,7 +126,17 @@
     "drawer"
   ],
   "code": {
-    "html": "<div class=\"mn\">\n  <button type=\"button\" aria-haspopup=\"menu\" aria-expanded=\"true\" class=\"mn__t\">More</button>\n  <div role=\"menu\" class=\"mn__m\">\n    <button role=\"menuitem\">Rename</button>\n    <button role=\"menuitem\">Duplicate</button>\n    <button role=\"menuitem\" class=\"mn__d\">Delete</button>\n  </div>\n</div>",
-    "css": ".mn{position:relative;display:inline-block;font:14px system-ui,sans-serif}\n.mn__t{min-height:40px;padding:0 16px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif}\n.mn__m{display:grid;min-width:180px;margin-top:6px;padding:4px;background:#fff;border:1px solid #8a8a8a;border-radius:8px;box-shadow:0 14px 34px -10px rgba(0,0,0,.3)}\n.mn__m button{text-align:left;min-height:40px;padding:0 12px;border:0;border-radius:6px;background:none;font:inherit;cursor:pointer}\n.mn__d{color:#b91c1c}"
+    "html": "<div class=\"mn\">\n  <button type=\"button\" aria-haspopup=\"menu\" aria-expanded=\"true\" class=\"mn__t\" aria-label=\"More options\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"12\" r=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><circle cx=\"19\" cy=\"12\" r=\"2\"/></svg></button>\n  <div role=\"menu\" class=\"mn__m\">\n    <button role=\"menuitem\">Rename</button>\n    <button role=\"menuitem\">Duplicate</button>\n    <button role=\"menuitem\" class=\"mn__d\">Delete</button>\n  </div>\n</div>",
+    "css": ".mn{position:relative;display:inline-block;font:14px system-ui,sans-serif}\n.mn__t{display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid #0a0a0a;border-radius:999px;background:#fff;cursor:pointer}\n.mn__m{display:grid;min-width:180px;margin-top:6px;padding:4px;background:#fff;border:1px solid #8a8a8a;border-radius:8px;box-shadow:0 14px 34px -10px rgba(0,0,0,.3)}\n.mn__m button{text-align:left;min-height:40px;padding:0 12px;border:0;border-radius:6px;background:none;font:inherit;cursor:pointer}\n.mn__d{color:#b91c1c}"
+  },
+  "os": {
+    "ios": {
+      "html": "<div class=\"mn\">\n  <button type=\"button\" aria-haspopup=\"menu\" aria-expanded=\"true\" class=\"mn__t\" aria-label=\"More options\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"12\" r=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><circle cx=\"19\" cy=\"12\" r=\"2\"/></svg></button>\n  <div role=\"menu\" class=\"mn__m\">\n    <button role=\"menuitem\">Rename</button>\n    <button role=\"menuitem\">Duplicate</button>\n    <button role=\"menuitem\" class=\"mn__d\">Delete</button>\n  </div>\n</div>",
+      "css": ".mn__t{border:0;background:#eeeef0}.mn__m{border-radius:14px;border:0;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;min-width:220px}"
+    },
+    "android": {
+      "html": "<div class=\"mn\">\n  <button type=\"button\" aria-haspopup=\"menu\" aria-expanded=\"true\" class=\"mn__t\" aria-label=\"More options\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"5\" r=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><circle cx=\"12\" cy=\"19\" r=\"2\"/></svg></button>\n  <div role=\"menu\" class=\"mn__m\">\n    <button role=\"menuitem\">Rename</button>\n    <button role=\"menuitem\">Duplicate</button>\n    <button role=\"menuitem\" class=\"mn__d\">Delete</button>\n  </div>\n</div>",
+      "css": ".mn__t{width:48px;height:48px;border:0;background:none}.mn__m{border-radius:4px;border:0;font-family:Roboto,system-ui,sans-serif;box-shadow:0 2px 6px rgba(0,0,0,.3)}"
+    }
   }
 }

@@ -1,0 +1,128 @@
+{
+  "id": "sidebar-navigation",
+  "type": "component",
+  "name": "Sidebar navigation",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A vertical list of links on the left of an app, grouped into sections, often collapsible. The default for dashboards and tools.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "220 to 280px wide."
+    },
+    {
+      "part": "group-label",
+      "required": false,
+      "purpose": "Small heading above a set of links."
+    },
+    {
+      "part": "item",
+      "required": true,
+      "purpose": "Icon plus label, 40px tall."
+    },
+    {
+      "part": "current",
+      "required": true,
+      "purpose": "Highlighted and marked with aria-current."
+    },
+    {
+      "part": "collapse",
+      "required": false,
+      "purpose": "Toggle to an icon-only rail."
+    }
+  ],
+  "variants": [
+    {
+      "id": "expanded",
+      "name": "Expanded",
+      "use": "Default.",
+      "contentLimits": {
+        "width": "240px",
+        "items": "up to 12 visible"
+      }
+    },
+    {
+      "id": "collapsed",
+      "name": "Icon only",
+      "use": "Dense tools.",
+      "contentLimits": {
+        "width": "64px",
+        "label": "tooltip on hover"
+      }
+    },
+    {
+      "id": "drawer",
+      "name": "Drawer on mobile",
+      "use": "Opens over content.",
+      "contentLimits": {
+        "width": "280px"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Apps with many top-level sections."
+  ],
+  "whenNotToUse": [
+    "Sites with 3 to 6 links: use a top navigation bar.",
+    "Phones: use a bottom bar."
+  ],
+  "alternatives": [
+    "top-navigation-bar",
+    "navigation-rail",
+    "drawer"
+  ],
+  "tokens": [
+    "color.surface.subtle",
+    "color.border.default",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "navigation with lists",
+    "keyboard": [
+      "Tab moves through links.",
+      "Arrow keys can move within a group.",
+      "Enter activates."
+    ],
+    "focus": "Visible focus ring on each link.",
+    "notes": [
+      "Mark the current page with aria-current=page.",
+      "Icon-only items need tooltips and aria-labels.",
+      "Group labels are headings or have aria-label."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.sbn a:not([aria-current]):hover{background:#eeeeee;color:#0a0a0a}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".sbn a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "top-navigation-bar",
+    "navigation-rail",
+    "drawer"
+  ],
+  "code": {
+    "html": "<nav class=\"sbn\" aria-label=\"Sidebar\">\n  <p class=\"sbn__g\">Workspace</p>\n  <a href=\"#\" aria-current=\"page\">Overview</a>\n  <a href=\"#\">Projects</a>\n  <a href=\"#\">Reports</a>\n</nav>",
+    "css": ".sbn{display:grid;align-content:start;gap:2px;width:240px;padding:12px;border-right:1px solid #d4d4d4;background:#fafafa;font:500 14px system-ui,sans-serif}\n.sbn__g{margin:8px 8px 4px;font:700 11px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#525252}\n.sbn a{display:block;padding:9px 12px;border-radius:8px;color:#525252;text-decoration:none}\n.sbn [aria-current=page]{background:#0a0a0a;color:#fff;font-weight:600}"
+  }
+}

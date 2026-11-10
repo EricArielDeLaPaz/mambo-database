@@ -1,0 +1,93 @@
+{
+  "id": "pull-to-refresh",
+  "type": "component",
+  "name": "Pull to refresh",
+  "category": "feedback",
+  "level": "molecule",
+  "platforms": [
+    "ios",
+    "android",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A gesture where dragging a list down past its top reloads it, with an indicator that shows progress. Always offer another way to refresh.",
+  "anatomy": [
+    {
+      "part": "indicator",
+      "required": true,
+      "purpose": "A spinner or arrow that appears as you pull."
+    },
+    {
+      "part": "threshold",
+      "required": true,
+      "purpose": "About 80px of pull triggers a refresh."
+    },
+    {
+      "part": "status",
+      "required": true,
+      "purpose": "Text for assistive tech: Refreshing."
+    },
+    {
+      "part": "fallback",
+      "required": true,
+      "purpose": "A refresh button elsewhere."
+    }
+  ],
+  "variants": [
+    {
+      "id": "ios",
+      "name": "iOS style",
+      "use": "Spinner appears under the nav bar.",
+      "contentLimits": {
+        "threshold": "about 60pt"
+      }
+    },
+    {
+      "id": "android",
+      "name": "Android style",
+      "use": "Circular progress drops down.",
+      "contentLimits": {
+        "threshold": "about 80dp"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Feeds and lists that update from a server."
+  ],
+  "whenNotToUse": [
+    "Screens with no scrolling list.",
+    "As the only way to refresh."
+  ],
+  "alternatives": [
+    "spinner",
+    "progress-bar"
+  ],
+  "tokens": [
+    "color.primary",
+    "motion.duration.slow"
+  ],
+  "accessibility": {
+    "role": "status live region",
+    "keyboard": [
+      "Gesture only; provide a button."
+    ],
+    "focus": "Focus stays where it was.",
+    "notes": [
+      "A gesture is not accessible alone: add a refresh control.",
+      "Announce 'Refreshing' and 'Updated'.",
+      "Respect reduced motion."
+    ]
+  },
+  "states": [],
+  "related": [
+    "spinner",
+    "progress-bar"
+  ],
+  "code": {
+    "html": "<div class=\"ptr\" role=\"status\" aria-live=\"polite\">\n  <span class=\"ptr__s\" aria-hidden=\"true\"></span> Refreshing\n</div>",
+    "css": ".ptr{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:999px;background:#fafafa;border:1px solid #d4d4d4;font:500 14px system-ui,sans-serif}\n.ptr__s{width:18px;height:18px;border:2px solid #d4d4d4;border-top-color:#0a0a0a;border-radius:50%;animation:ptrs .8s linear infinite}\n@keyframes ptrs{to{transform:rotate(360deg)}}\n@media (prefers-reduced-motion:reduce){.ptr__s{animation-duration:2s}}"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "id": "banner",
+  "type": "component",
+  "name": "Banner",
+  "category": "feedback",
+  "level": "molecule",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A full-width message at the top of a page or section for announcements, cookie notices or account status. It stays until dismissed or fixed.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Full width, with the message and actions."
+    },
+    {
+      "part": "message",
+      "required": true,
+      "purpose": "One or two sentences."
+    },
+    {
+      "part": "action",
+      "required": false,
+      "purpose": "A link or button."
+    },
+    {
+      "part": "dismiss",
+      "required": false,
+      "purpose": "A close button when it is optional."
+    }
+  ],
+  "variants": [
+    {
+      "id": "info",
+      "name": "Info",
+      "use": "Announcements.",
+      "contentLimits": {
+        "message": "max 140 characters"
+      }
+    },
+    {
+      "id": "warning",
+      "name": "Warning",
+      "use": "Account problems.",
+      "contentLimits": {
+        "message": "max 140 characters",
+        "action": "1"
+      }
+    },
+    {
+      "id": "consent",
+      "name": "Consent",
+      "use": "Cookie choices.",
+      "contentLimits": {
+        "actions": "2 equal buttons"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Page-wide messages that need to be seen."
+  ],
+  "whenNotToUse": [
+    "Feedback after an action: use a toast.",
+    "Messages next to one field: use an inline alert."
+  ],
+  "alternatives": [
+    "inline-alert",
+    "toast",
+    "modal-dialog"
+  ],
+  "tokens": [
+    "color.surface.subtle",
+    "color.border.default",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "region / status",
+    "keyboard": [
+      "Dismiss is a real button.",
+      "Consent buttons are first in the tab order after the page loads."
+    ],
+    "focus": "Focus ring on actions.",
+    "notes": [
+      "Do not trap focus.",
+      "Do not use color alone for status: add an icon.",
+      "Dismissed banners should stay dismissed."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.bn__x:hover{background:#eeeeee}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".bn a,.bn__x:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "inline-alert",
+    "toast",
+    "modal-dialog"
+  ],
+  "code": {
+    "html": "<div class=\"bn\" role=\"region\" aria-label=\"Announcement\">\n  <p>We updated our privacy policy. <a href=\"#\">Read the changes</a></p>\n  <button type=\"button\" class=\"bn__x\" aria-label=\"Dismiss\">&times;</button>\n</div>",
+    "css": ".bn{display:flex;align-items:center;justify-content:space-between;gap:16px;width:560px;padding:10px 12px 10px 16px;border:1px solid #8a8a8a;border-radius:8px;background:#fafafa;font:14px system-ui,sans-serif}\n.bn p{margin:0}\n.bn__x{width:36px;height:36px;border:0;border-radius:50%;background:none;font-size:22px;cursor:pointer}"
+  }
+}

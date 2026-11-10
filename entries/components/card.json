@@ -5,9 +5,12 @@
   "category": "cards",
   "level": "molecule",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -133,5 +136,13 @@
       "note": "",
       "css": ".card :focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
     }
-  ]
+  ],
+  "os": {
+    "ios": {
+      "css": ".card{border:0;border-radius:16px;background:#f2f2f7}"
+    },
+    "android": {
+      "css": ".card{border:0;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.2),0 1px 2px rgba(0,0,0,.14)}"
+    }
+  }
 }

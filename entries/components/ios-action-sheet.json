@@ -1,0 +1,111 @@
+{
+  "id": "ios-action-sheet",
+  "type": "component",
+  "name": "Action sheet (iOS)",
+  "category": "overlays",
+  "level": "organism",
+  "platforms": [
+    "ios"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A sheet of choices that slides up from the bottom on iPhone, for actions related to the current context. Destructive actions are red, and Cancel is a separate bar.",
+  "anatomy": [
+    {
+      "part": "title",
+      "required": false,
+      "purpose": "Optional short message above the actions."
+    },
+    {
+      "part": "actions",
+      "required": true,
+      "purpose": "2 to 6 rows, 57pt tall."
+    },
+    {
+      "part": "destructive",
+      "required": false,
+      "purpose": "Red label, placed first or last by risk."
+    },
+    {
+      "part": "cancel",
+      "required": true,
+      "purpose": "Separate bold bar below the group."
+    }
+  ],
+  "variants": [
+    {
+      "id": "default",
+      "name": "Default",
+      "use": "Choose an action.",
+      "contentLimits": {
+        "actions": "2 to 6",
+        "title": "max 60 characters"
+      }
+    },
+    {
+      "id": "destructive",
+      "name": "Destructive",
+      "use": "Confirm a risky action.",
+      "contentLimits": {
+        "actions": "1 destructive + cancel"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Choosing among actions that relate to something on screen."
+  ],
+  "whenNotToUse": [
+    "Android: use a bottom sheet or menu.",
+    "Short confirmations: use an alert."
+  ],
+  "alternatives": [
+    "bottom-sheet",
+    "modal-dialog",
+    "menu"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.text.danger",
+    "radius.xl"
+  ],
+  "accessibility": {
+    "role": "dialog (action sheet)",
+    "keyboard": [
+      "VoiceOver swipes between actions.",
+      "The scrim outside cancels."
+    ],
+    "focus": "Focus starts on the first action.",
+    "notes": [
+      "Destructive text must not rely on red alone: use words like Delete.",
+      "Cancel is always available.",
+      "On iPad it becomes a popover."
+    ]
+  },
+  "states": [
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".as button:active{background:#d1d1d6}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".as button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "bottom-sheet",
+    "modal-dialog",
+    "menu"
+  ],
+  "code": {
+    "html": "<div class=\"as\" role=\"dialog\" aria-label=\"Photo options\">\n  <div class=\"as__g\">\n    <button type=\"button\">Share</button>\n    <button type=\"button\">Duplicate</button>\n    <button type=\"button\" class=\"as__d\">Delete Photo</button>\n  </div>\n  <button type=\"button\" class=\"as__c\">Cancel</button>\n</div>",
+    "css": ".as{display:grid;gap:8px;width:360px;font:20px -apple-system,system-ui,sans-serif}\n.as__g{display:grid;border-radius:14px;overflow:hidden;background:rgba(249,249,249,.96)}\n.as button{min-height:57px;border:0;background:rgba(249,249,249,.96);color:#0a0a0a;font:inherit;cursor:pointer}\n.as__g button+button{border-top:.5px solid #c6c6c8}\n.as__d{color:#b91c1c!important}\n.as__c{border-radius:14px;font-weight:600!important}"
+  }
+}

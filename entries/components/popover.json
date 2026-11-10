@@ -5,9 +5,12 @@
   "category": "overlays",
   "level": "molecule",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -117,5 +120,13 @@
   "code": {
     "html": "<button class=\"pt\" aria-expanded=\"true\" aria-haspopup=\"menu\">Options</button>\n<div class=\"pop\" role=\"menu\">\n  <button role=\"menuitem\" class=\"pop__i\">Edit</button>\n  <button role=\"menuitem\" class=\"pop__i\">Duplicate</button>\n  <button role=\"menuitem\" class=\"pop__i\">Delete</button>\n</div>",
     "css": ".pt{min-height:44px;padding:0 18px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif}\n.pop{display:grid;width:200px;margin-top:8px;padding:6px;border:1px solid #d4d4d4;border-radius:12px;background:#fff;box-shadow:0 18px 40px -12px rgba(0,0,0,.25)}\n.pop__i{min-height:44px;padding:0 12px;border:0;border-radius:8px;background:none;text-align:left;font:500 14px system-ui,sans-serif}"
+  },
+  "os": {
+    "ios": {
+      "css": ".pop{border-radius:14px;border:0}"
+    },
+    "android": {
+      "css": ".pop{border-radius:4px;border:0;box-shadow:0 2px 6px rgba(0,0,0,.3)}"
+    }
   }
 }

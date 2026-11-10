@@ -1,0 +1,117 @@
+{
+  "id": "footer",
+  "type": "component",
+  "name": "Footer",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "desktop-web",
+    "tablet",
+    "mobile-web"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "The bottom of a page with secondary links, contact details and legal text. People look here when they cannot find something else.",
+  "anatomy": [
+    {
+      "part": "link-groups",
+      "required": true,
+      "purpose": "2 to 4 columns of related links."
+    },
+    {
+      "part": "brand",
+      "required": false,
+      "purpose": "Logo and a short line."
+    },
+    {
+      "part": "legal",
+      "required": true,
+      "purpose": "Copyright, privacy and terms links."
+    },
+    {
+      "part": "social",
+      "required": false,
+      "purpose": "Icon links with accessible names."
+    }
+  ],
+  "variants": [
+    {
+      "id": "simple",
+      "name": "Simple",
+      "use": "Portfolios and small sites.",
+      "contentLimits": {
+        "links": "3 to 6"
+      }
+    },
+    {
+      "id": "columns",
+      "name": "Columns",
+      "use": "Larger sites.",
+      "contentLimits": {
+        "groups": "2 to 4"
+      }
+    },
+    {
+      "id": "minimal",
+      "name": "Legal only",
+      "use": "Apps.",
+      "contentLimits": {
+        "links": "2 to 3"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Every public web page."
+  ],
+  "whenNotToUse": [
+    "Primary navigation: use the top bar.",
+    "Native mobile apps."
+  ],
+  "alternatives": [
+    "top-navigation-bar",
+    "link"
+  ],
+  "tokens": [
+    "color.text.secondary",
+    "color.border.default",
+    "space.8"
+  ],
+  "accessibility": {
+    "role": "contentinfo",
+    "keyboard": [
+      "Tab moves through links."
+    ],
+    "focus": "Visible focus ring.",
+    "notes": [
+      "Use the <footer> element (contentinfo landmark).",
+      "Icon-only social links need names.",
+      "Link text must be 4.5:1 on the footer background."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.ft a:hover{text-decoration-thickness:2px}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ft a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "top-navigation-bar",
+    "link"
+  ],
+  "code": {
+    "html": "<footer class=\"ft\">\n  <nav aria-label=\"Footer\"><a href=\"#\">About</a><a href=\"#\">Contact</a><a href=\"#\">Privacy</a></nav>\n  <p>&copy; 2026 Example Inc.</p>\n</footer>",
+    "css": ".ft{display:grid;gap:12px;width:480px;padding:20px;border-top:1px solid #d4d4d4;background:#fafafa;font:14px system-ui,sans-serif;color:#525252}\n.ft nav{display:flex;gap:16px}\n.ft a{color:#0a0a0a}\n.ft p{margin:0}"
+  }
+}

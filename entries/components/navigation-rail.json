@@ -1,0 +1,111 @@
+{
+  "id": "navigation-rail",
+  "type": "component",
+  "name": "Navigation rail",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "tablet",
+    "desktop-app",
+    "android"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A narrow vertical bar on the left with 3 to 7 top-level destinations. Used on tablets, foldables and desktop apps where a bottom bar would feel stretched.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "80px wide, full height."
+    },
+    {
+      "part": "item",
+      "required": true,
+      "purpose": "Icon above a label, 56px tall."
+    },
+    {
+      "part": "indicator",
+      "required": true,
+      "purpose": "Pill behind the active icon."
+    },
+    {
+      "part": "fab",
+      "required": false,
+      "purpose": "An optional action at the top."
+    }
+  ],
+  "variants": [
+    {
+      "id": "labeled",
+      "name": "Labeled",
+      "use": "Default.",
+      "contentLimits": {
+        "items": "3 to 7"
+      }
+    },
+    {
+      "id": "expanded",
+      "name": "Expanded",
+      "use": "Wide windows: becomes a full sidebar.",
+      "contentLimits": {
+        "width": "220 to 280px"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Tablets, foldables and desktop windows 600px and wider."
+  ],
+  "whenNotToUse": [
+    "Phones: use a bottom navigation bar.",
+    "Many sections: use a sidebar."
+  ],
+  "alternatives": [
+    "sidebar-navigation",
+    "android-navigation-bar",
+    "bottom-tab-bar"
+  ],
+  "tokens": [
+    "color.surface.default",
+    "color.primary",
+    "space.3"
+  ],
+  "accessibility": {
+    "role": "navigation",
+    "keyboard": [
+      "Tab or arrow keys move through items."
+    ],
+    "focus": "Focus ring on each item.",
+    "notes": [
+      "Mark the current page with aria-current.",
+      "Labels are always visible.",
+      "Collapse to a bottom bar below 600px."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.nr a:hover .nr__p{background:#eeeeee}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".nr a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "sidebar-navigation",
+    "android-navigation-bar",
+    "bottom-tab-bar"
+  ],
+  "code": {
+    "html": "<nav class=\"nr\" aria-label=\"Primary\">\n  <a href=\"#\" aria-current=\"page\"><span class=\"nr__p\">⌂</span>Home</a>\n  <a href=\"#\"><span class=\"nr__p\">⌕</span>Search</a>\n  <a href=\"#\"><span class=\"nr__p\">☺</span>Profile</a>\n</nav>",
+    "css": ".nr{display:grid;align-content:start;gap:12px;width:80px;padding:16px 0;background:#fafafa;border-right:1px solid #d4d4d4;font:600 12px system-ui,sans-serif}\n.nr a{display:grid;justify-items:center;gap:4px;color:#525252;text-decoration:none}\n.nr__p{display:grid;place-items:center;width:56px;height:32px;border-radius:16px;font-size:18px}\n.nr [aria-current=page]{color:#0a0a0a}\n.nr [aria-current=page] .nr__p{background:#e5e5e5}"
+  }
+}

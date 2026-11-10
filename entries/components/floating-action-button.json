@@ -5,8 +5,10 @@
   "category": "buttons",
   "level": "atom",
   "platforms": [
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -115,5 +117,10 @@
   "code": {
     "html": "<button class=\"fab\" type=\"button\" aria-label=\"Add item\">\n  <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg>\n</button>",
     "css": ".fab{display:grid;place-items:center;width:56px;height:56px;border:0;border-radius:50%;background:#0a0a0a;color:#fff;box-shadow:0 10px 24px -6px rgba(0,0,0,.4);cursor:pointer}"
+  },
+  "os": {
+    "android": {
+      "css": ".fab{border-radius:16px;width:56px;height:56px}"
+    }
   }
 }

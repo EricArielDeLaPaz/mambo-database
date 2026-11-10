@@ -5,9 +5,12 @@
   "category": "buttons",
   "level": "atom",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -133,5 +136,13 @@
   "code": {
     "html": "<button class=\"ib\" type=\"button\" aria-label=\"Search\">\n  <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg>\n</button>\n<button class=\"ib ib--outlined\" type=\"button\" aria-label=\"Close\">\n  <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg>\n</button>",
     "css": ".ib{display:inline-grid;place-items:center;width:44px;height:44px;border:1px solid transparent;border-radius:999px;background:none;color:#0a0a0a;cursor:pointer}\n.ib--outlined{border-color:#8a8a8a}"
+  },
+  "os": {
+    "ios": {
+      "css": ".ib{border-radius:50%}"
+    },
+    "android": {
+      "css": ".ib{width:48px;height:48px;border-radius:50%}"
+    }
   }
 }

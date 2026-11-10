@@ -1,0 +1,127 @@
+{
+  "id": "ios-navigation-bar",
+  "type": "component",
+  "name": "Navigation bar (iOS)",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "ios",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "The iOS bar at the top of a screen: a back button on the left, a centered title, and actions on the right. A large title can collapse as you scroll.",
+  "anatomy": [
+    {
+      "part": "back",
+      "required": true,
+      "purpose": "Chevron plus the previous screen's title, 44pt tall target."
+    },
+    {
+      "part": "title",
+      "required": true,
+      "purpose": "Centered, semibold, one line."
+    },
+    {
+      "part": "large-title",
+      "required": false,
+      "purpose": "34pt bold title under the bar that collapses on scroll."
+    },
+    {
+      "part": "actions",
+      "required": false,
+      "purpose": "One or two text or icon buttons on the right."
+    }
+  ],
+  "variants": [
+    {
+      "id": "standard",
+      "name": "Standard",
+      "use": "Detail screens.",
+      "contentLimits": {
+        "title": "max 24 characters",
+        "actions": "1 or 2"
+      }
+    },
+    {
+      "id": "large",
+      "name": "Large title",
+      "use": "Top-level screens in a stack.",
+      "contentLimits": {
+        "title": "max 20 characters"
+      }
+    },
+    {
+      "id": "search",
+      "name": "With search",
+      "use": "Lists that need search under the title.",
+      "contentLimits": {
+        "search": "scrolls away first"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Hierarchical navigation on iPhone and iPad."
+  ],
+  "whenNotToUse": [
+    "Android: use a top app bar.",
+    "Top-level tab switching: use the tab bar."
+  ],
+  "alternatives": [
+    "android-top-app-bar",
+    "bottom-tab-bar",
+    "top-navigation-bar"
+  ],
+  "tokens": [
+    "color.text.primary",
+    "color.border.default",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "navigation landmark / header",
+    "keyboard": [
+      "Swipe from the left edge goes back.",
+      "VoiceOver reads the title as a heading."
+    ],
+    "focus": "Back button is the first focus stop.",
+    "notes": [
+      "Back button label names the previous screen.",
+      "Touch targets at least 44x44pt.",
+      "Support Dynamic Type for titles."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.inb__back:hover,.inb__act:hover{opacity:.6}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".inb__back,.inb__act:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".inb__back:active,.inb__act:active{opacity:.4}"
+    }
+  ],
+  "related": [
+    "android-top-app-bar",
+    "bottom-tab-bar",
+    "top-navigation-bar"
+  ],
+  "code": {
+    "html": "<header class=\"inb\">\n  <button class=\"inb__back\" type=\"button\"><svg width=\"12\" height=\"20\" viewBox=\"0 0 12 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10 2L2 10l8 8\"/></svg> Inbox</button>\n  <h1 class=\"inb__t\">Message</h1>\n  <button class=\"inb__act\" type=\"button\">Edit</button>\n</header>",
+    "css": ".inb{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;min-height:44px;width:360px;padding:0 8px;border-bottom:.5px solid #c6c6c8;background:rgba(249,249,249,.94);font:17px -apple-system,system-ui,sans-serif}\n.inb__t{margin:0;font-size:17px;font-weight:600;text-align:center}\n.inb__back,.inb__act{display:inline-flex;align-items:center;gap:4px;min-height:44px;border:0;background:none;color:#0a0a0a;font:inherit;cursor:pointer}\n.inb__act{justify-self:end}"
+  }
+}

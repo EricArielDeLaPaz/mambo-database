@@ -1,0 +1,130 @@
+{
+  "id": "chip",
+  "type": "component",
+  "name": "Chip",
+  "category": "buttons",
+  "level": "atom",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet",
+    "mobile-web",
+    "ios",
+    "android"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A compact element for an input, a filter or a suggestion. Chips are interactive, so use a pill shape; tags that only label stay square.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Pill, 32px tall with a 48px touch area."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "1 to 3 words."
+    },
+    {
+      "part": "icon",
+      "required": false,
+      "purpose": "Leading icon or avatar."
+    },
+    {
+      "part": "remove",
+      "required": false,
+      "purpose": "Trailing X on input chips."
+    }
+  ],
+  "variants": [
+    {
+      "id": "filter",
+      "name": "Filter",
+      "use": "Toggle a filter on or off.",
+      "contentLimits": {
+        "label": "max 20 characters"
+      }
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "use": "Entered items like emails.",
+      "contentLimits": {
+        "remove": "required"
+      }
+    },
+    {
+      "id": "suggestion",
+      "name": "Suggestion",
+      "use": "Quick replies.",
+      "contentLimits": {
+        "label": "max 24 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Filters, entered items and quick suggestions."
+  ],
+  "whenNotToUse": [
+    "Static labels: use a tag.",
+    "Primary actions: use a button."
+  ],
+  "alternatives": [
+    "tag",
+    "toggle-button",
+    "segmented-control"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "radius.pill",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "button with aria-pressed (filter) or a list of removable items",
+    "keyboard": [
+      "Space or Enter toggles.",
+      "Backspace or Delete removes an input chip."
+    ],
+    "focus": "Focus ring on the chip.",
+    "notes": [
+      "Selected needs a check icon, not only color.",
+      "Remove button has a name: Remove Design.",
+      "Touch area 48px."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.chp:hover{background:#f0f0f0}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".chp:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".chp:disabled{opacity:.45;cursor:not-allowed}"
+    }
+  ],
+  "related": [
+    "tag",
+    "toggle-button",
+    "segmented-control"
+  ],
+  "code": {
+    "html": "<div class=\"chs\" role=\"group\" aria-label=\"Filters\">\n  <button class=\"chp\" type=\"button\" aria-pressed=\"true\">&#10003; Open now</button>\n  <button class=\"chp\" type=\"button\" aria-pressed=\"false\">Vegan</button>\n</div>",
+    "css": ".chs{display:flex;gap:8px}\n.chp{min-height:32px;padding:0 14px;border:1px solid #8a8a8a;border-radius:999px;background:#fff;color:#0a0a0a;font:500 14px system-ui,sans-serif;cursor:pointer}\n.chp[aria-pressed=true]{background:#e5e5e5;border-color:#0a0a0a;font-weight:700}"
+  }
+}

@@ -5,9 +5,12 @@
   "category": "forms",
   "level": "atom",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -130,5 +133,13 @@
   "code": {
     "html": "<fieldset class=\"cg\"><legend>Notifications</legend>\n  <label class=\"cb\"><input type=\"checkbox\" checked><span class=\"cb__box\" aria-hidden=\"true\"></span>Email</label>\n  <label class=\"cb\"><input type=\"checkbox\"><span class=\"cb__box\" aria-hidden=\"true\"></span>Text message</label>\n</fieldset>",
     "css": ".cg{border:0;padding:0;font:15px system-ui,sans-serif}.cg legend{font-weight:700;margin-bottom:6px}\n.cb{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}\n.cb input{position:absolute;opacity:0}\n.cb__box{width:22px;height:22px;border:2px solid #8a8a8a;border-radius:4px;display:grid;place-items:center;background:#fff}\n.cb input:checked+.cb__box{background:#0a0a0a;border-color:#0a0a0a}\n.cb input:checked+.cb__box::after{content:'';width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}"
+  },
+  "os": {
+    "ios": {
+      "css": ".cb__box{border-radius:50%}"
+    },
+    "android": {
+      "css": ".cb__box{border-radius:2px;width:18px;height:18px}"
+    }
   }
 }

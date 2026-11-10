@@ -19,11 +19,37 @@ const countBy = (fn, items) => { const m = {}; items.forEach(e => [].concat(fn(e
 const checkbox = (grp, val, label, n, on) => `<label class="chk"><input type="checkbox" data-grp="${grp}" value="${esc(val)}" ${on ? 'checked' : ''}><span>${esc(label)}</span><span class="n">${n}</span></label>`;
 
 function renderBrowse() {
-  const r = route(), e = r.id && DATA.find(x => x.id === r.id);
-  $('#app').innerHTML = `<div class="layout"><aside id="side" aria-label="Filters"></aside><main id="main" tabindex="-1"></main></div>`;
-  renderFilters();
-  if (e) { $('#main').innerHTML = renderEntry(e); wireEntry(e); upgradeSelects($('#main')) } else renderResults();
+  $('#app').innerHTML = `<div class="layout3" id="lay"><aside id="side" aria-label="Filters"></aside><div class="rz" data-rz="left" role="separator" aria-orientation="vertical" aria-label="Resize filters panel. Use left and right arrow keys." tabindex="0"></div><main id="main" tabindex="-1"></main><div class="rz rz-r" data-rz="right" role="separator" aria-orientation="vertical" aria-label="Resize details panel. Use left and right arrow keys." tabindex="0" hidden></div><aside id="detail" class="detail" aria-label="Details" hidden></aside></div><div class="sheet-bd" id="dbd" hidden></div>`;
+  renderFilters(); renderResults(); initPanes($('#lay')); showDetail();
 }
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const PANES_KEY = 'mambo-database.panes';
+/* Resizable panes, like the side panels in Figma. Drag a line, use arrow keys, or double-click to reset. */
+function initPanes(lay) {
+  const w = { l: 290, r: 520 }; try { Object.assign(w, JSON.parse(localStorage.getItem(PANES_KEY)) || {}) } catch { }
+  const apply = () => { lay.style.setProperty('--wl', w.l + 'px'); lay.style.setProperty('--wr', w.r + 'px') }, save = () => { try { localStorage.setItem(PANES_KEY, JSON.stringify(w)) } catch { } }; apply();
+  $$('.rz', lay).forEach(h => { const side = h.dataset.rz;
+    h.onpointerdown = e => { e.preventDefault(); h.setPointerCapture(e.pointerId); h.classList.add('drag'); document.body.classList.add('resizing');
+      const move = ev => { const r = lay.getBoundingClientRect(); if (side === 'left') w.l = clamp(ev.clientX - r.left, 200, Math.max(240, Math.min(560, r.width - 440))); else w.r = clamp(r.right - ev.clientX, 320, Math.max(340, Math.min(980, r.width - w.l - 320))); apply() };
+      const up = () => { h.removeEventListener('pointermove', move); h.removeEventListener('pointerup', up); h.classList.remove('drag'); document.body.classList.remove('resizing'); save() };
+      h.addEventListener('pointermove', move); h.addEventListener('pointerup', up) };
+    h.onkeydown = e => { const d = e.key === 'ArrowLeft' ? -16 : e.key === 'ArrowRight' ? 16 : 0; if (!d) return; e.preventDefault(); if (side === 'left') w.l = clamp(w.l + d, 200, 560); else w.r = clamp(w.r - d, 320, 980); apply(); save() };
+    h.ondblclick = () => { if (side === 'left') w.l = 290; else w.r = 520; apply(); save() };
+  });
+}
+const X_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+function showDetail() {
+  const id = route().id, e = id && DATA.find(x => x.id === id); const lay = $('#lay'), d = $('#detail'); if (!lay) return;
+  lay.classList.toggle('has-detail', !!e); d.hidden = !e; $('.rz-r', lay).hidden = !e; $('#dbd').hidden = !e; document.body.classList.toggle('sheet-open', !!e);
+  $$('tr[data-eid]', lay).forEach(tr => tr.classList.toggle('sel', tr.dataset.eid === id));
+  if (!e) { d.innerHTML = ''; return }
+  d.setAttribute('role', 'region'); d.setAttribute('aria-label', 'Details for ' + e.name);
+  d.innerHTML = `<div class="d-head"><span class="grab" aria-hidden="true"></span><span class="eyebrow">Details</span><button class="x" id="dclose" aria-label="Close details">${X_ICON}</button></div><div class="d-body" id="dbody">${renderEntry(e)}</div>`;
+  wireEntry(e, d); upgradeSelects(d); d.scrollTop = 0; $('#dbody').scrollTop = 0;
+  $('#dclose').onclick = () => go('#/'); $('#dbd').onclick = () => go('#/');
+  let y0 = null; const head = $('.d-head', d); head.ontouchstart = ev => { y0 = ev.touches[0].clientY }; head.ontouchmove = ev => { if (y0 !== null && ev.touches[0].clientY - y0 > 90) { y0 = null; go('#/') } }; head.ontouchend = () => { y0 = null };
+}
+document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && route().id && route().view === 'browse' && !document.querySelector('dialog.mdl') && !ddOpen && !ctxEl && !ev.defaultPrevented) go('#/') });
 const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || B.plats.size || B.inds.size);
 function renderFilters() {
   const types = countBy(e => e.type, DATA), cats = countBy(e => e.category, DATA.filter(e => (!B.types.size || B.types.has(e.type)) && platOk(e))), plats = countBy(e => e.platforms, DATA.filter(e => e.type === 'component')), inds = countBy(e => (e.industries || ['all']).includes('all') ? INDUSTRIES.slice(1).map(i => i[0]) : e.industries, DATA);
@@ -39,20 +65,20 @@ function renderFilters() {
   <fieldset><legend class="eyebrow">Industry</legend>${INDUSTRIES.slice(1).map(([k, l]) => checkbox('inds', k, l, inds[k] || 0, B.inds.has(k))).join('')}</fieldset>
   <div class="row"><button class="btn sm" id="clear" ${filtersActive() ? "" : "disabled"}>Clear filters</button></div>`;
   upgradeSelects($('#side'));
-  $$('[data-scope]', $('#side')).forEach(b => b.onclick = () => { B.scope = b.dataset.scope; renderFilters(); if (route().id) go('#/'); else renderResults() });
-  $('#syssel').onchange = ev => { S.active = ev.target.value || null; saveStore(); if (route().id) renderBrowse(); else renderResults() };
+  $$('[data-scope]', $('#side')).forEach(b => b.onclick = () => { B.scope = b.dataset.scope; renderFilters(); renderResults() });
+  $('#syssel').onchange = ev => { S.active = ev.target.value || null; saveStore(); renderResults(); showDetail() };
   $('#q').oninput = ev => { B.q = ev.target.value; afterFilter(false); const c = $('#clear'); if (c) c.disabled = !filtersActive() };
   $$('input[data-type]', $('#side')).forEach(i => i.onchange = () => { B.types = i.value ? new Set([i.value]) : new Set(); B.cats.clear(); afterFilter(true) });
   $$('input[data-grp]', $('#side')).forEach(i => i.onchange = () => { const s = B[i.dataset.grp]; i.checked ? s.add(i.value) : s.delete(i.value); afterFilter(true) });
-  $('#clear').onclick = () => { B.q = ''; B.types.clear(); B.cats.clear(); B.plats.clear(); B.inds.clear(); if (route().id) go('#/'); else { renderFilters(); renderResults() } };
+  $('#clear').onclick = () => { B.q = ''; B.types.clear(); B.cats.clear(); B.plats.clear(); B.inds.clear(); renderFilters(); renderResults() };
 }
-function afterFilter(refresh) { if (route().id) { go('#/') } else { if (refresh) renderFilters(); renderResults() } }
+function afterFilter(refresh) { if (refresh) renderFilters(); renderResults() }
 const sortVal = (e, k) => k === 'name' ? e.name : k === 'type' ? TYPE[e.type] : k === 'category' ? e.category : k === 'platforms' ? (e.platforms || []).join() : (e.industries || ['all']).join();
 function renderResults() {
   const items = DATA.filter(matches).sort((a, b) => sortVal(a, B.sort).localeCompare(sortVal(b, B.sort)) * B.dir);
   const th = (k, l) => `<th scope="col" aria-sort="${B.sort === k ? (B.dir > 0 ? 'ascending' : 'descending') : 'none'}"><button data-sort="${k}">${l}${B.sort === k ? `<span class="sortc ${B.dir > 0 ? '' : 'flip'}">${CHEV}</span>` : ''}</button></th>`;
   $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries</p></div>
-  ${items.length ? `<table class="db"><thead><tr>${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', 'Category') : ''}${th('platforms', 'Platforms')}${th('industries', 'Industries')}</tr></thead><tbody>${items.map(e => `<tr>
+  ${items.length ? `<table class="db"><thead><tr>${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', 'Category') : ''}${th('platforms', 'Platforms')}${th('industries', 'Industries')}</tr></thead><tbody>${items.map(e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
    <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
    <td data-l="Type">${TYPE[e.type]}</td>${B.types.size === 1 ? `<td data-l="Category">${esc(e.category)}</td>` : ''}
    <td data-l="Platforms">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('') || '<span class="empty">Any</span>'}</td>
@@ -62,9 +88,9 @@ function renderResults() {
 }
 const ul = a => '<ul class="plain">' + (a || []).map(x => `<li>${esc(x)}</li>`).join('') + '</ul>';
 const codeBlock = (label, code, id) => `<div class="codehead"><strong>${label}</strong><button class="btn sm" data-copy="${id}">Copy</button></div><pre><code>${esc(code)}</code></pre>`;
-function previewDoc(e, ids) {
+function previewDoc(e, ids, os) {
   const fix = 'html,body{min-height:100%}body{margin:0;padding:32px;box-sizing:border-box;background:#fafafa;font-family:system-ui,sans-serif}.pv{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:240px}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}';
-  return `<!doctype html><meta charset=utf-8><style>${compCss(e, ids)}\n${fix}</style><div class="pv">${e.code.html.replace('<dialog ', '<dialog open ')}</div>`;
+  return `<!doctype html><meta charset=utf-8><style>${compCss(e, ids, os)}\n${fix}</style><div class="pv">${(os && os.length ? compBody(e, os) : e.code.html).replace(/<dialog /g, '<dialog open ')}</div>`;
 }
 const meta = e => `<div class="meta">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('')}${(e.industries || ['all']).map(i => `<span class="tag">Industry: ${esc(indLabel(i))}</span>`).join('')}</div>`;
 const sysOptions = () => { const def = lastSysId(); return S.systems.map(s => `<option value="${s.id}" ${def === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('') + `<option value="__new" ${def === '__new' ? 'selected' : ''}>+ New design system</option>` };
@@ -91,18 +117,22 @@ function typeDetails(e) {
   ${drow('Source', `<a href="${esc(e.source)}" target="_blank" rel="noopener">View ${esc(e.name)} on Google Fonts</a>`)}
   </tbody></table>`;
 }
+let curOS = [];
 function renderEntry(e) {
   Object.keys(clipStore).forEach(k => delete clipStore[k]);
   clipStore.md = e.md; clipStore.json = JSON.stringify(e, (k, v) => k === 'md' ? undefined : v, 2);
-  const back = `<button class="btn sm back" id="back"><span style="display:inline-flex;transform:rotate(90deg)">${CHEV}</span> Back to results</button>`;
+  const back = '';
   if (e.type === 'component') {
-    curStates = statesFor(e, cur());
+    curStates = statesFor(e, cur()); curOS = [];
     clipStore.html = e.code.html; clipStore.js = e.code.js || '';
     const sy = cur();
     return `${back}<p class="eyebrow">${esc(e.category)} · ${esc(e.level || '')}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>${meta(e)}
   <div class="row"><button class="btn solid" id="figma-copy">Copy HTML + CSS for Figma</button><button class="btn" id="dl-html">Download .html (all variants)</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button></div>
   ${addToSystemRow('Add component')}
-  <h2>Live preview</h2><iframe class="preview" id="pv" title="Preview of ${esc(e.name)}" sandbox="allow-same-origin" srcdoc="${esc(previewDoc(e, curStates))}"></iframe>
+  <h2>Variants</h2><p class="note">Every state side by side, left to right, like variant frames in Figma. Pointer states (hover, pressed) are shown forced on.</p>
+  ${(e.os && (e.os.ios || e.os.android)) ? `<div class="states" id="osbox" role="group" aria-label="Show device variants"><span class="f-t">Also show</span>${['ios', 'android'].filter(o => e.os[o]).map(o => `<label class="chk"><input type="checkbox" data-os="${o}" ${curOS.includes(o) ? 'checked' : ''}>${OS_LABEL[o]} variant</label>`).join('')}</div>` : ''}
+  <div id="frames" class="frames" role="group" aria-label="All states of ${esc(e.name)}"></div>
+  <h2>Coded version</h2><p class="note">The full component as it ships, running as real HTML, CSS and JavaScript. Try it with the keyboard.</p><iframe class="preview" id="pv" title="Coded version of ${esc(e.name)}" sandbox="allow-same-origin allow-scripts" srcdoc="${esc(previewDoc(e, curStates, curOS))}"></iframe>
   <h2>States</h2><p class="note">${sy ? `Matched to <b>${esc(sy.name)}</b>: only states you use are included.` : 'No design system selected, so every state is included. Pick one in the sidebar to match it.'} Default is always included, and the download contains every variant.</p>
   <div class="states" id="statebox">${(e.states || []).map(s => `<label class="chk" title="${esc(s.note || '')}"><input type="checkbox" data-st="${s.id}" ${curStates.includes(s.id) ? 'checked' : ''}>${esc(s.label)}${s.when === 'pointer' ? ' <span class="tag">pointer only</span>' : ''}</label>`).join('') || '<span class="empty">No extra states.</span>'}</div>
   <h2>Anatomy</h2><table><thead><tr><th>Part</th><th>Required</th><th>Purpose</th></tr></thead><tbody>${e.anatomy.map(a => `<tr><td><b>${esc(a.part)}</b></td><td>${a.required ? 'Yes' : 'Optional'}</td><td>${esc(a.purpose)}</td></tr>`).join('')}</tbody></table>
@@ -142,17 +172,18 @@ function renderEntry(e) {
   <h2>CSS</h2>${codeBlock('CSS', e.css, 'css')}`;
 }
 function refreshComponent(e) {
-  clipStore.css = compCss(e, curStates); clipStore.both = `<!-- ${e.name} -->\n<style>\n${clipStore.css}\n</style>\n${e.code.html}`;
+  clipStore.css = compCss(e, curStates, curOS); clipStore.both = `<!-- ${e.name} -->\n<style>\n${clipStore.css}\n</style>\n${compBody(e, curOS)}`;
   const cw = $('#codewrap'); if (cw) cw.innerHTML = codeBlock('HTML', e.code.html, 'html') + codeBlock('CSS (with selected states)', clipStore.css, 'css') + (e.code.js ? codeBlock('JS', e.code.js, 'js') : '');
-  const pv = $('#pv'); if (pv) { pv.srcdoc = previewDoc(e, curStates); pv.onload = () => { try { pv.style.height = Math.min(620, Math.max(260, pv.contentDocument.documentElement.scrollHeight + 4)) + 'px' } catch { } } }
+  const fr = $('#frames'); if (fr) renderFrames(fr, e, curStates, [''].concat(curOS));
+  const pv = $('#pv'); if (pv) { pv.srcdoc = previewDoc(e, curStates, curOS); pv.onload = () => { try { pv.style.height = Math.min(620, Math.max(260, pv.contentDocument.documentElement.scrollHeight + 4)) + 'px' } catch { } } }
 }
-function wireEntry(e) {
-  $('#back').onclick = () => go('#/');
+function wireEntry(e, root) {
   if (e.type === 'component') {
     refreshComponent(e);
+    $$('[data-os]').forEach(i => i.onchange = () => { curOS = $$('[data-os]').filter(x => x.checked).map(x => x.dataset.os); refreshComponent(e) });
     $$('[data-st]').forEach(i => i.onchange = () => { const a = new Set(curStates); i.checked ? a.add(i.dataset.st) : a.delete(i.dataset.st); curStates = [...a]; refreshComponent(e) });
     $('#figma-copy').onclick = async () => { await copy(clipStore.both, 'HTML + CSS'); showFigma('html') };
-    $('#dl-html').onclick = () => { download(e.id + '.html', compDoc(e, curStates), 'text/html'); showFigma('html') };
+    $('#dl-html').onclick = () => { download(e.id + '.html', compDoc(e, curStates, curOS), 'text/html'); showFigma('html') };
   }
   const systemFrom = async sel => { const id = sel.value; if (id === '__new') { const n = await ask({ title: 'Name your design system', input: { label: 'Name', value: 'My design system' }, confirm: 'Create' }); if (!n) return null; const s = newSystem({ name: n }); S.systems.push(s); return s } return S.systems.find(x => x.id === id) };
   const targetSystem = () => systemFrom($('#addsys'));
@@ -162,12 +193,11 @@ function wireEntry(e) {
   $$('.pair [data-open]').forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
   $('#addbtn').onclick = async () => {
     const s = await targetSystem(); if (!s) return;
-    if (e.type === 'component') { s.components = s.components.filter(c => c.id !== e.id); s.components.push({ id: e.id, states: curStates.slice() }) }
+    if (e.type === 'component') { s.components = s.components.filter(c => c.id !== e.id); s.components.push({ id: e.id, states: curStates.slice(), os: curOS.slice() }) }
     else if (e.type === 'color') { Object.entries(e.roles).forEach(([k, v]) => { if (k === 'border') return; const role = SET_ROLE[k] || 'Other'; if (!s.colors.some(c => c.hex === v && c.role === role)) s.colors.push({ id: uid(), name: role, hex: v, role, source: e.name }) }) }
     else { const role = e.roles[0] === 'display' ? 'Display' : e.roles[0] === 'mono' ? 'Mono' : 'Body'; s.fonts = s.fonts.filter(f => f.role !== role); s.fonts.push({ id: uid(), role, family: e.name, weights: keepThree(e.weights.filter(w => [400, 500, 600, 700].includes(w))) }) }
     S.last = s.id; S.active = s.id; saveStore(); $('#addmsg').innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>`; toast('Added to ' + s.name);
   };
-  $('#main').addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase().split(' (')[0]) });
-  $('#main').focus({ preventScroll: true }); window.scrollTo(0, 0);
+  root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase().split(' (')[0]) });
 }
 const SET_ROLE = { bg: 'Background', surface: 'Surface', ink: 'Text', 'text-secondary': 'Text secondary', primary: 'Primary', 'primary-text': 'Inverse text', accent: 'Accent', danger: 'Danger', 'border-strong': 'Border', 'text-primary': 'Text' };

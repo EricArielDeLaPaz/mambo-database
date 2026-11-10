@@ -1,0 +1,102 @@
+{
+  "id": "timeline",
+  "type": "component",
+  "name": "Timeline",
+  "category": "data-display",
+  "level": "molecule",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet",
+    "mobile-web",
+    "ios",
+    "android"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A vertical list of events in order of time, with a line connecting them. Used for activity, order tracking and history.",
+  "anatomy": [
+    {
+      "part": "line",
+      "required": true,
+      "purpose": "Vertical connector."
+    },
+    {
+      "part": "marker",
+      "required": true,
+      "purpose": "Dot or icon for each event."
+    },
+    {
+      "part": "title",
+      "required": true,
+      "purpose": "What happened."
+    },
+    {
+      "part": "time",
+      "required": true,
+      "purpose": "When it happened, as text."
+    },
+    {
+      "part": "detail",
+      "required": false,
+      "purpose": "Optional description."
+    }
+  ],
+  "variants": [
+    {
+      "id": "activity",
+      "name": "Activity",
+      "use": "Newest first.",
+      "contentLimits": {
+        "items": "paged after 20"
+      }
+    },
+    {
+      "id": "tracking",
+      "name": "Tracking",
+      "use": "Order or delivery steps with completed and upcoming.",
+      "contentLimits": {
+        "items": "3 to 8"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Showing a sequence of events."
+  ],
+  "whenNotToUse": [
+    "Choosing steps in a flow: use a stepper.",
+    "Parallel items: use a list."
+  ],
+  "alternatives": [
+    "list",
+    "stepper"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "color.text.secondary",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "ordered list",
+    "keyboard": [
+      "Not interactive unless items link."
+    ],
+    "focus": "Focus ring on links inside items.",
+    "notes": [
+      "Use <ol> and <time datetime>.",
+      "Completed vs upcoming needs text or an icon, not color alone.",
+      "Order matches reading order."
+    ]
+  },
+  "states": [],
+  "related": [
+    "list",
+    "stepper"
+  ],
+  "code": {
+    "html": "<ol class=\"tl\">\n  <li class=\"tl__done\"><b>Order placed</b><time datetime=\"2026-11-08\">Nov 8</time></li>\n  <li class=\"tl__done\"><b>Shipped</b><time datetime=\"2026-11-09\">Nov 9</time></li>\n  <li><b>Delivered</b><span>Expected Nov 11</span></li>\n</ol>",
+    "css": ".tl{list-style:none;margin:0;padding:0 0 0 20px;border-left:2px solid #d4d4d4;font:14px system-ui,sans-serif}\n.tl li{position:relative;display:grid;margin-bottom:16px;color:#525252}\n.tl li::before{content:'';position:absolute;left:-27px;top:3px;width:12px;height:12px;border:2px solid #8a8a8a;border-radius:50%;background:#fff}\n.tl__done::before{background:#0a0a0a!important;border-color:#0a0a0a!important}\n.tl b{color:#0a0a0a}"
+  }
+}

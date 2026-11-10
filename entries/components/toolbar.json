@@ -1,0 +1,113 @@
+{
+  "id": "toolbar",
+  "type": "component",
+  "name": "Toolbar",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A row of related tool buttons, such as text formatting or editor actions, that act as one tab stop.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Row with a role of toolbar."
+    },
+    {
+      "part": "tool",
+      "required": true,
+      "purpose": "Icon button, 36 to 44px."
+    },
+    {
+      "part": "group",
+      "required": false,
+      "purpose": "Related tools separated by a divider."
+    },
+    {
+      "part": "overflow",
+      "required": false,
+      "purpose": "More menu when space is short."
+    }
+  ],
+  "variants": [
+    {
+      "id": "horizontal",
+      "name": "Horizontal",
+      "use": "Editors.",
+      "contentLimits": {
+        "tools": "up to 12"
+      }
+    },
+    {
+      "id": "vertical",
+      "name": "Vertical",
+      "use": "Canvas tools.",
+      "contentLimits": {
+        "tools": "up to 12"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Frequent tools in an editor."
+  ],
+  "whenNotToUse": [
+    "Navigation: use navigation components.",
+    "Mobile: use a bottom sheet or menu."
+  ],
+  "alternatives": [
+    "icon-button",
+    "toggle-button",
+    "menu"
+  ],
+  "tokens": [
+    "color.border.default",
+    "radius.md",
+    "space.1"
+  ],
+  "accessibility": {
+    "role": "toolbar",
+    "keyboard": [
+      "Tab enters the toolbar once.",
+      "Arrow keys move between tools.",
+      "Home/End jump."
+    ],
+    "focus": "Roving tabindex.",
+    "notes": [
+      "aria-label names the toolbar.",
+      "Icon tools need labels and tooltips.",
+      "Toggle tools use aria-pressed."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.tb button:not([aria-pressed=true]):hover{background:#eeeeee}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".tb button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "icon-button",
+    "toggle-button",
+    "menu"
+  ],
+  "code": {
+    "html": "<div class=\"tb\" role=\"toolbar\" aria-label=\"Text formatting\">\n  <button type=\"button\" aria-pressed=\"true\" aria-label=\"Bold\"><b>B</b></button>\n  <button type=\"button\" aria-pressed=\"false\" aria-label=\"Italic\"><i>I</i></button>\n  <button type=\"button\" aria-pressed=\"false\" aria-label=\"Underline\"><u>U</u></button>\n</div>",
+    "css": ".tb{display:inline-flex;gap:2px;padding:4px;border:1px solid #8a8a8a;border-radius:8px;background:#fff;font:16px system-ui,sans-serif}\n.tb button{width:36px;height:36px;border:0;border-radius:6px;background:none;cursor:pointer}\n.tb [aria-pressed=true]{background:#0a0a0a;color:#fff}"
+  }
+}

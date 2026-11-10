@@ -1,0 +1,101 @@
+{
+  "id": "ios-swipe-actions",
+  "type": "component",
+  "name": "Swipe actions (iOS)",
+  "category": "lists",
+  "level": "molecule",
+  "platforms": [
+    "ios"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "Buttons revealed by swiping a list row sideways, for quick actions such as delete, flag or archive.",
+  "anatomy": [
+    {
+      "part": "row",
+      "required": true,
+      "purpose": "The list row that moves."
+    },
+    {
+      "part": "actions",
+      "required": true,
+      "purpose": "1 to 3 colored buttons with icon and label."
+    },
+    {
+      "part": "full-swipe",
+      "required": false,
+      "purpose": "Swiping all the way triggers the first action."
+    }
+  ],
+  "variants": [
+    {
+      "id": "trailing",
+      "name": "Trailing",
+      "use": "Delete, flag, more.",
+      "contentLimits": {
+        "actions": "1 to 3"
+      }
+    },
+    {
+      "id": "leading",
+      "name": "Leading",
+      "use": "Read, pin.",
+      "contentLimits": {
+        "actions": "1 or 2"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Frequent actions on list rows."
+  ],
+  "whenNotToUse": [
+    "The only way to reach an action: also provide it in the detail screen or edit mode.",
+    "Desktop and Android."
+  ],
+  "alternatives": [
+    "list",
+    "menu"
+  ],
+  "tokens": [
+    "color.text.danger",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "button group revealed on swipe",
+    "keyboard": [
+      "VoiceOver offers actions through the rotor."
+    ],
+    "focus": "Actions are exposed as custom accessibility actions.",
+    "notes": [
+      "Never hide the only path to an action.",
+      "Destructive full swipe needs a confirmation or undo.",
+      "Labels as well as icons."
+    ]
+  },
+  "states": [
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".sw2__acts button:active{filter:brightness(.85)}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".sw2__acts button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "list",
+    "menu"
+  ],
+  "code": {
+    "html": "<div class=\"sw2\">\n  <div class=\"sw2__row\">Meeting notes</div>\n  <div class=\"sw2__acts\"><button type=\"button\" class=\"sw2__f\">Flag</button><button type=\"button\" class=\"sw2__d\">Delete</button></div>\n</div>",
+    "css": ".sw2{display:flex;width:360px;overflow:hidden;font:17px -apple-system,system-ui,sans-serif;border-top:.5px solid #c6c6c8;border-bottom:.5px solid #c6c6c8}\n.sw2__row{flex:0 0 220px;padding:16px;background:#fff}\n.sw2__acts{display:flex}\n.sw2__acts button{width:70px;border:0;color:#fff;font:15px -apple-system,system-ui,sans-serif;cursor:pointer}\n.sw2__f{background:#9a3412}\n.sw2__d{background:#b91c1c}"
+  }
+}

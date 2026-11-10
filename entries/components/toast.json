@@ -5,9 +5,12 @@
   "category": "feedback",
   "level": "molecule",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -106,5 +109,10 @@
       "note": "",
       "css": ".toast :focus-visible{outline:2px solid #fff;outline-offset:2px}"
     }
-  ]
+  ],
+  "os": {
+    "android": {
+      "css": ".toast{border-radius:4px;min-width:344px;justify-content:space-between;font:400 14px Roboto,system-ui,sans-serif;background:#1f1f1f}"
+    }
+  }
 }

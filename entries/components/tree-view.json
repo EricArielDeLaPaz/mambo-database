@@ -1,0 +1,114 @@
+{
+  "id": "tree-view",
+  "type": "component",
+  "name": "Tree view",
+  "category": "data-display",
+  "level": "organism",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A nested list that can expand and collapse, for file systems, categories and outlines.",
+  "anatomy": [
+    {
+      "part": "tree",
+      "required": true,
+      "purpose": "The container."
+    },
+    {
+      "part": "node",
+      "required": true,
+      "purpose": "Label with an expand arrow when it has children."
+    },
+    {
+      "part": "expand-icon",
+      "required": true,
+      "purpose": "Chevron that rotates."
+    },
+    {
+      "part": "selected",
+      "required": false,
+      "purpose": "Highlighted current item."
+    }
+  ],
+  "variants": [
+    {
+      "id": "single",
+      "name": "Single select",
+      "use": "Navigation.",
+      "contentLimits": {
+        "depth": "up to 4 levels"
+      }
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkboxes",
+      "use": "Choosing many items.",
+      "contentLimits": {
+        "depth": "up to 4 levels"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Hierarchical data."
+  ],
+  "whenNotToUse": [
+    "Flat lists.",
+    "Mobile screens: use drill-down lists."
+  ],
+  "alternatives": [
+    "accordion",
+    "list",
+    "sidebar-navigation"
+  ],
+  "tokens": [
+    "color.border.default",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "tree with treeitem and group",
+    "keyboard": [
+      "Arrow Right expands.",
+      "Arrow Left collapses or goes to parent.",
+      "Up/Down move.",
+      "Home/End jump.",
+      "Enter selects."
+    ],
+    "focus": "Roving focus on the active item.",
+    "notes": [
+      "Set aria-expanded on parents.",
+      "Only one tab stop for the whole tree.",
+      "Announce level and position."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.tv li:hover{background:#f0f0f0}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".tv li:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "accordion",
+    "list",
+    "sidebar-navigation"
+  ],
+  "code": {
+    "html": "<ul class=\"tv\" role=\"tree\" aria-label=\"Files\">\n  <li role=\"treeitem\" aria-expanded=\"true\">Design\n    <ul role=\"group\"><li role=\"treeitem\" aria-selected=\"true\">Logo.svg</li><li role=\"treeitem\">Colors.json</li></ul>\n  </li>\n  <li role=\"treeitem\" aria-expanded=\"false\">Docs</li>\n</ul>",
+    "css": ".tv,.tv ul{list-style:none;margin:0;padding:0;font:14px system-ui,sans-serif}\n.tv ul{padding-left:18px}\n.tv li{padding:6px 8px;border-radius:6px}\n.tv [aria-selected=true]{background:#e5e5e5;font-weight:600}"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "id": "otp-input",
+  "type": "component",
+  "name": "One-time code input",
+  "category": "forms",
+  "level": "molecule",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet",
+    "mobile-web",
+    "ios",
+    "android"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A set of boxes for a short verification code. Each digit has its own box, but the whole thing works like one field.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Explains what code to enter and where it was sent."
+    },
+    {
+      "part": "digits",
+      "required": true,
+      "purpose": "4 or 6 boxes, 48px square."
+    },
+    {
+      "part": "resend",
+      "required": false,
+      "purpose": "A link or button to resend after a delay."
+    },
+    {
+      "part": "error",
+      "required": false,
+      "purpose": "Message and red border."
+    }
+  ],
+  "variants": [
+    {
+      "id": "six",
+      "name": "6 digits",
+      "use": "Most email and SMS codes.",
+      "contentLimits": {
+        "digits": "6"
+      }
+    },
+    {
+      "id": "four",
+      "name": "4 digits",
+      "use": "PIN-style codes.",
+      "contentLimits": {
+        "digits": "4"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Verification codes sent by email or text."
+  ],
+  "whenNotToUse": [
+    "Passwords: use a password input.",
+    "Long codes: use a normal text input."
+  ],
+  "alternatives": [
+    "text-input",
+    "password-input"
+  ],
+  "tokens": [
+    "color.border.strong",
+    "radius.md",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "one text input with autocomplete=one-time-code, or labeled group",
+    "keyboard": [
+      "Typing auto-advances.",
+      "Backspace moves back.",
+      "Paste fills all digits."
+    ],
+    "focus": "Focus ring on the active box.",
+    "notes": [
+      "Support paste and the browser's one-time-code autofill.",
+      "Group label names the whole code.",
+      "Do not auto-submit without a visible state."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.otp input:hover{border-color:#0a0a0a}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".otp input:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "when": "all",
+      "note": "",
+      "css": ".otp input.is-error{border-color:#b91c1c;border-width:2px}"
+    }
+  ],
+  "related": [
+    "text-input",
+    "password-input"
+  ],
+  "code": {
+    "html": "<fieldset class=\"otp\"><legend>Enter the 6-digit code</legend>\n  <input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 1\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 2\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 3\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 4\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 5\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 6\">\n</fieldset>",
+    "css": ".otp{display:flex;gap:8px;border:0;padding:0;font:600 14px system-ui,sans-serif}\n.otp legend{margin-bottom:8px}\n.otp input{width:44px;height:52px;border:1px solid #8a8a8a;border-radius:8px;text-align:center;font:600 20px system-ui,sans-serif}"
+  }
+}

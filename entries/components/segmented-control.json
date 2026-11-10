@@ -5,9 +5,12 @@
   "category": "buttons",
   "level": "molecule",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web",
-    "mobile-app"
+    "ios",
+    "android"
   ],
   "industries": [
     "all"
@@ -113,5 +116,13 @@
   "code": {
     "html": "<div class=\"seg\" role=\"radiogroup\" aria-label=\"Range\">\n  <label class=\"seg__opt\"><input type=\"radio\" name=\"r\" checked><span>Day</span></label>\n  <label class=\"seg__opt\"><input type=\"radio\" name=\"r\"><span>Week</span></label>\n  <label class=\"seg__opt\"><input type=\"radio\" name=\"r\"><span>Month</span></label>\n</div>",
     "css": ".seg{display:inline-flex;border:1px solid #8a8a8a;border-radius:999px;overflow:hidden;font:600 14px system-ui,sans-serif}\n.seg__opt{position:relative}\n.seg__opt input{position:absolute;opacity:0;inset:0;cursor:pointer}\n.seg__opt span{display:block;padding:0 18px;line-height:42px;min-width:72px;text-align:center}\n.seg__opt input:checked+span{background:#0a0a0a;color:#fff}"
+  },
+  "os": {
+    "ios": {
+      "css": ".seg{border:0;border-radius:9px;background:#eeeef0;padding:2px}.seg__opt span{border-radius:7px;line-height:30px;font-weight:500;min-width:64px}.seg__opt input:checked+span{background:#fff;color:#0a0a0a;box-shadow:0 1px 3px rgba(0,0,0,.25)}"
+    },
+    "android": {
+      "css": ".seg{border-radius:999px}.seg__opt span{line-height:38px}.seg__opt input:checked+span{background:#e5e5e5;color:#0a0a0a;font-weight:700}"
+    }
   }
 }

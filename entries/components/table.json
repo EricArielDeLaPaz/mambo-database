@@ -5,7 +5,9 @@
   "category": "data",
   "level": "organism",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web"
   ],
   "industries": [

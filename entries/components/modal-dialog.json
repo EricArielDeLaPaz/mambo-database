@@ -5,7 +5,9 @@
   "category": "overlays",
   "level": "organism",
   "platforms": [
-    "desktop",
+    "desktop-web",
+    "desktop-app",
+    "tablet",
     "mobile-web"
   ],
   "summary": "A centered window that blocks the page behind it until the person responds. Use it for short, decision-focused tasks.",
@@ -139,5 +141,15 @@
       "note": "",
       "css": ".modal :focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
     }
-  ]
+  ],
+  "os": {
+    "ios": {
+      "html": "<div class=\"ios-alert\" role=\"alertdialog\" aria-labelledby=\"ia-t\" aria-describedby=\"ia-b\">\n  <div class=\"ios-alert__c\"><h2 id=\"ia-t\">Delete project?</h2><p id=\"ia-b\">This permanently removes it.</p></div>\n  <div class=\"ios-alert__a\"><button type=\"button\">Cancel</button><button type=\"button\" class=\"ios-alert__d\">Delete</button></div>\n</div>",
+      "css": ".ios-alert{width:270px;border-radius:14px;background:rgba(249,249,249,.97);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;text-align:center;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.25)}.ios-alert__c{padding:20px 16px}.ios-alert h2{margin:0 0 4px;font-size:17px;font-weight:600}.ios-alert p{margin:0;font-size:13px}.ios-alert__a{display:grid;grid-template-columns:1fr 1fr;border-top:.5px solid #c6c6c8}.ios-alert__a button{min-height:44px;border:0;background:none;font:17px -apple-system,'SF Pro Text',system-ui,sans-serif;cursor:pointer}.ios-alert__a button+button{border-left:.5px solid #c6c6c8;font-weight:600;color:#b91c1c}"
+    },
+    "android": {
+      "html": "<div class=\"and-dlg\" role=\"alertdialog\" aria-labelledby=\"ad-t\" aria-describedby=\"ad-b\">\n  <h2 id=\"ad-t\">Delete project?</h2>\n  <p id=\"ad-b\">This permanently removes it.</p>\n  <div class=\"and-dlg__a\"><button type=\"button\">Cancel</button><button type=\"button\">Delete</button></div>\n</div>",
+      "css": ".and-dlg{width:312px;padding:24px;border-radius:28px;background:#fff;font-family:Roboto,system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.25)}.and-dlg h2{margin:0 0 16px;font-size:24px;font-weight:400}.and-dlg p{margin:0 0 24px;font-size:14px;color:#525252}.and-dlg__a{display:flex;justify-content:flex-end;gap:8px}.and-dlg__a button{min-height:40px;padding:0 12px;border:0;border-radius:999px;background:none;font:500 14px Roboto,system-ui,sans-serif;cursor:pointer}"
+    }
+  }
 }

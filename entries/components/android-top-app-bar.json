@@ -1,0 +1,127 @@
+{
+  "id": "android-top-app-bar",
+  "type": "component",
+  "name": "Top app bar (Android)",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "android",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "The Material bar at the top of an Android screen: a navigation icon, a left-aligned title and up to three action icons. Large variants collapse on scroll.",
+  "anatomy": [
+    {
+      "part": "navigation-icon",
+      "required": true,
+      "purpose": "Menu or back arrow, 48dp target."
+    },
+    {
+      "part": "title",
+      "required": true,
+      "purpose": "Left-aligned, 22sp, one line."
+    },
+    {
+      "part": "actions",
+      "required": false,
+      "purpose": "Up to 3 icon buttons, with extras in an overflow (vertical three dots) menu."
+    },
+    {
+      "part": "overflow",
+      "required": false,
+      "purpose": "Vertical three-dot icon opening a menu."
+    }
+  ],
+  "variants": [
+    {
+      "id": "small",
+      "name": "Small",
+      "use": "Most screens.",
+      "contentLimits": {
+        "height": "64dp",
+        "actions": "up to 3"
+      }
+    },
+    {
+      "id": "medium",
+      "name": "Medium",
+      "use": "Mid-level screens.",
+      "contentLimits": {
+        "height": "112dp"
+      }
+    },
+    {
+      "id": "large",
+      "name": "Large",
+      "use": "Top-level screens.",
+      "contentLimits": {
+        "height": "152dp"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Titling a screen on Android and Material-style tablets."
+  ],
+  "whenNotToUse": [
+    "iOS: use a navigation bar.",
+    "Desktop websites: use a top navigation bar."
+  ],
+  "alternatives": [
+    "ios-navigation-bar",
+    "top-navigation-bar",
+    "android-navigation-bar"
+  ],
+  "tokens": [
+    "color.surface.default",
+    "color.text.primary",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "header / toolbar",
+    "keyboard": [
+      "TalkBack reads the title as a heading.",
+      "Each icon has a label."
+    ],
+    "focus": "Focus ring on each icon.",
+    "notes": [
+      "Icon buttons need contentDescription / aria-label.",
+      "Touch targets at least 48dp.",
+      "Overflow menu uses vertical dots on Android."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.tab2__i:hover{background:rgba(0,0,0,.08)}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".tab2__i:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".tab2__i:active{background:rgba(0,0,0,.12)}"
+    }
+  ],
+  "related": [
+    "ios-navigation-bar",
+    "top-navigation-bar",
+    "android-navigation-bar"
+  ],
+  "code": {
+    "html": "<header class=\"tab2\">\n  <button class=\"tab2__i\" type=\"button\" aria-label=\"Back\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M19 12H5M12 5l-7 7 7 7\"/></svg></button>\n  <h1 class=\"tab2__t\">Inbox</h1>\n  <button class=\"tab2__i\" type=\"button\" aria-label=\"Search\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg></button>\n  <button class=\"tab2__i\" type=\"button\" aria-label=\"More options\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"5\" r=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><circle cx=\"12\" cy=\"19\" r=\"2\"/></svg></button>\n</header>",
+    "css": ".tab2{display:flex;align-items:center;gap:4px;width:360px;height:64px;padding:0 4px;background:#fff;border-bottom:1px solid #d4d4d4;font-family:Roboto,system-ui,sans-serif}\n.tab2__t{flex:1;margin:0 0 0 8px;font-size:22px;font-weight:400}\n.tab2__i{display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:50%;background:none;color:#0a0a0a;cursor:pointer}"
+  }
+}

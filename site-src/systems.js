@@ -31,7 +31,7 @@ async function renameFolderPrompt(o) { const n = await ask({ title: 'Rename fold
 function commitFolderName(o, n) { n = (n || '').trim(); if (!n || n === o) return renderTree(); if (S.folders.includes(n)) { toast('That folder already exists.'); return renderTree() } S.folders = S.folders.map(f => f === o ? n : f); S.systems.forEach(s => { if (s.folder === o) s.folder = n }); saveStore(); renderTree(); renderEditor() }
 function inlineEdit(btn, value, commit) {
   const input = document.createElement('input'); input.type = 'text'; input.value = value; input.className = 'inl'; input.setAttribute('aria-label', 'Name'); input.maxLength = 60;
-  btn.replaceWith(input); input.focus(); input.select(); let done = false;
+  btn.replaceWith(input); input.focus(); input.setSelectionRange(0, 0); let done = false;
   const fin = ok => { if (done) return; done = true; ok ? commit(input.value) : renderTree() };
   input.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); fin(true) } else if (e.key === 'Escape') { e.preventDefault(); fin(false) } e.stopPropagation() };
   input.onblur = () => fin(true);
@@ -96,11 +96,16 @@ function renderTree() {
 }
 
 /* ---- editor pieces ---- */
-const advice = (ok, label, text, fix) => `<div class="advice ${ok ? '' : 'warn'}" role="note"><b aria-hidden="true">${ok ? '✓' : '✕'}</b><span class="sr">${ok ? 'Good: ' : 'Needs attention: '}</span><span class="txt"><strong>${esc(label)}.</strong> ${esc(text)}</span>${fix ? `<button class="fixbtn" data-fix="${esc(fix.k)}" ${fix.d ? `data-d="${esc(fix.d)}"` : ''} aria-label="Fix: ${esc(fix.l)}" data-tiptext="${esc(fix.l)}">${WRENCH}</button>` : ''}</div>`;
-function rangeAdvice(label, n, L, hint, roles, addRole) {
+let curSys = null;
+const isHid = k => !!(curSys && (curSys.hidden || []).includes(k));
+const advice = (ok, label, text, fix, key) => {
+  if (key && isHid(key)) return `<div class="advice hid"><span class="txt empty">Hidden: ${esc(label)}</span><button type="button" class="lnk" data-unhide="${esc(key)}">Unhide</button></div>`;
+  return `<div class="advice ${ok ? '' : 'warn'}" role="note"><b aria-hidden="true">${ok ? '✓' : '✕'}</b><span class="sr">${ok ? 'Good: ' : 'Needs attention: '}</span><span class="txt"><strong>${esc(label)}.</strong> ${esc(text)}</span>${fix ? `<button class="fixbtn" data-fix="${esc(fix.k)}" ${fix.d ? `data-d="${esc(fix.d)}"` : ''} aria-label="Fix: ${esc(fix.l)}" data-tiptext="${esc(fix.l)}">${WRENCH}</button>` : ''}${key ? `<button type="button" class="lnk" data-hide="${esc(key)}" aria-label="Hide this note: ${esc(label)}">Hide</button>` : ''}</div>`;
+};
+function rangeAdvice(label, n, L, hint, roles, addRole, key) {
   const rec = L.rec || L.max, ok = n >= L.min && n <= rec;
   const text = n < L.min ? `Add at least ${L.min}. ${hint}` : n > L.max ? `Over the maximum of ${L.max}. Remove or merge some.` : n > rec ? `Above the recommended ${rec} (maximum ${L.max}).` : `${L.min} to ${rec} is the healthy range. ${hint}`;
-  return advice(ok, `${n} ${label.toLowerCase()}`, text, n < L.min && addRole ? { k: 'addrole', l: 'Add a ' + addRole + ' color', d: addRole } : null);
+  return advice(ok, `${n} ${label.toLowerCase()}`, text, n < L.min && addRole ? { k: 'addrole', l: 'Add a ' + addRole + ' color', d: addRole } : null, key);
 }
 function contrastBlock(c, s) {
   const others = s.colors.filter(o => o.id !== c.id && normHex(o.hex) && normHex(c.hex)); if (!others.length) return '';
@@ -116,13 +121,34 @@ function contrastBlock(c, s) {
 }
 function checklist(s) {
   const has = r => s.colors.some(c => c.role === r), fam = s.fonts.filter(f => f.family.trim());
-  const items = [[s.name.trim() && s.name !== 'Untitled system', 'Name your system'], [s.platforms.length > 0, 'Choose what it is for'], [has('Primary'), 'A Primary color'], [has('Background') && has('Text'), 'A Background and a Text color'], [has('Danger') && has('Success'), 'Success and Danger colors for feedback'], [fam.some(f => f.role === 'Display' || f.role === 'Body'), 'At least a Body typeface'], [s.states.includes('focus'), 'A Focus state (always required for keyboard users)'], [!!s.spacing, 'A spacing base unit']];
+  const items = [[s.name.trim() && s.name !== 'Untitled system', 'Name your system', '#f-name'], [s.platforms.length > 0, 'Choose what it is for', '[data-plat]'], [has('Primary'), 'A Primary color', '#addcolor'], [has('Background') && has('Text'), 'A Background and a Text color', '#addcolor'], [has('Danger') && has('Success'), 'Success and Danger colors for feedback', '#addcolor'], [fam.some(f => f.role === 'Display' || f.role === 'Body'), 'At least a Body typeface', '#addfont'], [s.states.includes('focus'), 'A Focus state (always required for keyboard users)', '[data-state=focus]'], [!!s.spacing, 'A spacing base unit', '#f-space']];
   const done = items.filter(i => i[0]).length;
-  return `<div class="panel"><h2>Setup checklist: ${done} of ${items.length}</h2><ul class="check">${items.map(([ok, l]) => `<li><b aria-hidden="true">${ok ? '✓' : '○'}</b><span class="${ok ? '' : 'empty'}">${ok ? 'Done: ' : 'Still needed: '}${esc(l)}</span></li>`).join('')}</ul></div>`;
+  return `<div class="panel"><h2>Setup checklist: ${done} of ${items.length}</h2><ul class="check">${items.map(([ok, l, t]) => `<li><b aria-hidden="true">${ok ? '✓' : '○'}</b><button type="button" class="lnk jump ${ok ? '' : 'empty'}" data-jump="${esc(t)}" aria-label="${ok ? 'Done' : 'Still needed'}: ${esc(l)}. Go to it.">${ok ? 'Done: ' : 'Still needed: '}${esc(l)}</button></li>`).join('')}</ul><p class="note" style="margin:8px 0 0">Select an item to jump to it.</p></div>`;
+}
+function jump(sel) {
+  const el = $(sel, $('#main')); if (!el) return; let t = el; if (el.tagName === 'SELECT') { const b = el.closest('.f') && $('.dd-btn', el.closest('.f')); if (b) t = b }
+  t.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); t.focus({ preventScroll: true });
+  const pn = t.closest('.panel'); if (pn) { pn.classList.add('flash'); setTimeout(() => pn.classList.remove('flash'), 1600) }
+}
+/* components that most products need, in the order we suggest them */
+const ESSENTIALS = ['button', 'text-input', 'checkbox', 'radio', 'toggle-switch', 'select', 'link', 'card', 'modal-dialog', 'tabs', 'toast', 'inline-alert', 'badge', 'top-navigation-bar'];
+const PLAT_ESSENTIALS = { ios: ['ios-navigation-bar', 'bottom-tab-bar', 'ios-action-sheet', 'ios-swipe-actions', 'pull-to-refresh'], android: ['android-top-app-bar', 'android-navigation-bar', 'android-snackbar', 'floating-action-button', 'pull-to-refresh'], 'mobile-web': ['bottom-sheet', 'bottom-tab-bar'], tablet: ['navigation-rail', 'sidebar-navigation'], 'desktop-web': ['sidebar-navigation', 'table', 'menu'], 'desktop-app': ['sidebar-navigation', 'toolbar', 'menu'] };
+const compOsDefault = (e, s) => ['ios', 'android'].filter(o => s.platforms.includes(o) && e.os && e.os[o]);
+function suggestComponents(s) {
+  const have = new Set(s.components.map(c => c.id)), seen = new Set(), ids = [];
+  [...ESSENTIALS, ...s.platforms.flatMap(p => PLAT_ESSENTIALS[p] || [])].forEach(id => { if (seen.has(id)) return; seen.add(id); const e = compById(id); if (!e || have.has(id)) return; if (s.platforms.length && !(e.platforms || []).some(x => s.platforms.includes(x))) return; ids.push(id) });
+  if (!ids.length) return s.components.length ? '' : '';
+  return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested components</h3><button type="button" class="btn sm" id="addallcomp">Add all ${ids.length}</button></div><p class="note" style="margin:0 0 8px">The usual building blocks for ${s.platforms.length ? esc(s.platforms.map(p => PLAT[p]).join(', ')) : 'any product'}. Add the ones you need.</p>
+  <div class="sugg">${ids.slice(0, 12).map(id => { const e = compById(id); return `<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.summary)}</span><div class="row" style="margin:6px 0 0"><button type="button" class="btn sm" data-sugcomp="${esc(id)}" aria-label="Add ${esc(e.name)}">Add</button></div></div>` }).join('')}</div>${ids.length > 12 ? `<p class="note">${ids.length - 12} more suggested. Add all to include them.</p>` : ''}`;
+}
+function viewComponent(c) {
+  const e = compById(c.id); if (!e) return;
+  const api = openDialog(`<div class="mdl-f"><h2 id="mdl-t">${esc(e.name)}</h2><p>${esc(e.summary)}</p><p class="note">The states you ticked${(c.os || []).length ? ', with the ' + c.os.map(o => OS_LABEL[o]).join(' and ') + ' variant' + (c.os.length > 1 ? 's' : '') : ''}, side by side.</p><div id="vf" class="frames"></div><div class="row" style="justify-content:flex-end"><a class="btn sm" href="#/entry/${esc(e.id)}">Open in Browse</a><button type="button" class="btn solid sm" id="vclose">Close</button></div></div>`, 'wide');
+  renderFrames($('#vf', api.el), e, c.states, [''].concat(c.os || [])); $('#vclose', api.el).onclick = () => api.close(null); $('a', api.el).onclick = () => api.close(null);
 }
 function suggestColors(s) {
   const sets = DATA.filter(e => e.type === 'color' && industryMatch(e));
-  return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested for ${s.industry === 'all' ? 'any industry' : esc(indLabel(s.industry))}</h3><button class="viewall" data-viewall="color">View all <span aria-hidden="true">→</span></button></div>
+  return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested for ${sysInds(s).includes('all') ? 'any industry' : esc(indSummary(s))}</h3><button class="viewall" data-viewall="color">View all <span aria-hidden="true">→</span></button></div>
   <div class="sugg">${sets.slice(0, 4).map(e => { const keys = Object.keys(e.roles); return `<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.mood || '')}</span><div class="swatchrow">${['primary', 'accent', 'ink', 'surface'].filter(k => e.roles[k]).map(k => `<button class="chip nob" data-tip="${tipData(e.name + ' ' + k, e.roles[k], keys.filter(x => x !== k).map(x => ({ name: x, hex: e.roles[x] })))}" data-addcolor="${esc(e.roles[k])}" data-src="${esc(e.name)}" data-role="${SET_ROLE[k] || 'Other'}" aria-label="Add ${esc(e.name)} ${k} ${esc(e.roles[k])}"><i style="background:${esc(e.roles[k])}"></i></button>`).join('')}</div><button class="btn sm" data-addset="${esc(e.id)}" ${Object.entries(e.roles).filter(([k]) => k !== 'border').every(([k, v]) => s.colors.some(c => c.hex === v && c.source === e.name)) ? 'disabled' : ''}>Add whole set</button></div>` }).join('') || '<p class="empty">No suggestions for this industry yet.</p>'}</div>`;
 }
 function suggestFonts(s) {
@@ -190,7 +216,7 @@ function pickFont(s, f, fam) {
 const WHERE = '<p class="note" style="margin-top:6px">Guidance drawn from published design-system writing, not a single study: <a href="https://eightshapes.com/articles/color-in-design-systems/">EightShapes</a> (one to a few brand colors, a few neutrals, four feedback colors, roughly 10 to 14 base colors) and <a href="https://www.uxpin.com/studio/blog/choose-color-pallete/">UXPin</a> (1 to 2 primary, 1 accent, a neutral scale, four feedback colors, 5 to 7 base hues). Treat them as sensible limits, not rules.</p>';
 
 function renderEditor() {
-  const main = $('#main'); const s = cur(); tip.hidden = true;
+  const main = $('#main'); const s = cur(); curSys = s; tip.hidden = true;
   if (S.checked.size > 1) { main.innerHTML = `<p class="eyebrow">Selection</p><h1>${S.checked.size} systems selected</h1><p>Use the actions at the bottom of the left panel to move, download or delete them. Click a system name to open and edit one.</p><ul class="plain">${S.systems.filter(x => S.checked.has(x.id)).map(x => `<li>${esc(x.name)} <span class="tag">${esc(x.folder)}</span></li>`).join('')}</ul>`; return }
   if (!s) { main.innerHTML = `<p class="eyebrow">Design Systems</p><h1>Build and keep your design systems</h1><p>Create a system from our template. It tells you what is needed, warns you when you add too much, and checks color contrast as you pick colors. Everything is saved in this browser only. Nothing is uploaded.</p><div class="row"><button class="btn solid" id="empty-new">+ New system</button></div>`; $('#empty-new').onclick = () => $('#newsys').click(); return }
   s.fonts.forEach(f => loadFontCss(f.family)); sortColors(s);
@@ -199,40 +225,40 @@ function renderEditor() {
   const radii = String(s.radii).split(',').map(x => x.trim()).filter(Boolean).length;
   main.innerHTML = `<div class="dbhead"><div><p class="eyebrow">Design system</p><h1>${esc(s.name)}</h1></div><button class="btn solid" id="exp" aria-haspopup="menu">Export <span style="display:inline-flex">${CHEV}</span></button></div>
   ${checklist(s)}
-  <div class="panel"><h2>1. About this system</h2><div class="grid2">
+  <div class="panel" id="p-about"><h2>1. About this system</h2><div class="grid2">
    <label class="f"><span class="f-t">Name</span><input type="text" id="f-name" value="${esc(s.name)}"></label>
    <label class="f"><span class="f-t">Folder</span><select id="f-folder">${S.folders.map(f => `<option ${s.folder === f ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select></label>
-   <label class="f"><span class="f-t">Industry</span><select id="f-ind">${INDUSTRIES.map(([k, l]) => `<option value="${k}" ${s.industry === k ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label></div>
+   <div class="f"><span class="f-t" id="f-ind-l">Industry</span><div class="dd ms" id="f-ind"><button type="button" class="dd-btn" id="f-ind-btn" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-ind-l f-ind-v"><span class="dd-val" id="f-ind-v">${esc(indSummary(s))}</span>${CHEV}</button><div class="dd-list ms-list" role="group" aria-label="Industries" hidden>${INDUSTRIES.map(([k, l]) => `<label class="dd-opt ms-opt"><span class="ms-l"><input type="checkbox" data-ind="${k}" ${sysInds(s).includes(k) ? 'checked' : ''}>${esc(l)}</span></label>`).join('')}</div></div></div></div>
    <fieldset><legend class="eyebrow">What is it for?</legend><div class="states">${Object.entries(PLAT).map(([k, l]) => `<label class="chk"><input type="checkbox" data-plat="${k}" ${s.platforms.includes(k) ? 'checked' : ''}>${l}</label>`).join('')}</div></fieldset>
-   ${mob ? advice(true, 'Mobile only', 'No hover states needed, so they are hidden below. Use 44px touch targets and 16px minimum body text.') : s.platforms.length ? advice(true, 'Includes desktop', 'Design hover and keyboard focus states. Keep body text 16px or larger on mobile.') : advice(false, 'Nothing selected', 'Choose at least one platform so we can tailor the advice.', { k: 'plat', l: 'Select all platforms' })}</div>
+   ${mob ? advice(true, 'Mobile only', 'No hover states needed, so they are hidden below. Use 44px touch targets and 16px minimum body text.', null, 'plat') : s.platforms.length ? advice(true, 'Includes desktop', 'Design hover and keyboard focus states. Keep body text 16px or larger on mobile.', null, 'plat') : advice(false, 'Nothing selected', 'Choose at least one platform so we can tailor the advice.', { k: 'plat', l: 'Select all platforms' }, 'plat')}</div>
   <div class="panel"><h2>2. Colors</h2>
-   ${rangeAdvice('Brand colors', brand, LIMITS.brand, 'Primary, Secondary, Tertiary and Accent. Most products use 1 to 3.', BRAND, 'Primary')}
-   ${rangeAdvice('Neutrals', neu, LIMITS.neutral, 'Background, Surface, Border, Text and similar.', NEUTRAL, 'Border')}
-   ${rangeAdvice('Feedback colors', fb, LIMITS.feedback, 'Success, Warning, Danger and Info. Four is the common set.', FEEDBACK, !s.colors.some(c => c.role === 'Success') ? 'Success' : !s.colors.some(c => c.role === 'Danger') ? 'Danger' : 'Warning')}
-   ${rangeAdvice('All colors', s.colors.length, LIMITS.colors, 'Core colors, before tints and shades.', null, null)}
+   ${rangeAdvice('Brand colors', brand, LIMITS.brand, 'Primary, Secondary, Tertiary and Accent.', BRAND, 'Primary', 'brand')}
+   ${rangeAdvice('Neutrals', neu, LIMITS.neutral, 'Background, Surface, Border, Text and similar.', NEUTRAL, 'Border', 'neutral')}
+   ${rangeAdvice('Feedback colors', fb, LIMITS.feedback, 'Success, Warning, Danger and Info. Four is the common set.', FEEDBACK, !s.colors.some(c => c.role === 'Success') ? 'Success' : !s.colors.some(c => c.role === 'Danger') ? 'Danger' : 'Warning', 'feedback')}
+   ${rangeAdvice('All colors', s.colors.length, LIMITS.colors, 'Core colors, before tints and shades.', null, null, 'allcolors')}
    <details class="src"><summary>Where these numbers come from <span class="foldc closed" style="display:inline-flex">${CHEV}</span></summary>${WHERE}</details>
    ${s.colors.length ? `<div class="strip" role="group" aria-label="Your colors. Hover or focus a color to see its contrast with the others.">${s.colors.map(c => `<button class="swb" style="background:${esc(c.hex)}" data-goto="${c.id}" data-tip="${tipData(c.name, c.hex, s.colors.filter(o => o.id !== c.id))}" aria-label="${esc(c.name)} ${esc(c.hex)}"></button>`).join('')}</div>` : ''}
    <div id="colorlist">${colorGroups(s)}</div>
    <div class="row"><button class="btn solid sm" id="addcolor">+ Add color</button></div>
    ${suggestColors(s)}</div>
   <div class="panel"><h2>3. Typography</h2>
-   ${fams === 0 ? advice(false, 'No typeface yet', 'Add at least a Body typeface.', { k: 'addfont', l: 'Add a Body typeface' }) : advice(fams <= LIMITS.families, fams + ' typeface' + (fams === 1 ? '' : 's'), fams <= LIMITS.families ? `We advise ${LIMITS.families} or fewer, plus one mono if you show code.` : `We advise ${LIMITS.families} or fewer. More slows loading and looks busy.`)}
+   ${fams === 0 ? advice(false, 'No typeface yet', 'Add at least a Body typeface.', { k: 'addfont', l: 'Add a Body typeface' }, 'fonts') : advice(fams <= LIMITS.families, fams + ' typeface' + (fams === 1 ? '' : 's'), fams <= LIMITS.families ? `We advise ${LIMITS.families} or fewer, plus one mono if you show code.` : `We advise ${LIMITS.families} or fewer. More slows loading and looks busy.`, null, 'fonts')}
    ${s.fonts.map(f => { const custom = !FONT_ROLES.includes(f.role), g = FONTMAP.get(f.family); return `<div class="fontrow" data-fid="${f.id}"><div class="f"><label class="f"><span class="f-t">Role</span><select data-ff="rolesel">${FONT_ROLES.map(r => `<option ${f.role === r ? 'selected' : ''}>${r}</option>`).join('')}<option value="__custom" ${custom ? 'selected' : ''}>Custom...</option></select></label>${custom ? `<input type="text" data-ff="rolecustom" aria-label="Custom role name" value="${esc(f.role === 'Custom' ? '' : f.role)}" placeholder="Role name" style="margin-top:6px">` : ''}</div>
     <div class="f"><span class="f-t">Typeface</span>${fontPicker(f)}</div><button class="btn sm" data-rmfont="${f.id}">Remove</button>
     ${f.family ? `<div class="wide fsample" style="font-family:'${esc(f.family)}',system-ui,sans-serif">Aa Quick brown fox jumps over the lazy dog</div>` : ''}
     ${f.family && !g ? `<div class="wide note">Not built into Figma. Use the download icon beside the name.</div>` : ''}
     <div class="wide"><span class="eyebrow">Weights</span><div class="wchips" role="group" aria-label="Weights for ${esc(f.family || f.role)}">${WEIGHTS.map(([n, l]) => { const off = g && !g[2].includes(n); return `<label class="${off ? 'off' : ''}"><input type="checkbox" data-fw="${n}" ${f.weights.includes(n) ? 'checked' : ''} ${off ? 'disabled' : ''}>${n} ${l}</label>` }).join('')}</div>
-    ${f.weights.length > LIMITS.weights ? advice(false, f.weights.length + ' weights', `We advise ${LIMITS.weights} or fewer per typeface, for example 400 Regular, 600 Semi Bold, 700 Bold.`, { k: 'weights', l: 'Keep the best 3 weights', d: f.id }) : ''}</div></div>` }).join('') || '<p class="empty">No typefaces yet.</p>'}
+    ${f.weights.length > LIMITS.weights ? advice(false, f.weights.length + ' weights', `We advise ${LIMITS.weights} or fewer per typeface, for example 400 Regular, 600 Semi Bold, 700 Bold.`, { k: 'weights', l: 'Keep the best 3 weights', d: f.id }, 'w-' + f.id) : ''}</div></div>` }).join('') || '<p class="empty">No typefaces yet.</p>'}
    <div class="row"><button class="btn solid sm" id="addfont">+ Add typeface</button></div>${suggestFonts(s)}
    <p class="note" style="margin-top:12px">Only fonts under the SIL Open Font License are listed. They are free for commercial use and built into Figma. Showing a preview loads the font from Google's servers. Credits and licenses are at the bottom of every page. <a href="https://fonts.google.com/knowledge" target="_blank" rel="noopener">About Google Fonts</a></p></div>
   <div class="panel"><h2>4. Interaction states</h2><div class="states">${STATE_LIST.map(([k, l]) => { const off = k === 'hover' && mob; return `<label class="chk" ${off ? 'title="Not needed for mobile-only"' : ''}><input type="checkbox" data-state="${k}" ${s.states.includes(k) && !off ? 'checked' : ''} ${off ? 'disabled' : ''}>${l}${off ? ' (not needed on mobile)' : ''}</label>` }).join('')}</div>
-   ${s.states.includes('focus') ? '' : advice(false, 'Focus is missing', 'Keyboard and switch users need a visible focus state on every interactive element (WCAG 2.4.7).', { k: 'focus', l: 'Add the Focus state' })}</div>
-  <div class="panel"><h2>5. Components</h2>
-   ${s.components.length ? s.components.map(c => { const e = compById(c.id); if (!e) return ''; return `<div class="compline" data-comp="${esc(c.id)}"><div><b>${esc(e.name)}</b> <span class="tag">${esc(e.category)}</span><div class="states" style="margin-top:6px">${(e.states || []).map(st => `<label class="chk"><input type="checkbox" data-cst="${esc(st.id)}" ${c.states.includes(st.id) ? 'checked' : ''}>${esc(st.label.split(' (')[0])}</label>`).join('')}</div></div><button class="btn sm" data-rmcomp="${esc(c.id)}">Remove</button></div>` }).join('') : '<p class="empty">No components yet. Add some from Browse and they are included when you export.</p>'}
-   <div class="row"><button class="btn solid sm" id="browsecomp">Browse components</button></div></div>
+   ${s.states.includes('focus') ? '' : advice(false, 'Focus is missing', 'Keyboard and switch users need a visible focus state on every interactive element (WCAG 2.4.7).', { k: 'focus', l: 'Add the Focus state' }, 'focus')}</div>
+  <div class="panel" id="p-comps"><h2>5. Components</h2>
+   ${s.components.length ? s.components.map(c => { const e = compById(c.id); if (!e) return ''; c.os = c.os || []; const osk = ['ios', 'android'].filter(o => e.os && e.os[o]); return `<div class="compline" data-comp="${esc(c.id)}" title="Click to view"><div><b>${esc(e.name)}</b> <span class="tag">${esc(e.category)}</span><div class="states" style="margin-top:6px" role="group" aria-label="States for ${esc(e.name)}">${(e.states || []).map(st => `<label class="chk"><input type="checkbox" data-cst="${esc(st.id)}" ${c.states.includes(st.id) ? 'checked' : ''}>${esc(st.label.split(' (')[0])}</label>`).join('')}</div>${osk.length ? `<div class="states" style="margin-top:6px" role="group" aria-label="Device variants for ${esc(e.name)}"><span class="note">Device variants:</span>${osk.map(o => `<label class="chk"><input type="checkbox" data-cos="${o}" ${c.os.includes(o) ? 'checked' : ''}>${OS_LABEL[o]}</label>`).join('')}</div>` : ''}</div><div class="row" style="margin:0"><button class="btn sm" data-viewcomp="${esc(c.id)}">View</button><button class="btn sm" data-rmcomp="${esc(c.id)}">Remove</button></div></div>` }).join('') : '<p class="empty">No components yet. Add some from Browse and they are included when you export.</p>'}
+   <div class="row"><button class="btn solid sm" id="browsecomp">Browse components</button></div>${suggestComponents(s)}</div>
   <div class="panel"><h2>6. Spacing and corners</h2><div class="grid2"><label class="f"><span class="f-t">Spacing base unit</span><select id="f-space"><option value="4" ${s.spacing === '4' ? 'selected' : ''}>4px (fine control)</option><option value="8" ${s.spacing === '8' ? 'selected' : ''}>8px (simple and common)</option></select></label>
-   <label class="f"><span class="f-t">Corner radii (comma separated)</span><input type="text" id="f-radii" value="${esc(s.radii)}"></label></div>
-   ${advice(radii <= LIMITS.radii, radii + ' corner radii', `We advise ${LIMITS.radii} or fewer values. Pills are for buttons; tags and cards use small or medium radii.`, radii > LIMITS.radii ? { k: 'radii', l: 'Keep the first ' + LIMITS.radii + ' radii' } : null)}</div>
+   <label class="f"><span class="f-t">Corner radius (comma separated)</span><input type="text" id="f-radii" value="${esc(s.radii)}"></label></div>
+   ${advice(radii <= LIMITS.radii, radii + ' corner radius value' + (radii === 1 ? '' : 's'), `We advise ${LIMITS.radii} or fewer values. Pills are for buttons; tags and cards use small or medium radii.`, radii > LIMITS.radii ? { k: 'radii', l: 'Keep the first ' + LIMITS.radii + ' radius values' } : null, 'radii')}</div>
   <div class="row"><button class="btn danger" id="x-del">Delete this system</button></div>`;
   upgradeSelects(main); wireEditor(s);
 }
@@ -251,11 +277,21 @@ function wireEditor(s) {
   const bindFixColor = root => $$('[data-fixcolor]', root).forEach(b => b.onclick = () => { const c = s.colors.find(x => x.id === b.dataset.fixcolor); c.hex = b.dataset.hex; saveStore(); tip.hidden = true; rerender(); toast('Color updated to ' + c.hex) });
   bindFixColor(m);
   $$('[data-goto]', m).forEach(b => b.onclick = () => { const el = document.getElementById('cc-' + b.dataset.goto); el.scrollIntoView({ block: 'center' }); $('[data-cf=name]', el).focus() });
-  $$('[data-viewall]', m).forEach(b => b.onclick = () => { B.types = new Set([b.dataset.viewall]); B.inds = new Set(s.industry && s.industry !== 'all' ? [s.industry] : []); B.cats.clear(); B.plats.clear(); B.q = ''; go('#/') });
+  $$('[data-viewall]', m).forEach(b => b.onclick = () => { B.types = new Set([b.dataset.viewall]); B.inds = new Set(sysInds(s).filter(x => x !== 'all')); B.cats.clear(); B.plats.clear(); B.q = ''; go('#/') });
   $('#f-name').oninput = e => { set('name', e.target.value || 'Untitled system'); $('h1', m).textContent = s.name }; $('#f-name').onchange = () => renderTree();
   $('#f-folder').onchange = e => { set('folder', e.target.value); renderTree() };
-  $('#f-ind').onchange = e => { set('industry', e.target.value); rerender() };
-  $$('[data-plat]', m).forEach(i => i.onchange = () => { const a = new Set(s.platforms); i.checked ? a.add(i.dataset.plat) : a.delete(i.dataset.plat); set('platforms', [...a]); rerender() });
+  { /* multi-select industry dropdown: stays open while ticking; closes on outside click, the arrow/button, or choosing All */
+    const wrap = $('#f-ind'), btn = $('#f-ind-btn'), list = $('.ms-list', wrap), boxes = $$('input[data-ind]', wrap); let dirty = false;
+    const sync = () => { boxes.forEach(b => b.checked = sysInds(s).includes(b.dataset.ind)); $('#f-ind-v').textContent = indSummary(s) };
+    const close = focusBtn => { if (list.hidden) return; list.hidden = true; btn.setAttribute('aria-expanded', 'false'); wrap.classList.remove('open'); if (ddOpen && ddOpen.wrap === wrap) ddOpen = null; if (dirty) { dirty = false; rerender() } else if (focusBtn) btn.focus() };
+    const open = () => { if (ddOpen) ddOpen.close(); list.hidden = false; btn.setAttribute('aria-expanded', 'true'); wrap.classList.add('open'); ddOpen = { wrap, close } };
+    btn.onclick = () => list.hidden ? open() : close(true);
+    wrap.addEventListener('keydown', ev => { if (ev.key === 'Escape' && !list.hidden) { ev.preventDefault(); ev.stopPropagation(); close(true) } });
+    boxes.forEach(b => b.onchange = () => { const k = b.dataset.ind; let a = sysInds(s).filter(x => x !== 'all');
+      if (k === 'all') { set('industries', ['all']); dirty = true; sync(); close(true); return }
+      b.checked ? a.push(k) : (a = a.filter(x => x !== k)); if (!a.length) a = ['all']; set('industries', a); dirty = true; sync() });
+  }
+  $$('[data-plat]', m).forEach(i => i.onchange = () => { const a = new Set(s.platforms); i.checked ? a.add(i.dataset.plat) : a.delete(i.dataset.plat); set('platforms', [...a]); if (i.checked && POINTER.includes(i.dataset.plat) && !s.states.includes('hover')) set('states', [...s.states, 'hover']); rerender() });
   $$('[data-state]', m).forEach(i => i.onchange = () => { const a = new Set(s.states); i.checked ? a.add(i.dataset.state) : a.delete(i.dataset.state); set('states', [...a]); rerender() });
   $('#f-space').onchange = e => { set('spacing', e.target.value); rerender() }; $('#f-radii').onchange = e => { set('radii', e.target.value); rerender() };
   $('#addcolor').onclick = () => { const nid = uid(); s.colors.push({ id: nid, name: 'Color ' + (s.colors.length + 1), hex: '#1d4ed8', role: 'Other' }); sortColors(s); saveStore(); rerender(); const last = document.getElementById('cc-' + nid); $('[data-cf=name]', last).focus({ preventScroll: true }); revealColor(nid) };
@@ -295,6 +331,15 @@ function wireEditor(s) {
   $$('[data-figmafont]', m).forEach(a => a.onclick = () => showFigma('font'));
   $$('[data-usepair]', m).forEach(b => b.onclick = () => { const [di, bi] = b.dataset.usepair.split('|'), d = DATA.find(x => x.id === di), p = d.pairings.find(x => x.id === bi); const mk = (role, fam, w) => ({ id: uid(), role, family: fam, weights: w.slice() }); s.fonts = s.fonts.filter(f => !['Display', 'Body'].includes(f.role)); s.fonts.unshift(mk('Display', d.name, p.displayWeights), mk('Body', p.family, p.bodyWeights)); saveStore(); rerender(); toast('Applied ' + d.name + ' + ' + p.family) });
   $$('[data-cst]', m).forEach(i => i.onchange = () => { const c = s.components.find(x => x.id === i.closest('[data-comp]').dataset.comp), a = new Set(c.states); i.checked ? a.add(i.dataset.cst) : a.delete(i.dataset.cst); c.states = [...a]; saveStore() });
+  $$('[data-hide]', m).forEach(b => b.onclick = () => { s.hidden = [...new Set([...(s.hidden || []), b.dataset.hide])]; saveStore(); rerender() });
+  $$('[data-unhide]', m).forEach(b => b.onclick = () => { s.hidden = (s.hidden || []).filter(x => x !== b.dataset.unhide); saveStore(); rerender() });
+  $$('[data-jump]', m).forEach(b => b.onclick = () => jump(b.dataset.jump));
+  $$('[data-cos]', m).forEach(i => i.onchange = () => { const c = s.components.find(x => x.id === i.closest('[data-comp]').dataset.comp), a = new Set(c.os || []); i.checked ? a.add(i.dataset.cos) : a.delete(i.dataset.cos); c.os = ['ios', 'android'].filter(o => a.has(o)); saveStore() });
+  $$('[data-viewcomp]', m).forEach(b => b.onclick = () => viewComponent(s.components.find(c => c.id === b.dataset.viewcomp)));
+  $$('.compline', m).forEach(r => r.onclick = ev => { if (ev.target.closest('button,input,label,a')) return; viewComponent(s.components.find(c => c.id === r.dataset.comp)) });
+  const addSug = id => { const e = compById(id); if (e && !s.components.some(c => c.id === id)) s.components.push({ id, states: statesFor(e, s), os: compOsDefault(e, s) }) };
+  $$('[data-sugcomp]', m).forEach(b => b.onclick = () => { addSug(b.dataset.sugcomp); saveStore(); rerender(); toast('Component added') });
+  const aa = $('#addallcomp'); if (aa) aa.onclick = () => { [...ESSENTIALS, ...s.platforms.flatMap(p => PLAT_ESSENTIALS[p] || [])].forEach(id => { const e = compById(id); if (e && (!s.platforms.length || (e.platforms || []).some(x => s.platforms.includes(x)))) addSug(id) }); saveStore(); rerender(); toast('Suggested components added') };
   $$('[data-rmcomp]', m).forEach(b => b.onclick = () => { s.components = s.components.filter(c => c.id !== b.dataset.rmcomp); saveStore(); rerender() });
   $('#browsecomp').onclick = () => { B.types = new Set(['component']); B.cats.clear(); B.plats.clear(); B.q = ''; B.inds.clear(); go('#/') };
   $('#x-del').onclick = () => deleteSystems([s.id]);

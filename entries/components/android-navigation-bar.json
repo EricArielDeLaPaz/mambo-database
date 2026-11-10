@@ -1,0 +1,118 @@
+{
+  "id": "android-navigation-bar",
+  "type": "component",
+  "name": "Navigation bar (Android)",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "android",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "The Material bar at the bottom of an Android phone with 3 to 5 top-level destinations. The active item sits in a pill-shaped indicator.",
+  "anatomy": [
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "80dp tall, respects the gesture area."
+    },
+    {
+      "part": "item",
+      "required": true,
+      "purpose": "Icon plus a label, 48dp minimum."
+    },
+    {
+      "part": "indicator",
+      "required": true,
+      "purpose": "Pill behind the active icon."
+    },
+    {
+      "part": "badge",
+      "required": false,
+      "purpose": "Dot or count."
+    }
+  ],
+  "variants": [
+    {
+      "id": "labeled",
+      "name": "Always labeled",
+      "use": "Default.",
+      "contentLimits": {
+        "items": "3 to 5"
+      }
+    },
+    {
+      "id": "selected-label",
+      "name": "Label on selected",
+      "use": "Tight layouts.",
+      "contentLimits": {
+        "items": "3 to 5"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Top-level destinations on Android phones."
+  ],
+  "whenNotToUse": [
+    "iOS: use a tab bar.",
+    "Large tablets and desktops: use a navigation rail."
+  ],
+  "alternatives": [
+    "bottom-tab-bar",
+    "navigation-rail",
+    "android-top-app-bar"
+  ],
+  "tokens": [
+    "color.surface.default",
+    "color.primary",
+    "radius.pill"
+  ],
+  "accessibility": {
+    "role": "navigation",
+    "keyboard": [
+      "TalkBack announces selected.",
+      "Back goes to the first destination first."
+    ],
+    "focus": "Focus ring on each item.",
+    "notes": [
+      "Mark the current item with aria-current=page.",
+      "Indicator is not the only cue: bold label too.",
+      "Do not use more than 5 items."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.anb a:hover .anb__p{background:#eeeeee}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".anb a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".anb a:active .anb__p{background:#d4d4d4}"
+    }
+  ],
+  "related": [
+    "bottom-tab-bar",
+    "navigation-rail",
+    "android-top-app-bar"
+  ],
+  "code": {
+    "html": "<nav class=\"anb\" aria-label=\"Primary\">\n  <a href=\"#\" aria-current=\"page\"><span class=\"anb__p\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 3l9 8h-3v9h-12v-9h-3z\"/></svg></span>Home</a>\n  <a href=\"#\"><span class=\"anb__p\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg></span>Search</a>\n  <a href=\"#\"><span class=\"anb__p\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21c0-4 4-6 8-6s8 2 8 6\"/></svg></span>Profile</a>\n</nav>",
+    "css": ".anb{display:flex;justify-content:space-around;width:360px;height:80px;padding:12px 8px 16px;background:#fafafa;font:500 12px Roboto,system-ui,sans-serif}\n.anb a{display:grid;justify-items:center;gap:4px;min-width:72px;color:#525252;text-decoration:none}\n.anb__p{display:grid;place-items:center;width:64px;height:32px;border-radius:16px}\n.anb [aria-current=page]{color:#0a0a0a;font-weight:700}\n.anb [aria-current=page] .anb__p{background:#e5e5e5}"
+  }
+}

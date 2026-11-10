@@ -32,7 +32,8 @@ function fixFg(fg, bg, target) {
 /* ---------- constants ---------- */
 const TYPE = { component: 'Component', color: 'Color', typeface: 'Typography' };
 const TYPE_PLURAL = { component: 'Components', color: 'Colors', typeface: 'Typography' };
-const PLAT = { desktop: 'Desktop', 'mobile-web': 'Mobile web', 'mobile-app': 'Mobile app' };
+const PLAT = { 'desktop-web': 'Desktop website', 'desktop-app': 'Desktop app', tablet: 'Tablet', 'mobile-web': 'Mobile website', ios: 'iOS app', android: 'Android app' };
+const POINTER = ['desktop-web', 'desktop-app'];
 const INDUSTRIES = [['all', 'All'], ['finance', 'Finance & fintech'], ['insurance', 'Insurance'], ['legal', 'Legal'], ['healthcare', 'Healthcare'], ['wellness', 'Wellness & fitness'], ['education', 'Education'], ['retail', 'Retail & e-commerce'], ['food-beverage', 'Food & beverage'], ['hospitality', 'Travel & hospitality'], ['technology', 'Technology & SaaS'], ['data', 'Data & analytics'], ['entertainment', 'Entertainment'], ['gaming', 'Gaming'], ['creative', 'Creative & media'], ['media', 'Publishing & media'], ['nonprofit', 'Nonprofit'], ['sustainability', 'Sustainability'], ['agriculture', 'Agriculture']];
 const indLabel = k => (INDUSTRIES.find(i => i[0] === k) || [k, k])[1];
 
@@ -189,6 +190,77 @@ function makeZip(files) {
 
 /* ---------- component code helpers (shared by Browse and Export) ---------- */
 function compStates(e, ids) { return (e.states || []).filter(s => ids.includes(s.id)) }
-function compCss(e, ids) { return e.code.css + '\n' + compStates(e, ids).map(s => `/* ${s.label} */\n${s.css}`).join('\n') }
-function compDoc(e, ids) { return `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>${esc(e.name)}</title>\n<style>\nbody{margin:0;padding:32px;font-family:system-ui,sans-serif}\n${compCss(e, ids)}\n</style>\n</head>\n<body>\n${e.code.html}\n${e.code.js ? '<script>\n' + e.code.js + '\n<\/script>\n' : ''}</body>\n</html>\n` }
+const OS_LABEL = { ios: 'iOS', android: 'Android' };
+const stripComments = css => css.replace(/\/\*[\s\S]*?\*\//g, '');
+/* Prefix every selector so a block of CSS only affects one wrapper (used for OS variants). */
+function scopeCss(css, pre) {
+  css = stripComments(css); let out = '', i = 0;
+  while (i < css.length) {
+    const open = css.indexOf('{', i); if (open < 0) { out += css.slice(i); break }
+    const head = css.slice(i, open).trim(); let d = 1, j = open + 1;
+    while (j < css.length && d) { if (css[j] === '{') d++; else if (css[j] === '}') d--; j++ }
+    const body = css.slice(open + 1, j - 1);
+    if (/^@(media|supports)/.test(head)) out += head + '{' + scopeCss(body, pre) + '}';
+    else if (head.startsWith('@')) out += head + '{' + body + '}';
+    else out += head.split(',').map(x => { x = x.trim(); return /^(:root|html|body)/.test(x) ? x : pre + ' ' + x }).join(',') + '{' + body + '}';
+    i = j;
+  }
+  return out;
+}
+const osBase = (e, o) => (e.os && e.os[o]) || {};
+function compCss(e, ids, os) {
+  const st = compStates(e, ids).map(s => `/* ${s.label} */\n${s.css}`).join('\n');
+  if (!os || !os.length) return e.code.css + '\n' + st;
+  return os.map(o => `/* ${OS_LABEL[o]} */\n` + scopeCss(e.code.css + '\n' + (osBase(e, o).css || '') + '\n' + st, '.os-' + o)).join('\n');
+}
+function compBody(e, os) {
+  if (!os || !os.length) return e.code.html;
+  return os.map(o => `<section class="os-block"><h2>${OS_LABEL[o]}</h2><div class="os-${o}">${osBase(e, o).html || e.code.html}</div></section>`).join('\n');
+}
+function compDoc(e, ids, os) { return `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>${esc(e.name)}</title>\n<style>\nbody{margin:0;padding:32px;font-family:system-ui,sans-serif}\n.os-block{margin-bottom:32px}.os-block h2{font:700 12px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;color:#525252}\n${compCss(e, ids, os)}\n</style>\n</head>\n<body>\n${compBody(e, os)}\n${e.code.js ? '<script>\n' + e.code.js + '\n<\/script>\n' : ''}</body>\n</html>\n` }
+
+/* ---------- state frames: every state side by side, like variants in Figma ---------- */
+const STATE_MAP = [[/:hover/g, '.is-hover'], [/:focus-visible/g, '.is-focus'], [/:focus-within/g, '.is-focus'], [/:focus/g, '.is-focus'], [/:active/g, '.is-pressed'], [/:disabled/g, '.is-disabled'], [/:checked/g, '.is-checked']];
+function forceCss(css) {
+  css = stripComments(css).trim().replace(/^@media\s*\(hover:\s*hover\)\s*\{([\s\S]*)\}$/, '$1');
+  STATE_MAP.forEach(([re, r]) => { css = css.replace(re, r) }); return css;
+}
+const STATE_TOKEN = /(\.is-(?:hover|focus|pressed|disabled|checked)|\[[^\]]*\])/g;
+/* Add the state class or attribute to the first matching element so the forced CSS applies. */
+function applyForced(root, css) {
+  const st = document.createElement('style'); st.textContent = css; root.appendChild(st); const sheet = st.sheet; if (!sheet) return;
+  const walk = rules => [...rules].forEach(r => {
+    if (r.cssRules && !r.selectorText) return walk(r.cssRules);
+    if (!r.selectorText) return;
+    r.selectorText.split(',').forEach(sel => {
+      sel = sel.trim().replace(/::?[a-z-]+(\([^)]*\))?$/i, m => m.startsWith('::') ? '' : m);
+      const m = sel.match(/([^\s>+~]*)$/); const last = m ? m[1] : sel; const head = sel.slice(0, sel.length - last.length);
+      const toks = last.match(STATE_TOKEN) || []; if (!toks.length) return;
+      const base = head + last.replace(STATE_TOKEN, ''); let el; try { el = root.querySelector(base || '*') } catch { return }
+      if (!el) return;
+      toks.forEach(t => { if (t[0] === '.') el.classList.add(t.slice(1)); else { const mm = t.match(/^\[([^\]=~|^$*]+)(?:[~|^$*]?=["']?([^"'\]]*)["']?)?\]$/); if (mm) el.setAttribute(mm[1], mm[2] || '') } });
+    });
+  });
+  walk(sheet.cssRules);
+}
+const FRAME_FIX = ':host{display:block}*{box-sizing:border-box}.fr{padding:20px 18px;font-family:system-ui,sans-serif}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}.sr{position:absolute;width:1px;height:1px;overflow:hidden}';
+function renderFrames(host, e, stateIds, osList) {
+  host.innerHTML = ''; host.classList.add('frames');
+  const rows = (osList && osList.length ? osList : ['']);
+  const states = [{ id: 'default', label: 'Default', css: '' }].concat(compStates(e, stateIds).filter(s => s.id !== 'default'));
+  rows.forEach(o => {
+    const row = document.createElement('div'); row.className = 'frow';
+    if (o) { const h = document.createElement('p'); h.className = 'eyebrow'; h.textContent = OS_LABEL[o]; row.appendChild(h) }
+    const strip = document.createElement('div'); strip.className = 'fstrip';
+    states.forEach(s => {
+      const cell = document.createElement('figure'); cell.className = 'fcell';
+      const cap = document.createElement('figcaption'); cap.textContent = s.label.replace(/\s*\(.*\)/, ''); const box = document.createElement('div'); box.className = 'fbox';
+      const root = box.attachShadow({ mode: 'open' }); const base = e.code.css + '\n' + (o ? (osBase(e, o).css || '') : '');
+      root.innerHTML = `<style>${FRAME_FIX}${base}</style><div class="fr">${o ? (osBase(e, o).html || e.code.html) : e.code.html}</div>`;
+      if (s.id !== 'default') applyForced(root, forceCss(s.css));
+      cell.append(cap, box); strip.appendChild(cell);
+    });
+    row.appendChild(strip); host.appendChild(row);
+  });
+}
 const compById = id => DATA.find(x => x.id === id && x.type === 'component');

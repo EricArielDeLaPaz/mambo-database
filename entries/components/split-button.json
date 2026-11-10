@@ -1,0 +1,117 @@
+{
+  "id": "split-button",
+  "type": "component",
+  "name": "Split button",
+  "category": "buttons",
+  "level": "molecule",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A button with a main action and an arrow that opens related alternatives, such as Save and Save as.",
+  "anatomy": [
+    {
+      "part": "primary",
+      "required": true,
+      "purpose": "The default action."
+    },
+    {
+      "part": "divider",
+      "required": true,
+      "purpose": "Visual split."
+    },
+    {
+      "part": "arrow",
+      "required": true,
+      "purpose": "Opens the menu, labeled More actions."
+    },
+    {
+      "part": "menu",
+      "required": true,
+      "purpose": "2 to 5 alternatives."
+    }
+  ],
+  "variants": [
+    {
+      "id": "solid",
+      "name": "Solid",
+      "use": "Primary action.",
+      "contentLimits": {
+        "menu": "2 to 5 items"
+      }
+    },
+    {
+      "id": "outline",
+      "name": "Outline",
+      "use": "Secondary action.",
+      "contentLimits": {
+        "menu": "2 to 5 items"
+      }
+    }
+  ],
+  "whenToUse": [
+    "A clear default plus a few variants of the same action."
+  ],
+  "whenNotToUse": [
+    "Unrelated actions: use separate buttons.",
+    "Mobile: use a bottom sheet."
+  ],
+  "alternatives": [
+    "button",
+    "menu"
+  ],
+  "tokens": [
+    "color.primary",
+    "radius.pill",
+    "space.2"
+  ],
+  "accessibility": {
+    "role": "two buttons, the second with aria-haspopup=menu",
+    "keyboard": [
+      "Tab reaches both.",
+      "Down Arrow on the arrow opens the menu."
+    ],
+    "focus": "Focus ring on each part.",
+    "notes": [
+      "Arrow button has an aria-label.",
+      "Menu follows menu keyboard rules.",
+      "Keep both parts 44px tall."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.spb button:hover{background:#262626}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".spb button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".spb button:active{background:#404040}"
+    }
+  ],
+  "related": [
+    "button",
+    "menu"
+  ],
+  "code": {
+    "html": "<div class=\"spb\">\n  <button type=\"button\" class=\"spb__m\">Save</button>\n  <button type=\"button\" class=\"spb__a\" aria-label=\"More save options\" aria-haspopup=\"menu\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"6 9 12 15 18 9\"/></svg></button>\n</div>",
+    "css": ".spb{display:inline-flex;font:600 14px system-ui,sans-serif}\n.spb button{min-height:44px;border:1px solid #0a0a0a;background:#0a0a0a;color:#fff;cursor:pointer}\n.spb__m{padding:0 18px;border-radius:999px 0 0 999px}\n.spb__a{width:44px;border-left-color:#525252!important;border-radius:0 999px 999px 0;display:grid;place-items:center}"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "id": "ios-picker-wheel",
+  "type": "component",
+  "name": "Picker wheel (iOS)",
+  "category": "forms",
+  "level": "molecule",
+  "platforms": [
+    "ios"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A scrolling wheel for choosing one value from a short list, such as hours or a country. The selected row sits in a highlighted band.",
+  "anatomy": [
+    {
+      "part": "wheel",
+      "required": true,
+      "purpose": "Scrolling column of values."
+    },
+    {
+      "part": "selection-band",
+      "required": true,
+      "purpose": "Highlighted row showing the chosen value."
+    },
+    {
+      "part": "label",
+      "required": false,
+      "purpose": "A visible label outside the wheel."
+    }
+  ],
+  "variants": [
+    {
+      "id": "single",
+      "name": "Single column",
+      "use": "One value such as a country.",
+      "contentLimits": {
+        "values": "up to about 20"
+      }
+    },
+    {
+      "id": "multi",
+      "name": "Multi column",
+      "use": "Time or date with columns.",
+      "contentLimits": {
+        "columns": "2 to 3"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Choosing from a short, ordered list on iOS."
+  ],
+  "whenNotToUse": [
+    "Long lists: use a searchable list.",
+    "Android: use a dialog or dropdown."
+  ],
+  "alternatives": [
+    "select",
+    "date-picker",
+    "time-picker"
+  ],
+  "tokens": [
+    "color.surface.subtle",
+    "radius.md"
+  ],
+  "accessibility": {
+    "role": "adjustable (VoiceOver swipes up and down)",
+    "keyboard": [
+      "Swipe up or down changes the value."
+    ],
+    "focus": "Selected value is announced.",
+    "notes": [
+      "Provide the same input another way for motor-impaired users.",
+      "Do not rely on animation."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".pw:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "select",
+    "date-picker",
+    "time-picker"
+  ],
+  "code": {
+    "html": "<div class=\"pw\" role=\"group\" aria-label=\"Hour\">\n  <div class=\"pw__i\">8</div><div class=\"pw__i\">9</div><div class=\"pw__i pw__s\" aria-current=\"true\">10</div><div class=\"pw__i\">11</div><div class=\"pw__i\">12</div>\n</div>",
+    "css": ".pw{display:grid;width:140px;padding:4px 0;border-radius:12px;background:#f2f2f7;font:22px -apple-system,system-ui,sans-serif;text-align:center}\n.pw__i{padding:6px 0;color:#8a8a8a}\n.pw__s{color:#0a0a0a;background:rgba(0,0,0,.06);border-radius:8px;margin:0 8px;font-weight:500}"
+  }
+}
