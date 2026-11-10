@@ -1,0 +1,116 @@
+{
+  "id": "android-large-top-app-bar",
+  "type": "component",
+  "name": "Large top app bar (Android)",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "android",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A Material top bar with a large title below the icons. As the content scrolls, the bar collapses into the small top app bar.",
+  "anatomy": [
+    {
+      "part": "icons-row",
+      "required": true,
+      "purpose": "Back and action icons, 64dp tall."
+    },
+    {
+      "part": "large-title",
+      "required": true,
+      "purpose": "28sp title under the icons."
+    },
+    {
+      "part": "content",
+      "required": true,
+      "purpose": "Scrolling content."
+    },
+    {
+      "part": "scroll-container",
+      "required": true,
+      "purpose": "Collapses on scroll."
+    }
+  ],
+  "variants": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "use": "Mid-level screens.",
+      "contentLimits": {
+        "title": "max 2 lines"
+      }
+    },
+    {
+      "id": "large",
+      "name": "Large",
+      "use": "Top of long lists.",
+      "contentLimits": {
+        "title": "max 2 lines"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Top-level or list screens with room for a big title."
+  ],
+  "whenNotToUse": [
+    "Detail screens: use the small top app bar.",
+    "iOS: use the large title navigation bar."
+  ],
+  "alternatives": [
+    "android-top-app-bar",
+    "ios-large-title-navigation"
+  ],
+  "tokens": [
+    "color.surface",
+    "color.on-surface",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "banner plus scroll region",
+    "keyboard": [
+      "Tab to the scroll region; arrows scroll."
+    ],
+    "focus": "Icons are buttons with names.",
+    "notes": [
+      "Title is the h1.",
+      "Icon buttons are named.",
+      "Respect reduced motion."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.altb__bar button:hover{background:rgba(73,69,79,.08)}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".altb__bar button,.altb__sc:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".altb__bar button:active{background:rgba(73,69,79,.12)}"
+    }
+  ],
+  "related": [
+    "android-top-app-bar",
+    "ios-large-title-navigation"
+  ],
+  "code": {
+    "html": "<div class=\"altb\">\n  <header class=\"altb__bar\"><button type=\"button\" aria-label=\"Back\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M19 12H5M12 5l-7 7 7 7\"/></svg></button><span class=\"altb__t\" aria-hidden=\"true\">Inbox</span><button type=\"button\" aria-label=\"Search\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg></button></header>\n  <div class=\"altb__sc\" tabindex=\"0\" role=\"region\" aria-label=\"Inbox messages\">\n    <h1 class=\"altb__lt\">Inbox</h1>\n    <ul class=\"altb__ls\"><li>Welcome to the team</li><li>Receipt for your order</li><li>Weekend plans</li><li>Design review notes</li><li>Your invoice is ready</li><li>New comment on your file</li><li>Meeting moved to 3 pm</li><li>Password changed</li></ul>\n  </div>\n</div>",
+    "css": ".altb{width:360px;height:280px;display:grid;grid-template-rows:64px 1fr;border:1px solid #cac4d0;border-radius:12px;overflow:hidden;background:#fef7ff;font-family:Roboto,system-ui,sans-serif}\n.altb__bar{display:grid;grid-template-columns:48px 1fr 48px;align-items:center;padding:0 4px;background:#fef7ff;transition:background .15s}\n.altb__bar button{display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:50%;background:none;color:#49454f;cursor:pointer}\n.altb__t{font:400 22px Roboto,system-ui,sans-serif;opacity:0;transition:opacity .15s}\n.altb.is-collapsed .altb__bar{background:#f3edf7}.altb.is-collapsed .altb__t{opacity:1}\n.altb__sc{overflow:auto;padding:0 16px 16px}\n.altb__lt{margin:0 0 8px;font:400 28px/36px Roboto,system-ui,sans-serif}\n.altb__ls{list-style:none;margin:0;padding:0}.altb__ls li{padding:14px 0;border-bottom:1px solid #e7e0ec;font-size:16px}\n@media (prefers-reduced-motion:reduce){.altb__bar,.altb__t{transition:none}}",
+    "js": "document.querySelectorAll('.altb').forEach(screen => {\n  const scroller = screen.querySelector('.altb__sc'), title = screen.querySelector('.altb__lt');\n  const sync = () => screen.classList.toggle('is-collapsed', scroller.scrollTop > title.offsetHeight - 8);\n  scroller.addEventListener('scroll', sync, { passive: true }); sync();\n});"
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "id": "android-side-sheet",
+  "type": "component",
+  "name": "Side sheet (Android)",
+  "category": "overlays",
+  "level": "organism",
+  "platforms": [
+    "android",
+    "tablet",
+    "desktop-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A Material panel that slides in from the side for supplementary content or actions, such as filters. Modal on small screens, standard (beside content) on large ones.",
+  "anatomy": [
+    {
+      "part": "header",
+      "required": true,
+      "purpose": "Title and a close button."
+    },
+    {
+      "part": "content",
+      "required": true,
+      "purpose": "Filters, details or actions."
+    },
+    {
+      "part": "actions",
+      "required": false,
+      "purpose": "Primary action at the bottom."
+    },
+    {
+      "part": "scrim (overlay fill)",
+      "required": false,
+      "purpose": "Dims the page when modal."
+    }
+  ],
+  "variants": [
+    {
+      "id": "modal",
+      "name": "Modal",
+      "use": "Small screens. Blocks the page.",
+      "contentLimits": {
+        "width": "up to 400dp"
+      }
+    },
+    {
+      "id": "standard",
+      "name": "Standard",
+      "use": "Large screens. Sits beside content.",
+      "contentLimits": {
+        "width": "up to 400dp"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Supplementary tasks that do not need a full screen."
+  ],
+  "whenNotToUse": [
+    "Quick choices: use a menu.",
+    "Phone-sized screens: prefer a bottom sheet."
+  ],
+  "alternatives": [
+    "drawer",
+    "android-navigation-drawer",
+    "bottom-sheet"
+  ],
+  "tokens": [
+    "color.surface.container-low",
+    "radius.lg"
+  ],
+  "accessibility": {
+    "role": "dialog",
+    "keyboard": [
+      "Escape or the close button closes it.",
+      "Focus stays inside while modal."
+    ],
+    "focus": "Focus moves in and returns to the trigger.",
+    "notes": [
+      "Close button has a name.",
+      "Trap focus while modal.",
+      "Announce results of applied filters."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.ass__go:hover{background:#5b4796}.ass__h button:hover{background:rgba(73,69,79,.08)}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ass__go,.ass__h button,.ass__b input,.ass__open:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "drawer",
+    "android-navigation-drawer",
+    "bottom-sheet"
+  ],
+  "code": {
+    "html": "<button type=\"button\" class=\"ass__open\" data-open>Filters</button>\n<div class=\"ass__scrim\" hidden>\n  <div class=\"ass\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"ass-t\">\n    <div class=\"ass__h\"><h2 id=\"ass-t\">Filters</h2><button type=\"button\" aria-label=\"Close\">&times;</button></div>\n    <div class=\"ass__b\"><label><input type=\"checkbox\" checked> In stock</label><label><input type=\"checkbox\"> On sale</label></div>\n    <div class=\"ass__f\"><button type=\"button\" class=\"ass__go\">Apply</button></div>\n  </div>\n</div>",
+    "css": ".ass__open{min-height:40px;padding:0 24px;border:0;border-radius:20px;background:#6750a4;color:#fff;font:500 14px Roboto,system-ui,sans-serif;cursor:pointer}\n.ass__scrim{position:fixed;inset:0;z-index:20;display:flex;justify-content:flex-end;background:rgba(0,0,0,.32)}\n.ass__scrim[hidden]{display:none}\n.ass{display:grid;grid-template-rows:auto 1fr auto;width:min(320px,100%);background:#f7f2fa;border-radius:16px 0 0 16px;font-family:Roboto,system-ui,sans-serif;animation:ass-in .25s ease-out}\n@keyframes ass-in{from{transform:translateX(100%)}}\n@media (prefers-reduced-motion:reduce){.ass{animation:none}}\n.ass__h{display:flex;align-items:center;justify-content:space-between;padding:16px 8px 8px 24px}\n.ass__h h2{margin:0;font:400 22px Roboto,system-ui,sans-serif}\n.ass__h button{width:48px;height:48px;border:0;border-radius:50%;background:none;font-size:26px;color:#49454f;cursor:pointer}\n.ass__b{display:grid;align-content:start;gap:4px;padding:8px 24px;font-size:14px;color:#1d1b20}\n.ass__b label{display:flex;align-items:center;gap:12px;min-height:48px}\n.ass__b input{width:18px;height:18px;accent-color:#6750a4}\n.ass__f{padding:16px 24px}\n.ass__go{min-height:40px;padding:0 24px;border:0;border-radius:20px;background:#6750a4;color:#fff;font:500 14px Roboto,system-ui,sans-serif;cursor:pointer}",
+    "js": "document.querySelectorAll('.ass__open').forEach(trigger => {\n  const layer = trigger.nextElementSibling;\n  const focusable = () => [...layer.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex=\"-1\"])')];\n  const open = () => { layer.hidden = false; focusable()[0].focus(); };\n  const close = () => { layer.hidden = true; trigger.focus(); };\n  trigger.addEventListener('click', open);\n  layer.addEventListener('click', e => { if (e.target === layer || e.target.closest('button')) close(); });\n  layer.addEventListener('keydown', e => {\n    if (e.key === 'Escape') close();\n    if (e.key === 'Tab') {\n      const f = focusable(), first = f[0], last = f[f.length - 1];\n      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }\n      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }\n    }\n  });\n});",
+    "frame": "<div class=\"ass\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"ass-t\">\n    <div class=\"ass__h\"><h2 id=\"ass-t\">Filters</h2><button type=\"button\" aria-label=\"Close\">&times;</button></div>\n    <div class=\"ass__b\"><label><input type=\"checkbox\" checked> In stock</label><label><input type=\"checkbox\"> On sale</label></div>\n    <div class=\"ass__f\"><button type=\"button\" class=\"ass__go\">Apply</button></div>\n  </div>",
+    "pvHeight": 420
+  }
+}

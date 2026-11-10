@@ -1,0 +1,103 @@
+{
+  "id": "ios-stepper",
+  "type": "component",
+  "name": "Stepper (iOS)",
+  "category": "forms",
+  "level": "atom",
+  "platforms": [
+    "ios",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A compact pair of minus and plus buttons for nudging a value by one. The value is shown next to it, never inside it.",
+  "anatomy": [
+    {
+      "part": "minus",
+      "required": true,
+      "purpose": "Decrease. Disabled at the minimum."
+    },
+    {
+      "part": "plus",
+      "required": true,
+      "purpose": "Increase. Disabled at the maximum."
+    },
+    {
+      "part": "value",
+      "required": true,
+      "purpose": "The current number, next to the control."
+    }
+  ],
+  "variants": [
+    {
+      "id": "default",
+      "name": "Default",
+      "use": "Small ranges.",
+      "contentLimits": {
+        "range": "about 0 to 20"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Small whole-number adjustments such as quantity."
+  ],
+  "whenNotToUse": [
+    "Large ranges: use a text field or slider.",
+    "Android: use a number input with buttons."
+  ],
+  "alternatives": [
+    "number-input",
+    "slider"
+  ],
+  "tokens": [
+    "color.surface.subtle",
+    "radius.md"
+  ],
+  "accessibility": {
+    "role": "group of two buttons",
+    "keyboard": [
+      "Tab to each button; Enter or Space activates.",
+      "Press and hold may repeat."
+    ],
+    "focus": "Each button has its own focus ring.",
+    "notes": [
+      "Label each button: Decrease, Increase.",
+      "Announce the new value (aria-live).",
+      "44pt tall touch area."
+    ]
+  },
+  "states": [
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".ist button:active{background:#dcdce0}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ist button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".ist button:disabled{opacity:.3}"
+    }
+  ],
+  "related": [
+    "number-input",
+    "slider"
+  ],
+  "code": {
+    "html": "<div class=\"ist\" role=\"group\" aria-label=\"Quantity\">\n  <button type=\"button\" aria-label=\"Decrease\">&minus;</button><span class=\"ist__sep\" aria-hidden=\"true\"></span><button type=\"button\" aria-label=\"Increase\">+</button>\n</div>\n<output class=\"ist__v\" aria-live=\"polite\">1</output>",
+    "css": ".ist{display:inline-flex;align-items:center;border-radius:8px;background:#eeeef0;overflow:hidden;font:22px -apple-system,system-ui,sans-serif}\n.ist button{width:47px;min-height:44px;border:0;background:none;color:#0a0a0a;font:inherit;cursor:pointer}\n.ist button:disabled{opacity:.3;cursor:not-allowed}\n.ist__sep{width:1px;height:20px;background:#c6c6c8}\n.ist__v{margin-left:12px;font:17px -apple-system,system-ui,sans-serif}",
+    "js": "document.querySelectorAll('.ist').forEach(box => {\n  const [minus, plus] = box.querySelectorAll('button'), out = box.nextElementSibling, MIN = 0, MAX = 10;\n  let n = +out.textContent;\n  const set = v => { n = Math.max(MIN, Math.min(MAX, v)); out.textContent = n; minus.disabled = n <= MIN; plus.disabled = n >= MAX; };\n  minus.addEventListener('click', () => set(n - 1)); plus.addEventListener('click', () => set(n + 1)); set(n);\n});"
+  }
+}

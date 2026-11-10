@@ -124,7 +124,15 @@
   "code": {
     "html": "<label for=\"vol\" class=\"sl__l\">Volume <output for=\"vol\">40</output></label>\n<input id=\"vol\" class=\"sl\" type=\"range\" min=\"0\" max=\"100\" value=\"40\">",
     "css": ".sl__l{display:flex;justify-content:space-between;width:260px;margin-bottom:6px;font:600 14px system-ui,sans-serif}\n.sl{width:260px;accent-color:#0a0a0a;height:24px}",
-    "js": "document.querySelectorAll('.sl').forEach(range => {\n  const out = range.previousElementSibling.querySelector('output');\n  const sync = () => { out.textContent = range.value; range.setAttribute('aria-valuetext', range.value + ' percent'); };\n  range.addEventListener('input', sync); sync();\n});"
+    "js": "document.querySelectorAll('.sl').forEach(range => {\n  const out = range.previousElementSibling.querySelector('output');\n  const sync = () => {\n    out.textContent = range.value; range.setAttribute('aria-valuetext', range.value + ' percent');\n    range.style.setProperty('--p', ((range.value - range.min) / (range.max - range.min) * 100) + '%');\n  };\n  range.addEventListener('input', sync); sync();\n});"
   },
-  "interactive": true
+  "interactive": true,
+  "os": {
+    "ios": {
+      "css": ".sl{-webkit-appearance:none;appearance:none;height:28px;background:transparent;accent-color:#0a84ff}.sl::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(90deg,#0a84ff var(--p,40%),#d1d1d6 var(--p,40%))}.sl::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-12px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}.sl::-moz-range-track{height:4px;border-radius:2px;background:#d1d1d6}.sl::-moz-range-progress{height:4px;border-radius:2px;background:#0a84ff}.sl::-moz-range-thumb{width:28px;height:28px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}.sl__l{font-family:-apple-system,system-ui,sans-serif}"
+    },
+    "android": {
+      "css": ".sl{-webkit-appearance:none;appearance:none;height:44px;background:transparent;accent-color:#6750a4}.sl::-webkit-slider-runnable-track{height:16px;border-radius:8px;background:linear-gradient(90deg,#6750a4 var(--p,40%),#e8def8 var(--p,40%))}.sl::-webkit-slider-thumb{-webkit-appearance:none;width:4px;height:44px;margin-top:-14px;border-radius:2px;background:#6750a4}.sl::-moz-range-track{height:16px;border-radius:8px;background:#e8def8}.sl::-moz-range-progress{height:16px;border-radius:8px;background:#6750a4}.sl::-moz-range-thumb{width:4px;height:44px;border:0;border-radius:2px;background:#6750a4}.sl__l{font-family:Roboto,system-ui,sans-serif}"
+    }
+  }
 }

@@ -15,7 +15,7 @@
   "industries": [
     "all"
   ],
-  "summary": "A month grid for choosing a day or a range of days.",
+  "summary": "A month grid (layout grid) for choosing a day or a range of days.",
   "anatomy": [
     {
       "part": "header",

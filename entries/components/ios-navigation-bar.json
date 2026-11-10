@@ -48,7 +48,7 @@
     {
       "id": "large",
       "name": "Large title",
-      "use": "Top-level screens in a stack.",
+      "use": "Top-level screens in a navigation stack (a flow of connected frames).",
       "contentLimits": {
         "title": "max 20 characters"
       }

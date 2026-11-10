@@ -149,7 +149,7 @@ function renderEntry(e) {
   <h2>Variants and content limits</h2>${e.variants.map(v => `<h3>${esc(v.name)}</h3><p>${esc(v.use)}</p><ul class="plain">${Object.entries(v.contentLimits).map(([k, x]) => `<li><b>${esc(k)}:</b> ${esc(x)}</li>`).join('')}</ul>`).join('')}
   <h2>When to use</h2>${ul(e.whenToUse)}<h2>When not to use</h2>${ul(e.whenNotToUse)}
   ${e.alternatives ? `<p><b>Alternatives:</b> ${e.alternatives.map(a => compById(a) ? `<a href="#/entry/${esc(a)}">${esc(compById(a).name)}</a>` : esc(a)).join(', ')}</p>` : ''}
-  <h2>Tokens</h2><div>${(e.tokens || []).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
+  <h2>Tokens (variables)</h2><div>${(e.tokens || []).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
   <h2>Accessibility</h2><p><b>Role:</b> ${esc(e.accessibility.role)}</p><h3>Keyboard</h3>${ul(e.accessibility.keyboard)}<h3>Focus</h3><p>${esc(e.accessibility.focus)}</p><h3>Notes</h3>${ul(e.accessibility.notes)}
   <h2>Code</h2><div id="codewrap"></div>`;
   }

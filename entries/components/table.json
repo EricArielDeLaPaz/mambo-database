@@ -72,7 +72,7 @@
   ],
   "whenNotToUse": [
     "A few facts about one item: use a list or card.",
-    "Phones: use cards or a stacked layout."
+    "Phones: use cards or a stacked layout (vertical auto layout)."
   ],
   "alternatives": [
     "list",

@@ -133,5 +133,10 @@
     "css": ".tabs{display:flex;gap:4px;border-bottom:1px solid #d4d4d4;font:600 14px system-ui,sans-serif}\n.tab{min-height:44px;padding:0 16px;border:0;border-bottom:3px solid transparent;background:none;color:#525252;cursor:pointer}\n.tab[aria-selected=true]{color:#0a0a0a;border-bottom-color:#0a0a0a;font-weight:700}\n.tabpanel{padding:16px 0;font:15px system-ui,sans-serif}\n/* interaction */\n.tabpanel[hidden]{display:none}\n",
     "js": "document.querySelectorAll('.tabs').forEach(list => {\n  const tabs = [...list.querySelectorAll('[role=tab]')];\n  const root = list.parentElement;\n  const select = (tab, focus) => {\n    tabs.forEach(t => {\n      const on = t === tab;\n      t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;\n      root.querySelector('#' + t.getAttribute('aria-controls')).hidden = !on;\n    });\n    if (focus) tab.focus();\n  };\n  tabs.forEach(t => t.addEventListener('click', () => select(t)));\n  list.addEventListener('keydown', e => {\n    const i = tabs.indexOf(document.activeElement); if (i < 0) return;\n    const n = { ArrowRight: (i + 1) % tabs.length, ArrowLeft: (i - 1 + tabs.length) % tabs.length, Home: 0, End: tabs.length - 1 }[e.key];\n    if (n !== undefined) { e.preventDefault(); select(tabs[n], true); }\n  });\n});"
   },
-  "interactive": true
+  "interactive": true,
+  "os": {
+    "android": {
+      "css": ".tabs{border-bottom:1px solid #cac4d0;font:500 14px Roboto,system-ui,sans-serif}.tab{min-height:48px;flex:1;color:#49454f;border-bottom-width:3px;border-radius:0}.tab[aria-selected=true]{color:#6750a4;border-bottom-color:#6750a4;font-weight:500}.tab:hover{background:rgba(73,69,79,.08)}"
+    }
+  }
 }

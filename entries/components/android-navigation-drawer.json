@@ -1,0 +1,120 @@
+{
+  "id": "android-navigation-drawer",
+  "type": "component",
+  "name": "Navigation drawer (Android)",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "android",
+    "tablet",
+    "desktop-app"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A Material panel of destinations with an icon and label each, and a pill behind the current one. Modal on phones, permanent on large screens.",
+  "anatomy": [
+    {
+      "part": "header",
+      "required": false,
+      "purpose": "Title or account."
+    },
+    {
+      "part": "destinations",
+      "required": true,
+      "purpose": "Icon plus label, 56dp tall."
+    },
+    {
+      "part": "active-indicator",
+      "required": true,
+      "purpose": "Rounded pill behind the current destination."
+    },
+    {
+      "part": "divider",
+      "required": false,
+      "purpose": "Separates groups."
+    }
+  ],
+  "variants": [
+    {
+      "id": "standard",
+      "name": "Standard",
+      "use": "Permanent on large screens.",
+      "contentLimits": {
+        "destinations": "5 to 8"
+      }
+    },
+    {
+      "id": "modal",
+      "name": "Modal",
+      "use": "Slides over content on phones.",
+      "contentLimits": {
+        "destinations": "5 to 8"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Five or more top-level destinations."
+  ],
+  "whenNotToUse": [
+    "Three to five destinations on a phone: use a navigation bar.",
+    "iOS: use a tab bar or sidebar."
+  ],
+  "alternatives": [
+    "android-navigation-bar",
+    "navigation-rail",
+    "sidebar-navigation"
+  ],
+  "tokens": [
+    "color.secondary.container",
+    "color.surface.container",
+    "radius.full"
+  ],
+  "accessibility": {
+    "role": "navigation landmark",
+    "keyboard": [
+      "Tab moves through destinations.",
+      "Enter activates; Escape closes a modal drawer."
+    ],
+    "focus": "Current destination uses aria-current=page.",
+    "notes": [
+      "Labels always visible with icons.",
+      "56dp row height.",
+      "A modal drawer traps focus."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.and-d a:hover{background:rgba(73,69,79,.08)}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".and-d a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".and-d a:active{background:rgba(73,69,79,.12)}"
+    }
+  ],
+  "related": [
+    "android-navigation-bar",
+    "navigation-rail",
+    "sidebar-navigation"
+  ],
+  "code": {
+    "html": "<nav class=\"and-d\" aria-label=\"Main\">\n  <h2 class=\"and-d__h\">Mail</h2>\n  <a href=\"#\" aria-current=\"page\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 6h16v12H4zM4 7l8 6 8-6\"/></svg>Inbox<span class=\"and-d__n\">24</span></a>\n  <a href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 11l18-8-8 18-2-8z\"/></svg>Sent</a>\n  <a href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 3h12v18l-6-4-6 4z\"/></svg>Starred</a>\n  <a href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13\"/></svg>Trash</a>\n</nav>",
+    "css": ".and-d{width:300px;padding:12px;border-radius:0 16px 16px 0;background:#f7f2fa;font:500 14px Roboto,system-ui,sans-serif}\n.and-d__h{margin:0;padding:18px 16px 12px;font:500 14px Roboto,system-ui,sans-serif;color:#49454f}\n.and-d a{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;border-radius:28px;color:#49454f;text-decoration:none}\n.and-d a[aria-current=page]{background:#e8def8;color:#1d192b}\n.and-d__n{margin-left:auto;font-size:14px}",
+    "js": "document.querySelectorAll('.and-d').forEach(nav => {\n  nav.addEventListener('click', e => {\n    const a = e.target.closest('a'); if (!a) return;\n    e.preventDefault(); /* demo only: real links navigate */\n    nav.querySelectorAll('a[aria-current]').forEach(x => x.removeAttribute('aria-current'));\n    a.setAttribute('aria-current', 'page');\n  });\n});"
+  }
+}

@@ -91,5 +91,10 @@
     "js": "document.querySelectorAll('.ttw').forEach(wrap => {\n  const trigger = wrap.querySelector('.ttb'), tip = wrap.querySelector('[role=tooltip]');\n  let timer;\n  const show = () => { clearTimeout(timer); tip.hidden = false; };\n  const hide = () => { timer = setTimeout(() => { tip.hidden = true; }, 120); };\n  trigger.addEventListener('mouseenter', show); trigger.addEventListener('focus', show);\n  trigger.addEventListener('mouseleave', hide); trigger.addEventListener('blur', hide);\n  tip.addEventListener('mouseenter', show); tip.addEventListener('mouseleave', hide);\n  document.addEventListener('keydown', e => { if (e.key === 'Escape') { clearTimeout(timer); tip.hidden = true; } });  /* dismissable without moving the pointer (WCAG 1.4.13) */\n});",
     "pvHeight": 220
   },
-  "interactive": true
+  "interactive": true,
+  "os": {
+    "android": {
+      "css": ".tt{padding:4px 8px;border-radius:4px;background:#322f35;font:400 12px/16px Roboto,system-ui,sans-serif}"
+    }
+  }
 }

@@ -1,0 +1,90 @@
+{
+  "id": "ios-page-control",
+  "type": "component",
+  "name": "Page control (iOS)",
+  "category": "navigation",
+  "level": "atom",
+  "platforms": [
+    "ios",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A row of dots showing which page of a short sequence you are on, such as onboarding or a photo carousel.",
+  "anatomy": [
+    {
+      "part": "dots",
+      "required": true,
+      "purpose": "One dot per page. The current one is darker."
+    },
+    {
+      "part": "accessible-name",
+      "required": true,
+      "purpose": "Each dot says which page it is."
+    }
+  ],
+  "variants": [
+    {
+      "id": "default",
+      "name": "Default",
+      "use": "3 to 7 pages.",
+      "contentLimits": {
+        "pages": "3 to 7"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Short, linear sets of pages."
+  ],
+  "whenNotToUse": [
+    "Long sets: use a scrubber or list.",
+    "Navigation between sections: use tabs."
+  ],
+  "alternatives": [
+    "carousel",
+    "stepper"
+  ],
+  "tokens": [
+    "color.text.secondary",
+    "color.text.primary"
+  ],
+  "accessibility": {
+    "role": "group of buttons",
+    "keyboard": [
+      "Tab to the dots; Enter or Space jumps to a page.",
+      "Left and right arrows move between dots."
+    ],
+    "focus": "The current page is marked with aria-current.",
+    "notes": [
+      "Never rely on color alone: size or shape can differ too.",
+      "Provide previous and next controls for the content."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ipc button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".ipc button:active::after{transform:scale(1.3)}"
+    }
+  ],
+  "related": [
+    "carousel",
+    "stepper"
+  ],
+  "code": {
+    "html": "<div class=\"ipc\" role=\"group\" aria-label=\"Onboarding pages\">\n  <button type=\"button\" aria-label=\"Page 1 of 5\" aria-current=\"true\"></button><button type=\"button\" aria-label=\"Page 2 of 5\"></button><button type=\"button\" aria-label=\"Page 3 of 5\"></button><button type=\"button\" aria-label=\"Page 4 of 5\"></button><button type=\"button\" aria-label=\"Page 5 of 5\"></button>\n</div>",
+    "css": ".ipc{display:inline-flex;gap:2px;padding:6px 10px;border-radius:999px;background:#eeeef0}\n.ipc button{position:relative;width:24px;height:24px;padding:0;border:0;background:none;cursor:pointer}\n.ipc button::after{content:'';position:absolute;inset:8px;border-radius:50%;background:#8e8e93}\n.ipc button[aria-current=true]::after{background:#0a0a0a}",
+    "js": "document.querySelectorAll('.ipc').forEach(group => {\n  const dots = [...group.querySelectorAll('button')];\n  const show = (i, focus) => {\n    dots.forEach((d, k) => { d.setAttribute('aria-current', String(k === i)); d.tabIndex = k === i ? 0 : -1; });\n    if (focus) dots[i].focus();\n  };\n  dots.forEach((d, i) => d.addEventListener('click', () => show(i)));\n  group.addEventListener('keydown', e => {\n    const i = dots.indexOf(document.activeElement); if (i < 0) return;\n    const n = { ArrowRight: (i + 1) % dots.length, ArrowLeft: (i - 1 + dots.length) % dots.length }[e.key];\n    if (n !== undefined) { e.preventDefault(); show(n, true); }\n  });\n  show(dots.findIndex(d => d.getAttribute('aria-current') === 'true'));\n});"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "id": "ios-pull-down-button",
+  "type": "component",
+  "name": "Pull-down button and context menu (iOS)",
+  "category": "actions",
+  "level": "molecule",
+  "platforms": [
+    "ios",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A button that opens a menu of actions. The same menu appears from a long press as a context menu. Destructive items are red and last.",
+  "anatomy": [
+    {
+      "part": "trigger",
+      "required": true,
+      "purpose": "Button with a chevron or ellipsis."
+    },
+    {
+      "part": "menu",
+      "required": true,
+      "purpose": "Rounded list of actions with optional icons."
+    },
+    {
+      "part": "destructive",
+      "required": false,
+      "purpose": "Red, placed last."
+    },
+    {
+      "part": "separator",
+      "required": false,
+      "purpose": "Groups related actions."
+    }
+  ],
+  "variants": [
+    {
+      "id": "pull-down",
+      "name": "Pull-down",
+      "use": "Actions behind a button.",
+      "contentLimits": {
+        "items": "2 to 7"
+      }
+    },
+    {
+      "id": "context",
+      "name": "Context menu",
+      "use": "Long press on an item.",
+      "contentLimits": {
+        "items": "2 to 7"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Several related actions without cluttering the screen."
+  ],
+  "whenNotToUse": [
+    "One main action: show a button.",
+    "Choosing a value: use a pop-up button or picker.",
+    "Android: use a menu."
+  ],
+  "alternatives": [
+    "menu",
+    "popover",
+    "ios-action-sheet"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.text.danger",
+    "radius.lg"
+  ],
+  "accessibility": {
+    "role": "button with a menu",
+    "keyboard": [
+      "Enter, Space or Down Arrow opens it.",
+      "Arrows move, Escape closes."
+    ],
+    "focus": "Focus moves into the menu and returns to the button.",
+    "notes": [
+      "Every item has a text label.",
+      "Mark destructive items with words and color.",
+      "Menu items are at least 44pt tall."
+    ]
+  },
+  "states": [
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".ipd__m button:active,.ipd__t:active{background:#d1d1d6}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ipd__t,.ipd__m button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "menu",
+    "popover",
+    "ios-action-sheet"
+  ],
+  "code": {
+    "html": "<div class=\"ipd\">\n  <button type=\"button\" class=\"ipd__t\" aria-haspopup=\"menu\" aria-expanded=\"false\">Options <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"6 9 12 15 18 9\"/></svg></button>\n  <div role=\"menu\" class=\"ipd__m\" hidden>\n    <button type=\"button\" role=\"menuitem\">Share</button>\n    <button type=\"button\" role=\"menuitem\">Duplicate</button>\n    <button type=\"button\" role=\"menuitem\" class=\"ipd__d\">Delete</button>\n  </div>\n</div>",
+    "css": ".ipd{position:relative;display:inline-block;font:17px -apple-system,system-ui,sans-serif}\n.ipd__t{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border:0;border-radius:999px;background:#eeeef0;color:#0a64d6;font:inherit;cursor:pointer}\n.ipd__m{position:absolute;top:calc(100% + 6px);left:0;z-index:10;display:grid;min-width:220px;padding:0;border-radius:14px;background:rgba(249,249,249,.96);box-shadow:0 12px 32px rgba(0,0,0,.22);overflow:hidden}\n.ipd__m[hidden]{display:none}\n.ipd__m button{min-height:44px;padding:0 16px;border:0;border-bottom:.5px solid #c6c6c8;background:none;color:#0a0a0a;text-align:left;font:inherit;cursor:pointer}\n.ipd__m button:last-child{border-bottom:0}\n.ipd__m .ipd__d{color:#b91c1c}",
+    "js": "document.querySelectorAll('.ipd').forEach(root => {\n  const trigger = root.querySelector('.ipd__t'), menu = root.querySelector('.ipd__m');\n  const items = () => [...menu.querySelectorAll('[role=menuitem]')];\n  const close = refocus => { menu.hidden = true; trigger.setAttribute('aria-expanded', 'false'); if (refocus) trigger.focus(); };\n  const open = last => { menu.hidden = false; trigger.setAttribute('aria-expanded', 'true'); const l = items(); (last ? l[l.length - 1] : l[0]).focus(); };\n  trigger.addEventListener('click', () => menu.hidden ? open() : close(true));\n  trigger.addEventListener('keydown', e => { if (e.key === 'ArrowDown') { e.preventDefault(); open(); } else if (e.key === 'ArrowUp') { e.preventDefault(); open(true); } });\n  menu.addEventListener('keydown', e => {\n    const l = items(), i = l.indexOf(document.activeElement);\n    const to = { ArrowDown: (i + 1) % l.length, ArrowUp: (i - 1 + l.length) % l.length, Home: 0, End: l.length - 1 }[e.key];\n    if (to !== undefined) { e.preventDefault(); l[to].focus(); } else if (e.key === 'Escape') { e.preventDefault(); close(true); } else if (e.key === 'Tab') close(false);\n  });\n  menu.addEventListener('click', e => { if (e.target.closest('[role=menuitem]')) close(true); });\n  document.addEventListener('click', e => { if (!root.contains(e.target)) close(false); });\n});",
+    "frame": "<div class=\"ipd\">\n  <button type=\"button\" class=\"ipd__t\" aria-haspopup=\"menu\" aria-expanded=\"true\">Options <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"6 9 12 15 18 9\"/></svg></button>\n  <div role=\"menu\" class=\"ipd__m\">\n    <button type=\"button\" role=\"menuitem\">Share</button>\n    <button type=\"button\" role=\"menuitem\">Duplicate</button>\n    <button type=\"button\" role=\"menuitem\" class=\"ipd__d\">Delete</button>\n  </div>\n</div>",
+    "pvHeight": 320
+  }
+}

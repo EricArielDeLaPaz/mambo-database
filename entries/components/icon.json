@@ -20,7 +20,7 @@
     {
       "part": "glyph",
       "required": true,
-      "purpose": "Drawn on a 24px grid with a consistent 2px stroke."
+      "purpose": "Drawn on a 24px grid (layout grid) with a consistent 2px stroke."
     },
     {
       "part": "container",

@@ -16,7 +16,7 @@
   "summary": "A panel that slides in from the side. Holds navigation, filters or details beside the page.",
   "anatomy": [
     {
-      "part": "scrim",
+      "part": "scrim (overlay fill)",
       "required": true,
       "purpose": "Dims the page for modal drawers."
     },

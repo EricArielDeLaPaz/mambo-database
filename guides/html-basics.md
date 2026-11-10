@@ -42,6 +42,8 @@ Elements nest like boxes inside boxes. This is why Figma frames inside frames ma
 </html>
 ```
 
+The `viewport` meta tag tells phones to use the real screen width (the frame width) instead of a zoomed-out desktop width.
+
 - `head` holds information about the page. Visitors do not see it.
 - `body` holds what they see.
 - `lang="en"` tells screen readers which language to speak.

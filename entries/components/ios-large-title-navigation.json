@@ -1,0 +1,88 @@
+{
+  "id": "ios-large-title-navigation",
+  "type": "component",
+  "name": "Large title navigation bar (iOS)",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "ios",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A top-level iOS screen title shown large under the bar. As you scroll, the large title collapses into the small centered title.",
+  "anatomy": [
+    {
+      "part": "bar",
+      "required": true,
+      "purpose": "Compact bar that shows the small title after scrolling."
+    },
+    {
+      "part": "large-title",
+      "required": true,
+      "purpose": "34pt bold title at the top of the content."
+    },
+    {
+      "part": "content",
+      "required": true,
+      "purpose": "Scrolling list or content."
+    }
+  ],
+  "variants": [
+    {
+      "id": "large",
+      "name": "Large title",
+      "use": "Top-level screens in a navigation stack (a flow of connected frames).",
+      "contentLimits": {
+        "title": "max 20 characters"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Root screens such as Inbox or Settings."
+  ],
+  "whenNotToUse": [
+    "Detail screens: use a standard navigation bar.",
+    "Android: use a large top app bar."
+  ],
+  "alternatives": [
+    "ios-navigation-bar",
+    "android-large-top-app-bar"
+  ],
+  "tokens": [
+    "color.text.primary",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "heading plus scroll region",
+    "keyboard": [
+      "Tab to the scroll region; arrows scroll."
+    ],
+    "focus": "The scroll area is focusable so keyboard users can scroll.",
+    "notes": [
+      "The large title is the heading (h1).",
+      "The small title is hidden from screen readers to avoid reading the title twice.",
+      "Respect reduced motion."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ilt__sc:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "ios-navigation-bar",
+    "android-large-top-app-bar"
+  ],
+  "code": {
+    "html": "<div class=\"ilt\">\n  <header class=\"ilt__bar\"><span class=\"ilt__t\" aria-hidden=\"true\">Inbox</span></header>\n  <div class=\"ilt__sc\" tabindex=\"0\" role=\"region\" aria-label=\"Inbox messages\">\n    <h1 class=\"ilt__lt\">Inbox</h1>\n    <ul class=\"ilt__ls\"><li>Welcome to the team</li><li>Receipt for your order</li><li>Weekend plans</li><li>Design review notes</li><li>Your invoice is ready</li><li>New comment on your file</li><li>Meeting moved to 3 pm</li><li>Password changed</li></ul>\n  </div>\n</div>",
+    "css": ".ilt{width:360px;height:260px;display:grid;grid-template-rows:44px 1fr;border:.5px solid #c6c6c8;border-radius:12px;overflow:hidden;background:#fff;font-family:-apple-system,system-ui,sans-serif}\n.ilt__bar{display:grid;place-items:center;border-bottom:.5px solid transparent;background:rgba(249,249,249,.94);transition:border-color .15s}\n.ilt__t{font-weight:600;font-size:17px;opacity:0;transition:opacity .15s}\n.ilt.is-collapsed .ilt__bar{border-bottom-color:#c6c6c8}.ilt.is-collapsed .ilt__t{opacity:1}\n.ilt__sc{overflow:auto;padding:0 16px 16px}\n.ilt__lt{margin:0 0 8px;font-size:34px;line-height:1.2;font-weight:700}\n.ilt__ls{list-style:none;margin:0;padding:0}.ilt__ls li{padding:12px 0;border-bottom:.5px solid #e5e5ea;font-size:17px}\n@media (prefers-reduced-motion:reduce){.ilt__bar,.ilt__t{transition:none}}",
+    "js": "document.querySelectorAll('.ilt').forEach(screen => {\n  const scroller = screen.querySelector('.ilt__sc'), title = screen.querySelector('.ilt__lt');\n  const sync = () => screen.classList.toggle('is-collapsed', scroller.scrollTop > title.offsetHeight - 8);\n  scroller.addEventListener('scroll', sync, { passive: true }); sync();\n});"
+  }
+}

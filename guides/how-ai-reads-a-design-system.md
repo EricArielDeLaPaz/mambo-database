@@ -1,7 +1,7 @@
 ---
 id: how-ai-reads-a-design-system
 title: How AI reads a design system
-summary: Why clear names, tokens and written rules make AI tools more useful, and how to prepare your own system.
+summary: Why clear names, tokens (variables) and written rules make AI tools more useful, and how to prepare your own system.
 topic: Design systems & AI
 level: Intermediate
 order: 10
@@ -13,7 +13,7 @@ AI assistants do not see your Figma file the way you do. They read **text**: nam
 
 | Source | What it learns |
 | --- | --- |
-| Tokens (colors, spacing, type, radius) | The exact values and what each is for |
+| Tokens (variables: colors, spacing, type, radius) | The exact values and what each is for |
 | Component descriptions | When to use it, when not to, and what it is called |
 | States and variants | What needs to exist besides the default |
 | Rules and limits | Maximum text length, minimum contrast, required labels |
@@ -28,7 +28,7 @@ Compare two instructions.
 
 The second one is possible only when your system is written down with names.
 
-## Write tokens with meaning
+## Write tokens (variables) with meaning
 
 Name by **role**, not by value.
 

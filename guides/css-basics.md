@@ -1,7 +1,7 @@
 ---
 id: css-basics
 title: CSS basics for designers
-summary: The box model, units, layout with flexbox and grid, and design tokens as CSS variables, explained with the Figma ideas you already know.
+summary: The box model, units, layout with flexbox (auto layout) and grid (layout grid), and design tokens (variables) as CSS variables, explained with the Figma ideas you already know.
 topic: HTML & CSS
 level: Beginner
 order: 6
@@ -30,7 +30,7 @@ Every element is a box with four layers, from inside out:
 1. **Content**: the text or image.
 2. **Padding**: space inside the box, around the content (like Figma padding).
 3. **Border**: the line around the padding (like a Figma stroke).
-4. **Margin**: space outside the box, pushing neighbors away. Figma has no margin, so designers often use gap in auto layout.
+4. **Margin** (no direct Figma equivalent): space outside the box, pushing neighbors away. Figma has no margin, so designers often use gap in auto layout.
 
 Most sites add `box-sizing: border-box`, which means a width of 200px includes padding and border. It matches how Figma sizes frames.
 
@@ -45,7 +45,7 @@ Most sites add `box-sizing: border-box`, which means a width of 200px includes p
 
 Tell engineers your type sizes in px, and they can convert: 18px is 1.125rem.
 
-## Layout: flexbox and grid
+## Layout: flexbox (auto layout) and grid (layout grid)
 
 **Flexbox** lays items in one direction. It is the same idea as Figma auto layout.
 
@@ -78,7 +78,7 @@ Media queries change the rules at certain widths.
 }
 ```
 
-Design at least a small and a large version, and tell engineers where the layout should change. Those are your **breakpoints**.
+Design at least a small and a large version, and tell engineers where the layout should change. Those are your **breakpoints** (the frame widths where the layout changes).
 
 ## States
 
@@ -90,7 +90,7 @@ Design at least a small and a large version, and tell engineers where the layout
 
 `:hover` is the mouse over it, `:focus-visible` is keyboard focus, `:disabled` is unavailable. Each state you list in Design Systems becomes rules like these.
 
-## Variables are design tokens
+## Variables are design tokens (Figma variables)
 
 ```css
 :root {

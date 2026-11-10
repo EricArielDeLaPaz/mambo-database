@@ -1,7 +1,7 @@
 ---
 id: handoff-for-engineers
 title: Hand-off: what engineers need from you
-summary: A practical checklist for clean design hand-off, covering states, spacing, tokens, responsive behavior, content and accessibility.
+summary: A practical checklist for clean design hand-off, covering states, spacing, tokens (variables), responsive behavior, content and accessibility.
 topic: Hand-off
 level: Intermediate
 order: 7
@@ -14,14 +14,14 @@ Good hand-off means an engineer can build your design without guessing. Most del
 ### 1. Every state
 For each interactive component, design or describe: default, hover (desktop only), focus, pressed, disabled, loading and error. Mobile has no hover, so skip it there. See the state row on any component in Browse.
 
-### 2. Tokens, not loose values
+### 2. Tokens (variables), not loose values
 Use named styles and variables for color, type, spacing and radius. Use the same names the code uses, for example `color/primary`, `space/4`. In Design Systems, the export includes CSS and token files you can share.
 
 ### 3. Spacing on a scale
 Pick a base unit, 4px or 8px, and use multiples (4, 8, 12, 16, 24, 32). Fewer values mean fewer decisions and less drift.
 
 ### 4. Responsive behavior
-Show the small and large layouts, and say what changes between them: stack, hide, wrap, shrink. Name the widths where it changes.
+Show the small and large layouts, and say what changes between them: stack (switch to a vertical auto layout), hide, wrap (auto layout wrap), shrink. Name the widths where it changes.
 
 ### 5. Real content and limits
 Show long names, empty lists, error messages and translations. Say the maximum lengths. Each component entry in Browse lists content limits for this reason.

@@ -1,0 +1,114 @@
+{
+  "id": "android-bottom-app-bar",
+  "type": "component",
+  "name": "Bottom app bar (Android)",
+  "category": "navigation",
+  "level": "organism",
+  "platforms": [
+    "android",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A Material bar along the bottom with up to four icon actions and an optional floating action button for the main action.",
+  "anatomy": [
+    {
+      "part": "actions",
+      "required": true,
+      "purpose": "2 to 4 icon buttons, 48dp targets."
+    },
+    {
+      "part": "fab",
+      "required": false,
+      "purpose": "The screen's main action, at the right."
+    },
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Surface color with a subtle tint."
+    }
+  ],
+  "variants": [
+    {
+      "id": "with-fab",
+      "name": "With FAB",
+      "use": "One clear main action.",
+      "contentLimits": {
+        "actions": "up to 4"
+      }
+    },
+    {
+      "id": "actions-only",
+      "name": "Actions only",
+      "use": "Several equal actions.",
+      "contentLimits": {
+        "actions": "up to 4"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Frequent actions for the current screen on Android phones."
+  ],
+  "whenNotToUse": [
+    "Switching top-level sections: use a navigation bar.",
+    "iOS: use a toolbar."
+  ],
+  "alternatives": [
+    "android-navigation-bar",
+    "floating-action-button",
+    "ios-toolbar"
+  ],
+  "tokens": [
+    "color.surface.container",
+    "color.primary.container",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "toolbar",
+    "keyboard": [
+      "Tab enters the bar; arrows move between actions.",
+      "Enter or Space activates."
+    ],
+    "focus": "Roving focus; the FAB is a separate stop.",
+    "notes": [
+      "Icons need accessible names.",
+      "48dp touch targets.",
+      "Never hide the only path to an action."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.abab__a button:hover{background:rgba(73,69,79,.08)}.abab__fab:hover{background:#ddd0f3}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".abab__a button,.abab__fab:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".abab__a button:active{background:rgba(73,69,79,.12)}.abab__fab:active{background:#d4c5f0}"
+    }
+  ],
+  "related": [
+    "android-navigation-bar",
+    "floating-action-button",
+    "ios-toolbar"
+  ],
+  "code": {
+    "html": "<div class=\"abab\">\n  <div class=\"abab__a\" role=\"toolbar\" aria-label=\"Screen actions\">\n    <button type=\"button\" aria-label=\"Search\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg></button>\n    <button type=\"button\" aria-label=\"Filter\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 6h16M7 12h10M10 18h4\"/></svg></button>\n    <button type=\"button\" aria-label=\"More options\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"5\" r=\"1.6\"/><circle cx=\"12\" cy=\"12\" r=\"1.6\"/><circle cx=\"12\" cy=\"19\" r=\"1.6\"/></svg></button>\n  </div>\n  <button type=\"button\" class=\"abab__fab\" aria-label=\"Add item\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg></button>\n</div>",
+    "css": ".abab{display:flex;align-items:center;justify-content:space-between;width:360px;min-height:80px;padding:0 16px;background:#f3edf7;font-family:Roboto,system-ui,sans-serif}\n.abab__a{display:flex;gap:4px}\n.abab__a button{display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:50%;background:none;color:#49454f;cursor:pointer}\n.abab__fab{display:grid;place-items:center;width:56px;height:56px;border:0;border-radius:16px;background:#e8def8;color:#1d192b;box-shadow:0 2px 6px rgba(0,0,0,.2);cursor:pointer}",
+    "js": "document.querySelectorAll('.abab__a').forEach(bar => {\n  const btns = [...bar.querySelectorAll('button')];\n  const rove = n => btns.forEach((b, k) => b.tabIndex = k === n ? 0 : -1);\n  rove(0);\n  bar.addEventListener('focusin', e => { const i = btns.indexOf(e.target); if (i >= 0) rove(i); });\n  bar.addEventListener('keydown', e => {\n    const i = btns.indexOf(document.activeElement); if (i < 0) return;\n    const n = { ArrowRight: (i + 1) % btns.length, ArrowLeft: (i - 1 + btns.length) % btns.length, Home: 0, End: btns.length - 1 }[e.key];\n    if (n !== undefined) { e.preventDefault(); btns[n].focus(); }\n  });\n});"
+  }
+}

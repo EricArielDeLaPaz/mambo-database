@@ -1,0 +1,131 @@
+{
+  "id": "android-chip",
+  "type": "component",
+  "name": "Chip (Android)",
+  "category": "actions",
+  "level": "molecule",
+  "platforms": [
+    "android",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "Material chips are compact elements: filter chips toggle a filter, input chips represent something the person entered, assist chips offer a smart action, suggestion chips offer a reply.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "One to three words."
+    },
+    {
+      "part": "leading-icon",
+      "required": false,
+      "purpose": "Check for selected filter chips."
+    },
+    {
+      "part": "remove",
+      "required": false,
+      "purpose": "Trailing x on input chips."
+    }
+  ],
+  "variants": [
+    {
+      "id": "filter",
+      "name": "Filter",
+      "use": "Narrow a list. Toggles on and off.",
+      "contentLimits": {
+        "label": "max 20 characters"
+      }
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "use": "Tags the person added. Can be removed.",
+      "contentLimits": {}
+    },
+    {
+      "id": "assist",
+      "name": "Assist",
+      "use": "A suggested action.",
+      "contentLimits": {}
+    },
+    {
+      "id": "suggestion",
+      "name": "Suggestion",
+      "use": "A suggested reply or query.",
+      "contentLimits": {}
+    }
+  ],
+  "whenToUse": [
+    "Filtering, entering tags, and quick suggestions."
+  ],
+  "whenNotToUse": [
+    "Navigation: use tabs.",
+    "Status: use a badge or tag.",
+    "iOS: use a segmented control or toggle button."
+  ],
+  "alternatives": [
+    "chip",
+    "tag",
+    "segmented-control"
+  ],
+  "tokens": [
+    "color.secondary.container",
+    "radius.sm"
+  ],
+  "accessibility": {
+    "role": "group of toggle buttons / buttons",
+    "keyboard": [
+      "Tab to each chip; Enter or Space toggles.",
+      "Backspace or Delete removes a focused input chip."
+    ],
+    "focus": "Visible focus ring.",
+    "notes": [
+      "Filter chips use aria-pressed.",
+      "Input chips: remove button has a name (Remove Design).",
+      "32dp visible height with a 48dp touch target."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.ach__c:hover{background:rgba(73,69,79,.08)}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ach__c,.ach__in button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".ach__c:active{background:rgba(73,69,79,.14)}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".ach__c:disabled{opacity:.38;cursor:not-allowed}"
+    }
+  ],
+  "related": [
+    "chip",
+    "tag",
+    "segmented-control"
+  ],
+  "code": {
+    "html": "<div class=\"ach\" role=\"group\" aria-label=\"Filters\">\n  <button type=\"button\" class=\"ach__c\" aria-pressed=\"true\"><span class=\"ach__k\" aria-hidden=\"true\"></span>Open now</button>\n  <button type=\"button\" class=\"ach__c\" aria-pressed=\"false\">Vegan</button>\n  <span class=\"ach__c ach__in\">Design<button type=\"button\" aria-label=\"Remove Design\">&times;</button></span>\n</div>",
+    "css": ".ach{display:flex;flex-wrap:wrap;gap:8px;font:500 14px Roboto,system-ui,sans-serif}\n.ach__c{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 16px;border:1px solid #79747e;border-radius:8px;background:none;color:#49454f;font:inherit;cursor:pointer}\n.ach__c[aria-pressed=true]{padding-left:8px;border-color:transparent;background:#e8def8;color:#1d192b}\n.ach__k{display:none;width:18px;height:18px}.ach__c[aria-pressed=true] .ach__k{display:inline-block;background:no-repeat center/18px url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d192b' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E\")}\n.ach__in{cursor:default;padding-right:4px}\n.ach__in button{display:grid;place-items:center;width:24px;height:24px;border:0;border-radius:50%;background:none;color:inherit;font-size:18px;cursor:pointer}",
+    "js": "document.querySelectorAll('.ach').forEach(group => {\n  group.addEventListener('click', e => {\n    const remove = e.target.closest('.ach__in button');\n    if (remove) { remove.closest('.ach__c').remove(); return; }\n    const chip = e.target.closest('.ach__c[aria-pressed]');\n    if (chip) chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));\n  });\n});"
+  }
+}

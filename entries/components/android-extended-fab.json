@@ -1,0 +1,119 @@
+{
+  "id": "android-extended-fab",
+  "type": "component",
+  "name": "Extended FAB (Android)",
+  "category": "actions",
+  "level": "atom",
+  "platforms": [
+    "android",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A floating action button with an icon and a text label, for the main action on a screen when the label helps. It can shrink to an icon while scrolling.",
+  "anatomy": [
+    {
+      "part": "icon",
+      "required": true,
+      "purpose": "24dp icon at the left."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "One or two words."
+    },
+    {
+      "part": "container",
+      "required": true,
+      "purpose": "Tertiary or primary container with elevation."
+    }
+  ],
+  "variants": [
+    {
+      "id": "extended",
+      "name": "Extended",
+      "use": "Primary action with a label.",
+      "contentLimits": {
+        "label": "max 2 words"
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "use": "56dp icon only.",
+      "contentLimits": {
+        "label": "in accessible name"
+      }
+    }
+  ],
+  "whenToUse": [
+    "One primary action per screen."
+  ],
+  "whenNotToUse": [
+    "Several equal actions: use a bottom app bar.",
+    "iOS: use a toolbar or a prominent button."
+  ],
+  "alternatives": [
+    "floating-action-button",
+    "button",
+    "android-bottom-app-bar"
+  ],
+  "tokens": [
+    "color.primary.container",
+    "radius.lg",
+    "elevation.3"
+  ],
+  "accessibility": {
+    "role": "button",
+    "keyboard": [
+      "Enter or Space activates."
+    ],
+    "focus": "Visible focus ring.",
+    "notes": [
+      "Do not cover content; leave room at the end of lists.",
+      "The label is the accessible name.",
+      "Hide on scroll only if another path exists."
+    ]
+  },
+  "states": [
+    {
+      "id": "hover",
+      "label": "Hover (pointer devices)",
+      "when": "pointer",
+      "note": "Skip on touch-only products.",
+      "css": "@media (hover:hover){.aef:hover{background:#ddd0f3;box-shadow:0 4px 10px rgba(0,0,0,.3)}}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".aef:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".aef:active{background:#d4c5f0}"
+    },
+    {
+      "id": "disabled",
+      "label": "Disabled",
+      "when": "all",
+      "note": "",
+      "css": ".aef:disabled{opacity:.38;box-shadow:none;cursor:not-allowed}"
+    }
+  ],
+  "related": [
+    "floating-action-button",
+    "button",
+    "android-bottom-app-bar"
+  ],
+  "code": {
+    "html": "<button type=\"button\" class=\"aef\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg><span>Compose</span></button>",
+    "css": ".aef{display:inline-flex;align-items:center;gap:12px;min-height:56px;padding:0 20px 0 16px;border:0;border-radius:16px;background:#e8def8;color:#1d192b;font:500 14px/20px Roboto,system-ui,sans-serif;letter-spacing:.1px;box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer}"
+  }
+}

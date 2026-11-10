@@ -1,0 +1,98 @@
+{
+  "id": "ios-toolbar",
+  "type": "component",
+  "name": "Toolbar (iOS)",
+  "category": "navigation",
+  "level": "molecule",
+  "platforms": [
+    "ios",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A row of icon buttons along the bottom of an iPhone screen for actions on the current content, such as share, bookmark, compose and delete.",
+  "anatomy": [
+    {
+      "part": "actions",
+      "required": true,
+      "purpose": "3 to 5 icon buttons evenly spaced."
+    },
+    {
+      "part": "spacers",
+      "required": false,
+      "purpose": "Flexible space groups actions."
+    },
+    {
+      "part": "labels",
+      "required": true,
+      "purpose": "Each icon has an accessible name."
+    }
+  ],
+  "variants": [
+    {
+      "id": "default",
+      "name": "Default",
+      "use": "Actions for the current screen.",
+      "contentLimits": {
+        "actions": "3 to 5"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Context actions for the content on screen."
+  ],
+  "whenNotToUse": [
+    "Switching sections: use the tab bar.",
+    "Android: use a bottom app bar."
+  ],
+  "alternatives": [
+    "bottom-tab-bar",
+    "android-bottom-app-bar",
+    "toolbar"
+  ],
+  "tokens": [
+    "color.text.accent",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "toolbar",
+    "keyboard": [
+      "Tab enters the toolbar; arrows move between buttons.",
+      "Enter or Space activates."
+    ],
+    "focus": "Roving focus keeps it a single tab stop.",
+    "notes": [
+      "Icons need text names for VoiceOver.",
+      "44pt targets.",
+      "Disabled buttons stay in place."
+    ]
+  },
+  "states": [
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".itb button:active{opacity:.4}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".itb button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "bottom-tab-bar",
+    "android-bottom-app-bar",
+    "toolbar"
+  ],
+  "code": {
+    "html": "<div class=\"itb\" role=\"toolbar\" aria-label=\"Message actions\">\n  <button type=\"button\" aria-label=\"Share\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3v12M8 7l4-4 4 4M5 12v8h14v-8\"/></svg></button>\n  <button type=\"button\" aria-label=\"Bookmark\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 3h12v18l-6-4-6 4z\"/></svg></button>\n  <button type=\"button\" aria-label=\"Compose\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 20h4l11-11-4-4L4 16zM14 6l4 4\"/></svg></button>\n  <button type=\"button\" aria-label=\"Delete\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13\"/></svg></button>\n</div>",
+    "css": ".itb{display:flex;justify-content:space-between;width:360px;padding:0 8px;border-top:.5px solid #c6c6c8;background:rgba(249,249,249,.94)}\n.itb button{display:grid;place-items:center;width:48px;height:49px;border:0;background:none;color:#0a64d6;cursor:pointer}",
+    "js": "document.querySelectorAll('.itb').forEach(bar => {\n  const btns = [...bar.querySelectorAll('button')];\n  const rove = n => btns.forEach((b, k) => b.tabIndex = k === n ? 0 : -1);\n  rove(0);\n  bar.addEventListener('focusin', e => { const i = btns.indexOf(e.target); if (i >= 0) rove(i); });\n  bar.addEventListener('keydown', e => {\n    const i = btns.indexOf(document.activeElement); if (i < 0) return;\n    const n = { ArrowRight: (i + 1) % btns.length, ArrowLeft: (i - 1 + btns.length) % btns.length, Home: 0, End: btns.length - 1 }[e.key];\n    if (n !== undefined) { e.preventDefault(); btns[n].focus(); }\n  });\n});"
+  }
+}

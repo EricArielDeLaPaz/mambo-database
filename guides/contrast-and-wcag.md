@@ -48,7 +48,7 @@ The contrast badges in the Design Systems tab use the same formula and threshold
 
 - **Thin fonts.** A very thin weight can pass the ratio and still be hard to read.
 - **Color blindness.** Red on green can pass the ratio and still be confusing. See [Accessibility basics](#/guide/accessibility-basics).
-- **Text over images.** The ratio is only meaningful against a known solid color. Add a scrim or solid panel behind the text.
+- **Text over images.** The ratio is only meaningful against a known solid color. Add a scrim (a semi-transparent overlay fill) or solid panel behind the text.
 - **Disabled controls.** WCAG does not require contrast for disabled controls, but people still need to find them. Aim for readable anyway.
 
 > **Rule of thumb.** Aim a little above the minimum, for example 5:1 for body text. Screens, sunlight and aging eyes all reduce real-world contrast.

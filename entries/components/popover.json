@@ -93,7 +93,7 @@
     "notes": [
       "Set aria-haspopup and aria-expanded on the trigger.",
       "Close on outside click and Escape.",
-      "Keep inside the viewport."
+      "Keep inside the viewport (the visible screen frame)."
     ]
   },
   "states": [

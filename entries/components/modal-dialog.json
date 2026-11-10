@@ -13,7 +13,7 @@
   "summary": "A centered window that blocks the page behind it until the person responds. Use it for short, decision-focused tasks.",
   "anatomy": [
     {
-      "part": "scrim",
+      "part": "scrim (overlay fill)",
       "required": true,
       "purpose": "Dims the page and signals the page is inactive. Click or tap on it closes the dialog unless the action is destructive or has unsaved input."
     },

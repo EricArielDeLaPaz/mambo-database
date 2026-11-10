@@ -13,7 +13,7 @@
   "summary": "A panel that slides up from the bottom edge on phones. It holds menus, short forms and details without leaving the screen.",
   "anatomy": [
     {
-      "part": "scrim",
+      "part": "scrim (overlay fill)",
       "required": true,
       "purpose": "Dims the screen behind a modal sheet. Tap closes it."
     },

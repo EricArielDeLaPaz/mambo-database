@@ -58,7 +58,7 @@
     {
       "id": "group",
       "name": "Group",
-      "use": "Stacked list of people.",
+      "use": "Overlapping list of people.",
       "contentLimits": {
         "count": "up to 4 then +N"
       }

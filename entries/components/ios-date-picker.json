@@ -1,0 +1,109 @@
+{
+  "id": "ios-date-picker",
+  "type": "component",
+  "name": "Date and time picker (iOS)",
+  "category": "forms",
+  "level": "molecule",
+  "platforms": [
+    "ios",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "The compact iOS date picker: tappable pills that show the date and time and open the system picker. Use the system control so people get a familiar, accessible picker.",
+  "anatomy": [
+    {
+      "part": "date-pill",
+      "required": true,
+      "purpose": "Shows the chosen date. Tap to open the calendar."
+    },
+    {
+      "part": "time-pill",
+      "required": false,
+      "purpose": "Shows the chosen time."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Visible label or surrounding row title."
+    }
+  ],
+  "variants": [
+    {
+      "id": "compact",
+      "name": "Compact",
+      "use": "Most forms.",
+      "contentLimits": {
+        "pills": "date, time, or both"
+      }
+    },
+    {
+      "id": "inline",
+      "name": "Inline",
+      "use": "A calendar always visible, such as scheduling.",
+      "contentLimits": {}
+    },
+    {
+      "id": "wheel",
+      "name": "Wheel",
+      "use": "See picker wheel.",
+      "contentLimits": {}
+    }
+  ],
+  "whenToUse": [
+    "Choosing a date or time in an iOS form."
+  ],
+  "whenNotToUse": [
+    "Birthdays years back: use wheels or typed entry.",
+    "Android: use the Material date picker."
+  ],
+  "alternatives": [
+    "ios-picker-wheel",
+    "date-picker",
+    "time-picker"
+  ],
+  "tokens": [
+    "color.surface.subtle",
+    "radius.md"
+  ],
+  "accessibility": {
+    "role": "group of date and time fields",
+    "keyboard": [
+      "Native inputs use the platform keyboard and picker.",
+      "Arrow keys change segments on desktop."
+    ],
+    "focus": "Each pill is a native control with its own focus ring.",
+    "notes": [
+      "Show a visible label.",
+      "Do not block typing a date where precision matters.",
+      "Announce the chosen value."
+    ]
+  },
+  "states": [
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".idp__p input:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    },
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".idp__p:active{background:#dcdce0}"
+    }
+  ],
+  "related": [
+    "ios-picker-wheel",
+    "date-picker",
+    "time-picker"
+  ],
+  "code": {
+    "html": "<div class=\"idp\" role=\"group\" aria-label=\"Start date and time\">\n  <label class=\"idp__p\"><span class=\"sr\">Date</span><input type=\"date\" value=\"2026-11-09\"></label>\n  <label class=\"idp__p\"><span class=\"sr\">Time</span><input type=\"time\" value=\"09:41\"></label>\n</div>",
+    "css": ".idp{display:inline-flex;gap:8px;font:17px -apple-system,system-ui,sans-serif}\n.idp__p{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;background:#eeeef0}\n.idp__p input{border:0;background:none;color:#0a0a0a;font:inherit;color-scheme:light}\n.sr{position:absolute;width:1px;height:1px;overflow:hidden}"
+  }
+}

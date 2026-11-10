@@ -104,5 +104,13 @@
     "css": ".acc{max-width:480px;border-top:1px solid #d4d4d4;font-family:system-ui,sans-serif}\n.acc h3{margin:0}\n.acc__h{display:flex;justify-content:space-between;width:100%;min-height:52px;padding:0;border:0;border-bottom:1px solid #d4d4d4;background:none;font:600 16px system-ui,sans-serif;text-align:left;cursor:pointer}\n.acc__p{padding:12px 0;font-size:15px}\n/* interaction */\n.acc__p[hidden]{display:none}.acc__h::after{content:\"+\";margin-left:12px;font-weight:400}.acc__h[aria-expanded=true]::after{content:\"\\2212\"}\n",
     "js": "document.querySelectorAll('.acc').forEach(root => {\n  root.querySelectorAll('.acc__h').forEach(btn => {\n    const panel = root.querySelector('#' + btn.getAttribute('aria-controls'));\n    btn.addEventListener('click', () => {\n      const open = btn.getAttribute('aria-expanded') === 'true';\n      btn.setAttribute('aria-expanded', String(!open));\n      panel.hidden = open;\n    });\n  });\n});"
   },
-  "interactive": true
+  "interactive": true,
+  "os": {
+    "ios": {
+      "css": ".acc{border-top:.5px solid #c6c6c8;font-family:-apple-system,system-ui,sans-serif}.acc__h{border-bottom:.5px solid #c6c6c8;font:17px -apple-system,system-ui,sans-serif;align-items:center}.acc__h::after{content:\"\";width:9px;height:9px;margin:0 6px;border-right:2px solid #c7c7cc;border-bottom:2px solid #c7c7cc;transform:rotate(-45deg);transition:transform .2s}.acc__h[aria-expanded=true]::after{content:\"\";transform:rotate(45deg)}.acc__p{color:#3c3c43;font-size:15px}@media (prefers-reduced-motion:reduce){.acc__h::after{transition:none}}"
+    },
+    "android": {
+      "css": ".acc{border-top:0;font-family:Roboto,system-ui,sans-serif}.acc__h{padding:0 16px;border-bottom:1px solid #e7e0ec;font:500 16px Roboto,system-ui,sans-serif;align-items:center}.acc__h::after{content:\"\";width:10px;height:10px;margin:0 4px;border-right:2px solid #49454f;border-bottom:2px solid #49454f;transform:rotate(45deg) translate(-2px,-2px)}.acc__h[aria-expanded=true]::after{content:\"\";transform:rotate(-135deg)}.acc__p{padding:12px 16px;color:#49454f;font-size:14px}"
+    }
+  }
 }

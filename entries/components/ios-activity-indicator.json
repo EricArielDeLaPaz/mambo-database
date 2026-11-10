@@ -1,0 +1,74 @@
+{
+  "id": "ios-activity-indicator",
+  "type": "component",
+  "name": "Activity indicator (iOS)",
+  "category": "feedback",
+  "level": "atom",
+  "platforms": [
+    "ios",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "The iOS spinning wheel of ticks for work of unknown length. Use a progress bar when you know how far along it is.",
+  "anatomy": [
+    {
+      "part": "ticks",
+      "required": true,
+      "purpose": "Eight or twelve ticks that fade as they turn."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Hidden text that says what is loading."
+    }
+  ],
+  "variants": [
+    {
+      "id": "default",
+      "name": "Default",
+      "use": "Short waits.",
+      "contentLimits": {
+        "size": "20 to 37pt"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Short, unknown waits."
+  ],
+  "whenNotToUse": [
+    "Waits over about 10 seconds: show progress and let people cancel.",
+    "Known length: use a progress bar."
+  ],
+  "alternatives": [
+    "spinner",
+    "progress-bar",
+    "pull-to-refresh"
+  ],
+  "tokens": [
+    "color.text.secondary"
+  ],
+  "accessibility": {
+    "role": "status",
+    "keyboard": [
+      "Not interactive."
+    ],
+    "focus": "Not focusable.",
+    "notes": [
+      "Include a text label for screen readers (role=status).",
+      "Stop the animation under reduced motion and show a static indicator."
+    ]
+  },
+  "states": [],
+  "related": [
+    "spinner",
+    "progress-bar",
+    "pull-to-refresh"
+  ],
+  "code": {
+    "html": "<div class=\"iai\" role=\"status\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><g stroke=\"#8e8e93\" stroke-width=\"2.4\" stroke-linecap=\"round\"><line x1=\"12\" y1=\"3\" x2=\"12\" y2=\"7\" opacity=\"1\"/><line x1=\"18.4\" y1=\"5.6\" x2=\"15.5\" y2=\"8.5\" opacity=\".85\"/><line x1=\"21\" y1=\"12\" x2=\"17\" y2=\"12\" opacity=\".7\"/><line x1=\"18.4\" y1=\"18.4\" x2=\"15.5\" y2=\"15.5\" opacity=\".55\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"17\" opacity=\".4\"/><line x1=\"5.6\" y1=\"18.4\" x2=\"8.5\" y2=\"15.5\" opacity=\".3\"/><line x1=\"3\" y1=\"12\" x2=\"7\" y2=\"12\" opacity=\".2\"/><line x1=\"5.6\" y1=\"5.6\" x2=\"8.5\" y2=\"8.5\" opacity=\".12\"/></g></svg><span class=\"sr\">Loading</span></div>",
+    "css": ".iai{display:inline-grid;width:24px;height:24px}\n.iai svg{animation:iai .8s steps(8) infinite}\n@keyframes iai{to{transform:rotate(360deg)}}\n@media (prefers-reduced-motion:reduce){.iai svg{animation:none}}\n.sr{position:absolute;width:1px;height:1px;overflow:hidden}"
+  }
+}

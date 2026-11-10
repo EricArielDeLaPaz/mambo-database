@@ -1,0 +1,115 @@
+{
+  "id": "ios-sheet",
+  "type": "component",
+  "name": "Sheet (iOS)",
+  "category": "overlays",
+  "level": "organism",
+  "platforms": [
+    "ios",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A modal panel that slides up over the current screen for a focused task, with a grabber, Cancel and Done. It can rest at a medium height before expanding.",
+  "anatomy": [
+    {
+      "part": "grabber",
+      "required": false,
+      "purpose": "Small bar that hints the sheet can be dragged."
+    },
+    {
+      "part": "header",
+      "required": true,
+      "purpose": "Cancel on the left, title in the middle, Done on the right."
+    },
+    {
+      "part": "content",
+      "required": true,
+      "purpose": "The task: a form, list or detail."
+    },
+    {
+      "part": "detents",
+      "required": false,
+      "purpose": "Medium and large resting heights."
+    }
+  ],
+  "variants": [
+    {
+      "id": "medium",
+      "name": "Medium detent",
+      "use": "Quick tasks, the page behind stays visible.",
+      "contentLimits": {
+        "height": "about half the screen"
+      }
+    },
+    {
+      "id": "large",
+      "name": "Large",
+      "use": "Longer forms.",
+      "contentLimits": {
+        "height": "almost full screen"
+      }
+    }
+  ],
+  "whenToUse": [
+    "A short, self-contained task such as editing or sharing."
+  ],
+  "whenNotToUse": [
+    "Important decisions: use an alert.",
+    "A list of actions: use an action sheet.",
+    "Android: use a bottom sheet."
+  ],
+  "alternatives": [
+    "ios-action-sheet",
+    "bottom-sheet",
+    "ios-alert"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "radius.xl",
+    "space.4"
+  ],
+  "accessibility": {
+    "role": "dialog",
+    "keyboard": [
+      "Escape or Cancel closes it.",
+      "Focus stays inside while it is open."
+    ],
+    "focus": "Focus moves to the sheet and returns to the trigger.",
+    "notes": [
+      "Done saves; Cancel discards.",
+      "Provide a visible close path, not only a drag.",
+      "Respect reduced motion for the slide."
+    ]
+  },
+  "states": [
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".isw__h button:active{opacity:.4}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".isw__h button,.isw__b input,.isw__open:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "ios-action-sheet",
+    "bottom-sheet",
+    "ios-alert"
+  ],
+  "code": {
+    "html": "<button type=\"button\" class=\"isw__open\" data-open>Edit details</button>\n<div class=\"isw__scrim\" hidden>\n  <section class=\"isw\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"isw-t\">\n    <div class=\"isw__grab\" aria-hidden=\"true\"></div>\n    <header class=\"isw__h\"><button type=\"button\">Cancel</button><h2 id=\"isw-t\">Details</h2><button type=\"button\" class=\"isw__done\">Done</button></header>\n    <div class=\"isw__b\"><label>Title<input type=\"text\" value=\"Weekend trip\"></label></div>\n  </section>\n</div>",
+    "css": ".isw__open{min-height:44px;padding:0 18px;border:0;border-radius:999px;background:#0a64d6;color:#fff;font:600 17px -apple-system,system-ui,sans-serif;cursor:pointer}\n.isw__scrim{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;background:rgba(0,0,0,.4)}\n.isw__scrim[hidden]{display:none}\n.isw{width:100%;min-height:50%;border-radius:10px 10px 0 0;background:#f2f2f7;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;animation:isw-in .3s ease-out}\n@keyframes isw-in{from{transform:translateY(100%)}}\n@media (prefers-reduced-motion:reduce){.isw{animation:none}}\n.isw__grab{width:36px;height:5px;margin:6px auto 0;border-radius:3px;background:#c7c7cc}\n.isw__h{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:4px 8px}\n.isw__h h2{margin:0;font-size:17px;font-weight:600}\n.isw__h button{justify-self:start;min-height:44px;padding:0 8px;border:0;background:none;color:#0a64d6;font:17px -apple-system,system-ui,sans-serif;cursor:pointer}\n.isw__h .isw__done{justify-self:end;font-weight:600}\n.isw__b{padding:12px 16px}\n.isw__b label{display:grid;gap:6px;font-size:13px;color:#3c3c43}\n.isw__b input{min-height:44px;padding:0 12px;border:0;border-radius:10px;background:#fff;font:17px -apple-system,system-ui,sans-serif}",
+    "js": "document.querySelectorAll('.isw__open').forEach(trigger => {\n  const layer = trigger.nextElementSibling;\n  const focusable = () => [...layer.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex=\"-1\"])')];\n  const open = () => { layer.hidden = false; focusable()[0].focus(); };\n  const close = () => { layer.hidden = true; trigger.focus(); };\n  trigger.addEventListener('click', open);\n  layer.addEventListener('click', e => { if (e.target === layer || e.target.closest('button')) close(); });\n  layer.addEventListener('keydown', e => {\n    if (e.key === 'Escape') close();\n    if (e.key === 'Tab') {\n      const f = focusable(), first = f[0], last = f[f.length - 1];\n      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }\n      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }\n    }\n  });\n});",
+    "frame": "<section class=\"isw\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"isw-t\">\n    <div class=\"isw__grab\" aria-hidden=\"true\"></div>\n    <header class=\"isw__h\"><button type=\"button\">Cancel</button><h2 id=\"isw-t\">Details</h2><button type=\"button\" class=\"isw__done\">Done</button></header>\n    <div class=\"isw__b\"><label>Title<input type=\"text\" value=\"Weekend trip\"></label></div>\n  </section>",
+    "pvHeight": 440
+  }
+}

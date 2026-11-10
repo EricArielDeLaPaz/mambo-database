@@ -15,7 +15,7 @@
   "summary": "A keyboard-first search box that opens over the app (often with Cmd/Ctrl+K) to jump anywhere or run any command.",
   "anatomy": [
     {
-      "part": "scrim",
+      "part": "scrim (overlay fill)",
       "required": true,
       "purpose": "Dims the page."
     },

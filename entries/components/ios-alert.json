@@ -1,0 +1,121 @@
+{
+  "id": "ios-alert",
+  "type": "component",
+  "name": "Alert (iOS)",
+  "category": "overlays",
+  "level": "organism",
+  "platforms": [
+    "ios"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A small centered dialog that gives important information or asks for a decision. It interrupts, so keep it rare. Buttons sit side by side for two choices and stack vertically (vertical auto layout) for three or more.",
+  "anatomy": [
+    {
+      "part": "title",
+      "required": true,
+      "purpose": "Short and specific. Sentence case, no period."
+    },
+    {
+      "part": "message",
+      "required": false,
+      "purpose": "One or two lines of detail."
+    },
+    {
+      "part": "actions",
+      "required": true,
+      "purpose": "Two buttons side by side, or a stacked list (vertical auto layout) for three or more."
+    },
+    {
+      "part": "preferred-action",
+      "required": false,
+      "purpose": "Semibold button that is the safest or most likely choice."
+    },
+    {
+      "part": "destructive",
+      "required": false,
+      "purpose": "Red button for actions that delete or can not be undone."
+    }
+  ],
+  "variants": [
+    {
+      "id": "two-button",
+      "name": "Two buttons",
+      "use": "Confirm or cancel.",
+      "contentLimits": {
+        "title": "max 40 characters",
+        "message": "max 120 characters"
+      }
+    },
+    {
+      "id": "stacked",
+      "name": "Stacked",
+      "use": "Three or more choices.",
+      "contentLimits": {
+        "actions": "up to 4"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Critical information or a choice that blocks the next step.",
+    "Confirming a destructive action."
+  ],
+  "whenNotToUse": [
+    "Routine messages: use a banner or inline message.",
+    "Long content or forms: use a sheet.",
+    "Android: use a dialog."
+  ],
+  "alternatives": [
+    "modal-dialog",
+    "ios-action-sheet",
+    "ios-sheet"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.text.danger",
+    "radius.lg"
+  ],
+  "accessibility": {
+    "role": "alertdialog",
+    "keyboard": [
+      "VoiceOver reads the title and message, then the buttons.",
+      "Escape or the Cancel button dismisses it."
+    ],
+    "focus": "Focus moves to the alert and returns to the trigger when it closes.",
+    "notes": [
+      "Button labels are verbs: Delete, Keep, Cancel. Never OK alone for a destructive choice.",
+      "Cancel is always offered for destructive actions.",
+      "Do not stack alerts."
+    ]
+  },
+  "states": [
+    {
+      "id": "pressed",
+      "label": "Pressed",
+      "when": "all",
+      "note": "",
+      "css": ".ial__a button:active{background:#e5e5ea}"
+    },
+    {
+      "id": "focus",
+      "label": "Focus (keyboard)",
+      "when": "all",
+      "note": "",
+      "css": ".ial__a button,.ial__open:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}"
+    }
+  ],
+  "related": [
+    "modal-dialog",
+    "ios-action-sheet",
+    "ios-sheet"
+  ],
+  "code": {
+    "html": "<button type=\"button\" class=\"ial__open\" data-open>Delete project&hellip;</button>\n<div class=\"ial__scrim\" hidden>\n  <div class=\"ial\" role=\"alertdialog\" aria-labelledby=\"ial-t\" aria-describedby=\"ial-b\">\n    <div class=\"ial__c\"><h2 id=\"ial-t\">Delete project?</h2><p id=\"ial-b\">This permanently removes it and its files.</p></div>\n    <div class=\"ial__a\"><button type=\"button\">Cancel</button><button type=\"button\" class=\"ial__d\">Delete</button></div>\n  </div>\n</div>",
+    "css": ".ial__open{min-height:44px;padding:0 18px;border:0;border-radius:999px;background:#0a64d6;color:#fff;font:600 17px -apple-system,system-ui,sans-serif;cursor:pointer}\n.ial__scrim{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(0,0,0,.4)}\n.ial__scrim[hidden]{display:none}\n.ial{width:270px;border-radius:14px;background:rgba(249,249,249,.97);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;text-align:center;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.25)}\n.ial__c{padding:20px 16px}.ial h2{margin:0 0 4px;font-size:17px;font-weight:600}.ial p{margin:0;font-size:13px;color:#3c3c43}\n.ial__a{display:grid;grid-template-columns:1fr 1fr;border-top:.5px solid #c6c6c8}\n.ial__a button{min-height:44px;border:0;background:none;color:#0a64d6;font:17px -apple-system,'SF Pro Text',system-ui,sans-serif;cursor:pointer}\n.ial__a button+button{border-left:.5px solid #c6c6c8;font-weight:600}\n.ial__a .ial__d{color:#b91c1c}",
+    "js": "document.querySelectorAll('.ial__open').forEach(trigger => {\n  const layer = trigger.nextElementSibling;\n  const focusable = () => [...layer.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex=\"-1\"])')];\n  const open = () => { layer.hidden = false; focusable()[0].focus(); };\n  const close = () => { layer.hidden = true; trigger.focus(); };\n  trigger.addEventListener('click', open);\n  layer.addEventListener('click', e => { if (e.target === layer || e.target.closest('button')) close(); });\n  layer.addEventListener('keydown', e => {\n    if (e.key === 'Escape') close();\n    if (e.key === 'Tab') {\n      const f = focusable(), first = f[0], last = f[f.length - 1];\n      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }\n      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }\n    }\n  });\n});",
+    "frame": "<div class=\"ial\" role=\"alertdialog\" aria-labelledby=\"ial-t\" aria-describedby=\"ial-b\">\n  <div class=\"ial__c\"><h2 id=\"ial-t\">Delete project?</h2><p id=\"ial-b\">This permanently removes it and its files.</p></div>\n  <div class=\"ial__a\"><button type=\"button\">Cancel</button><button type=\"button\" class=\"ial__d\">Delete</button></div>\n</div>",
+    "pvHeight": 380
+  }
+}

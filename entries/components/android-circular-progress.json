@@ -1,0 +1,89 @@
+{
+  "id": "android-circular-progress",
+  "type": "component",
+  "name": "Circular progress indicator (Android)",
+  "category": "feedback",
+  "level": "atom",
+  "platforms": [
+    "android",
+    "tablet"
+  ],
+  "industries": [
+    "all"
+  ],
+  "tags": [],
+  "summary": "A Material ring that shows progress. Indeterminate spins for unknown waits; determinate fills as work completes.",
+  "anatomy": [
+    {
+      "part": "track",
+      "required": true,
+      "purpose": "Faint full ring."
+    },
+    {
+      "part": "indicator",
+      "required": true,
+      "purpose": "Colored arc that shows progress."
+    },
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Accessible name that says what is loading."
+    }
+  ],
+  "variants": [
+    {
+      "id": "indeterminate",
+      "name": "Indeterminate",
+      "use": "Unknown length.",
+      "contentLimits": {
+        "size": "24 to 48dp"
+      }
+    },
+    {
+      "id": "determinate",
+      "name": "Determinate",
+      "use": "Known progress.",
+      "contentLimits": {
+        "size": "24 to 48dp"
+      }
+    }
+  ],
+  "whenToUse": [
+    "Showing that something is loading or progressing."
+  ],
+  "whenNotToUse": [
+    "Linear lists loading: use skeletons.",
+    "iOS: use the activity indicator."
+  ],
+  "alternatives": [
+    "spinner",
+    "progress-bar",
+    "ios-activity-indicator"
+  ],
+  "tokens": [
+    "color.primary",
+    "color.surface.variant"
+  ],
+  "accessibility": {
+    "role": "progressbar",
+    "keyboard": [
+      "Not interactive."
+    ],
+    "focus": "Not focusable.",
+    "notes": [
+      "aria-valuenow for determinate; omit for indeterminate.",
+      "Provide a text name.",
+      "Stop spinning under reduced motion."
+    ]
+  },
+  "states": [],
+  "related": [
+    "spinner",
+    "progress-bar",
+    "ios-activity-indicator"
+  ],
+  "code": {
+    "html": "<div class=\"acp\" role=\"progressbar\" aria-label=\"Loading\" aria-busy=\"true\"><svg viewBox=\"0 0 48 48\" width=\"48\" height=\"48\" aria-hidden=\"true\"><circle class=\"acp__t\" cx=\"24\" cy=\"24\" r=\"18\"/><circle class=\"acp__i\" cx=\"24\" cy=\"24\" r=\"18\"/></svg></div>\n<div class=\"acp acp--d\" role=\"progressbar\" aria-label=\"Upload\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"65\"><svg viewBox=\"0 0 48 48\" width=\"48\" height=\"48\" aria-hidden=\"true\"><circle class=\"acp__t\" cx=\"24\" cy=\"24\" r=\"18\"/><circle class=\"acp__i\" cx=\"24\" cy=\"24\" r=\"18\" style=\"stroke-dasharray:113;stroke-dashoffset:40\"/></svg></div>",
+    "css": ".acp{display:inline-grid;width:48px;height:48px;margin-right:16px}\n.acp svg{transform:rotate(-90deg)}\n.acp circle{fill:none;stroke-width:4}\n.acp__t{stroke:#e7e0ec}.acp__i{stroke:#6750a4;stroke-linecap:round;stroke-dasharray:80 113;animation:acp 1.4s linear infinite;transform-origin:center}\n.acp--d .acp__i{animation:none}\n@keyframes acp{to{transform:rotate(360deg)}}\n@media (prefers-reduced-motion:reduce){.acp__i{animation:none;stroke-dasharray:60 113}}"
+  }
+}
