@@ -28,7 +28,7 @@ function mdToHtml(md) {
       while (i < lines.length && /^\|.*\|\s*$/.test(lines[i])) rows.push(row(lines[i++]));
       out += `<div class="tscroll"><table><thead><tr>${head.map(c => `<th scope="col">${inlineMd(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, k) => k ? `<td>${inlineMd(c)}</td>` : `<th scope="row">${inlineMd(c)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`; continue
     }
-    if (/^>\s?/.test(l)) { const buf = []; while (i < lines.length && /^>\s?/.test(lines[i])) buf.push(lines[i++].replace(/^>\s?/, '')); out += `<aside class="callout">${inlineMd(buf.join(' '))}</aside>`; continue }
+    if (/^>\s?/.test(l)) { const buf = []; while (i < lines.length && /^>\s?/.test(lines[i])) buf.push(lines[i++].replace(/^>\s?/, '')); out += `<div class="callout" role="note">${inlineMd(buf.join(' '))}</div>`; continue }
     if (/^\s*[-*]\s+/.test(l)) { const buf = []; while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) buf.push(lines[i++].replace(/^\s*[-*]\s+/, '')); out += `<ul>${buf.map(x => `<li>${inlineMd(x)}</li>`).join('')}</ul>`; continue }
     if (/^\s*\d+\.\s+/.test(l)) { const buf = []; while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) buf.push(lines[i++].replace(/^\s*\d+\.\s+/, '')); out += `<ol>${buf.map(x => `<li>${inlineMd(x)}</li>`).join('')}</ol>`; continue }
     if (!l.trim()) { i++; continue }

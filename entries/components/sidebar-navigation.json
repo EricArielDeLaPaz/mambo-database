@@ -123,6 +123,8 @@
   ],
   "code": {
     "html": "<nav class=\"sbn\" aria-label=\"Sidebar\">\n  <p class=\"sbn__g\">Workspace</p>\n  <a href=\"#\" aria-current=\"page\">Overview</a>\n  <a href=\"#\">Projects</a>\n  <a href=\"#\">Reports</a>\n</nav>",
-    "css": ".sbn{display:grid;align-content:start;gap:2px;width:240px;padding:12px;border-right:1px solid #d4d4d4;background:#fafafa;font:500 14px system-ui,sans-serif}\n.sbn__g{margin:8px 8px 4px;font:700 11px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#525252}\n.sbn a{display:block;padding:9px 12px;border-radius:8px;color:#525252;text-decoration:none}\n.sbn [aria-current=page]{background:#0a0a0a;color:#fff;font-weight:600}"
-  }
+    "css": ".sbn{display:grid;align-content:start;gap:2px;width:240px;padding:12px;border-right:1px solid #d4d4d4;background:#fafafa;font:500 14px system-ui,sans-serif}\n.sbn__g{margin:8px 8px 4px;font:700 11px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#525252}\n.sbn a{display:block;padding:9px 12px;border-radius:8px;color:#525252;text-decoration:none}\n.sbn [aria-current=page]{background:#0a0a0a;color:#fff;font-weight:600}",
+    "js": "/* Demo only: remove preventDefault() when your links go to real pages. */\ndocument.querySelectorAll('.sbn').forEach(nav => {\n  nav.addEventListener('click', e => {\n    const a = e.target.closest('a');\n    if (!a || !nav.contains(a)) return;\n    e.preventDefault();\n    nav.querySelectorAll('a[aria-current]').forEach(x => x.removeAttribute('aria-current'));\n    a.setAttribute('aria-current', 'page');\n  });\n});"
+  },
+  "interactive": true
 }

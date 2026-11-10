@@ -122,7 +122,9 @@
     "segmented-control"
   ],
   "code": {
-    "html": "<label for=\"vol\" class=\"sl__l\">Volume <output id=\"vo\">40</output></label>\n<input id=\"vol\" class=\"sl\" type=\"range\" min=\"0\" max=\"100\" value=\"40\" oninput=\"vo.textContent=this.value\">",
-    "css": ".sl__l{display:flex;justify-content:space-between;width:260px;margin-bottom:6px;font:600 14px system-ui,sans-serif}\n.sl{width:260px;accent-color:#0a0a0a;height:24px}"
-  }
+    "html": "<label for=\"vol\" class=\"sl__l\">Volume <output for=\"vol\">40</output></label>\n<input id=\"vol\" class=\"sl\" type=\"range\" min=\"0\" max=\"100\" value=\"40\">",
+    "css": ".sl__l{display:flex;justify-content:space-between;width:260px;margin-bottom:6px;font:600 14px system-ui,sans-serif}\n.sl{width:260px;accent-color:#0a0a0a;height:24px}",
+    "js": "document.querySelectorAll('.sl').forEach(range => {\n  const out = range.previousElementSibling.querySelector('output');\n  const sync = () => { out.textContent = range.value; range.setAttribute('aria-valuetext', range.value + ' percent'); };\n  range.addEventListener('input', sync); sync();\n});"
+  },
+  "interactive": true
 }

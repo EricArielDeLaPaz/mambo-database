@@ -216,9 +216,17 @@ function compCss(e, ids, os) {
   if (!os || !os.length) return e.code.css + '\n' + st;
   return os.map(o => `/* ${OS_LABEL[o]} */\n` + scopeCss(e.code.css + '\n' + (osBase(e, o).css || '') + '\n' + st, '.os-' + o)).join('\n');
 }
-function compBody(e, os) {
+/* Same component twice on one page: give the copy unique ids and radio names so labels, aria links and radio groups stay separate. */
+function uniq(html, sfx) {
+  const ids = new Set(); html.replace(/\sid="([^"]+)"/g, (_, i) => ids.add(i));
+  return html.replace(/(\s(?:id|for|aria-controls|aria-describedby|aria-labelledby)=")([^"]*)"/g, (m, a, v) => a + v.split(/\s+/).map(t => ids.has(t) ? t + sfx : t).join(' ') + '"')
+    .replace(/<input\b[^>]*>/g, tag => /type="radio"/.test(tag) ? tag.replace(/(\sname=")([^"]+)"/, '$1$2' + sfx + '"') : tag);
+}
+function compBody(e, os, withDefault) {
   if (!os || !os.length) return e.code.html;
-  return os.map(o => `<section class="os-block"><h2>${OS_LABEL[o]}</h2><div class="os-${o}">${osBase(e, o).html || e.code.html}</div></section>`).join('\n');
+  const blocks = os.map(o => `<section class="os-block"><h2>${OS_LABEL[o]}</h2><div class="os-${o}">${uniq(osBase(e, o).html || e.code.html, '-' + o)}</div></section>`);
+  if (withDefault) blocks.unshift(`<section class="os-block"><h2>Default</h2><div>${e.code.html}</div></section>`);
+  return blocks.join('\n');
 }
 function compDoc(e, ids, os) { return `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>${esc(e.name)}</title>\n<style>\nbody{margin:0;padding:32px;font-family:system-ui,sans-serif}\n.os-block{margin-bottom:32px}.os-block h2{font:700 12px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;color:#525252}\n${compCss(e, ids, os)}\n</style>\n</head>\n<body>\n${compBody(e, os)}\n${e.code.js ? '<script>\n' + e.code.js + '\n<\/script>\n' : ''}</body>\n</html>\n` }
 
@@ -246,7 +254,7 @@ function applyForced(root, css) {
   });
   walk(sheet.cssRules);
 }
-const FRAME_FIX = ':host{display:block}*{box-sizing:border-box}.fr{padding:20px 18px;font-family:system-ui,sans-serif}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}.sr{position:absolute;width:1px;height:1px;overflow:hidden}';
+const FRAME_FIX = ':host{display:block}.sheet{animation:none!important}.fr [role=menu],.fr [role=listbox],.fr [role=tooltip],.fr .pop{position:static!important;inset:auto!important;margin-top:6px!important}.fr .m-scrim{position:static!important;display:block!important;background:none!important}.fr [hidden]{display:revert}.fr .row,.fr .acts{flex-wrap:wrap}*{box-sizing:border-box}.fr{padding:20px 18px;font-family:system-ui,sans-serif}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}.sr{position:absolute;width:1px;height:1px;overflow:hidden}';
 function renderFrames(host, e, stateIds, osList) {
   host.innerHTML = ''; host.classList.add('frames');
   const rows = (osList && osList.length ? osList : ['']);
@@ -259,7 +267,7 @@ function renderFrames(host, e, stateIds, osList) {
       const cell = document.createElement('figure'); cell.className = 'fcell';
       const cap = document.createElement('figcaption'); cap.textContent = s.label.replace(/\s*\(.*\)/, ''); const box = document.createElement('div'); box.className = 'fbox';
       const root = box.attachShadow({ mode: 'open' }); const base = e.code.css + '\n' + (o ? (osBase(e, o).css || '') : '');
-      root.innerHTML = `<style>${FRAME_FIX}${base}</style><div class="fr">${o ? (osBase(e, o).html || e.code.html) : e.code.html}</div>`;
+      root.innerHTML = `<style>${FRAME_FIX}${base}</style><div class="fr">${o ? (osBase(e, o).frame || osBase(e, o).html || e.code.frame || e.code.html) : (e.code.frame || e.code.html)}</div>`;
       if (s.id !== 'default') applyForced(root, forceCss(s.css));
       cell.append(cap, box); strip.appendChild(cell);
     });

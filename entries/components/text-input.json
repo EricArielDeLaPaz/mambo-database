@@ -145,7 +145,8 @@
   ],
   "code": {
     "html": "<label class=\"field\">\n  <span class=\"field__label\">Email</span>\n  <input class=\"field__input\" type=\"email\" autocomplete=\"email\" aria-describedby=\"email-hint\">\n  <span id=\"email-hint\" class=\"field__hint\">We only use it to send your receipt.</span>\n</label>",
-    "css": ".field{display:grid;gap:6px;font-family:system-ui,sans-serif;max-width:360px}\n.field__label{font-weight:600;font-size:14px}\n.field__input{min-height:44px;padding:0 14px;border:1px solid #8a8a8a;border-radius:8px;font-size:16px}\n.field__hint{font-size:13px;color:#525252}"
+    "css": ".field{display:grid;gap:6px;font-family:system-ui,sans-serif;max-width:360px}\n.field__label{font-weight:600;font-size:14px}\n.field__input{min-height:44px;padding:0 14px;border:1px solid #8a8a8a;border-radius:8px;font-size:16px}\n.field__hint{font-size:13px;color:#525252}",
+    "js": "document.querySelectorAll('.field__input').forEach(input => {\n  const hint = input.closest('.field').querySelector('.field__hint');\n  const original = hint.textContent;\n  const check = () => {\n    const bad = input.value !== '' && !input.validity.valid;\n    input.setAttribute('aria-invalid', String(bad));\n    hint.textContent = bad ? 'Enter an email like name@example.com.' : original;\n  };\n  input.addEventListener('blur', check);\n  input.addEventListener('input', () => { if (input.getAttribute('aria-invalid') === 'true') check(); });\n});"
   },
   "os": {
     "ios": {
@@ -154,5 +155,6 @@
     "android": {
       "css": ".field__input{border-radius:4px;min-height:56px;font:16px Roboto,system-ui,sans-serif}.field__label{font:400 12px Roboto,system-ui,sans-serif;color:#525252}"
     }
-  }
+  },
+  "interactive": true
 }

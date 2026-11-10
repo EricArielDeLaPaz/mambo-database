@@ -118,8 +118,11 @@
     "tooltip"
   ],
   "code": {
-    "html": "<button class=\"pt\" aria-expanded=\"true\" aria-haspopup=\"menu\">Options</button>\n<div class=\"pop\" role=\"menu\">\n  <button role=\"menuitem\" class=\"pop__i\">Edit</button>\n  <button role=\"menuitem\" class=\"pop__i\">Duplicate</button>\n  <button role=\"menuitem\" class=\"pop__i\">Delete</button>\n</div>",
-    "css": ".pt{min-height:44px;padding:0 18px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif}\n.pop{display:grid;width:200px;margin-top:8px;padding:6px;border:1px solid #d4d4d4;border-radius:12px;background:#fff;box-shadow:0 18px 40px -12px rgba(0,0,0,.25)}\n.pop__i{min-height:44px;padding:0 12px;border:0;border-radius:8px;background:none;text-align:left;font:500 14px system-ui,sans-serif}"
+    "html": "<div class=\"popw\">\n<button class=\"pt\" aria-expanded=\"false\" aria-haspopup=\"menu\">Options</button>\n<div class=\"pop\" role=\"menu\" hidden>\n  <button role=\"menuitem\" class=\"pop__i\">Edit</button>\n  <button role=\"menuitem\" class=\"pop__i\">Duplicate</button>\n  <button role=\"menuitem\" class=\"pop__i\">Delete</button>\n</div>\n</div>",
+    "css": ".pt{min-height:44px;padding:0 18px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif}\n.pop{display:grid;width:200px;margin-top:8px;padding:6px;border:1px solid #d4d4d4;border-radius:12px;background:#fff;box-shadow:0 18px 40px -12px rgba(0,0,0,.25)}\n.pop__i{min-height:44px;padding:0 12px;border:0;border-radius:8px;background:none;text-align:left;font:500 14px system-ui,sans-serif}\n/* interaction */\n.popw{position:relative;display:inline-block}.pop{position:absolute;top:100%;left:0;z-index:10}.pop[hidden]{display:none}\n",
+    "frame": "<div class=\"popw\">\n<button class=\"pt\" aria-expanded=\"true\" aria-haspopup=\"menu\">Options</button>\n<div class=\"pop\" role=\"menu\">\n  <button role=\"menuitem\" class=\"pop__i\">Edit</button>\n  <button role=\"menuitem\" class=\"pop__i\">Duplicate</button>\n  <button role=\"menuitem\" class=\"pop__i\">Delete</button>\n</div>\n</div>",
+    "js": "document.querySelectorAll('.popw').forEach(root => {\n  const trigger = root.querySelector('.pt'), menu = root.querySelector('.pop');\n  const items = () => [...menu.querySelectorAll('[role=menuitem]')];\n  const close = refocus => { menu.hidden = true; trigger.setAttribute('aria-expanded', 'false'); if (refocus) trigger.focus(); };\n  const open = first => {\n    menu.hidden = false; trigger.setAttribute('aria-expanded', 'true');\n    const list = items(); (first === 'last' ? list[list.length - 1] : list[0]).focus();\n  };\n  trigger.addEventListener('click', () => menu.hidden ? open() : close(true));\n  trigger.addEventListener('keydown', e => {\n    if (e.key === 'ArrowDown') { e.preventDefault(); open(); } else if (e.key === 'ArrowUp') { e.preventDefault(); open('last'); }\n  });\n  menu.addEventListener('keydown', e => {\n    const list = items(), i = list.indexOf(document.activeElement);\n    const to = { ArrowDown: (i + 1) % list.length, ArrowUp: (i - 1 + list.length) % list.length, Home: 0, End: list.length - 1 }[e.key];\n    if (to !== undefined) { e.preventDefault(); list[to].focus(); }\n    else if (e.key === 'Escape') { e.preventDefault(); close(true); }\n    else if (e.key === 'Tab') close(false);\n  });\n  menu.addEventListener('click', e => { if (e.target.closest('[role=menuitem]')) close(true); });\n  document.addEventListener('click', e => { if (!root.contains(e.target)) close(false); });\n});",
+    "pvHeight": 300
   },
   "os": {
     "ios": {
@@ -128,5 +131,6 @@
     "android": {
       "css": ".pop{border-radius:4px;border:0;box-shadow:0 2px 6px rgba(0,0,0,.3)}"
     }
-  }
+  },
+  "interactive": true
 }

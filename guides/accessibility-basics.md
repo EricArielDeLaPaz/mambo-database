@@ -25,7 +25,7 @@ Read more in [Contrast and WCAG](#/guide/contrast-and-wcag).
 
 ## 2. Never use color alone
 
-If red means "error" and green means "success", some people cannot tell them apart. About 1 in 12 men has some form of color vision difference. Add an icon, a label or a pattern.
+If red means "error" and green means "success", some people cannot tell them apart. Millions of people have some form of color vision difference. Add an icon, a label or a pattern.
 
 ## 3. Show focus
 

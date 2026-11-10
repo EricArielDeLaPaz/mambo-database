@@ -111,7 +111,8 @@
   ],
   "code": {
     "html": "<form role=\"search\" class=\"sf\">\n  <svg class=\"sf__icon\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg>\n  <input class=\"sf__input\" type=\"search\" aria-label=\"Search components\" placeholder=\"Search components\">\n</form>",
-    "css": ".sf{position:relative;max-width:360px}\n.sf__icon{position:absolute;left:14px;top:13px}\n.sf__input{width:100%;min-height:44px;padding:0 14px 0 40px;border:1px solid #8a8a8a;border-radius:999px;font:16px system-ui,sans-serif}"
+    "css": ".sf{position:relative;max-width:360px}\n.sf__icon{position:absolute;left:14px;top:13px}\n.sf__input{width:100%;min-height:44px;padding:0 14px 0 40px;border:1px solid #8a8a8a;border-radius:999px;font:16px system-ui,sans-serif}",
+    "js": "document.querySelectorAll('form.sf').forEach(form => {\n  const input = form.querySelector('input');\n  form.addEventListener('submit', e => { e.preventDefault(); /* demo only: run your search here */ });\n  input.addEventListener('keydown', e => { if (e.key === 'Escape') input.value = ''; });\n});"
   },
   "os": {
     "ios": {
@@ -120,5 +121,6 @@
     "android": {
       "css": ".sf__input{min-height:56px;border:0;background:#ececec;font:16px Roboto,system-ui,sans-serif}.sf__icon{top:19px}"
     }
-  }
+  },
+  "interactive": true
 }

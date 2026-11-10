@@ -136,7 +136,9 @@
     "search-field"
   ],
   "code": {
-    "html": "<label class=\"ta\" for=\"msg\">Message</label>\n<textarea id=\"msg\" class=\"ta__f\" rows=\"4\" aria-describedby=\"msg-h\"></textarea>\n<p id=\"msg-h\" class=\"ta__h\">Tell us what you need. 280 characters max.</p>",
-    "css": ".ta{display:block;margin-bottom:6px;font:600 14px system-ui,sans-serif;color:#0a0a0a}\n.ta__f{width:100%;max-width:360px;min-height:96px;padding:10px 12px;border:1px solid #8a8a8a;border-radius:8px;font:16px/1.5 system-ui,sans-serif;resize:vertical}\n.ta__h{margin:6px 0 0;font:13px system-ui,sans-serif;color:#525252}"
-  }
+    "html": "<label class=\"ta\" for=\"msg\">Message</label>\n<textarea id=\"msg\" class=\"ta__f\" rows=\"4\" maxlength=\"280\" aria-describedby=\"msg-h\"></textarea>\n<p id=\"msg-h\" class=\"ta__h\">Tell us what you need. <span class=\"ta__c\">0 / 280</span></p>",
+    "css": ".ta{display:block;margin-bottom:6px;font:600 14px system-ui,sans-serif;color:#0a0a0a}\n.ta__f{width:100%;max-width:360px;min-height:96px;padding:10px 12px;border:1px solid #8a8a8a;border-radius:8px;font:16px/1.5 system-ui,sans-serif;resize:vertical}\n.ta__h{margin:6px 0 0;font:13px system-ui,sans-serif;color:#525252}",
+    "js": "document.querySelectorAll('.ta__f').forEach(area => {\n  const count = area.parentElement.querySelector('.ta__c');\n  const max = area.maxLength, sync = () => { count.textContent = area.value.length + ' / ' + max; };\n  area.addEventListener('input', sync); sync();\n});"
+  },
+  "interactive": true
 }

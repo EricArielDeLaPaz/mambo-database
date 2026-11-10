@@ -13,9 +13,24 @@ const NOT_IN_FIGMA = 'This typeface isn\'t built into Figma. If you plan to use 
 const findLink = n => 'https://www.google.com/search?q=' + encodeURIComponent(n + ' font download');
 const dragging = { type: null, ids: [] };
 
+/* Suggested things open in a right-hand panel, like Browse, so you never leave your system. */
+let sysDetailId = null;
+function showSysDetail() {
+  const lay = $('#slay'), d = $('#detail'); if (!lay) return;
+  const e = sysDetailId && DATA.find(x => x.id === sysDetailId);
+  lay.classList.toggle('has-detail', !!e); d.hidden = !e; $('.rz-r', lay).hidden = !e; $('#dbd').hidden = !e; document.body.classList.toggle('sheet-open', !!e);
+  if (!e) { d.innerHTML = ''; return }
+  if (!d._cap) { d._cap = true; d.addEventListener('click', ev => { const t = ev.target.closest('[data-open], a[href^="#/entry/"]'); if (!t || !d.contains(t)) return; ev.preventDefault(); ev.stopPropagation(); openSysDetail(t.dataset.open || t.getAttribute('href').slice(8)) }, true) }
+  fillDetail(d, e, closeSysDetail); $('#dbd').onclick = closeSysDetail;
+}
+const openSysDetail = id => { sysDetailId = id; showSysDetail() };
+const closeSysDetail = () => { sysDetailId = null; showSysDetail() };
+onEntryAdded = () => { renderTree(); renderEditor() };
+document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && sysDetailId && route().view === 'systems' && !document.querySelector('dialog.mdl') && !ddOpen && !ctxEl && !ev.defaultPrevented) closeSysDetail() });
 function renderSystems() {
-  $('#app').innerHTML = `<div class="sys-layout"><aside class="sys-side" id="sside" aria-label="Your design systems"></aside><main id="main" tabindex="-1"></main></div>`;
-  renderTree(); renderEditor();
+  sysDetailId = null;
+  $('#app').innerHTML = `<div class="sys-layout" id="slay"><aside class="sys-side" id="sside" aria-label="Your design systems"></aside><div class="rz" data-rz="left" role="separator" aria-orientation="vertical" aria-label="Resize your systems panel. Use left and right arrow keys." tabindex="0"></div><main id="main" tabindex="-1"></main><div class="rz rz-r" data-rz="right" role="separator" aria-orientation="vertical" aria-label="Resize details panel. Use left and right arrow keys." tabindex="0" hidden></div><aside id="detail" class="dpanel" aria-label="Details" hidden></aside></div><div class="sheet-bd" id="dbd" hidden></div>`;
+  initPanes($('#slay')); renderTree(); renderEditor();
 }
 async function deleteSystems(ids) {
   const names = S.systems.filter(s => ids.includes(s.id)).map(s => s.name);
@@ -140,7 +155,7 @@ function suggestComponents(s) {
   [...ESSENTIALS, ...s.platforms.flatMap(p => PLAT_ESSENTIALS[p] || [])].forEach(id => { if (seen.has(id)) return; seen.add(id); const e = compById(id); if (!e || have.has(id)) return; if (s.platforms.length && !(e.platforms || []).some(x => s.platforms.includes(x))) return; ids.push(id) });
   if (!ids.length) return s.components.length ? '' : '';
   return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested components</h3><button type="button" class="btn sm" id="addallcomp">Add all ${ids.length}</button></div><p class="note" style="margin:0 0 8px">The usual building blocks for ${s.platforms.length ? esc(s.platforms.map(p => PLAT[p]).join(', ')) : 'any product'}. Add the ones you need.</p>
-  <div class="sugg">${ids.slice(0, 12).map(id => { const e = compById(id); return `<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.summary)}</span><div class="row" style="margin:6px 0 0"><button type="button" class="btn sm" data-sugcomp="${esc(id)}" aria-label="Add ${esc(e.name)}">Add</button></div></div>` }).join('')}</div>${ids.length > 12 ? `<p class="note">${ids.length - 12} more suggested. Add all to include them.</p>` : ''}`;
+  <div class="sugg">${ids.slice(0, 12).map(id => { const e = compById(id); return `<div class="sugg-card"><button type="button" class="name-btn" data-viewsug="${esc(id)}" aria-label="View ${esc(e.name)}">${esc(e.name)}</button><span class="note">${esc(e.summary)}</span><div class="row" style="margin:6px 0 0"><button type="button" class="btn sm" data-sugcomp="${esc(id)}" aria-label="Add ${esc(e.name)}">Add</button><button type="button" class="btn sm" data-viewsug="${esc(id)}" aria-label="View ${esc(e.name)}">View</button></div></div>` }).join('')}</div>${ids.length > 12 ? `<p class="note">${ids.length - 12} more suggested. Add all to include them.</p>` : ''}`;
 }
 function viewComponent(c) {
   const e = compById(c.id); if (!e) return;
@@ -150,12 +165,12 @@ function viewComponent(c) {
 function suggestColors(s) {
   const sets = DATA.filter(e => e.type === 'color' && industryMatch(e));
   return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested for ${sysInds(s).includes('all') ? 'any industry' : esc(indSummary(s))}</h3><button class="viewall" data-viewall="color">View all <span aria-hidden="true">→</span></button></div>
-  <div class="sugg">${sets.slice(0, 4).map(e => { const keys = Object.keys(e.roles); return `<div class="sugg-card"><b>${esc(e.name)}</b><span class="note">${esc(e.mood || '')}</span><div class="swatchrow">${['primary', 'accent', 'ink', 'surface'].filter(k => e.roles[k]).map(k => `<button class="chip nob" data-tip="${tipData(e.name + ' ' + k, e.roles[k], keys.filter(x => x !== k).map(x => ({ name: x, hex: e.roles[x] })))}" data-addcolor="${esc(e.roles[k])}" data-src="${esc(e.name)}" data-role="${SET_ROLE[k] || 'Other'}" aria-label="Add ${esc(e.name)} ${k} ${esc(e.roles[k])}"><i style="background:${esc(e.roles[k])}"></i></button>`).join('')}</div><button class="btn sm" data-addset="${esc(e.id)}" ${Object.entries(e.roles).filter(([k]) => k !== 'border').every(([k, v]) => s.colors.some(c => c.hex === v && c.source === e.name)) ? 'disabled' : ''}>Add whole set</button></div>` }).join('') || '<p class="empty">No suggestions for this industry yet.</p>'}</div>`;
+  <div class="sugg">${sets.slice(0, 4).map(e => { const keys = Object.keys(e.roles); return `<div class="sugg-card"><button type="button" class="name-btn" data-viewsug="${esc(e.id)}" aria-label="View ${esc(e.name)}">${esc(e.name)}</button><span class="note">${esc(e.mood || '')}</span><div class="swatchrow">${['primary', 'accent', 'ink', 'surface'].filter(k => e.roles[k]).map(k => `<button class="chip nob" data-tip="${tipData(e.name + ' ' + k, e.roles[k], keys.filter(x => x !== k).map(x => ({ name: x, hex: e.roles[x] })))}" data-addcolor="${esc(e.roles[k])}" data-src="${esc(e.name)}" data-role="${SET_ROLE[k] || 'Other'}" aria-label="Add ${esc(e.name)} ${k} ${esc(e.roles[k])}"><i style="background:${esc(e.roles[k])}"></i></button>`).join('')}</div><button class="btn sm" data-addset="${esc(e.id)}" ${Object.entries(e.roles).filter(([k]) => k !== 'border').every(([k, v]) => s.colors.some(c => c.hex === v && c.source === e.name)) ? 'disabled' : ''}>Add whole set</button> <button type="button" class="btn sm" data-viewsug="${esc(e.id)}" aria-label="View ${esc(e.name)}">View</button></div>` }).join('') || '<p class="empty">No suggestions for this industry yet.</p>'}</div>`;
 }
 function suggestFonts(s) {
   const pairs = []; DATA.filter(e => e.type === 'typeface' && industryMatch(e)).forEach(e => e.pairings.filter(p => p.role === 'body').forEach(p => pairs.push({ d: e, b: DATA.find(x => x.id === p.id), p })));
   const picks = pairs.sort((x, y) => x.d.name.localeCompare(y.d.name)).filter((x, i, a) => a.findIndex(z => z.d.id === x.d.id) === i).slice(0, 4);
-  return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested pairings</h3><button class="viewall" data-viewall="typeface">View all <span aria-hidden="true">→</span></button></div><div class="sugg">${picks.map(x => `<div class="sugg-card"><b>${esc(x.d.name)} + ${esc(x.p.family)}</b><span class="note">Header / display + body. ${esc(x.p.why)}</span><div class="row" style="margin:8px 0 0"><button class="btn sm" data-usepair="${esc(x.d.id)}|${esc(x.p.id)}">Use this pairing</button></div></div>`).join('') || '<p class="empty">No pairings for this industry yet.</p>'}</div>`;
+  return `<div class="dbhead" style="margin:18px 0 4px"><h3 style="margin:0">Suggested pairings</h3><button class="viewall" data-viewall="typeface">View all <span aria-hidden="true">→</span></button></div><div class="sugg">${picks.map(x => `<div class="sugg-card"><b><button type="button" class="name-btn" data-viewsug="${esc(x.d.id)}" aria-label="View ${esc(x.d.name)}">${esc(x.d.name)}</button> + <button type="button" class="name-btn" data-viewsug="${esc(x.p.id)}" aria-label="View ${esc(x.p.family)}">${esc(x.p.family)}</button></b><span class="note">Header / display + body. ${esc(x.p.why)}</span><div class="row" style="margin:8px 0 0"><button class="btn sm" data-usepair="${esc(x.d.id)}|${esc(x.p.id)}">Use this pairing</button><button type="button" class="btn sm" data-viewsug="${esc(x.d.id)}" aria-label="View ${esc(x.d.name)}">View</button></div></div>`).join('') || '<p class="empty">No pairings for this industry yet.</p>'}</div>`;
 }
 const sortColors = s => { const idx = r => { const i = ROLES.indexOf(r); return i < 0 ? 999 : i }; s.colors = s.colors.map((c, i) => [c, i]).sort((a, b) => idx(a[0].role) - idx(b[0].role) || a[1] - b[1]).map(x => x[0]) };
 const GRIP = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
@@ -331,11 +346,14 @@ function wireEditor(s) {
   wireFontPicker(m, s, (f, fam) => pickFont(s, f, fam));
   $$('[data-figmafont]', m).forEach(a => a.onclick = () => showFigma('font'));
   $$('[data-usepair]', m).forEach(b => b.onclick = () => { const [di, bi] = b.dataset.usepair.split('|'), d = DATA.find(x => x.id === di), p = d.pairings.find(x => x.id === bi); const mk = (role, fam, w) => ({ id: uid(), role, family: fam, weights: w.slice() }); s.fonts = s.fonts.filter(f => !['Display', 'Body'].includes(f.role)); s.fonts.unshift(mk('Display', d.name, p.displayWeights), mk('Body', p.family, p.bodyWeights)); saveStore(); rerender(); toast('Applied ' + d.name + ' + ' + p.family) });
-  $$('[data-cst]', m).forEach(i => i.onchange = () => { const c = s.components.find(x => x.id === i.closest('[data-comp]').dataset.comp), a = new Set(c.states); i.checked ? a.add(i.dataset.cst) : a.delete(i.dataset.cst); c.states = [...a]; saveStore() });
+  $$('[data-cst]', m).forEach(i => i.onchange = () => { const id = i.dataset.cst; s.components.forEach(c => { const e = compById(c.id); if (!e || !(e.states || []).some(x => x.id === id)) return; const a = new Set(c.states); i.checked ? a.add(id) : a.delete(id); c.states = [...a] }); saveStore(); syncComps() });
+  $$('[data-viewsug]', m).forEach(b => b.onclick = () => openSysDetail(b.dataset.viewsug));
   $$('[data-hide]', m).forEach(b => b.onclick = () => { s.hidden = [...new Set([...(s.hidden || []), b.dataset.hide])]; saveStore(); rerender() });
   $$('[data-unhide]', m).forEach(b => b.onclick = () => { s.hidden = (s.hidden || []).filter(x => x !== b.dataset.unhide); saveStore(); rerender() });
   $$('[data-jump]', m).forEach(b => b.onclick = () => jump(b.dataset.jump));
-  $$('[data-cos]', m).forEach(i => i.onchange = () => { const c = s.components.find(x => x.id === i.closest('[data-comp]').dataset.comp), a = new Set(c.os || []); i.checked ? a.add(i.dataset.cos) : a.delete(i.dataset.cos); c.os = ['ios', 'android'].filter(o => a.has(o)); saveStore() });
+  /* a tick on one component is applied to every other component that has it, so update the boxes in place (keeps keyboard focus) */
+  const syncComps = () => $$('.compline', m).forEach(r => { const c = s.components.find(x => x.id === r.dataset.comp); if (!c) return; $$('[data-cst]', r).forEach(b => b.checked = c.states.includes(b.dataset.cst)); $$('[data-cos]', r).forEach(b => b.checked = (c.os || []).includes(b.dataset.cos)) });
+  $$('[data-cos]', m).forEach(i => i.onchange = () => { const o = i.dataset.cos; s.components.forEach(c => { const e = compById(c.id); if (!e || !e.os || !e.os[o]) return; const a = new Set(c.os || []); i.checked ? a.add(o) : a.delete(o); c.os = ['ios', 'android'].filter(x => a.has(x)) }); saveStore(); syncComps() });
   $$('[data-viewcomp]', m).forEach(b => b.onclick = () => viewComponent(s.components.find(c => c.id === b.dataset.viewcomp)));
   $$('.compline', m).forEach(r => r.onclick = ev => { if (ev.target.closest('button,input,label,a')) return; viewComponent(s.components.find(c => c.id === r.dataset.comp)) });
   const addSug = id => { const e = compById(id); if (e && !s.components.some(c => c.id === id)) s.components.push({ id, states: statesFor(e, s), os: compOsDefault(e, s) }) };

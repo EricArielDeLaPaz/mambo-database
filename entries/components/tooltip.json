@@ -85,7 +85,11 @@
     "icon-button"
   ],
   "code": {
-    "html": "<button class=\"ttb\" aria-describedby=\"tt1\">Hover me</button>\n<span role=\"tooltip\" id=\"tt1\" class=\"tt\">Saves your changes</span>",
-    "css": ".ttb{min-height:44px;padding:0 18px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif}\n.tt{display:inline-block;margin-left:8px;padding:6px 10px;border-radius:8px;background:#0a0a0a;color:#fff;font:500 12.5px system-ui,sans-serif}"
-  }
+    "html": "<span class=\"ttw\"><button class=\"ttb\" aria-describedby=\"tt1\">Hover me</button> <span role=\"tooltip\" id=\"tt1\" class=\"tt\" hidden>Saves your changes</span></span>",
+    "css": ".ttb{min-height:44px;padding:0 18px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif}\n.tt{display:inline-block;margin-left:8px;padding:6px 10px;border-radius:8px;background:#0a0a0a;color:#fff;font:500 12.5px system-ui,sans-serif}\n/* interaction */\n.ttw{position:relative;display:inline-block}.tt{position:absolute;left:0;top:calc(100% + 6px);margin:0;white-space:nowrap;z-index:10}.tt[hidden]{display:none}\n",
+    "frame": "<span class=\"ttw\"><button class=\"ttb\" aria-describedby=\"tt1\">Hover me</button> <span role=\"tooltip\" id=\"tt1\" class=\"tt\">Saves your changes</span></span>",
+    "js": "document.querySelectorAll('.ttw').forEach(wrap => {\n  const trigger = wrap.querySelector('.ttb'), tip = wrap.querySelector('[role=tooltip]');\n  let timer;\n  const show = () => { clearTimeout(timer); tip.hidden = false; };\n  const hide = () => { timer = setTimeout(() => { tip.hidden = true; }, 120); };\n  trigger.addEventListener('mouseenter', show); trigger.addEventListener('focus', show);\n  trigger.addEventListener('mouseleave', hide); trigger.addEventListener('blur', hide);\n  tip.addEventListener('mouseenter', show); tip.addEventListener('mouseleave', hide);\n  document.addEventListener('keydown', e => { if (e.key === 'Escape') { clearTimeout(timer); tip.hidden = true; } });  /* dismissable without moving the pointer (WCAG 1.4.13) */\n});",
+    "pvHeight": 220
+  },
+  "interactive": true
 }

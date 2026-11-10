@@ -100,7 +100,9 @@
     "tabs"
   ],
   "code": {
-    "html": "<div class=\"acc\">\n  <h3><button class=\"acc__h\" aria-expanded=\"true\" aria-controls=\"a1\">How do I export?</button></h3>\n  <div id=\"a1\" class=\"acc__p\">Use the Export button in the top right.</div>\n</div>",
-    "css": ".acc{max-width:480px;border-top:1px solid #d4d4d4;font-family:system-ui,sans-serif}\n.acc h3{margin:0}\n.acc__h{display:flex;justify-content:space-between;width:100%;min-height:52px;padding:0;border:0;border-bottom:1px solid #d4d4d4;background:none;font:600 16px system-ui,sans-serif;text-align:left;cursor:pointer}\n.acc__p{padding:12px 0;font-size:15px}"
-  }
+    "html": "<div class=\"acc\">\n  <h3><button class=\"acc__h\" aria-expanded=\"true\" aria-controls=\"a1\">How do I export?</button></h3>\n  <div id=\"a1\" class=\"acc__p\">Use the Export button in the top right.</div>\n  <h3><button class=\"acc__h\" aria-expanded=\"false\" aria-controls=\"a2\">Can I work offline?</button></h3>\n  <div id=\"a2\" class=\"acc__p\" hidden>Yes. Changes sync the next time you are online.</div>\n  <h3><button class=\"acc__h\" aria-expanded=\"false\" aria-controls=\"a3\">Who can see my files?</button></h3>\n  <div id=\"a3\" class=\"acc__p\" hidden>Only people you invite.</div>\n</div>",
+    "css": ".acc{max-width:480px;border-top:1px solid #d4d4d4;font-family:system-ui,sans-serif}\n.acc h3{margin:0}\n.acc__h{display:flex;justify-content:space-between;width:100%;min-height:52px;padding:0;border:0;border-bottom:1px solid #d4d4d4;background:none;font:600 16px system-ui,sans-serif;text-align:left;cursor:pointer}\n.acc__p{padding:12px 0;font-size:15px}\n/* interaction */\n.acc__p[hidden]{display:none}.acc__h::after{content:\"+\";margin-left:12px;font-weight:400}.acc__h[aria-expanded=true]::after{content:\"\\2212\"}\n",
+    "js": "document.querySelectorAll('.acc').forEach(root => {\n  root.querySelectorAll('.acc__h').forEach(btn => {\n    const panel = root.querySelector('#' + btn.getAttribute('aria-controls'));\n    btn.addEventListener('click', () => {\n      const open = btn.getAttribute('aria-expanded') === 'true';\n      btn.setAttribute('aria-expanded', String(!open));\n      panel.hidden = open;\n    });\n  });\n});"
+  },
+  "interactive": true
 }

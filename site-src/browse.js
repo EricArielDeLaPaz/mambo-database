@@ -19,7 +19,7 @@ const countBy = (fn, items) => { const m = {}; items.forEach(e => [].concat(fn(e
 const checkbox = (grp, val, label, n, on) => `<label class="chk"><input type="checkbox" data-grp="${grp}" value="${esc(val)}" ${on ? 'checked' : ''}><span>${esc(label)}</span><span class="n">${n}</span></label>`;
 
 function renderBrowse() {
-  $('#app').innerHTML = `<div class="layout3" id="lay"><aside id="side" aria-label="Filters"></aside><div class="rz" data-rz="left" role="separator" aria-orientation="vertical" aria-label="Resize filters panel. Use left and right arrow keys." tabindex="0"></div><main id="main" tabindex="-1"></main><div class="rz rz-r" data-rz="right" role="separator" aria-orientation="vertical" aria-label="Resize details panel. Use left and right arrow keys." tabindex="0" hidden></div><aside id="detail" class="detail" aria-label="Details" hidden></aside></div><div class="sheet-bd" id="dbd" hidden></div>`;
+  $('#app').innerHTML = `<div class="layout3" id="lay"><aside id="side" aria-label="Filters"></aside><div class="rz" data-rz="left" role="separator" aria-orientation="vertical" aria-label="Resize filters panel. Use left and right arrow keys." tabindex="0"></div><main id="main" tabindex="-1"></main><div class="rz rz-r" data-rz="right" role="separator" aria-orientation="vertical" aria-label="Resize details panel. Use left and right arrow keys." tabindex="0" hidden></div><aside id="detail" class="dpanel" aria-label="Details" hidden></aside></div><div class="sheet-bd" id="dbd" hidden></div>`;
   renderFilters(); renderResults(); initPanes($('#lay')); showDetail();
 }
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -43,12 +43,17 @@ function showDetail() {
   lay.classList.toggle('has-detail', !!e); d.hidden = !e; $('.rz-r', lay).hidden = !e; $('#dbd').hidden = !e; document.body.classList.toggle('sheet-open', !!e);
   $$('tr[data-eid]', lay).forEach(tr => tr.classList.toggle('sel', tr.dataset.eid === id));
   if (!e) { d.innerHTML = ''; return }
+  fillDetail(d, e, () => go('#/')); $('#dbd').onclick = () => go('#/');
+}
+/* Fills a right-hand details panel (Browse and Design Systems share it). */
+function fillDetail(d, e, close) {
   d.setAttribute('role', 'region'); d.setAttribute('aria-label', 'Details for ' + e.name);
   d.innerHTML = `<div class="d-head"><span class="grab" aria-hidden="true"></span><span class="eyebrow">Details</span><button class="x" id="dclose" aria-label="Close details">${X_ICON}</button></div><div class="d-body" id="dbody">${renderEntry(e)}</div>`;
   wireEntry(e, d); upgradeSelects(d); d.scrollTop = 0; $('#dbody').scrollTop = 0;
-  $('#dclose').onclick = () => go('#/'); $('#dbd').onclick = () => go('#/');
-  let y0 = null; const head = $('.d-head', d); head.ontouchstart = ev => { y0 = ev.touches[0].clientY }; head.ontouchmove = ev => { if (y0 !== null && ev.touches[0].clientY - y0 > 90) { y0 = null; go('#/') } }; head.ontouchend = () => { y0 = null };
+  $('#dclose').onclick = close;
+  let y0 = null; const head = $('.d-head', d); head.ontouchstart = ev => { y0 = ev.touches[0].clientY }; head.ontouchmove = ev => { if (y0 !== null && ev.touches[0].clientY - y0 > 90) { y0 = null; close() } }; head.ontouchend = () => { y0 = null };
 }
+let onEntryAdded = null;
 document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && route().id && route().view === 'browse' && !document.querySelector('dialog.mdl') && !ddOpen && !ctxEl && !ev.defaultPrevented) go('#/') });
 const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || B.plats.size || B.inds.size);
 function renderFilters() {
@@ -89,8 +94,8 @@ function renderResults() {
 const ul = a => '<ul class="plain">' + (a || []).map(x => `<li>${esc(x)}</li>`).join('') + '</ul>';
 const codeBlock = (label, code, id) => `<div class="codehead"><strong>${label}</strong><button class="btn sm" data-copy="${id}">Copy</button></div><pre><code>${esc(code)}</code></pre>`;
 function previewDoc(e, ids, os) {
-  const fix = 'html,body{min-height:100%}body{margin:0;padding:32px;box-sizing:border-box;background:#fafafa;font-family:system-ui,sans-serif}.pv{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:240px}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}';
-  return `<!doctype html><meta charset=utf-8><style>${compCss(e, ids, os)}\n${fix}</style><div class="pv">${(os && os.length ? compBody(e, os) : e.code.html).replace(/<dialog /g, '<dialog open ')}</div>`;
+  const fix = `html,body{min-height:100%}body{margin:0;padding:32px;box-sizing:border-box;background:#fafafa;font-family:system-ui,sans-serif}.pv{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:16px;min-height:${Math.max(200, (e.code.pvHeight || 200) - 64)}px}.os-block{margin-bottom:24px;width:100%}.os-block h2{font:700 12px ui-monospace,monospace;letter-spacing:.04em;color:#525252}.sr{position:absolute;width:1px;height:1px;overflow:hidden}`;
+  return `<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><style>${compCss(e, ids, os)}\n${fix}</style><div class="pv">${os && os.length ? compBody(e, os, true) : e.code.html}</div>${e.code.js ? '<script>' + e.code.js.replace(/<\/script/gi, '<\\/script') + '<\/script>' : ''}`;
 }
 const meta = e => `<div class="meta">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('')}${(e.industries || ['all']).map(i => `<span class="tag">Industry: ${esc(indLabel(i))}</span>`).join('')}</div>`;
 const sysOptions = () => { const def = lastSysId(); return S.systems.map(s => `<option value="${s.id}" ${def === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('') + `<option value="__new" ${def === '__new' ? 'selected' : ''}>+ New design system</option>` };
@@ -118,12 +123,17 @@ function typeDetails(e) {
   </tbody></table>`;
 }
 let curOS = [];
+/* Choices carry across components: tick a state or a device variant once and every component you open follows. */
+const PREF_KEY = 'mambo-database.prefs';
+const PREF = (() => { const p = { os: [], on: [], off: [] }; try { Object.assign(p, JSON.parse(localStorage.getItem(PREF_KEY)) || {}) } catch { } return p })();
+const savePref = () => { try { localStorage.setItem(PREF_KEY, JSON.stringify(PREF)) } catch { } };
+const applyPref = (e, ids) => { const all = (e.states || []).map(x => x.id); return all.filter(id => PREF.on.includes(id) ? true : PREF.off.includes(id) ? false : ids.includes(id)) };
 function renderEntry(e) {
   Object.keys(clipStore).forEach(k => delete clipStore[k]);
   clipStore.md = e.md; clipStore.json = JSON.stringify(e, (k, v) => k === 'md' ? undefined : v, 2);
   const back = '';
   if (e.type === 'component') {
-    curStates = statesFor(e, cur()); curOS = [];
+    curStates = applyPref(e, statesFor(e, cur())); curOS = PREF.os.filter(o => e.os && e.os[o]);
     clipStore.html = e.code.html; clipStore.js = e.code.js || '';
     const sy = cur();
     return `${back}<p class="eyebrow">${esc(e.category)} · ${esc(e.level || '')}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>${meta(e)}
@@ -132,7 +142,7 @@ function renderEntry(e) {
   <h2>Variants</h2><p class="note">Every state side by side, left to right, like variant frames in Figma. Pointer states (hover, pressed) are shown forced on.</p>
   ${(e.os && (e.os.ios || e.os.android)) ? `<div class="states" id="osbox" role="group" aria-label="Show device variants"><span class="f-t">Also show</span>${['ios', 'android'].filter(o => e.os[o]).map(o => `<label class="chk"><input type="checkbox" data-os="${o}" ${curOS.includes(o) ? 'checked' : ''}>${OS_LABEL[o]} variant</label>`).join('')}</div>` : ''}
   <div id="frames" class="frames" role="group" aria-label="All states of ${esc(e.name)}"></div>
-  <h2>Coded version</h2><p class="note">The full component as it ships, running as real HTML, CSS and JavaScript. Try it with the keyboard.</p><iframe class="preview" id="pv" title="Coded version of ${esc(e.name)}" sandbox="allow-same-origin allow-scripts" srcdoc="${esc(previewDoc(e, curStates, curOS))}"></iframe>
+  <div class="dbhead" style="margin:0"><h2>Coded version</h2><button type="button" class="btn sm" id="pv-reset">Reset demo</button></div><p class="note">The full component as it ships, running as real HTML, CSS and JavaScript. Try it with the keyboard.</p><iframe class="preview" id="pv" title="Coded version of ${esc(e.name)}" sandbox="allow-same-origin allow-scripts" srcdoc="${esc(previewDoc(e, curStates, curOS))}"></iframe>
   <h2>States</h2><p class="note">${sy ? `Matched to <b>${esc(sy.name)}</b>: only states you use are included.` : 'No design system selected, so every state is included. Pick one in the sidebar to match it.'} Default is always included, and the download contains every variant.</p>
   <div class="states" id="statebox">${(e.states || []).map(s => `<label class="chk" title="${esc(s.note || '')}"><input type="checkbox" data-st="${s.id}" ${curStates.includes(s.id) ? 'checked' : ''}>${esc(s.label)}${s.when === 'pointer' ? ' <span class="tag">pointer only</span>' : ''}</label>`).join('') || '<span class="empty">No extra states.</span>'}</div>
   <h2>Anatomy</h2><table><thead><tr><th>Part</th><th>Required</th><th>Purpose</th></tr></thead><tbody>${e.anatomy.map(a => `<tr><td><b>${esc(a.part)}</b></td><td>${a.required ? 'Yes' : 'Optional'}</td><td>${esc(a.purpose)}</td></tr>`).join('')}</tbody></table>
@@ -172,16 +182,17 @@ function renderEntry(e) {
   <h2>CSS</h2>${codeBlock('CSS', e.css, 'css')}`;
 }
 function refreshComponent(e) {
-  clipStore.css = compCss(e, curStates, curOS); clipStore.both = `<!-- ${e.name} -->\n<style>\n${clipStore.css}\n</style>\n${compBody(e, curOS)}`;
+  clipStore.css = compCss(e, curStates, curOS); clipStore.both = `<!-- ${e.name} -->\n<style>\n${clipStore.css}\n</style>\n${compBody(e, curOS)}${e.code.js ? '\n<script>\n' + e.code.js + '\n<\/script>' : ''}`;
   const cw = $('#codewrap'); if (cw) cw.innerHTML = codeBlock('HTML', e.code.html, 'html') + codeBlock('CSS (with selected states)', clipStore.css, 'css') + (e.code.js ? codeBlock('JS', e.code.js, 'js') : '');
   const fr = $('#frames'); if (fr) renderFrames(fr, e, curStates, [''].concat(curOS));
-  const pv = $('#pv'); if (pv) { pv.srcdoc = previewDoc(e, curStates, curOS); pv.onload = () => { try { pv.style.height = Math.min(620, Math.max(260, pv.contentDocument.documentElement.scrollHeight + 4)) + 'px' } catch { } } }
+  const pv = $('#pv'); if (pv) { pv.srcdoc = previewDoc(e, curStates, curOS); pv.onload = () => { try { pv.style.height = Math.min(1100, Math.max(e.code.pvHeight || 260, pv.contentDocument.documentElement.scrollHeight + 4)) + 'px' } catch { } } }
 }
 function wireEntry(e, root) {
   if (e.type === 'component') {
     refreshComponent(e);
-    $$('[data-os]').forEach(i => i.onchange = () => { curOS = $$('[data-os]').filter(x => x.checked).map(x => x.dataset.os); refreshComponent(e) });
-    $$('[data-st]').forEach(i => i.onchange = () => { const a = new Set(curStates); i.checked ? a.add(i.dataset.st) : a.delete(i.dataset.st); curStates = [...a]; refreshComponent(e) });
+    $$('[data-os]').forEach(i => i.onchange = () => { const o = i.dataset.os; PREF.os = i.checked ? [...new Set([...PREF.os, o])] : PREF.os.filter(x => x !== o); savePref(); curOS = PREF.os.filter(x => e.os && e.os[x]); refreshComponent(e) });
+    $$('[data-st]').forEach(i => i.onchange = () => { const a = new Set(curStates), id = i.dataset.st; i.checked ? a.add(id) : a.delete(id); curStates = [...a]; PREF.on = PREF.on.filter(x => x !== id); PREF.off = PREF.off.filter(x => x !== id); (i.checked ? PREF.on : PREF.off).push(id); savePref(); refreshComponent(e) });
+    $('#pv-reset').onclick = () => { const pv = $('#pv'); pv.srcdoc = previewDoc(e, curStates, curOS) + '<!-- ' + Date.now() + ' -->' };
     $('#figma-copy').onclick = async () => { await copy(clipStore.both, 'HTML + CSS'); showFigma('html') };
     $('#dl-html').onclick = () => { download(e.id + '.html', compDoc(e, curStates, curOS), 'text/html'); showFigma('html') };
   }
@@ -196,7 +207,7 @@ function wireEntry(e, root) {
     if (e.type === 'component') { s.components = s.components.filter(c => c.id !== e.id); s.components.push({ id: e.id, states: curStates.slice(), os: curOS.slice() }) }
     else if (e.type === 'color') { Object.entries(e.roles).forEach(([k, v]) => { if (k === 'border') return; const role = SET_ROLE[k] || 'Other'; if (!s.colors.some(c => c.hex === v && c.role === role)) s.colors.push({ id: uid(), name: role, hex: v, role, source: e.name }) }) }
     else { const role = e.roles[0] === 'display' ? 'Display' : e.roles[0] === 'mono' ? 'Mono' : 'Body'; s.fonts = s.fonts.filter(f => f.role !== role); s.fonts.push({ id: uid(), role, family: e.name, weights: keepThree(e.weights.filter(w => [400, 500, 600, 700].includes(w))) }) }
-    S.last = s.id; S.active = s.id; saveStore(); $('#addmsg').innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>`; toast('Added to ' + s.name);
+    S.last = s.id; S.active = s.id; saveStore(); $('#addmsg').innerHTML = `${CHECK} Added to ${esc(s.name)}.${route().view === 'systems' ? '' : ' <a href="#/systems">Open it</a>'}`; toast('Added to ' + s.name); if (onEntryAdded && route().view === 'systems') onEntryAdded(s);
   };
   root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase().split(' (')[0]) });
 }

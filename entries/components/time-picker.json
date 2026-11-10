@@ -108,6 +108,8 @@
   ],
   "code": {
     "html": "<fieldset class=\"tp\"><legend>Start time</legend>\n  <input aria-label=\"Hour\" inputmode=\"numeric\" value=\"09\"><span aria-hidden=\"true\">:</span><input aria-label=\"Minute\" inputmode=\"numeric\" value=\"30\">\n  <select aria-label=\"AM or PM\"><option>AM</option><option>PM</option></select>\n</fieldset>",
-    "css": ".tp{display:flex;align-items:center;gap:6px;border:0;padding:0;font:600 14px system-ui,sans-serif}\n.tp legend{margin-bottom:6px}\n.tp input,.tp select{height:44px;border:1px solid #8a8a8a;border-radius:8px;text-align:center;font:16px system-ui,sans-serif}\n.tp input{width:56px}"
-  }
+    "css": ".tp{display:flex;align-items:center;gap:6px;border:0;padding:0;font:600 14px system-ui,sans-serif}\n.tp legend{margin-bottom:6px}\n.tp input,.tp select{height:44px;border:1px solid #8a8a8a;border-radius:8px;text-align:center;font:16px system-ui,sans-serif}\n.tp input{width:56px}",
+    "js": "document.querySelectorAll('.tp').forEach(box => {\n  const [hour, minute] = box.querySelectorAll('input');\n  const spec = [[hour, 1, 12], [minute, 0, 59]];\n  spec.forEach(([input, min, max]) => {\n    const fix = () => {\n      let n = parseInt(input.value, 10); if (isNaN(n)) n = min;\n      input.value = String(Math.min(max, Math.max(min, n))).padStart(2, '0');\n    };\n    input.addEventListener('input', () => { input.value = input.value.replace(/\\D/g, '').slice(0, 2); });\n    input.addEventListener('blur', fix);\n    input.addEventListener('keydown', e => {\n      if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;\n      e.preventDefault(); let n = parseInt(input.value, 10); if (isNaN(n)) n = min;\n      n += e.key === 'ArrowUp' ? 1 : -1; if (n > max) n = min; if (n < min) n = max;\n      input.value = String(n).padStart(2, '0');\n    });\n  });\n});"
+  },
+  "interactive": true
 }

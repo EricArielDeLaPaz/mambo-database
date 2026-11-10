@@ -108,7 +108,8 @@
   ],
   "code": {
     "html": "<nav class=\"btb\" aria-label=\"Primary\">\n  <a href=\"#\" aria-current=\"page\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 3l9 8h-3v9h-12v-9h-3z\"/></svg><span>Home</span></a>\n  <a href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg><span>Search</span></a>\n  <a href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21c0-4 4-6 8-6s8 2 8 6\"/></svg><span>Profile</span></a>\n</nav>",
-    "css": ".btb{display:flex;justify-content:space-around;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-top:1px solid #d4d4d4;background:#fff;font:600 12px system-ui,sans-serif;max-width:390px}\n.btb a{display:grid;justify-items:center;gap:2px;min-width:64px;min-height:48px;padding:4px 8px;border-radius:8px;color:#525252;text-decoration:none}\n.btb a[aria-current=page]{color:#0a0a0a;font-weight:700}"
+    "css": ".btb{display:flex;justify-content:space-around;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-top:1px solid #d4d4d4;background:#fff;font:600 12px system-ui,sans-serif;max-width:390px}\n.btb a{display:grid;justify-items:center;gap:2px;min-width:64px;min-height:48px;padding:4px 8px;border-radius:8px;color:#525252;text-decoration:none}\n.btb a[aria-current=page]{color:#0a0a0a;font-weight:700}",
+    "js": "/* Demo only: remove preventDefault() when your links go to real pages. */\ndocument.querySelectorAll('.btb').forEach(nav => {\n  nav.addEventListener('click', e => {\n    const a = e.target.closest('a');\n    if (!a || !nav.contains(a)) return;\n    e.preventDefault();\n    nav.querySelectorAll('a[aria-current]').forEach(x => x.removeAttribute('aria-current'));\n    a.setAttribute('aria-current', 'page');\n  });\n});"
   },
   "os": {
     "ios": {
@@ -117,5 +118,6 @@
     "android": {
       "css": ".btb{height:80px;font:500 12px Roboto,system-ui,sans-serif;border-top:0;background:#fafafa}"
     }
-  }
+  },
+  "interactive": true
 }

@@ -115,6 +115,8 @@
   ],
   "code": {
     "html": "<nav aria-label=\"Pagination\" class=\"pg\">\n  <a href=\"#\" aria-label=\"Previous page\">‹</a>\n  <a href=\"#\">1</a><a href=\"#\" aria-current=\"page\">2</a><a href=\"#\">3</a>\n  <a href=\"#\" aria-label=\"Next page\">›</a>\n</nav>",
-    "css": ".pg{display:flex;gap:6px;font:600 14px system-ui,sans-serif}\n.pg a{display:grid;place-items:center;min-width:44px;height:44px;border:1px solid #8a8a8a;border-radius:8px;color:#0a0a0a;text-decoration:none}\n.pg a[aria-current=page]{background:#0a0a0a;color:#fff;border-color:#0a0a0a}"
-  }
+    "css": ".pg{display:flex;gap:6px;font:600 14px system-ui,sans-serif}\n.pg a{display:grid;place-items:center;min-width:44px;height:44px;border:1px solid #8a8a8a;border-radius:8px;color:#0a0a0a;text-decoration:none}\n.pg a[aria-current=page]{background:#0a0a0a;color:#fff;border-color:#0a0a0a}\n/* interaction */\n.pg [aria-disabled=true]{opacity:.4;pointer-events:none}\n",
+    "js": "document.querySelectorAll('.pg').forEach(nav => {\n  const pages = [...nav.querySelectorAll('a:not([aria-label])')];\n  const prev = nav.querySelector('[aria-label=\"Previous page\"]'), next = nav.querySelector('[aria-label=\"Next page\"]');\n  const show = i => {\n    i = Math.max(0, Math.min(pages.length - 1, i));\n    pages.forEach((a, k) => k === i ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));\n    prev.setAttribute('aria-disabled', String(i === 0)); next.setAttribute('aria-disabled', String(i === pages.length - 1));\n  };\n  const cur = () => pages.findIndex(a => a.getAttribute('aria-current') === 'page');\n  nav.addEventListener('click', e => {\n    const a = e.target.closest('a'); if (!a) return;\n    e.preventDefault(); /* demo only */\n    if (a === prev) show(cur() - 1); else if (a === next) show(cur() + 1); else show(pages.indexOf(a));\n  });\n  show(cur());\n});"
+  },
+  "interactive": true
 }

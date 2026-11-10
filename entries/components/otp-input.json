@@ -116,6 +116,8 @@
   ],
   "code": {
     "html": "<fieldset class=\"otp\"><legend>Enter the 6-digit code</legend>\n  <input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 1\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 2\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 3\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 4\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 5\"><input inputmode=\"numeric\" maxlength=\"1\" aria-label=\"Digit 6\">\n</fieldset>",
-    "css": ".otp{display:flex;gap:8px;border:0;padding:0;font:600 14px system-ui,sans-serif}\n.otp legend{margin-bottom:8px}\n.otp input{width:44px;height:52px;border:1px solid #8a8a8a;border-radius:8px;text-align:center;font:600 20px system-ui,sans-serif}"
-  }
+    "css": ".otp{display:flex;gap:8px;border:0;padding:0;font:600 14px system-ui,sans-serif}\n.otp legend{margin-bottom:8px}\n.otp input{width:44px;height:52px;border:1px solid #8a8a8a;border-radius:8px;text-align:center;font:600 20px system-ui,sans-serif}",
+    "js": "document.querySelectorAll('.otp').forEach(group => {\n  const boxes = [...group.querySelectorAll('input')];\n  boxes.forEach((box, i) => {\n    box.addEventListener('input', () => {\n      box.value = box.value.replace(/\\D/g, '').slice(0, 1);\n      if (box.value && boxes[i + 1]) boxes[i + 1].focus();\n    });\n    box.addEventListener('keydown', e => {\n      if (e.key === 'Backspace' && !box.value && boxes[i - 1]) { boxes[i - 1].focus(); boxes[i - 1].value = ''; e.preventDefault(); }\n      else if (e.key === 'ArrowLeft' && boxes[i - 1]) boxes[i - 1].focus();\n      else if (e.key === 'ArrowRight' && boxes[i + 1]) boxes[i + 1].focus();\n    });\n    box.addEventListener('paste', e => {\n      e.preventDefault();\n      const digits = (e.clipboardData.getData('text') || '').replace(/\\D/g, '').slice(0, boxes.length - i);\n      [...digits].forEach((d, k) => { boxes[i + k].value = d; });\n      boxes[Math.min(boxes.length - 1, i + digits.length)].focus();\n    });\n    box.addEventListener('focus', () => box.select());\n  });\n});"
+  },
+  "interactive": true
 }

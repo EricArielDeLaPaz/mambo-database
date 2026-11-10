@@ -108,6 +108,8 @@
   ],
   "code": {
     "html": "<div class=\"cp\" role=\"group\" aria-label=\"Brand color\">\n  <button aria-label=\"Navy\" style=\"background:#1e3a8a\" aria-pressed=\"true\"></button>\n  <button aria-label=\"Teal\" style=\"background:#0f766e\"></button>\n  <button aria-label=\"Violet\" style=\"background:#6d28d9\"></button>\n  <button aria-label=\"Rust\" style=\"background:#b45309\"></button>\n</div>",
-    "css": ".cp{display:flex;gap:8px}\n.cp button{width:36px;height:36px;border:1px solid rgba(0,0,0,.4);border-radius:8px;cursor:pointer}\n.cp button[aria-pressed=true]{outline:3px solid #0a0a0a;outline-offset:2px}"
-  }
+    "css": ".cp{display:flex;gap:8px}\n.cp button{width:36px;height:36px;border:1px solid rgba(0,0,0,.4);border-radius:8px;cursor:pointer}\n.cp button[aria-pressed=true]{outline:3px solid #0a0a0a;outline-offset:2px}",
+    "js": "document.querySelectorAll('.cp').forEach(group => {\n  group.addEventListener('click', e => {\n    const b = e.target.closest('button'); if (!b) return;\n    group.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));\n  });\n});"
+  },
+  "interactive": true
 }

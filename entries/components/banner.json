@@ -117,6 +117,8 @@
   ],
   "code": {
     "html": "<div class=\"bn\" role=\"region\" aria-label=\"Announcement\">\n  <p>We updated our privacy policy. <a href=\"#\">Read the changes</a></p>\n  <button type=\"button\" class=\"bn__x\" aria-label=\"Dismiss\">&times;</button>\n</div>",
-    "css": ".bn{display:flex;align-items:center;justify-content:space-between;gap:16px;width:560px;padding:10px 12px 10px 16px;border:1px solid #8a8a8a;border-radius:8px;background:#fafafa;font:14px system-ui,sans-serif}\n.bn p{margin:0}\n.bn__x{width:36px;height:36px;border:0;border-radius:50%;background:none;font-size:22px;cursor:pointer}"
-  }
+    "css": ".bn{display:flex;align-items:center;justify-content:space-between;gap:16px;width:560px;padding:10px 12px 10px 16px;border:1px solid #8a8a8a;border-radius:8px;background:#fafafa;font:14px system-ui,sans-serif}\n.bn p{margin:0}\n.bn__x{width:36px;height:36px;border:0;border-radius:50%;background:none;font-size:22px;cursor:pointer}\n/* interaction */\n.bn[hidden]{display:none}\n",
+    "js": "document.querySelectorAll('.bn').forEach(b => {\n  b.querySelector('.bn__x').addEventListener('click', () => { b.hidden = true; });\n});"
+  },
+  "interactive": true
 }

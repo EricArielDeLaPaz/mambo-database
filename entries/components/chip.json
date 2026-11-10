@@ -125,6 +125,8 @@
   ],
   "code": {
     "html": "<div class=\"chs\" role=\"group\" aria-label=\"Filters\">\n  <button class=\"chp\" type=\"button\" aria-pressed=\"true\">&#10003; Open now</button>\n  <button class=\"chp\" type=\"button\" aria-pressed=\"false\">Vegan</button>\n</div>",
-    "css": ".chs{display:flex;gap:8px}\n.chp{min-height:32px;padding:0 14px;border:1px solid #8a8a8a;border-radius:999px;background:#fff;color:#0a0a0a;font:500 14px system-ui,sans-serif;cursor:pointer}\n.chp[aria-pressed=true]{background:#e5e5e5;border-color:#0a0a0a;font-weight:700}"
-  }
+    "css": ".chs{display:flex;gap:8px}\n.chp{min-height:32px;padding:0 14px;border:1px solid #8a8a8a;border-radius:999px;background:#fff;color:#0a0a0a;font:500 14px system-ui,sans-serif;cursor:pointer}\n.chp[aria-pressed=true]{background:#e5e5e5;border-color:#0a0a0a;font-weight:700}",
+    "js": "document.querySelectorAll('.chp').forEach(chip => {\n  const label = chip.textContent.replace(/^\\s*✓\\s*/, '').trim();\n  const draw = () => { chip.textContent = (chip.getAttribute('aria-pressed') === 'true' ? '✓ ' : '') + label; };\n  chip.addEventListener('click', () => {\n    chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true')); draw();\n  });\n  draw();\n});"
+  },
+  "interactive": true
 }

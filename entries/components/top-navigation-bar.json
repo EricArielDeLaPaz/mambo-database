@@ -125,6 +125,8 @@
   ],
   "code": {
     "html": "<nav class=\"topnav\" aria-label=\"Main\">\n  <a class=\"topnav__logo\" href=\"#\">Brand</a>\n  <a href=\"#\" aria-current=\"page\">Home</a>\n  <a href=\"#\">About</a>\n  <a href=\"#\">Work</a>\n</nav>",
-    "css": ".topnav{display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #d4d4d4;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif;width:max-content}\n.topnav a{padding:8px 14px;border-radius:999px;color:#525252;text-decoration:none}\n.topnav__logo{font-weight:800;color:#0a0a0a!important}\n.topnav a[aria-current=page]{background:#0a0a0a;color:#fff}"
-  }
+    "css": ".topnav{display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid #d4d4d4;border-radius:999px;background:#fff;font:600 14px system-ui,sans-serif;width:max-content}\n.topnav a{padding:8px 14px;border-radius:999px;color:#525252;text-decoration:none}\n.topnav__logo{font-weight:800;color:#0a0a0a!important}\n.topnav a[aria-current=page]{background:#0a0a0a;color:#fff}",
+    "js": "/* Demo only: remove preventDefault() when your links go to real pages. */\ndocument.querySelectorAll('.topnav').forEach(nav => {\n  nav.addEventListener('click', e => {\n    const a = e.target.closest('a');\n    if (!a || !nav.contains(a) || a.matches('.topnav__logo')) return;\n    e.preventDefault();\n    nav.querySelectorAll('a[aria-current]').forEach(x => x.removeAttribute('aria-current'));\n    a.setAttribute('aria-current', 'page');\n  });\n});"
+  },
+  "interactive": true
 }

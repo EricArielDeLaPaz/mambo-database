@@ -108,6 +108,8 @@
   ],
   "code": {
     "html": "<div class=\"tb\" role=\"toolbar\" aria-label=\"Text formatting\">\n  <button type=\"button\" aria-pressed=\"true\" aria-label=\"Bold\"><b>B</b></button>\n  <button type=\"button\" aria-pressed=\"false\" aria-label=\"Italic\"><i>I</i></button>\n  <button type=\"button\" aria-pressed=\"false\" aria-label=\"Underline\"><u>U</u></button>\n</div>",
-    "css": ".tb{display:inline-flex;gap:2px;padding:4px;border:1px solid #8a8a8a;border-radius:8px;background:#fff;font:16px system-ui,sans-serif}\n.tb button{width:36px;height:36px;border:0;border-radius:6px;background:none;cursor:pointer}\n.tb [aria-pressed=true]{background:#0a0a0a;color:#fff}"
-  }
+    "css": ".tb{display:inline-flex;gap:2px;padding:4px;border:1px solid #8a8a8a;border-radius:8px;background:#fff;font:16px system-ui,sans-serif}\n.tb button{width:36px;height:36px;border:0;border-radius:6px;background:none;cursor:pointer}\n.tb [aria-pressed=true]{background:#0a0a0a;color:#fff}",
+    "js": "document.querySelectorAll('.tb').forEach(tb => {\n  const btns = [...tb.querySelectorAll('button')];\n  const rove = n => { btns.forEach((b, k) => b.tabIndex = k === n ? 0 : -1); };\n  rove(0);\n  tb.addEventListener('click', e => {\n    const b = e.target.closest('button'); if (!b) return;\n    b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); rove(btns.indexOf(b));\n  });\n  tb.addEventListener('keydown', e => {\n    const i = btns.indexOf(document.activeElement); if (i < 0) return;\n    const n = { ArrowRight: (i + 1) % btns.length, ArrowLeft: (i - 1 + btns.length) % btns.length, Home: 0, End: btns.length - 1 }[e.key];\n    if (n === undefined) return; e.preventDefault(); rove(n); btns[n].focus();\n  });\n});"
+  },
+  "interactive": true
 }
