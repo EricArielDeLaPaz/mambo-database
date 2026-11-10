@@ -90,6 +90,6 @@
   ],
   "code": {
     "html": "<div class=\"pw\" role=\"group\" aria-label=\"Hour\">\n  <div class=\"pw__i\">8</div><div class=\"pw__i\">9</div><div class=\"pw__i pw__s\" aria-current=\"true\">10</div><div class=\"pw__i\">11</div><div class=\"pw__i\">12</div>\n</div>",
-    "css": ".pw{display:grid;width:140px;padding:4px 0;border-radius:12px;background:#f2f2f7;font:22px -apple-system,system-ui,sans-serif;text-align:center}\n.pw__i{padding:6px 0;color:#8a8a8a}\n.pw__s{color:#0a0a0a;background:rgba(0,0,0,.06);border-radius:8px;margin:0 8px;font-weight:500}"
+    "css": ".pw{display:grid;width:140px;padding:4px 0;border-radius:12px;background:#f2f2f7;font:22px -apple-system,system-ui,sans-serif;text-align:center}\n.pw__i{padding:6px 0;color:#6b6b70}\n.pw__s{color:#0a0a0a;background:rgba(0,0,0,.06);border-radius:8px;margin:0 8px;font-weight:500}"
   }
 }

@@ -77,7 +77,7 @@
     "progress-bar"
   ],
   "code": {
-    "html": "<div class=\"sk\" aria-busy=\"true\" aria-label=\"Loading\">\n  <div class=\"sk__line\" style=\"width:60%\"></div><div class=\"sk__line\"></div><div class=\"sk__line\" style=\"width:80%\"></div>\n</div>",
+    "html": "<div class=\"sk\" role=\"status\" aria-busy=\"true\" aria-label=\"Loading\">\n  <div class=\"sk__line\" style=\"width:60%\"></div><div class=\"sk__line\"></div><div class=\"sk__line\" style=\"width:80%\"></div>\n</div>",
     "css": ".sk{display:grid;gap:10px;max-width:360px}\n.sk__line{height:14px;border-radius:6px;background:#e5e5e5}\n@media (prefers-reduced-motion:no-preference){.sk__line{animation:pulse 1.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.5}}}"
   }
 }

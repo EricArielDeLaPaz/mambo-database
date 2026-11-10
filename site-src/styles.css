@@ -328,3 +328,31 @@ ul.check li{display:flex;gap:8px;align-items:baseline}
 dialog.mdl.wide{max-width:min(980px,calc(100vw - 24px))}
 dialog.mdl.wide .fstrip{max-width:100%}
 .compline{cursor:pointer}.compline:hover{background:var(--surface)}
+
+/* ===== Guides ===== */
+.lede{font-size:18px;line-height:1.55;color:var(--text-2);max-width:64ch}
+.glist{list-style:none;margin:18px 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.gcard{display:flex;flex-direction:column;gap:8px;height:100%;padding:16px;border:1px solid var(--border-strong);border-radius:12px;color:var(--text);text-decoration:none;background:var(--bg)}
+.gcard:hover{background:var(--surface);border-color:var(--text)}.gcard:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.gcard strong{font:700 18px/1.25 var(--font-display)}.gcard>span:last-child{color:var(--text-2);font-size:14.5px;line-height:1.5}
+.gmeta{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}.gmeta .tag{margin:0}
+.guide{max-width:74ch}.guide h1{margin-bottom:6px}
+.gbody{margin-top:22px;font-size:16.5px;line-height:1.7}
+.gbody h2{margin:34px 0 8px;font-size:24px}.gbody h3{margin:24px 0 6px;font-size:18px}
+.gbody ul,.gbody ol{padding-left:22px}.gbody li{margin:5px 0}
+.gbody code{font:500 .9em var(--font-mono);background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+.gbody pre{margin:14px 0}.gbody pre code{background:none;border:0;padding:0;font-size:13px}
+.callout{border:1px solid var(--border-strong);border-left:4px solid var(--text);border-radius:8px;padding:10px 14px;margin:16px 0;background:var(--surface);font-size:15.5px;line-height:1.6}
+.tscroll{overflow-x:auto;margin:14px 0}.gbody table{min-width:420px}
+.gpn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:44px;padding-top:20px;border-top:1px solid var(--border)}
+.gnav{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border:1px solid var(--border-strong);border-radius:10px;color:var(--text);text-decoration:none}
+.gnav:hover{background:var(--surface)}.gnav:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.gpn .gnav:last-child{text-align:right}
+@media (max-width:820px){.gpn{grid-template-columns:1fr}.gpn .gnav:last-child{text-align:left}}
+@media (max-width:820px){
+  .colortop{grid-template-columns:1fr 1fr}
+  .colortop>*,.fontrow>*,.grid2>*{min-width:0}
+  .grid2{grid-template-columns:1fr}
+  .compline{flex-direction:column}
+  .compline .row{width:100%}
+}

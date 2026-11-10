@@ -1,7 +1,7 @@
 /* ===== Browse: database view ===== */
 const B = { q: '', types: new Set(), cats: new Set(), plats: new Set(), inds: new Set(), scope: 'name', sort: 'name', dir: 1 };
 const clipStore = {}; let curStates = [];
-const route = () => { const h = location.hash.replace(/^#\/?/, ''); if (h === 'systems') return { view: 'systems' }; if (h.startsWith('entry/')) return { view: 'browse', id: h.slice(6) }; return { view: 'browse' } };
+const route = () => { const h = location.hash.replace(/^#\/?/, ''); if (h === 'systems') return { view: 'systems' }; if (h === 'guides') return { view: 'guides' }; if (h.startsWith('guide/')) return { view: 'guides', id: h.slice(6) }; if (h.startsWith('entry/')) return { view: 'browse', id: h.slice(6) }; return { view: 'browse' } };
 const go = h => { location.hash = h };
 
 function matches(e) {
@@ -150,7 +150,7 @@ function renderEntry(e) {
   <div class="row"><button class="btn solid" data-copy="vars">Copy CSS variables</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button></div>
   ${addToSystemRow('Add colors')}
   <h2>Roles</h2><div class="swatches">${Object.entries(e.roles).map(([k, v]) => `<div class="sw" tabindex="0" data-tip="${tipData(k, v, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"><i style="background:${esc(v)}"></i><span>${esc(k)}<br>${esc(v)}</span></div>`).join('')}</div>
-  <h2>Contrast checks</h2><table><thead><tr><th>Pair</th><th>Ratio</th><th>Normal text (4.5)</th><th>Large text / UI (3)</th></tr></thead><tbody>${e.contrast.map(c => `<tr><td>${esc(c.fg)} on ${esc(c.bg)}</td><td>${c.ratio}:1</td><td class="${c.normalText ? 'pass' : 'fail'}">${c.normalText ? '✓ Pass' : '✕ Fail'}</td><td class="${c.largeTextAndUI ? 'pass' : 'fail'}">${c.largeTextAndUI ? '✓ Pass' : '✕ Fail'}</td></tr>`).join('')}</tbody></table>
+  <h2>Contrast checks</h2><table><thead><tr><th>Pair</th><th>Ratio</th><th>Normal text (4.5)</th><th>Large text / UI (3)</th></tr></thead><tbody>${e.contrast.map(c => `<tr><td>${esc(c.fg)} on ${esc(c.bg)}</td><td>${c.ratio.toFixed(2)}:1 <a class="lnk" href="${webaimUrl(e.roles[c.fg], e.roles[c.bg])}" target="_blank" rel="noopener">WebAIM<span class="sr"> (opens in a new tab): ${esc(c.fg)} on ${esc(c.bg)}</span></a></td><td class="${c.normalText ? 'pass' : 'fail'}">${c.normalText ? '✓ Pass' : '✕ Fail'}</td><td class="${c.largeTextAndUI ? 'pass' : 'fail'}">${c.largeTextAndUI ? '✓ Pass' : '✕ Fail'}</td></tr>`).join('')}</tbody></table>
   <h2>Guidance</h2>${ul(e.guidance)}`;
   }
   clipStore.css = e.css; clipStore.woff2 = e.woff2; clipStore.csslink = cssLink(e); loadFontCss(e.name);

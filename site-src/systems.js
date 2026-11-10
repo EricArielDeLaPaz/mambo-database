@@ -113,9 +113,10 @@ function contrastBlock(c, s) {
     const r = ratio(c.hex, o.hex), bd = (l, ok) => `<span class="bd ${ok ? '' : 'no'}">${l} ${ok ? '✓' : '✕'}</span>`;
     const rg = (isRed(c.hex) && isGreen(o.hex)) || (isGreen(c.hex) && isRed(o.hex));
     let fix = '';
-    if (r < 4.5) { const tgt = (BGROLES.includes(c.role) && !BGROLES.includes(o.role)) ? o : c, oth = tgt === c ? o : c, f = fixFg(tgt.hex, oth.hex, 4.5); const d = { n: tgt.name, from: tgt.hex, to: f, r0: ratio(tgt.hex, oth.hex).toFixed(2), r1: ratio(f, oth.hex).toFixed(2), bg: oth.hex, bgn: oth.name }; fix = `<button class="fixbtn" data-fixcolor="${tgt.id}" data-hex="${f}" aria-label="Fix: change ${esc(tgt.name)} to ${f}" data-tipfix="${esc(JSON.stringify(d))}">${WRENCH}</button>` }
-    return `<div class="cr"><div class="aa" style="background:${o.hex};color:${c.hex}" aria-hidden="true">Aa</div><div class="meta"><b>on ${esc(o.name)}</b> ${esc(o.hex)} · <b>${r.toFixed(2)}:1</b>
+    if (r < 4.5) { const tgt = (BGROLES.includes(c.role) && !BGROLES.includes(o.role)) ? o : c, oth = tgt === c ? o : c, f = fixFg(tgt.hex, oth.hex, 4.5); const d = { n: tgt.name, from: tgt.hex, to: f, r0: fmtRatio(ratio(tgt.hex, oth.hex)), r1: fmtRatio(ratio(f, oth.hex)), bg: oth.hex, bgn: oth.name }; fix = `<button class="fixbtn" data-fixcolor="${tgt.id}" data-hex="${f}" aria-label="Fix: change ${esc(tgt.name)} to ${f}" data-tipfix="${esc(JSON.stringify(d))}">${WRENCH}</button>` }
+    return `<div class="cr"><div class="aa" style="background:${o.hex};color:${c.hex}" aria-hidden="true">Aa</div><div class="meta"><b>on ${esc(o.name)}</b> ${esc(o.hex)} · <b>${fmtRatio(r)}:1</b>
      <div class="badges">${bd('AA', r >= 4.5)}${bd('AA large', r >= 3)}${bd('AAA', r >= 7)}${bd('AAA large', r >= 4.5)}${bd('UI 3:1', r >= 3)}${fix}</div>
+     <div class="note"><a class="lnk" href="${webaimUrl(c.hex, o.hex)}" target="_blank" rel="noopener">Check on WebAIM<span class="sr"> (opens in a new tab): ${esc(c.name)} on ${esc(o.name)}</span></a></div>
      ${rg ? '<div class="note"><b>Red and green:</b> people with color blindness may not tell these apart even when the ratio looks fine. Add an icon or text.</div>' : ''}</div></div>`
   }).join('');
 }

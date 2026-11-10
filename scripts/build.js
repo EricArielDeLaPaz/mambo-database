@@ -28,7 +28,7 @@ const lum = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 
 const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + .05) / (y + .05); };
 for (const e of entries) if (e.type === 'color') e.contrast = e.pairs.map(([fg, bg]) => {
   const r = ratio(e.roles[fg], e.roles[bg]);
-  return { fg, bg, ratio: +r.toFixed(2), normalText: r >= 4.5, largeTextAndUI: r >= 3 };
+  return { fg, bg, ratio: Math.floor(r * 100 + 1e-9) / 100, normalText: r >= 4.5, largeTextAndUI: r >= 3 };
 });
 
 // ---------- markdown per entry ----------
@@ -130,12 +130,26 @@ w(path.join(dsOut, 'library-lite.json'), JSON.stringify({
   components: entries.filter(e => e.type === 'component').map(e => ({ id: e.id, name: e.name, category: e.category, platforms: e.platforms, states: (e.states || []).map(s => s.id) }))
 }, null, 1));
 
+// ---------- guides (markdown with front matter; kept out of the Browse database) ----------
+const guidesDir = path.join(root, 'guides');
+const guides = fs.existsSync(guidesDir) ? fs.readdirSync(guidesDir).filter(f => f.endsWith('.md')).map(f => {
+  const raw = fs.readFileSync(path.join(guidesDir, f), 'utf8').replace(/\r\n/g, '\n'), m = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!m) throw new Error(`guides/${f}: missing front matter`);
+  const g = { body: m[2].trim() }; m[1].split('\n').forEach(l => { const i = l.indexOf(':'); if (i > 0) g[l.slice(0, i).trim()] = l.slice(i + 1).trim() });
+  for (const k of ['id', 'title', 'summary', 'topic', 'level', 'order']) if (!g[k]) throw new Error(`guides/${f}: missing "${k}"`);
+  g.order = +g.order; g.minutes = Math.max(1, Math.round(g.body.split(/\s+/).length / 200)); return g;
+}).sort((a, b) => a.order - b.order) : [];
+for (const g of guides) w(path.join(out, 'entries/guides', g.id + '.md'), `# ${g.title}\n\n${g.summary}\n\nTopic: ${g.topic} | Level: ${g.level}\n\n${g.body}\n`);
+if (guides.length) w(path.join(out, 'entries/guides/index.md'), `# Mambo guides\n\n${guides.map(g => `- [${g.title}](${g.id}.md) (${g.topic}, ${g.level}): ${g.summary}`).join('\n')}\n`);
+
+if (guides.length) fs.appendFileSync(path.join(out, 'llms.txt'), `\n## Guides\n\n${guides.map(g => `- [${g.title}](entries/guides/${g.id}.md): ${g.summary}`).join('\n')}\n`);
+
 // ---------- site ----------
 const tpl = fs.readFileSync(path.join(root, 'site-src/template.html'), 'utf8');
 fs.copyFileSync(path.join(root, 'site-src/mambo.png'), (fs.mkdirSync(path.join(out, 'site'), { recursive: true }), path.join(out, 'site/mambo.png')));
 const src = f => fs.readFileSync(path.join(root, 'site-src', f), 'utf8');
 const fonts = JSON.parse(fs.readFileSync(path.join(root, 'data/google-fonts.json'), 'utf8'));
-let js = ['core.js', 'store.js', 'browse.js', 'systems.js', 'app.js'].map(src).join('\n');
-js = js.replace('/*__DATA__*/[]', () => JSON.stringify(entries).replace(/</g, '\\u003c')).replace('/*__FONTS__*/[]', () => JSON.stringify(fonts));
+let js = ['core.js', 'store.js', 'browse.js', 'systems.js', 'guides.js', 'app.js'].map(src).join('\n');
+js = js.replace('/*__DATA__*/[]', () => JSON.stringify(entries).replace(/</g, '\\u003c')).replace('/*__FONTS__*/[]', () => JSON.stringify(fonts)).replace('/*__GUIDES__*/[]', () => JSON.stringify(guides).replace(/</g, '\\u003c'));
 w(path.join(out, 'site/index.html'), tpl.replace('/*__CSS__*/', () => src('styles.css')).replace('/*__JS__*/', () => js.replace(/<\/script/gi, '<\\/script')));
-console.log(`Built ${entries.length} entries -> dist/ (site, llms.txt, skill, markdown, json)`);
+console.log(`Built ${entries.length} entries + ${guides.length} guides -> dist/ (site, llms.txt, skill, markdown, json)`);

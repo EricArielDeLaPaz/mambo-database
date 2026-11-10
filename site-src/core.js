@@ -19,6 +19,9 @@ function download(name, data, type = 'text/plain') { const a = document.createEl
 /* ---------- colour maths ---------- */
 function normHex(h) { h = String(h).trim().replace(/^#/, ''); if (/^[0-9a-f]{3}$/i.test(h)) h = h.split('').map(c => c + c).join(''); return /^[0-9a-f]{6}$/i.test(h) ? '#' + h.toLowerCase() : null }
 function lum(h) { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2] }
+/* WebAIM shows the ratio cut off (not rounded) at 2 decimals, so 4.496 reads 4.49 and fails, never 4.50 */
+const fmtRatio = r => (Math.floor(r * 100 + 1e-9) / 100).toFixed(2);
+const webaimUrl = (fg, bg) => 'https://webaim.org/resources/contrastchecker/?fcolor=' + String(fg).replace('#', '').toUpperCase() + '&bcolor=' + String(bg).replace('#', '').toUpperCase();
 function ratio(a, b) { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + .05) / (y + .05) }
 function hsl(h) { let [r, g, b] = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255); const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; let H = 0; if (d) { H = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; H = (H * 60 + 360) % 360 } const L = (mx + mn) / 2, S = d ? d / (1 - Math.abs(2 * L - 1)) : 0; return { h: H, s: S, l: L } }
 const isRed = h => { const c = hsl(h); return c.s > .3 && (c.h < 22 || c.h > 335) };
@@ -137,7 +140,7 @@ let tipSys = null, tipEl = null, hideT = 0;
 function sysCompare(d) {
   if (!S.systems.length) return '<div class="sysbox"><div class="mut">Create a design system in Design Systems to see how this color fits.</div></div>';
   const sys = S.systems.find(x => x.id === (tipSys || S.active)) || S.systems[0];
-  const rows = sys.colors.filter(o => normHex(o.hex)).slice(0, 10).map(o => { const r = ratio(d.h, o.hex), t = v => r >= v ? '✓' : '✕'; return `<div class="r"><i style="background:${esc(o.hex)};color:${esc(d.h)}">Aa</i><span>${esc(o.name)} ${esc(o.hex)}</span><em>${r.toFixed(2)}:1 AA ${t(4.5)} AAA ${t(7)}</em></div>` }).join('');
+  const rows = sys.colors.filter(o => normHex(o.hex)).slice(0, 10).map(o => { const r = ratio(d.h, o.hex), t = v => r >= v ? '✓' : '✕'; return `<div class="r"><i style="background:${esc(o.hex)};color:${esc(d.h)}">Aa</i><span>${esc(o.name)} ${esc(o.hex)}</span><em>${fmtRatio(r)}:1 AA ${t(4.5)} AAA ${t(7)}</em></div>` }).join('');
   return `<div class="sysbox"><label class="f"><span class="f-t">Try it in</span><select id="tipsys" aria-label="Design system to compare with">${S.systems.map(x => `<option value="${x.id}" ${x.id === sys.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></label>${rows ? `<div class="mut" style="margin:6px 0 2px">With <b>${esc(sys.name)}</b> colors:</div>${rows}` : '<div class="mut" style="margin-top:6px">This system has no colors yet.</div>'}</div>`;
 }
 function showTip(el) {
@@ -149,7 +152,7 @@ function showTip(el) {
   } else if (el.dataset.tiptext) { html = esc(el.dataset.tiptext) }
   else if (el.dataset.tip) {
     let d; try { d = JSON.parse(el.dataset.tip) } catch { return }
-    const cap = d.sys ? 5 : 12, rows = d.o.filter(o => normHex(o.h)).slice(0, cap).map(o => { const r = ratio(d.h, o.h), t = v => r >= v ? '✓' : '✕'; return `<div class="r"><i style="background:${esc(o.h)};color:${esc(d.h)}">Aa</i><span>${esc(o.n)} ${esc(o.h)}</span><em>${r.toFixed(2)}:1 AA ${t(4.5)} AAA ${t(7)}</em></div>` }).join('');
+    const cap = d.sys ? 5 : 12, rows = d.o.filter(o => normHex(o.h)).slice(0, cap).map(o => { const r = ratio(d.h, o.h), t = v => r >= v ? '✓' : '✕'; return `<div class="r"><i style="background:${esc(o.h)};color:${esc(d.h)}">Aa</i><span>${esc(o.n)} ${esc(o.h)}</span><em>${fmtRatio(r)}:1 AA ${t(4.5)} AAA ${t(7)}</em></div>` }).join('');
     html = `<b>${esc(d.n)}</b> <span class="mut">${esc(d.h)}</span>${rows ? `<div class="mut" style="margin:4px 0 2px">This color on top of:</div>${rows}` : ''}${d.o.length > cap ? `<div class="mut" style="padding-top:3px">+${d.o.length - cap} more</div>` : ''}`;
     if (d.sys) { html += sysCompare(d); inter = true }
   } else return;
