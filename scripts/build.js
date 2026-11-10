@@ -149,7 +149,7 @@ const tpl = fs.readFileSync(path.join(root, 'site-src/template.html'), 'utf8');
 fs.copyFileSync(path.join(root, 'site-src/mambo.png'), (fs.mkdirSync(path.join(out, 'site'), { recursive: true }), path.join(out, 'site/mambo.png')));
 const src = f => fs.readFileSync(path.join(root, 'site-src', f), 'utf8');
 const fonts = JSON.parse(fs.readFileSync(path.join(root, 'data/google-fonts.json'), 'utf8'));
-let js = ['core.js', 'store.js', 'browse.js', 'systems.js', 'guides.js', 'app.js'].map(src).join('\n');
+let js = ['core.js', 'store.js', 'browse.js', 'systems.js', 'guides.js', 'tools.js', 'app.js'].map(src).join('\n');
 js = js.replace('/*__DATA__*/[]', () => JSON.stringify(entries).replace(/</g, '\\u003c')).replace('/*__FONTS__*/[]', () => JSON.stringify(fonts)).replace('/*__GUIDES__*/[]', () => JSON.stringify(guides).replace(/</g, '\\u003c'));
 w(path.join(out, 'site/index.html'), tpl.replace('/*__CSS__*/', () => src('styles.css')).replace('/*__JS__*/', () => js.replace(/<\/script/gi, '<\\/script')));
 console.log(`Built ${entries.length} entries + ${guides.length} guides -> dist/ (site, llms.txt, skill, markdown, json)`);
