@@ -8,11 +8,12 @@ function matches(e) {
   if (B.types.size && !B.types.has(e.type)) return false;
   if (B.cats.size && !B.cats.has(e.category)) return false;
   if (!platOk(e)) return false;
-  if (B.inds.size) { const i = e.industries || ['all']; if (!(i.includes('all') || [...B.inds].some(x => i.includes(x)))) return false }
+  if (B.inds.size && e.type !== 'icon') { const i = e.industries || ['all']; if (!(i.includes('all') || [...B.inds].some(x => i.includes(x)))) return false }
   const q = B.q.trim().toLowerCase(); if (!q) return true;
-  return (B.scope === 'name' ? e.name : e.summary).toLowerCase().includes(q);
+  return (B.scope === 'name' ? e.name + ' ' + (e.keywords || '') : e.summary).toLowerCase().includes(q);
 }
 /* Platform only narrows components; colors and typography always show. */
+const indShown = () => !B.types.size || [...B.types].some(t => t !== 'icon');
 const platShown = () => !B.types.size || B.types.has('component');
 const platOk = e => !B.plats.size || !platShown() || e.type !== 'component' || (e.platforms || []).some(x => B.plats.has(x));
 const hl = t => { const q = B.q.trim(); if (!q) return esc(t); const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); return String(t).split(re).map((x, i) => i % 2 ? '<mark>' + esc(x) + '</mark>' : esc(x)).join('') };
@@ -56,9 +57,9 @@ function fillDetail(d, e, close) {
 }
 let onEntryAdded = null;
 document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && route().id && route().view === 'browse' && !document.querySelector('dialog.mdl') && !ddOpen && !ctxEl && !ev.defaultPrevented) go('#/') });
-const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || (B.plats.size && platShown()) || B.inds.size);
+const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || (B.plats.size && platShown()) || (B.inds.size && indShown()));
 function renderFilters() {
-  const types = countBy(e => e.type, DATA), cats = countBy(e => e.category, DATA.filter(e => (!B.types.size || B.types.has(e.type)) && platOk(e))), plats = countBy(e => e.platforms, DATA.filter(e => e.type === 'component')), inds = countBy(e => (e.industries || ['all']).includes('all') ? INDUSTRIES.slice(1).map(i => i[0]) : e.industries, DATA);
+  const types = countBy(e => e.type, DATA), cats = countBy(e => e.category, DATA.filter(e => (!B.types.size || B.types.has(e.type)) && platOk(e))), plats = countBy(e => e.platforms, DATA.filter(e => e.type === 'component')), inds = countBy(e => (e.industries || ['all']).includes('all') ? INDUSTRIES.slice(1).map(i => i[0]) : e.industries, DATA.filter(e => e.type !== 'icon'));
   const catList = Object.keys(cats).sort();
   $('#side').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
   <label class="f" style="margin-bottom:10px"><span class="eyebrow f-t">Design system</span><select id="syssel"><option value="">None</option>${S.systems.map(s => `<option value="${s.id}" ${S.active === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}</select></label>
@@ -68,7 +69,7 @@ function renderFilters() {
   <fieldset><legend class="eyebrow">Type</legend>${[['', 'All', DATA.length]].concat(Object.keys(TYPE).map(t => [t, TYPE_PLURAL[t], types[t] || 0])).map(([v, l, n]) => `<label class="chk"><input type="radio" name="type" data-type value="${v}" ${(B.types.has(v) || (!v && !B.types.size)) ? 'checked' : ''}><span>${esc(l)}</span><span class="n">${n}</span></label>`).join('')}</fieldset>
   ${B.types.size === 1 ? `<fieldset><legend class="eyebrow">${esc(TYPE_PLURAL[[...B.types][0]])} category</legend>${catList.map(c => checkbox('cats', c, c, cats[c], B.cats.has(c))).join('')}</fieldset>` : ''}
   ${platShown() ? `<fieldset><legend class="eyebrow">Platform</legend>${Object.keys(PLAT).map(p => checkbox('plats', p, PLAT[p], plats[p] || 0, B.plats.has(p))).join('')}</fieldset>` : ''}
-  <fieldset><legend class="eyebrow">Industry</legend>${INDUSTRIES.slice(1).map(([k, l]) => checkbox('inds', k, l, inds[k] || 0, B.inds.has(k))).join('')}</fieldset>
+  ${indShown() ? `<fieldset><legend class="eyebrow">Industry</legend>${INDUSTRIES.slice(1).map(([k, l]) => checkbox('inds', k, l, inds[k] || 0, B.inds.has(k))).join('')}</fieldset>` : ''}
   <div class="row"><button class="btn sm" id="clear" ${filtersActive() ? "" : "disabled"}>Clear filters</button></div>`;
   upgradeSelects($('#side'));
   $$('[data-scope]', $('#side')).forEach(b => b.onclick = () => { B.scope = b.dataset.scope; renderFilters(); renderResults() });
@@ -84,11 +85,11 @@ function renderResults() {
   const items = DATA.filter(matches).sort((a, b) => sortVal(a, B.sort).localeCompare(sortVal(b, B.sort)) * B.dir);
   const th = (k, l) => `<th scope="col" aria-sort="${B.sort === k ? (B.dir > 0 ? 'ascending' : 'descending') : 'none'}"><button data-sort="${k}">${l}${B.sort === k ? `<span class="sortc ${B.dir > 0 ? '' : 'flip'}">${CHEV}</span>` : ''}</button></th>`;
   $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries</p></div>
-  ${items.length ? `<table class="db"><thead><tr>${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', 'Category') : ''}${platShown() ? th('platforms', 'Platforms') : ''}${th('industries', 'Industries')}</tr></thead><tbody>${items.map(e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
-   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
+  ${items.length ? `<table class="db"><thead><tr>${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', 'Category') : ''}${platShown() ? th('platforms', 'Platforms') : ''}${indShown() ? th('industries', 'Industries') : ''}</tr></thead><tbody>${items.map(e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
+   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${e.type === 'icon' ? `<span class="iconprev" aria-hidden="true">${iconSvg(e, 24)}</span>` : ''}${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
    <td data-l="Type">${TYPE[e.type]}</td>${B.types.size === 1 ? `<td data-l="Category">${esc(e.category)}</td>` : ''}
    ${platShown() ? `<td data-l="Platforms">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('') || '<span class="empty">Any</span>'}</td>` : ''}
-   <td data-l="Industries">${(e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('')}</td></tr>`).join('')}</tbody></table>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
+   ${indShown() ? `<td data-l="Industries">${e.type === 'icon' ? '<span class="empty">Any</span>' : (e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('')}</td>` : ''}</tr>`).join('')}</tbody></table>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
   $$('[data-sort]', $('#main')).forEach(b => b.onclick = () => { const k = b.dataset.sort; if (B.sort === k) B.dir *= -1; else { B.sort = k; B.dir = 1 } renderResults() });
   $$('[data-open]', $('#main')).forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
 }
@@ -129,10 +130,37 @@ const PREF_KEY = 'mambo-database.prefs';
 const PREF = (() => { const p = { os: [], on: [], off: [] }; try { Object.assign(p, JSON.parse(localStorage.getItem(PREF_KEY)) || {}) } catch { } return p })();
 const savePref = () => { try { localStorage.setItem(PREF_KEY, JSON.stringify(PREF)) } catch { } };
 const applyPref = (e, ids) => { const all = (e.states || []).map(x => x.id); return all.filter(id => PREF.on.includes(id) ? true : PREF.off.includes(id) ? false : ids.includes(id)) };
+
+/* ---------- icons ---------- */
+const iconSvg = (e, size) => e.svg.replace('<svg ', `<svg width="${size}" height="${size}" `);
+const iconJsx = (e, size) => { const body = e.svg.replace(/<svg /, `<svg width={${size}} height={${size}} `).replace(/([a-z]+)-([a-z]+)=/g, (m, a, b) => a + b[0].toUpperCase() + b.slice(1) + '='); return `export function ${e.name.replace(/ /g, '')}Icon(props) {\n  return (\n    ${body.replace('>', ' {...props}>')}\n  );\n}` };
+const iconUri = (e, size) => 'data:image/svg+xml,' + encodeURIComponent(iconSvg(e, size).replace(/currentColor/g, '#000000'));
+let curIconSize = 24;
+function iconClip(e) { clipStore.svg = iconSvg(e, curIconSize); clipStore.jsx = iconJsx(e, curIconSize); clipStore.uri = `background-image: url("${iconUri(e, curIconSize)}");\nwidth: ${curIconSize}px;\nheight: ${curIconSize}px;`; }
+function iconDetails(e) {
+  const set = ICON_SETS.find(x => x.id === e.setId) || {}, others = DATA.filter(x => x.type === 'icon' && x.name === e.name && x.id !== e.id).sort((a, b) => a.category.localeCompare(b.category));
+  iconClip(e);
+  return `<p class="eyebrow">Icon · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>
+  <div class="meta"><span class="tag">${esc(e.category)}</span><span class="tag">Style: ${esc(e.style)}</span><span class="tag">${esc(e.license)}</span><span class="tag">Free for commercial use</span></div>
+  <div class="iconhero"><div class="ih light" aria-hidden="true"><span id="ico-pv">${iconSvg(e, curIconSize)}</span></div><div class="ih dark" aria-hidden="true"><span id="ico-pv2">${iconSvg(e, curIconSize)}</span></div></div>
+  <div class="row" style="align-items:end"><label class="f" style="min-width:140px"><span class="f-t">Size (px)</span><select id="ico-size" aria-label="Icon size in pixels">${[16, 20, 24, 32, 48, 64].map(n => `<option ${n === curIconSize ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+  <button class="btn solid" data-copy="svg">Copy SVG</button><button class="btn" data-copy="jsx">Copy React (JSX)</button><button class="btn" data-copy="uri">Copy CSS background</button><button class="btn" id="ico-dl">Download .svg</button></div>
+  <p class="note">The icon uses <code>currentColor</code>, so it takes the text color of wherever you place it. To use it in Figma, copy the SVG and paste it onto the canvas; it arrives as an editable vector.</p>
+  <h2>License</h2><table class="detail"><tbody>
+  ${drow('Design system', esc(e.category))}
+  ${drow('Library', `<a href="${esc(set.website)}" target="_blank" rel="noopener">${esc(e.set)}</a> · ${esc(set.package || '')}`)}
+  ${drow('License', `<a href="licenses/icons/${esc(e.setId)}-LICENSE.txt" target="_blank" rel="noopener">${esc(e.license)}</a> · free for personal and commercial use, including in products you sell. Keep the copyright notice when you redistribute the files.`)}
+  ${drow('Copyright', esc(set.copyright || ''))}
+  ${drow('Source', `<a href="${esc(set.source)}" target="_blank" rel="noopener">${esc(set.source)}</a>`)}
+  ${set.note ? drow('Note', esc(set.note)) : ''}
+  </tbody></table>
+  ${others.length ? `<h2>The same icon in other design systems (${others.length})</h2><ul class="iconalt">${others.map(o => `<li><button class="name-btn" data-open="${esc(o.id)}"><span class="ia" aria-hidden="true">${iconSvg(o, 28)}</span>${esc(o.category)}</button></li>`).join('')}</ul>` : ''}`;
+}
 function renderEntry(e) {
   Object.keys(clipStore).forEach(k => delete clipStore[k]);
   clipStore.md = e.md; clipStore.json = JSON.stringify(e, (k, v) => k === 'md' ? undefined : v, 2);
   const back = '';
+  if (e.type === 'icon') return iconDetails(e);
   if (e.type === 'component') {
     curStates = applyPref(e, statesFor(e, cur())); curOS = PREF.os.filter(o => e.os && e.os[o]);
     clipStore.html = e.code.html; clipStore.js = e.code.js || '';
@@ -189,6 +217,13 @@ function refreshComponent(e) {
   const pv = $('#pv'); if (pv) { pv.srcdoc = previewDoc(e, curStates, curOS); pv.onload = () => { try { pv.style.height = Math.min(1100, Math.max(e.code.pvHeight || 260, pv.contentDocument.documentElement.scrollHeight + 4)) + 'px' } catch { } } }
 }
 function wireEntry(e, root) {
+  if (e.type === 'icon') {
+    const sz = $('#ico-size'), upd = () => { curIconSize = +sz.value; iconClip(e); $('#ico-pv').innerHTML = iconSvg(e, curIconSize); $('#ico-pv2').innerHTML = iconSvg(e, curIconSize) };
+    sz.addEventListener('change', upd); $('#ico-dl').onclick = () => download(e.setId + '-' + e.name.toLowerCase().replace(/ /g, '-') + '.svg', clipStore.svg, 'image/svg+xml');
+    $$('[data-open]', root).forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
+    root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase()) });
+    return;
+  }
   if (e.type === 'component') {
     refreshComponent(e);
     $$('[data-os]').forEach(i => i.onchange = () => { const o = i.dataset.os; PREF.os = i.checked ? [...new Set([...PREF.os, o])] : PREF.os.filter(x => x !== o); savePref(); curOS = PREF.os.filter(x => e.os && e.os[x]); refreshComponent(e) });

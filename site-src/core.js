@@ -33,8 +33,9 @@ function fixFg(fg, bg, target) {
 }
 
 /* ---------- constants ---------- */
-const TYPE = { component: 'Component', color: 'Color', typeface: 'Typography' };
-const TYPE_PLURAL = { component: 'Components', color: 'Colors', typeface: 'Typography' };
+const TYPE = { component: 'Component', color: 'Color', typeface: 'Typography', icon: 'Icon' };
+const TYPE_PLURAL = { component: 'Components', color: 'Colors', typeface: 'Typography', icon: 'Icons' };
+const ICON_SETS = /*__ICONSETS__*/[];
 const PLAT = { 'desktop-web': 'Desktop website', 'desktop-app': 'Desktop app', tablet: 'Tablet', 'mobile-web': 'Mobile website', ios: 'iOS app', android: 'Android app' };
 const POINTER = ['desktop-web', 'desktop-app'];
 const INDUSTRIES = [['all', 'All'], ['finance', 'Finance & fintech'], ['insurance', 'Insurance'], ['legal', 'Legal'], ['healthcare', 'Healthcare'], ['wellness', 'Wellness & fitness'], ['education', 'Education'], ['retail', 'Retail & e-commerce'], ['food-beverage', 'Food & beverage'], ['hospitality', 'Travel & hospitality'], ['technology', 'Technology & SaaS'], ['data', 'Data & analytics'], ['entertainment', 'Entertainment'], ['gaming', 'Gaming'], ['creative', 'Creative & media'], ['media', 'Publishing & media'], ['nonprofit', 'Nonprofit'], ['sustainability', 'Sustainability'], ['agriculture', 'Agriculture']];
