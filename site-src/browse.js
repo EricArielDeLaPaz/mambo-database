@@ -29,7 +29,7 @@ const PANES_KEY = 'mambo-database.panes';
 /* Resizable panes, like the side panels in Figma. Drag a line, use arrow keys, or double-click to reset. */
 function initPanes(lay) {
   const w = { l: 290, r: 520 }; try { Object.assign(w, JSON.parse(localStorage.getItem(PANES_KEY)) || {}) } catch { }
-  const apply = () => { lay.style.setProperty('--wl', w.l + 'px'); lay.style.setProperty('--wr', w.r + 'px') }, save = () => { try { localStorage.setItem(PANES_KEY, JSON.stringify(w)) } catch { } }; apply();
+  const apply = () => { lay.style.setProperty('--wl', w.l + 'px'); lay.style.setProperty('--wr', w.r + 'px'); $$('.rz[data-rz]', lay).forEach(h => { const l = h.dataset.rz === 'left'; h.setAttribute('aria-valuemin', l ? 200 : 320); h.setAttribute('aria-valuemax', l ? 560 : 980); h.setAttribute('aria-valuenow', Math.round(l ? w.l : w.r)) }) }, save = () => { try { localStorage.setItem(PANES_KEY, JSON.stringify(w)) } catch { } }; apply();
   $$('.rz', lay).forEach(h => { const side = h.dataset.rz;
     h.onpointerdown = e => { e.preventDefault(); h.setPointerCapture(e.pointerId); h.classList.add('drag'); document.body.classList.add('resizing');
       const move = ev => { const r = lay.getBoundingClientRect(); if (side === 'left') w.l = clamp(ev.clientX - r.left, 200, Math.max(240, Math.min(560, r.width - 440))); else w.r = clamp(r.right - ev.clientX, 320, Math.max(340, Math.min(980, r.width - w.l - 320))); apply() };

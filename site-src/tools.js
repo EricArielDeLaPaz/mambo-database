@@ -1,5 +1,14 @@
 /* ===== Tools: contrast checker and color randomizer ===== */
-const TOOLS = [['contrast', 'Contrast checker', 'Check two colors against WCAG, same math as WebAIM.'], ['randomizer', 'Color randomizer', 'Random palettes and hues for light and dark themes.']];
+const TOOLS = [
+  ['contrast', 'Contrast checker', 'Check two colors against WCAG, same math as WebAIM.', 'Color'],
+  ['randomizer', 'Color randomizer', 'Random palettes and hues for light and dark themes.', 'Color'],
+  ['cvd', 'Colorblind simulator', 'See colors and images the way color-blind people do.', 'Color'],
+  ['lorem', 'Lorem ipsum generator', 'Placeholder text by paragraphs, sentences, words or characters.', 'Content'],
+  ['persona', 'Persona generator', 'Random names with illustrated profile pictures.', 'Content'],
+  ['convert', 'File converter', 'Convert images between formats, many at once.', 'Images and files'],
+  ['bgremove', 'Background remover', 'Remove a plain background from an image.', 'Images and files'],
+  ['units', 'Unit converter', 'px, rem, em, pt, vw and more for CSS and handoff.', 'Measure']
+];
 const h2x = (h, s, l) => { h = ((h % 360) + 360) % 360; s = Math.max(0, Math.min(1, s)); l = Math.max(0, Math.min(1, l)); const a = s * Math.min(l, 1 - l), f = n => { const k = (n + h / 30) % 12; return Math.round(255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1)))) }; return '#' + [f(0), f(8), f(4)].map(v => v.toString(16).padStart(2, '0')).join('') };
 const rnd = (a, b) => a + Math.random() * (b - a);
 const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -7,22 +16,21 @@ const inkOn = bg => ratio('#000000', bg) >= ratio('#ffffff', bg) ? '#000000' : '
 const TICK = '<span aria-hidden="true">✓</span>', CROSS = '<span aria-hidden="true">✕</span>';
 
 function renderTools() {
-  const id = TOOLS.some(t => t[0] === route().id) ? route().id : 'contrast', cur = TOOLS.find(t => t[0] === id);
+  const id = TOOLS.some(t => t[0] === route().id) ? route().id : 'contrast', cur = TOOLS.find(t => t[0] === id), groups = [...new Set(TOOLS.map(t => t[3]))];
   $('#app').innerHTML = `<div class="layout" id="tlay"><aside id="tside" aria-label="Tools"><p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
-  <fieldset><legend class="eyebrow">Tool</legend>${TOOLS.map(t => `<label class="chk radio"><input type="radio" name="tool" value="${t[0]}" ${t[0] === id ? 'checked' : ''}><span><b>${t[1]}</b><small>${t[2]}</small></span></label>`).join('')}</fieldset>
-  <p class="note">More tools will be added here.</p></aside>
-  <main id="main" tabindex="-1" class="toolwrap"><div class="dbhead"><div><p class="eyebrow">Tools</p><h1>${cur[1]}</h1></div></div><div id="toolbody"></div></main></div>`;
+  ${groups.map(g => `<fieldset><legend class="eyebrow">${g}</legend>${TOOLS.filter(t => t[3] === g).map(t => `<label class="chk radio"><input type="radio" name="tool" value="${t[0]}" ${t[0] === id ? 'checked' : ''}><span><b>${t[1]}</b><small>${t[2]}</small></span></label>`).join('')}</fieldset>`).join('')}</aside>
+  <main id="main" tabindex="-1" class="toolwrap"><div class="dbhead"><div><p class="eyebrow">${cur[3]}</p><h1>${cur[1]}</h1></div></div><div id="toolbody"></div></main></div>`;
   document.title = cur[1] + ' · Mambo Database';
   $$('input[name=tool]', $('#tside')).forEach(r => r.onchange = () => go('#/tools/' + r.value));
-  id === 'contrast' ? renderContrast($('#toolbody')) : renderRandomizer($('#toolbody'));
+  stopCam(); TOOL_RENDER[id]($('#toolbody'));
 }
 
 /* ---------- contrast checker (same math as WebAIM) ---------- */
 const CT = { fg: '#1d4ed8', bg: '#ffffff' };
 function renderContrast(el) {
   el.innerHTML = `<p class="lede">Check any two colors against the WCAG contrast rules. The math is the same as <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener">WebAIM's Contrast Checker</a>, and the ratio is cut off (not rounded) at two decimals like theirs, so 4.496 reads 4.49 and fails.</p>
-  <div class="ct-in">${[['fg', 'Foreground (text or icon)'], ['bg', 'Background']].map(([k, l]) => `<div class="f ct-f"><label class="f-t" for="ct-${k}">${l}</label><div class="ct-row"><input type="color" id="ct-${k}-p" aria-label="${l} color picker" value="${CT[k]}"><input type="text" id="ct-${k}" value="${CT[k]}" maxlength="7" autocomplete="off" spellcheck="false" aria-describedby="ct-err-${k}"></div><p class="ct-err" id="ct-err-${k}" role="alert"></p></div>`).join('')}
-  <button class="btn" id="ct-swap" type="button">Swap colors</button></div>
+  <div class="ct-in">${[['fg', 'Foreground (text or icon)'], ['bg', 'Background']].map(([k, l]) => `<div class="f ct-f"><label class="f-t" for="ct-${k}">${l}</label><div class="ct-row"><input type="color" id="ct-${k}-p" aria-label="${l} color picker" value="${CT[k]}"><input type="text" id="ct-${k}" value="${esc(fmtColor(CT[k]))}" autocomplete="off" spellcheck="false" aria-describedby="ct-err-${k}"></div><p class="ct-err" id="ct-err-${k}" role="alert"></p></div>`).join('')}
+  <div class="ct-side">${cfmtSelect()}<button class="btn" id="ct-swap" type="button">Swap colors</button></div></div>
   <div id="ct-out" aria-live="polite"></div>`;
   const out = $('#ct-out', el);
   const update = () => {
@@ -32,18 +40,18 @@ function renderContrast(el) {
     <div class="ct-prev" style="background:${esc(CT.bg)};color:${esc(CT.fg)}"><p class="ct-lg">Large text sample</p><p>Normal text sample. The quick brown fox jumps over the lazy dog.</p><span class="ct-ui" style="border-color:${esc(CT.fg)}">UI component</span></div>
     <table class="ct-tbl"><caption class="sr">WCAG results for this color pair</caption><thead><tr><th scope="col">Use</th><th scope="col">Level</th><th scope="col">Needs</th><th scope="col">Result</th></tr></thead><tbody>${rows.map(([u, lv, t]) => `<tr><th scope="row">${u}</th><td>WCAG ${lv}</td><td>${t}:1</td><td class="${r >= t ? 'pass' : 'fail'}">${r >= t ? TICK + ' Pass' : CROSS + ' Fail'}</td></tr>`).join('')}</tbody></table>
     <p class="note">Large text means 24px or bigger, or 18.66px or bigger in bold (14pt bold).</p>
-    <div class="row ct-act"><a class="btn" href="${webaimUrl(CT.fg, CT.bg)}" target="_blank" rel="noopener">Check on WebAIM</a>${fix && fix !== CT.fg ? `<button class="btn solid" id="ct-fix" type="button">Use ${esc(fix)} for the foreground (${fmtRatio(fr)}:1, ${need === 4.5 ? 'passes AA' : 'passes AAA'})</button>` : ''}</div></div>`;
+    <div class="row ct-act"><a class="btn" href="${webaimUrl(CT.fg, CT.bg)}" target="_blank" rel="noopener">Check on WebAIM</a>${fix && fix !== CT.fg ? `<button class="btn fixcolor" id="ct-fix" type="button" style="background:${fix};color:${inkOn(fix)};border-color:${fix}">Suggested Fix (${esc(fmtColor(fix))})</button><span class="note">${fmtRatio(fr)}:1 on this background, ${need === 4.5 ? 'passes AA' : 'passes AAA'}. This changes the foreground.</span>` : ''}</div></div>`;
     const b = $('#ct-fix', out); if (b) b.onclick = () => { CT.fg = fix; sync(); update() };
   };
-  const sync = () => ['fg', 'bg'].forEach(k => { $('#ct-' + k, el).value = CT[k]; $('#ct-' + k + '-p', el).value = CT[k]; $('#ct-err-' + k, el).textContent = ''; $('#ct-' + k, el).removeAttribute('aria-invalid') });
+  const sync = () => ['fg', 'bg'].forEach(k => { $('#ct-' + k, el).value = fmtColor(CT[k]); $('#ct-' + k + '-p', el).value = CT[k]; $('#ct-err-' + k, el).textContent = ''; $('#ct-' + k, el).removeAttribute('aria-invalid') });
   ['fg', 'bg'].forEach(k => {
     $('#ct-' + k + '-p', el).oninput = e => { CT[k] = e.target.value.toLowerCase(); sync(); update() };
-    $('#ct-' + k, el).oninput = e => { const n = normHex(e.target.value), err = $('#ct-err-' + k, el); if (n) { CT[k] = n; $('#ct-' + k + '-p', el).value = n; err.textContent = ''; e.target.removeAttribute('aria-invalid'); update() } else { err.textContent = 'Enter a hex color like #1d4ed8 or #fff.'; e.target.setAttribute('aria-invalid', 'true') } };
+    $('#ct-' + k, el).oninput = e => { const n = parseColor(e.target.value), err = $('#ct-err-' + k, el); if (n) { CT[k] = n; $('#ct-' + k + '-p', el).value = n; err.textContent = ''; e.target.removeAttribute('aria-invalid'); update() } else { err.textContent = 'Enter ' + COLOR_HINT + '.'; e.target.setAttribute('aria-invalid', 'true') } };
   });
   $('#ct-swap', el).onclick = () => { [CT.fg, CT.bg] = [CT.bg, CT.fg]; sync(); update() };
+  upgradeSelects(el); wireCfmt(el, sync);
   update();
 }
-
 
 /* ---------- color randomizer ---------- */
 const RZ_KEY = 'mambo-database.tools.v2', DARK_BG = '#121212', LIGHT_BG = '#ffffff';
@@ -53,7 +61,18 @@ const ROLE_USE = { Primary: 'Main buttons, links and selected states.', Secondar
 const HUE_LIMITS = { min: 3, rec: 7, max: 8 };
 const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900], STEP_L = [.96, .9, .8, .7, .6, .5, .42, .34, .26, .18];
 const THEME_NAME = { light: 'Light', dark: 'Dark' };
-let RZ = null;
+let RZ = null, RZ_EL = null;
+const rzListMode = () => { rzInit(); return RZ.mode };
+/* Used by Color Extract: add (or, for a role the palette already has, replace) a color and lock it. */
+function rzAddExtracted(hex, role) {
+  rzInit(); const sys = RZ.mode === 'system', list = rzList(); let c = sys && role !== 'Other' ? list.find(x => x.role === role) : null, txt;
+  if (c) { c.hex = hex; c.dkLock = false; txt = `Set ${role} to ${fmtColor(hex)} and locked it.` }
+  else {
+    if (list.length >= (sys ? LIMITS.colors.max : 12)) return `The palette is at its maximum of ${sys ? LIMITS.colors.max : 12} colors. Remove one first.`;
+    c = mkc(sys ? role : 'Other', sys ? (role === 'Other' ? 'Extracted ' + (list.length + 1) : role) : 'Color ' + (list.length + 1)); c.hex = hex; list.push(c); if (sys) sortRoles(list); txt = `Added ${fmtColor(hex)} to the randomizer and locked it.`;
+  }
+  c.locked = true; deriveDark(list, sys); saveRz(); if (RZ_EL && RZ_EL.isConnected) renderRandomizer(RZ_EL); return CHECK + ' ' + txt;
+}
 
 const fx = (fg, bg, t) => ratio(fg, bg) >= t ? fg : fixFg(fg, bg, t);
 const mkc = (role, name) => ({ id: uid(), role, name: name || role, hex: '#000000', dk: '#000000', locked: false, dkLock: false });
@@ -134,7 +153,7 @@ async function addColorsToSystem(sel, items, source) {
 const sortRoles = list => { const idx = r => { const i = ROLES.indexOf(r); return i < 0 ? 999 : i }; list.sort((a, b) => idx(a.role) - idx(b.role)) };
 
 function renderRandomizer(el) {
-  rzInit();
+  rzInit(); RZ_EL = el;
   const rerender = f => { renderRandomizer(el); if (f) { const t = $(f, el); if (t) t.focus() } };
   const list = rzList(), sys = RZ.mode === 'system', TH = sys ? themesOn() : ['light'], both = TH.length > 1;
   const snap = () => { RZ.hist.push({ mode: RZ.mode, s: JSON.stringify(list) }); if (RZ.hist.length > 30) RZ.hist.shift() };
@@ -143,21 +162,24 @@ function renderRandomizer(el) {
   let h = `<p class="lede">Randomize a palette, lock the colors you like, and keep going until it feels right. Locked colors stay put. The hues below always come from the palette you just made. Everything is saved in this browser.</p>
   <div class="rz-top"><div><span class="f-t">Output</span>${seg('Mode', RZ.mode, [['system', 'For a design system'], ['random', 'Completely random']])}</div>
   ${sys ? `<fieldset class="themes"><legend class="f-t">Theme</legend><label class="chk"><input type="checkbox" data-theme="light" ${RZ.themes.light ? 'checked' : ''}> Light</label><label class="chk"><input type="checkbox" data-theme="dark" ${RZ.themes.dark ? 'checked' : ''}> Dark</label></fieldset>` : ''}
+  ${cfmtSelect()}
+  <div><span class="f-t">From a picture</span><button class="btn cx-btn" type="button" data-act="extract">${CAMERA_ICON}Color Extract</button></div>
   <div class="rz-go"><button class="btn solid big" data-act="random" type="button">Randomize</button><button class="btn" data-act="undo" type="button" ${RZ.hist.length ? '' : 'disabled'}>Undo</button></div></div>
   <p class="note">${sys ? 'Each role gets a color that fits its job, and text-like roles are adjusted to pass WCAG AA on the Background. Tick Light, Dark or both: the dark version of each color is the accessible opposite of the light one (a white Background becomes near-black). Lock a Primary, Secondary or Accent and the rest will match its hue.' : 'Every color is random and spread around the color wheel. Roles are not assigned, so they are added to a design system as Other.'} The randomizer follows simple color rules; it is not an AI model.</p>`;
   h += `<h2 class="h3">Palette</h2>`;
   h += sys ? limitRows([['Brand colors', cnt(list, BRAND), LIMITS.brand], ['Neutrals', cnt(list, NEUTRAL), LIMITS.neutral], ['Feedback colors', cnt(list, FEEDBACK), LIMITS.feedback], ['All colors', list.length, LIMITS.colors]]) : `<p class="note"><b>${list.length} colors.</b> Minimum 2, maximum 12. Design systems usually settle on 6 to 16 colors in total (recommended up to ${LIMITS.colors.rec}).</p>`;
   h += `<ul class="rz-grid ${both ? 'two' : ''}" aria-label="Palette">${list.map(c => {
     const checkR = sys && c.role !== 'Background' && [...BRAND, ...FEEDBACK, 'Text', 'Text secondary', 'Link', 'Border'].includes(c.role), need = c.role === 'Border' ? 3 : 4.5;
-    return `<li class="rz-card" data-id="${c.id}"><div class="rz-sws">${TH.map(t => { const v = val(c, t); return `<div class="rz-sw" data-th="${t}" style="background:${esc(v)};color:${inkOn(v)}"><b>${esc(c.name)}</b><span>${esc(v.toUpperCase())}</span>${sys ? `<small>${THEME_NAME[t]}</small>` : ''}${c.locked && t === TH[0] ? '<em>Locked</em>' : ''}</div>` }).join('')}</div>
+    return `<li class="rz-card" data-id="${c.id}"><div class="rz-sws">${TH.map(t => { const v = val(c, t); return `<div class="rz-sw" data-th="${t}" style="background:${esc(v)};--ink:${inkOn(v)};--chip:${inkOn(v) === '#000000' ? '#ffffff' : '#000000'}"><b>${esc(c.name)}</b><span>${esc(fmtColor(v))}</span>${sys ? `<small>${THEME_NAME[t]}</small>` : ''}${c.locked && t === TH[0] ? '<em>Locked</em>' : ''}</div>` }).join('')}</div>
     ${TH.map(t => { if (!checkR) return ''; const r = ratio(val(c, t), bgFor(list, t)); return `<p class="rz-r ${r >= need ? 'pass' : 'fail'}">${r >= need ? TICK : CROSS} ${fmtRatio(r)}:1${both ? ' ' + THEME_NAME[t] : ''} on Background${r >= need ? '' : ' (needs ' + need + ':1)'}</p>` }).join('') || '<p class="rz-r"> </p>'}
     <div class="rz-bar"><button type="button" class="ib" data-lock="${c.id}" aria-pressed="${c.locked}" aria-label="Lock ${esc(c.name)}" title="${c.locked ? 'Unlock' : 'Lock'}">${c.locked ? '🔒' : '🔓'}</button>${TH.map(t => `<button type="button" class="ib" data-copyhex="${c.id}" data-th="${t}" aria-label="Copy ${esc(c.name)} ${both ? THEME_NAME[t].toLowerCase() + ' ' : ''}hex code">Copy${both ? ' ' + THEME_NAME[t][0] : ''}</button>`).join('')}${TH.map(t => `<label class="ib pick" title="Edit color"><span class="sr">Edit ${esc(c.name)} ${both ? THEME_NAME[t].toLowerCase() : ''} color</span><input type="color" data-edit="${c.id}" data-th="${t}" value="${esc(val(c, t))}"><span aria-hidden="true">Edit${both ? ' ' + THEME_NAME[t][0] : ''}</span></label>`).join('')}<button type="button" class="ib" data-remove="${c.id}" aria-label="Remove ${esc(c.name)}" title="Remove">✕</button></div></li>`;
   }).join('')}</ul>`;
+  h += TH.map(t => cvdNotice(list.filter(c => !['Overlay', 'Disabled'].includes(c.role)).map(c => ({ name: c.name, hex: val(c, t) })), both ? THEME_NAME[t] : '')).join('');
   if (sys) {
     const avail = ROLES.filter(r => (r === 'Other' || !list.some(c => c.role === r)) && !(BRAND.includes(r) && cnt(list, BRAND) >= LIMITS.brand.max) && !(NEUTRAL.includes(r) && cnt(list, NEUTRAL) >= LIMITS.neutral.max) && !(FEEDBACK.includes(r) && cnt(list, FEEDBACK) >= LIMITS.feedback.max));
     h += `<div class="row rz-add">${list.length < LIMITS.colors.max && avail.length ? `<label class="f"><span class="f-t">Add another color</span><select id="rz-role">${avail.map(r => `<option>${r}</option>`).join('')}</select></label><button class="btn" data-act="add" type="button">Add color</button>` : `<p class="note" role="status">${list.length >= LIMITS.colors.max ? `You have reached the maximum of ${LIMITS.colors.max} colors.` : 'Every role that fits is already in the palette.'} Remove one to add another.</p>`}</div>`;
   } else h += `<div class="row rz-add"><button class="btn" data-act="dec" type="button" ${list.length <= 2 ? 'disabled' : ''}>Fewer colors</button><button class="btn" data-act="inc" type="button" ${list.length >= 12 ? 'disabled' : ''}>More colors</button><span class="note">Minimum 2, maximum 12.</span></div>`;
-  h += `<div class="row"><button class="btn" data-act="copycss" type="button">Copy CSS variables</button><button class="btn" data-act="copyhex" type="button">Copy hex codes${both ? ' (Light)' : ''}</button></div>
+  h += `<div class="row"><button class="btn" data-act="copycss" type="button">Copy CSS variables</button><button class="btn" data-act="copyhex" type="button">Copy color codes${both ? ' (Light)' : ''}</button></div>
   <div class="panel addrow"><h2 style="font-size:16px;margin:0 0 8px">Add to a design system</h2><div class="row" style="margin:0;align-items:end"><label class="f" style="min-width:220px"><span class="f-t">Design system</span><select id="rz-sys">${sysOptions()}</select></label><button class="btn solid" data-act="rz-sys-go" type="button">Add to design system</button><span class="empty" id="rz-sys-msg" role="status"></span></div>${sys ? `<p class="note" style="margin:8px 0 0">Design systems store one color per role, so ${both ? 'the Light colors are' : TH[0] === 'dark' ? 'the Dark colors are' : 'these colors are'} added. Copy the CSS variables to get ${both ? 'both themes' : 'the code'}.</p>` : ''}</div>`;
 
   /* ----- hues of this palette ----- */
@@ -166,18 +188,19 @@ function renderRandomizer(el) {
   ${limitRows([['Hues in use', fams.length, HUE_LIMITS]])}<p class="note">Guidance from published design-system writing (<a href="https://www.uxpin.com/studio/blog/choose-color-pallete/" target="_blank" rel="noopener">UXPin</a> suggests 5 to 7 base hues). Fewer than 3 leaves no room for brand plus success and danger. These are sensible limits, not rules.</p>
   <ul class="hue-list">${chromatic.map(c => {
     const q = hsl(c.hex), qd = hsl(c.dk), s0 = Math.max(.35, Math.min(.9, q.s)), sc = STEPS.map((st, i) => ({ step: st, hex: h2x(q.h, s0, STEP_L[i]) })), near = l => sc.reduce((a, b) => Math.abs(STEP_L[STEPS.indexOf(b.step)] - l) < Math.abs(STEP_L[STEPS.indexOf(a.step)] - l) ? b : a), L = near(q.l), D = near(qd.l), fam = famOf(c.hex);
-    const rows = (sys ? themesOn() : ['light', 'dark']).map(t => { const v = val(c, t), r = ratio(v, bgFor(list, t)); return `<div><span class="eyebrow">${THEME_NAME[t]} mode${t === 'dark' ? ' (inverse)' : ''}</span><p><i class="sq" style="background:${esc(v)}"></i> ${esc(v.toUpperCase())} · closest shade <b>${(t === 'dark' ? D : L).step}</b></p><p class="${r >= 3 ? 'pass' : 'fail'}">${r >= 4.5 ? TICK : r >= 3 ? '<span aria-hidden="true">~</span>' : CROSS} ${fmtRatio(r)}:1 on ${sys ? 'Background' : t === 'dark' ? DARK_BG : 'white'}${r >= 4.5 ? '' : r >= 3 ? ' (large text and UI only)' : ' (too low)'}</p></div>` }).join('');
+    const rows = (sys ? themesOn() : ['light', 'dark']).map(t => { const v = val(c, t), r = ratio(v, bgFor(list, t)); return `<div><span class="eyebrow">${THEME_NAME[t]} mode${t === 'dark' ? ' (inverse)' : ''}</span><p><i class="sq" style="background:${esc(v)}"></i> ${esc(fmtColor(v))} · closest shade <b>${(t === 'dark' ? D : L).step}</b></p><p class="${r >= 3 ? 'pass' : 'fail'}">${r >= 4.5 ? TICK : r >= 3 ? '<span aria-hidden="true">~</span>' : CROSS} ${fmtRatio(r)}:1 on ${sys ? 'Background' : t === 'dark' ? DARK_BG : 'white'}${r >= 4.5 ? '' : r >= 3 ? ' (large text and UI only)' : ' (too low)'}</p></div>` }).join('');
     return `<li class="hue-card"><div class="hue-head"><i class="dot" style="background:${esc(c.hex)}"></i><h3>${fam}</h3><span class="tag">${esc(c.name)}</span>${sys ? `<label class="f"><span class="sr">Role for ${esc(c.name)}</span><select data-huerole="${c.id}" aria-label="Role for ${esc(c.name)}">${ROLES.filter(r => !NEUTRAL.includes(r)).map(r => `<option ${r === c.role ? 'selected' : ''}>${r}</option>`).join('')}</select></label>` : ''}</div>
     ${sys ? `<p class="note" style="margin:6px 0">${esc(c.role)}: ${ROLE_USE[c.role] || ''}${FEEDBACK.includes(c.role) ? ' Pair it with an icon or text, never color alone.' : ''}</p>` : ''}
     <div class="scale" role="img" aria-label="${fam} shades from 50 to 900. Light mode is closest to ${L.step}, dark mode is closest to ${D.step}.">${sc.map(x => `<div style="background:${x.hex};color:${inkOn(x.hex)}"><span>${x.step}</span>${x.step === L.step && (!sys || RZ.themes.light) ? '<b>Light</b>' : ''}${x.step === D.step && (!sys || RZ.themes.dark) ? '<b>Dark</b>' : ''}</div>`).join('')}</div><div class="modes">${rows}</div></li>`
   }).join('') || '<li class="note">This palette has no colored roles yet.</li>'}</ul>
   <div class="row"><button class="btn" data-act="copyhuecss" type="button">Copy hue scales as CSS variables</button></div>`;
-  el.innerHTML = h; upgradeSelects(el); saveRz();
+  el.innerHTML = h; upgradeSelects(el); saveRz(); wireCfmt(el, () => rerender());
 
   /* ----- events ----- */
   $$('[data-mode]', el).forEach(b => b.onclick = () => { RZ.mode = b.dataset.mode; rerender('[data-mode="' + RZ.mode + '"]') });
   $$('input[data-theme]', el).forEach(i => i.onchange = () => { RZ.themes[i.dataset.theme] = i.checked; if (!RZ.themes.light && !RZ.themes.dark) { RZ.themes[i.dataset.theme] = true; toast('Keep at least one theme ticked.') } rerender('[data-theme="' + i.dataset.theme + '"]') });
   const act = (a, fn) => $$('[data-act="' + a + '"]', el).forEach(b => b.onclick = fn);
+  act('extract', () => openColorExtract({}));
   act('random', () => { snap(); sys ? genSystem(list) : genRandom(list); deriveDark(list, sys); if (list.every(c => c.locked)) toast('Every color is locked. Unlock one to randomize.'); rerender('[data-act="random"]') });
   act('undo', () => { const x = RZ.hist.pop(); if (!x) return; if (x.mode === 'system') RZ.sys = JSON.parse(x.s); else RZ.rand = JSON.parse(x.s); RZ.mode = x.mode; rerender('[data-act="random"]') });
   /* Adding a color should not change the others, so lock them while the new one is generated. */
@@ -187,15 +210,15 @@ function renderRandomizer(el) {
   act('dec', () => { snap(); const c = [...list].reverse().find(x => !x.locked) || list[list.length - 1]; list.splice(list.indexOf(c), 1); rerender('[data-act="dec"]') });
   $$('[data-lock]', el).forEach(b => b.onclick = () => { const c = list.find(x => x.id === b.dataset.lock); c.locked = !c.locked; if (!c.locked) { c.dkLock = false; deriveDark(list, sys) } rerender('[data-lock="' + c.id + '"]') });
   $$('[data-remove]', el).forEach(b => b.onclick = () => { if (list.length <= 1) return toast('Keep at least one color.'); snap(); const i = list.findIndex(x => x.id === b.dataset.remove); list.splice(i, 1); deriveDark(list, sys); const n = list[Math.min(i, list.length - 1)]; rerender(n ? '[data-remove="' + n.id + '"]' : null) });
-  $$('[data-copyhex]', el).forEach(b => b.onclick = () => { const c = list.find(x => x.id === b.dataset.copyhex), v = val(c, b.dataset.th); copy(v.toUpperCase(), c.name + ' ' + v.toUpperCase()) });
+  $$('[data-copyhex]', el).forEach(b => b.onclick = () => { const c = list.find(x => x.id === b.dataset.copyhex), v = val(c, b.dataset.th); copy(fmtColor(v), c.name + ' ' + fmtColor(v)) });
   $$('input[data-edit]', el).forEach(i => {
     const c = list.find(x => x.id === i.dataset.edit), t = i.dataset.th, sw = $('.rz-sw[data-th="' + t + '"]', i.closest('.rz-card'));
-    i.oninput = () => { sw.style.background = i.value; sw.style.color = inkOn(i.value); $('span', sw).textContent = i.value.toUpperCase() };
+    i.oninput = () => { sw.style.background = i.value; sw.style.setProperty('--ink', inkOn(i.value)); sw.style.setProperty('--chip', inkOn(i.value) === '#000000' ? '#ffffff' : '#000000'); $('span', sw).textContent = fmtColor(i.value) };
     i.onchange = () => { if (t === 'dark') { c.dk = i.value.toLowerCase(); c.dkLock = true } else { c.hex = i.value.toLowerCase(); deriveDark(list, sys) } c.locked = true; rerender('[data-edit="' + c.id + '"][data-th="' + t + '"]') };
   });
   const nameOf = (c, k) => sys ? kebab(c.role) + (list.filter(x => x.role === c.role).length > 1 ? '-' + (list.filter(x => x.role === c.role).indexOf(c) + 1) : '') : String(k + 1);
   act('copycss', () => { const one = t => list.map((c, k) => `--color-${nameOf(c, k)}: ${val(c, t)};`); copy(TH.length === 2 ? ':root {\n  ' + one('light').join('\n  ') + '\n}\n@media (prefers-color-scheme: dark) {\n  :root {\n    ' + one('dark').join('\n    ') + '\n  }\n}' : ':root {\n  ' + one(TH[0]).join('\n  ') + '\n}', 'CSS variables') });
-  act('copyhex', () => copy(list.map(c => val(c, TH[0]).toUpperCase()).join('\n'), 'hex codes'));
+  act('copyhex', () => copy(list.map(c => fmtColor(val(c, TH[0]))).join('\n'), 'color codes'));
   act('rz-sys-go', async () => { const s = await addColorsToSystem($('#rz-sys', el), list.map(c => ({ role: sys ? c.role : 'Other', name: c.name, hex: val(c, TH[0]) })), 'Color randomizer'); if (s) { rerender(); $('#rz-sys-msg', el).innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>` } });
   /* hues */
   $$('[data-hue]', el).forEach(b => b.onclick = () => {

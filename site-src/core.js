@@ -18,6 +18,34 @@ function download(name, data, type = 'text/plain') { const a = document.createEl
 
 /* ---------- colour maths ---------- */
 function normHex(h) { h = String(h).trim().replace(/^#/, ''); if (/^[0-9a-f]{3}$/i.test(h)) h = h.split('').map(c => c + c).join(''); return /^[0-9a-f]{6}$/i.test(h) ? '#' + h.toLowerCase() : null }
+/* ---------- color formats (HEX, RGB, HSL, HSB, CMYK). The last choice is remembered; HEX the first time. ---------- */
+const CFMT = ['HEX', 'RGB', 'HSL', 'HSB', 'CMYK'], CF_KEY = 'mambo-database.colorfmt';
+let colorFmt = (() => { try { const v = localStorage.getItem(CF_KEY); return CFMT.includes(v) ? v : 'HEX' } catch { return 'HEX' } })();
+const setColorFmt = f => { colorFmt = f; try { localStorage.setItem(CF_KEY, f) } catch { } };
+const rgbOf = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const rgbHex = (r, g, b) => '#' + [r, g, b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
+const hslHex = (h, s, l) => { h = ((h % 360) + 360) % 360; const a = s * Math.min(l, 1 - l), f = n => { const k = (n + h / 30) % 12; return 255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))) }; return rgbHex(f(0), f(8), f(4)) };
+function fmtColor(hex, f = colorFmt) {
+  const h = normHex(hex) || '#000000', [r, g, b] = rgbOf(h), p = x => Math.round(x * 100);
+  if (f === 'RGB') return `rgb(${r}, ${g}, ${b})`;
+  if (f === 'HSL') { const q = hsl(h); return `hsl(${Math.round(q.h)}, ${p(q.s)}%, ${p(q.l)}%)` }
+  if (f === 'HSB') { const mx = Math.max(r, g, b) / 255, mn = Math.min(r, g, b) / 255, q = hsl(h); return `hsb(${Math.round(q.h)}, ${p(mx ? (mx - mn) / mx : 0)}%, ${p(mx)}%)` }
+  if (f === 'CMYK') { const k = 1 - Math.max(r, g, b) / 255, c = k === 1 ? 0 : (1 - r / 255 - k) / (1 - k), m = k === 1 ? 0 : (1 - g / 255 - k) / (1 - k), y = k === 1 ? 0 : (1 - b / 255 - k) / (1 - k); return `cmyk(${p(c)}%, ${p(m)}%, ${p(y)}%, ${p(k)}%)` }
+  return h.toUpperCase();
+}
+/* Accepts a hex code, or rgb()/hsl()/hsb()/cmyk() with or without the function name (bare numbers use the chosen format). */
+function parseColor(str) {
+  str = String(str).trim(); const hx = normHex(str); if (hx) return hx;
+  const nums = (str.match(/-?\d*\.?\d+/g) || []).map(Number), kind = (str.match(/^(rgb|hsl|hsb|hsv|cmyk)/i) || [, colorFmt])[1].toUpperCase().replace('HSV', 'HSB');
+  if (kind === 'RGB' && nums.length >= 3 && nums.slice(0, 3).every(n => n >= 0 && n <= 255)) return rgbHex(...nums);
+  if (kind === 'HSL' && nums.length >= 3 && nums[1] <= 100 && nums[2] <= 100) return hslHex(nums[0], nums[1] / 100, nums[2] / 100);
+  if (kind === 'HSB' && nums.length >= 3 && nums[1] <= 100 && nums[2] <= 100) { const v = nums[2] / 100, sb = nums[1] / 100, l = v * (1 - sb / 2); return hslHex(nums[0], l === 0 || l === 1 ? 0 : (v - l) / Math.min(l, 1 - l), l) }
+  if (kind === 'CMYK' && nums.length >= 4 && nums.slice(0, 4).every(n => n >= 0 && n <= 100)) { const [c, m, y, k] = nums.map(n => n / 100); return rgbHex(255 * (1 - c) * (1 - k), 255 * (1 - m) * (1 - k), 255 * (1 - y) * (1 - k)) }
+  return null;
+}
+const COLOR_HINT = 'a hex code like #1d4ed8, or rgb(29, 78, 216), hsl(224, 76%, 48%), hsb(224, 87%, 85%) or cmyk(87%, 64%, 0%, 15%)';
+const cfmtSelect = () => `<label class="f cfmt"><span class="f-t">Color format</span><select data-cfmt aria-label="Color format">${CFMT.map(f => `<option ${f === colorFmt ? 'selected' : ''}>${f}</option>`).join('')}</select></label>`;
+const wireCfmt = (root, onChange) => $$('select[data-cfmt]', root).forEach(sel => sel.addEventListener('change', () => { setColorFmt(sel.value); $$('select[data-cfmt]').forEach(o => { if (o !== sel) { o.value = sel.value; o.dispatchEvent(new Event('sync')) } }); onChange && onChange() }));
 function lum(h) { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2] }
 /* WebAIM shows the ratio cut off (not rounded) at 2 decimals, so 4.496 reads 4.49 and fails, never 4.50 */
 const fmtRatio = r => (Math.floor(r * 100 + 1e-9) / 100).toFixed(2);
