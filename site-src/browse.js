@@ -1,19 +1,28 @@
 /* ===== Browse: database view ===== */
-const B = { q: '', types: new Set(), cats: new Set(), plats: new Set(), inds: new Set(), scope: 'name', sort: 'name', dir: 1 };
+const B = { q: '', types: new Set(), cats: new Set(), plats: new Set(), inds: new Set(), styles: new Set(), scope: 'name', sort: 'name', dir: 1 };
 const clipStore = {}; let curStates = [];
-const route = () => { const h = location.hash.replace(/^#\/?/, ''); if (h === 'systems') return { view: 'systems' }; if (h === 'guides') return { view: 'guides' }; if (h === 'tools') return { view: 'tools' }; if (h.startsWith('tools/')) return { view: 'tools', id: h.slice(6) }; if (h.startsWith('guide/')) return { view: 'guides', id: h.slice(6) }; if (h.startsWith('entry/')) return { view: 'browse', id: h.slice(6) }; return { view: 'browse' } };
+const route = () => { const h = location.hash.replace(/^#\/?/, ''); if (h === 'systems') return { view: 'systems' }; if (h === 'guides') return { view: 'guides' }; if (h === 'tools') return { view: 'tools' }; if (h.startsWith('tools/')) return { view: 'tools', id: h.slice(6) }; if (h.startsWith('browse/')) { B.types = new Set([h.slice(7)]); B.cats.clear(); B.styles.clear(); try { history.replaceState(null, '', '#/') } catch { } return { view: 'browse' } } if (h.startsWith('guide/')) return { view: 'guides', id: h.slice(6) }; if (h.startsWith('entry/')) return { view: 'browse', id: h.slice(6) }; return { view: 'browse' } };
 const go = h => { location.hash = h };
 
 function matches(e) {
   if (B.types.size && !B.types.has(e.type)) return false;
   if (B.cats.size && !B.cats.has(e.category)) return false;
   if (!platOk(e)) return false;
-  if (B.inds.size && e.type !== 'icon') { const i = e.industries || ['all']; if (!(i.includes('all') || [...B.inds].some(x => i.includes(x)))) return false }
+  if (B.styles.size && styleShown() && !B.styles.has(e.style)) return false;
+  if (B.inds.size && (e.type === 'color' || e.type === 'typeface')) { const i = e.industries || ['all']; if (!(i.includes('all') || [...B.inds].some(x => i.includes(x)))) return false }
   const q = B.q.trim().toLowerCase(); if (!q) return true;
   return (B.scope === 'name' ? e.name + ' ' + (e.keywords || '') : e.summary).toLowerCase().includes(q);
 }
 /* Platform only narrows components; colors and typography always show. */
-const indShown = () => !B.types.size || [...B.types].some(t => t !== 'icon');
+/* Industry only applies to colors and typography. Style only applies to icons (and profiles). */
+const indShown = () => !B.types.size || [...B.types].some(t => t === 'color' || t === 'typeface');
+const styleShown = () => B.types.size === 1 && ['icon', 'profile'].includes([...B.types][0]);
+const STYLE_ORDER = ['Outline', 'Filled', 'Duotone', 'Rounded', 'Sharp', 'Bold', 'Realistic', 'Illustrated', 'Flat', 'Cartoon', 'Pixel', 'Sketch'];
+const styleSort = (a, b) => { const x = STYLE_ORDER.indexOf(a), y = STYLE_ORDER.indexOf(b); return (x < 0 ? 99 : x) - (y < 0 ? 99 : y) || a.localeCompare(b) };
+/* Component states: ticking one here ticks it for every component, and unticking clears it (same choice the details panel remembers). */
+const stateUnion = () => { const m = new Map(STATE_LIST.map(([id, l]) => [id, { id, label: l, n: 0 }])); DATA.filter(e => e.type === 'component').forEach(e => (e.states || []).forEach(x => { const r = m.get(x.id) || (m.set(x.id, { id: x.id, label: x.label, n: 0 }), m.get(x.id)); r.n++ })); return [...m.values()].filter(r => r.n) };
+const stateOn = id => id === 'default' || (PREF.on.includes(id) ? true : PREF.off.includes(id) ? false : (cur() ? cur().states.includes(id) : true));
+const statesShown = () => !B.types.size || B.types.has('component');
 const platShown = () => !B.types.size || B.types.has('component');
 const platOk = e => !B.plats.size || !platShown() || e.type !== 'component' || (e.platforms || []).some(x => B.plats.has(x));
 const hl = t => { const q = B.q.trim(); if (!q) return esc(t); const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); return String(t).split(re).map((x, i) => i % 2 ? '<mark>' + esc(x) + '</mark>' : esc(x)).join('') };
@@ -57,9 +66,9 @@ function fillDetail(d, e, close) {
 }
 let onEntryAdded = null;
 document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && route().id && route().view === 'browse' && !document.querySelector('dialog.mdl') && !ddOpen && !ctxEl && !ev.defaultPrevented) go('#/') });
-const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || (B.plats.size && platShown()) || (B.inds.size && indShown()));
+const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || B.styles.size || (B.plats.size && platShown()) || (B.inds.size && indShown()));
 function renderFilters() {
-  const types = countBy(e => e.type, DATA), cats = countBy(e => e.category, DATA.filter(e => (!B.types.size || B.types.has(e.type)) && platOk(e))), plats = countBy(e => e.platforms, DATA.filter(e => e.type === 'component')), inds = countBy(e => (e.industries || ['all']).includes('all') ? INDUSTRIES.slice(1).map(i => i[0]) : e.industries, DATA.filter(e => e.type !== 'icon'));
+  const types = countBy(e => e.type, DATA), cats = countBy(e => e.category, DATA.filter(e => (!B.types.size || B.types.has(e.type)) && platOk(e))), plats = countBy(e => e.platforms, DATA.filter(e => e.type === 'component')), inds = countBy(e => (e.industries || ['all']).includes('all') ? INDUSTRIES.slice(1).map(i => i[0]) : e.industries, DATA.filter(e => e.type === 'color' || e.type === 'typeface')), sty = countBy(e => e.style, DATA.filter(e => styleShown() && e.type === [...B.types][0] && (!B.cats.size || B.cats.has(e.category))));
   const catList = Object.keys(cats).sort();
   $('#side').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
   <label class="f" style="margin-bottom:10px"><span class="eyebrow f-t">Design system</span><select id="syssel"><option value="">None</option>${S.systems.map(s => `<option value="${s.id}" ${S.active === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}</select></label>
@@ -68,30 +77,111 @@ function renderFilters() {
   <div class="scope" role="group" aria-label="Search in">${[['name', 'Name'], ['description', 'Description']].map(([k, l]) => `<button type="button" class="chip" data-scope="${k}" aria-pressed="${B.scope === k}">${l}</button>`).join('')}</div>
   <fieldset><legend class="eyebrow">Type</legend>${[['', 'All', DATA.length]].concat(Object.keys(TYPE).map(t => [t, TYPE_PLURAL[t], types[t] || 0])).map(([v, l, n]) => `<label class="chk"><input type="radio" name="type" data-type value="${v}" ${(B.types.has(v) || (!v && !B.types.size)) ? 'checked' : ''}><span>${esc(l)}</span><span class="n">${n}</span></label>`).join('')}</fieldset>
   ${B.types.size === 1 ? `<fieldset><legend class="eyebrow">${esc(TYPE_PLURAL[[...B.types][0]])} category</legend>${catList.map(c => checkbox('cats', c, c, cats[c], B.cats.has(c))).join('')}</fieldset>` : ''}
+  ${styleShown() ? `<fieldset><legend class="eyebrow">${[...B.types][0] === 'icon' ? 'Icon style' : 'Style'}</legend>${Object.keys(sty).sort(styleSort).map(c => checkbox('styles', c, c, sty[c], B.styles.has(c))).join('')}</fieldset>` : ''}
   ${platShown() ? `<fieldset><legend class="eyebrow">Platform</legend>${Object.keys(PLAT).map(p => checkbox('plats', p, PLAT[p], plats[p] || 0, B.plats.has(p))).join('')}</fieldset>` : ''}
+  ${statesShown() ? `<fieldset><legend class="eyebrow">Component states</legend><p class="note" style="margin:0 0 6px">Ticking a state turns it on for every component. Unticking turns it off.</p>${stateUnion().map(r => `<label class="chk"><input type="checkbox" data-stf="${esc(r.id)}" ${stateOn(r.id) ? 'checked' : ''} ${r.id === 'default' ? 'disabled' : ''}><span>${esc(r.label)}</span><span class="n">${r.n}</span></label>`).join('')}</fieldset>` : ''}
   ${indShown() ? `<fieldset><legend class="eyebrow">Industry</legend>${INDUSTRIES.slice(1).map(([k, l]) => checkbox('inds', k, l, inds[k] || 0, B.inds.has(k))).join('')}</fieldset>` : ''}
   <div class="row"><button class="btn sm" id="clear" ${filtersActive() ? "" : "disabled"}>Clear filters</button></div>`;
   upgradeSelects($('#side'));
   $$('[data-scope]', $('#side')).forEach(b => b.onclick = () => { B.scope = b.dataset.scope; renderFilters(); renderResults() });
   $('#syssel').onchange = ev => { S.active = ev.target.value || null; saveStore(); renderResults(); showDetail() };
   $('#q').oninput = ev => { B.q = ev.target.value; afterFilter(false); const c = $('#clear'); if (c) c.disabled = !filtersActive() };
-  $$('input[data-type]', $('#side')).forEach(i => i.onchange = () => { B.types = i.value ? new Set([i.value]) : new Set(); B.cats.clear(); afterFilter(true) });
+  $$('input[data-type]', $('#side')).forEach(i => i.onchange = () => { B.types = i.value ? new Set([i.value]) : new Set(); B.cats.clear(); B.styles.clear(); afterFilter(true) });
   $$('input[data-grp]', $('#side')).forEach(i => i.onchange = () => { const s = B[i.dataset.grp]; i.checked ? s.add(i.value) : s.delete(i.value); afterFilter(true) });
-  $('#clear').onclick = () => { B.q = ''; B.types.clear(); B.cats.clear(); B.plats.clear(); B.inds.clear(); renderFilters(); renderResults() };
+  $$('input[data-stf]', $('#side')).forEach(i => i.onchange = () => { const id = i.dataset.stf; PREF.on = PREF.on.filter(x => x !== id); PREF.off = PREF.off.filter(x => x !== id); (i.checked ? PREF.on : PREF.off).push(id); savePref(); showDetail() });
+  $('#clear').onclick = () => { B.q = ''; B.types.clear(); B.cats.clear(); B.plats.clear(); B.inds.clear(); B.styles.clear(); renderFilters(); renderResults() };
 }
 function afterFilter(refresh) { if (refresh) renderFilters(); renderResults() }
-const sortVal = (e, k) => k === 'name' ? e.name : k === 'type' ? TYPE[e.type] : k === 'category' ? e.category : k === 'platforms' ? (e.platforms || []).join() : (e.industries || ['all']).join();
+const sortVal = (e, k) => k === 'name' ? e.name : k === 'type' ? TYPE[e.type] : k === 'category' ? e.category : k === 'style' ? (e.style || '') : k === 'platforms' ? (e.platforms || []).join() : (e.industries || ['all']).join();
 function renderResults() {
-  const items = DATA.filter(matches).sort((a, b) => sortVal(a, B.sort).localeCompare(sortVal(b, B.sort)) * B.dir);
+  const items = DATA.filter(matches).sort((a, b) => sortVal(a, B.sort).localeCompare(sortVal(b, B.sort)) * B.dir), xt = expType();
   const th = (k, l) => `<th scope="col" aria-sort="${B.sort === k ? (B.dir > 0 ? 'ascending' : 'descending') : 'none'}"><button data-sort="${k}">${l}${B.sort === k ? `<span class="sortc ${B.dir > 0 ? '' : 'flip'}">${CHEV}</span>` : ''}</button></th>`;
+  const sample = e => e.type === 'typeface' ? `<span class="tsample" data-font="${esc(e.name)}" style="font-family:'${esc(e.name)}',${fontFallback(e.name)}">The quick brown fox jumps over the lazy dog. 0123456789</span>` : '';
   $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries</p></div>
-  ${items.length ? `<table class="db"><thead><tr>${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', 'Category') : ''}${platShown() ? th('platforms', 'Platforms') : ''}${indShown() ? th('industries', 'Industries') : ''}</tr></thead><tbody>${items.map(e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
-   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${e.type === 'icon' ? `<span class="iconprev" aria-hidden="true">${iconSvg(e, 24)}</span>` : ''}${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
-   <td data-l="Type">${TYPE[e.type]}</td>${B.types.size === 1 ? `<td data-l="Category">${esc(e.category)}</td>` : ''}
+  ${xt ? `<div class="expbar" id="expbar"><label class="chk"><input type="checkbox" id="selall"><span>Select all</span></label><span class="expn" id="expn" role="status"></span><div class="expw" id="expw"></div></div>` : ''}
+  ${items.length ? `<table class="db"><thead><tr>${xt ? '<th scope="col" class="selc"><span class="sr">Select</span></th>' : ''}${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', 'Category') : ''}${styleShown() ? th('style', 'Style') : ''}${platShown() ? th('platforms', 'Platforms') : ''}${indShown() ? th('industries', 'Industries') : ''}</tr></thead><tbody>${items.map(e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
+   ${xt ? `<td class="selc"><input type="checkbox" data-sel="${esc(e.id)}" ${SEL[xt].includes(e.id) ? 'checked' : ''} aria-label="Select ${esc(e.name)}${e.type === 'icon' ? ' (' + esc(e.category) + ')' : ''}"></td>` : ''}
+   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${sample(e)}${e.type === 'icon' ? `<span class="iconprev" aria-hidden="true">${iconSvg(e, 24)}</span>` : ''}${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
+   <td data-l="Type">${TYPE[e.type]}</td>${B.types.size === 1 ? `<td data-l="Category">${esc(e.category)}</td>` : ''}${styleShown() ? `<td data-l="Style">${esc(e.style || '')}</td>` : ''}
    ${platShown() ? `<td data-l="Platforms">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('') || '<span class="empty">Any</span>'}</td>` : ''}
-   ${indShown() ? `<td data-l="Industries">${e.type === 'icon' ? '<span class="empty">Any</span>' : (e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('')}</td>` : ''}</tr>`).join('')}</tbody></table>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
+   ${indShown() ? `<td data-l="Industries">${e.type === 'color' || e.type === 'typeface' ? (e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('') : '<span class="empty">Not used</span>'}</td>` : ''}</tr>`).join('')}</tbody></table>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
   $$('[data-sort]', $('#main')).forEach(b => b.onclick = () => { const k = b.dataset.sort; if (B.sort === k) B.dir *= -1; else { B.sort = k; B.dir = 1 } renderResults() });
   $$('[data-open]', $('#main')).forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
+  watchFonts(); wireExport(items, xt);
+}
+/* Typography rows show a sample in the font; the font file is fetched only when the row scrolls into view. */
+const fontFallback = f => ({ serif: 'Georgia, serif', monospace: 'ui-monospace, monospace' }[(FONTMAP.get(f) || [])[1]] || 'system-ui, sans-serif');
+let fontIO = null;
+function watchFonts() {
+  if (fontIO) fontIO.disconnect(); const els = $$('.tsample[data-font]'); if (!els.length) return;
+  if (!('IntersectionObserver' in window)) { els.slice(0, 40).forEach(x => loadFontCss(x.dataset.font)); return }
+  fontIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { loadFontCss(en.target.dataset.font); fontIO.unobserve(en.target) } }), { rootMargin: '300px' }); els.forEach(x => fontIO.observe(x));
+}
+
+/* ---------- export selection (icons, typography, components). Ticks are saved in this browser and survive switching type or closing the tab. ---------- */
+const SEL_KEY = 'mambo-database.selected.v1', EXPORTABLE = ['icon', 'typeface', 'component'], SEL = { icon: [], typeface: [], component: [] };
+const BY_ID = new Map(DATA.map(e => [e.id, e]));
+try { const d = JSON.parse(localStorage.getItem(SEL_KEY)); if (d) EXPORTABLE.forEach(t => { SEL[t] = (d[t] || []).filter(id => BY_ID.has(id)) }) } catch { }
+const saveSel = () => { try { localStorage.setItem(SEL_KEY, JSON.stringify(SEL)) } catch { } };
+const expType = () => { const t = B.types.size === 1 ? [...B.types][0] : null; return EXPORTABLE.includes(t) ? t : null };
+const EXPORTS = { icon: [['svg', 'Copy SVG'], ['jsx', 'Copy React (.JSX)'], ['dl', 'Download SVG'], ['sys', 'Add to design system']], typeface: [['css', 'Copy CSS'], ['json', 'Copy JSON'], ['sys', 'Add to design system']], component: [['figma', 'Copy HTML + CSS for Figma'], ['json', 'Copy JSON'], ['html', 'Download .html'], ['sys', 'Add to design system']] };
+const pascal = s => String(s).replace(/(^|[^a-z0-9]+)([a-z0-9])/gi, (m, a, b) => b.toUpperCase());
+const stripMd = e => JSON.parse(JSON.stringify(e, (k, v) => k === 'md' || k === 'svg' && e.type !== 'icon' ? undefined : v));
+const compBoth = e => { const st = applyPref(e, statesFor(e, cur())), os = PREF.os.filter(o => e.os && e.os[o]); return `<!-- ${e.name} -->\n<style>\n${compCss(e, st, os)}\n</style>\n${compBody(e, os)}${e.code.js ? '\n<script>\n' + e.code.js + '\n<\/script>' : ''}` };
+async function pickSystem(title, confirm) {
+  const api = openDialog(`<form class="mdl-f"><h2 id="mdl-t">${esc(title)}</h2><label class="f"><span class="f-t">Design system</span><select id="ps-sel">${sysOptions()}</select></label><div class="mdl-actions"><button class="btn" type="button" id="ps-c">Cancel</button><button class="btn solid" id="ps-ok">${esc(confirm)}</button></div></form>`);
+  const d = api.el; upgradeSelects(d); $('#ps-c', d).onclick = () => api.close(null); $('form', d).onsubmit = e => { e.preventDefault(); api.close($('#ps-sel', d).value) };
+  const v = await api.p; if (!v) return null;
+  if (v === '__new') { const n = await ask({ title: 'Name your design system', input: { label: 'Name', value: 'My design system' }, confirm: 'Create' }); if (!n) return null; const s = newSystem({ name: n }); S.systems.push(s); return s }
+  return S.systems.find(x => x.id === v) || null;
+}
+async function runExport(type, act) {
+  const items = SEL[type].map(id => BY_ID.get(id)).filter(Boolean), n = items.length, many = n > 1; if (!n) return toast('Tick at least one first.');
+  const word = type === 'icon' ? 'icon' : type === 'typeface' ? 'typeface' : 'component', what = n + ' ' + word + (many ? 's' : '');
+  if (act === 'sys') {
+    const s = await pickSystem('Add ' + what + ' to a design system', 'Add'); if (!s) return;
+    if (type === 'icon') { s.icons = s.icons || []; items.forEach(e => { if (!s.icons.some(x => x.id === e.id)) s.icons.push({ id: e.id, name: e.name, setId: e.setId, set: e.category, style: e.style, svg: e.svg }) }) }
+    else if (type === 'component') items.forEach(e => { s.components = s.components.filter(c => c.id !== e.id); s.components.push({ id: e.id, states: applyPref(e, statesFor(e, s)), os: PREF.os.filter(o => e.os && e.os[o]) }) });
+    else { const spare = FONT_ROLES.filter(r => !['Display', 'Body', 'Mono'].includes(r)); items.forEach(e => { let role = e.roles[0] === 'display' ? 'Display' : e.roles[0] === 'mono' ? 'Mono' : 'Body'; const same = s.fonts.find(f => f.family === e.name); if (same) { same.weights = keepThree(e.weights.filter(w => [400, 500, 600, 700].includes(w))); return } if (many && s.fonts.some(f => f.role === role)) role = spare.find(r => !s.fonts.some(f => f.role === r)) || role; s.fonts = s.fonts.filter(f => f.role !== role); s.fonts.push({ id: uid(), role, family: e.name, weights: keepThree(e.weights.filter(w => [400, 500, 600, 700].includes(w))) }) }) }
+    S.last = s.id; S.active = s.id; saveStore(); toast('Added ' + what + ' to ' + s.name); return;
+  }
+  if (type === 'icon') {
+    if (act === 'svg') return copy(items.map(e => many ? `<!-- ${e.name} (${e.category}) -->\n` + iconSvg(e, curIconSize) : iconSvg(e, curIconSize)).join('\n\n'), what + ' as SVG');
+    if (act === 'jsx') return copy(items.map(e => iconJsx(e, curIconSize, many ? pascal(e.setId) + pascal(e.name) + 'Icon' : null)).join('\n\n'), what + ' as React');
+    if (act === 'dl') return many ? download('icons.zip', makeZip(items.map(e => ({ name: `icons/${e.setId}-${slug(e.name)}.svg`, data: iconSvg(e, curIconSize) }))), 'application/zip') : download(items[0].setId + '-' + slug(items[0].name) + '.svg', iconSvg(items[0], curIconSize), 'image/svg+xml');
+  }
+  if (type === 'typeface') {
+    items.forEach(e => loadFontCss(e.name));
+    if (act === 'css') return copy(items.map(e => e.css).join('\n\n'), what + ' CSS');
+    if (act === 'json') return copy(JSON.stringify(many ? items.map(stripMd) : stripMd(items[0]), null, 2), what + ' as JSON');
+  }
+  if (type === 'component') {
+    if (act === 'figma') { const ok = await copy(items.map(compBoth).join('\n\n'), what + ' (HTML + CSS)'); if (ok) showFigma('html'); return }
+    if (act === 'json') return copy(JSON.stringify(many ? items.map(stripMd) : stripMd(items[0]), null, 2), what + ' as JSON');
+    if (act === 'html') { const doc = e => compDoc(e, applyPref(e, statesFor(e, cur())), PREF.os.filter(o => e.os && e.os[o])); return many ? download('components.zip', makeZip(items.map(e => ({ name: `components/${e.id}.html`, data: doc(e) }))), 'application/zip') : download(items[0].id + '.html', doc(items[0]), 'text/html') }
+  }
+}
+/* An Export dropdown (also used for the floating one at the bottom right). */
+function selExportMenu(host, type, up) {
+  host.innerHTML = `<button type="button" class="btn solid exp-btn" aria-haspopup="menu" aria-expanded="false">Export${CHEV}</button><div class="exp-menu${up ? ' up' : ''}" role="menu" aria-label="Export options" hidden>${EXPORTS[type].map(([k, l]) => `<button type="button" role="menuitem" data-exp="${k}">${l}</button>`).join('')}</div>`;
+  const btn = $('.exp-btn', host), menu = $('.exp-menu', host), items = () => $$('[role=menuitem]', menu);
+  const close = f => { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); if (f) btn.focus() }, open = () => { menu.hidden = false; btn.setAttribute('aria-expanded', 'true'); items()[0].focus() };
+  btn.onclick = () => menu.hidden ? open() : close();
+  host.onkeydown = e => { if (e.key === 'Escape' && !menu.hidden) { e.preventDefault(); e.stopPropagation(); close(true) } else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !menu.hidden) { e.preventDefault(); const a = items(), i = a.indexOf(document.activeElement); a[(i + (e.key === 'ArrowDown' ? 1 : -1) + a.length) % a.length].focus() } else if (e.key === 'ArrowDown' && menu.hidden && document.activeElement === btn) { e.preventDefault(); open() } };
+  $$('[data-exp]', menu).forEach(b => b.onclick = () => { close(true); runExport(type, b.dataset.exp) });
+  document.addEventListener('pointerdown', ev => { if (!host.contains(ev.target)) { menu.hidden = true; btn.setAttribute('aria-expanded', 'false') } });
+}
+let expIO = null;
+function wireExport(items, xt) {
+  $$('.expfloat').forEach(x => x.remove()); if (expIO) { expIO.disconnect(); expIO = null } if (!xt) return;
+  const ids = items.map(e => e.id), all = $('#selall'), n = $('#expn');
+  const fl = document.createElement('div'); fl.className = 'expfloat'; fl.hidden = true; fl.setAttribute('aria-label', 'Export selected'); $('#main').appendChild(fl); selExportMenu($("#expw"), xt, false); selExportMenu(fl, xt, true);
+  let topVisible = true;
+  const upd = () => { const c = SEL[xt].length, inView = ids.filter(i => SEL[xt].includes(i)).length; n.textContent = c ? `${c} selected` + (c !== inView ? ` (${inView} shown)` : '') : 'None selected'; all.checked = ids.length > 0 && inView === ids.length; all.indeterminate = inView > 0 && inView < ids.length; fl.hidden = !c || topVisible; $$('.exp-btn', $('#expw')).forEach(b => b.disabled = !c); $$('.exp-btn', fl).forEach(b => b.textContent = `Export (${c})`) };
+  if ('IntersectionObserver' in window) { expIO = new IntersectionObserver(es => { topVisible = es[0].isIntersecting; upd() }); expIO.observe($('#expbar')) }
+  $$('input[data-sel]', $('#main')).forEach(i => i.onchange = () => { const a = SEL[xt]; if (i.checked) { if (!a.includes(i.dataset.sel)) a.push(i.dataset.sel) } else SEL[xt] = a.filter(x => x !== i.dataset.sel); saveSel(); upd() });
+  all.onchange = () => { const on = new Set(SEL[xt]); ids.forEach(i => all.checked ? on.add(i) : on.delete(i)); SEL[xt] = [...on]; saveSel(); $$('input[data-sel]', $('#main')).forEach(i => i.checked = on.has(i.dataset.sel)); upd() };
+  upd();
 }
 const ul = a => '<ul class="plain">' + (a || []).map(x => `<li>${esc(x)}</li>`).join('') + '</ul>';
 const codeBlock = (label, code, id) => `<div class="codehead"><strong>${label}</strong><button class="btn sm" data-copy="${id}">Copy</button></div><pre><code>${esc(code)}</code></pre>`;
@@ -99,7 +189,7 @@ function previewDoc(e, ids, os) {
   const fix = `html,body{min-height:100%}body{margin:0;padding:32px;box-sizing:border-box;background:#fafafa;font-family:system-ui,sans-serif}.pv{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:16px;min-height:${Math.max(200, (e.code.pvHeight || 200) - 64)}px}.os-block{margin-bottom:24px;width:100%}.os-block h2{font:700 12px ui-monospace,monospace;letter-spacing:.04em;color:#525252}.sr{position:absolute;width:1px;height:1px;overflow:hidden}`;
   return `<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><style>${compCss(e, ids, os)}\n${fix}</style><div class="pv">${os && os.length ? compBody(e, os, true) : e.code.html}</div>${e.code.js ? '<script>' + e.code.js.replace(/<\/script/gi, '<\\/script') + '<\/script>' : ''}`;
 }
-const meta = e => `<div class="meta">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('')}${(e.industries || ['all']).map(i => `<span class="tag">Industry: ${esc(indLabel(i))}</span>`).join('')}</div>`;
+const meta = e => `<div class="meta">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('')}${e.type === 'component' ? '' : (e.industries || ['all']).map(i => `<span class="tag">Industry: ${esc(indLabel(i))}</span>`).join('')}</div>`;
 const sysOptions = () => { const def = lastSysId(); return S.systems.map(s => `<option value="${s.id}" ${def === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('') + `<option value="__new" ${def === '__new' ? 'selected' : ''}>+ New design system</option>` };
 function addToSystemRow(kind) {
   const def = lastSysId();
@@ -133,7 +223,7 @@ const applyPref = (e, ids) => { const all = (e.states || []).map(x => x.id); ret
 
 /* ---------- icons ---------- */
 const iconSvg = (e, size) => e.svg.replace('<svg ', `<svg width="${size}" height="${size}" `);
-const iconJsx = (e, size) => { const body = e.svg.replace(/<svg /, `<svg width={${size}} height={${size}} `).replace(/([a-z]+)-([a-z]+)=/g, (m, a, b) => a + b[0].toUpperCase() + b.slice(1) + '='); return `export function ${e.name.replace(/ /g, '')}Icon(props) {\n  return (\n    ${body.replace('>', ' {...props}>')}\n  );\n}` };
+const iconJsx = (e, size, nm) => { const body = e.svg.replace(/<svg /, `<svg width={${size}} height={${size}} `).replace(/([a-z]+)-([a-z]+)=/g, (m, a, b) => a + b[0].toUpperCase() + b.slice(1) + '='); return `export function ${nm || e.name.replace(/ /g, '') + 'Icon'}(props) {\n  return (\n    ${body.replace('>', ' {...props}>')}\n  );\n}` };
 const iconUri = (e, size) => 'data:image/svg+xml,' + encodeURIComponent(iconSvg(e, size).replace(/currentColor/g, '#000000'));
 let curIconSize = 24;
 function iconClip(e) { clipStore.svg = iconSvg(e, curIconSize); clipStore.jsx = iconJsx(e, curIconSize); clipStore.uri = `background-image: url("${iconUri(e, curIconSize)}");\nwidth: ${curIconSize}px;\nheight: ${curIconSize}px;`; }
@@ -141,7 +231,7 @@ function iconDetails(e) {
   const set = ICON_SETS.find(x => x.id === e.setId) || {}, others = DATA.filter(x => x.type === 'icon' && x.name === e.name && x.id !== e.id).sort((a, b) => a.category.localeCompare(b.category));
   iconClip(e);
   return `<p class="eyebrow">Icon · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>
-  <div class="meta"><span class="tag">${esc(e.category)}</span><span class="tag">Style: ${esc(e.style)}</span><span class="tag">${esc(e.license)}</span><span class="tag">Free for commercial use</span></div>
+  <div class="meta"><span class="tag">${esc(e.category)}</span><span class="tag">Style: ${esc(e.style)}</span><span class="tag">${esc(e.license)}</span></div>
   <div class="iconhero"><div class="ih light" aria-hidden="true"><span id="ico-pv">${iconSvg(e, curIconSize)}</span></div><div class="ih dark" aria-hidden="true"><span id="ico-pv2">${iconSvg(e, curIconSize)}</span></div></div>
   <div class="row" style="align-items:end"><label class="f" style="min-width:140px"><span class="f-t">Size (px)</span><select id="ico-size" aria-label="Icon size in pixels">${[16, 20, 24, 32, 48, 64].map(n => `<option ${n === curIconSize ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
   <button class="btn solid" data-copy="svg">Copy SVG</button><button class="btn" data-copy="jsx">Copy React (JSX)</button><button class="btn" data-copy="uri">Copy CSS background</button><button class="btn" id="ico-dl">Download .svg</button></div>
@@ -230,7 +320,7 @@ function wireEntry(e, root) {
     $$('[data-st]').forEach(i => i.onchange = () => { const a = new Set(curStates), id = i.dataset.st; i.checked ? a.add(id) : a.delete(id); curStates = [...a]; PREF.on = PREF.on.filter(x => x !== id); PREF.off = PREF.off.filter(x => x !== id); (i.checked ? PREF.on : PREF.off).push(id); savePref(); refreshComponent(e) });
     $('#pv-reset').onclick = () => { const pv = $('#pv'); pv.srcdoc = previewDoc(e, curStates, curOS) + '<!-- ' + Date.now() + ' -->' };
     $('#figma-copy').onclick = async () => { await copy(clipStore.both, 'HTML + CSS'); showFigma('html') };
-    $('#dl-html').onclick = () => { download(e.id + '.html', compDoc(e, curStates, curOS), 'text/html'); showFigma('html') };
+    $('#dl-html').onclick = () => download(e.id + '.html', compDoc(e, curStates, curOS), 'text/html');
   }
   const systemFrom = async sel => { const id = sel.value; if (id === '__new') { const n = await ask({ title: 'Name your design system', input: { label: 'Name', value: 'My design system' }, confirm: 'Create' }); if (!n) return null; const s = newSystem({ name: n }); S.systems.push(s); return s } return S.systems.find(x => x.id === id) };
   const targetSystem = () => systemFrom($('#addsys'));

@@ -2,6 +2,15 @@
 const GUIDES = /*__GUIDES__*/[];
 const G = { q: '', scope: 'name', topics: new Set(), levels: new Set() };
 const gById = id => GUIDES.find(g => g.id === id);
+/* Which guides have been opened (saved in this browser). */
+const READ_KEY = 'mambo-database.guides.read';
+const readSet = () => { try { return new Set(JSON.parse(localStorage.getItem(READ_KEY)) || []) } catch { return new Set() } };
+const setRead = (id, on) => { const r = readSet(); on ? r.add(id) : r.delete(id); try { localStorage.setItem(READ_KEY, JSON.stringify([...r])) } catch { } };
+/* Live color-blindness demos for the color blindness guide (uses the same simulator as the Tools). */
+const CVD_SAMPLE = [['Red', '#d62728'], ['Orange', '#ff7f0e'], ['Yellow', '#f2c500'], ['Green', '#2ca02c'], ['Blue', '#1f77b4'], ['Purple', '#8e44ad'], ['Pink', '#e377c2'], ['Gray', '#7f7f7f']];
+const cvdRows = () => [['Typical vision', null]].concat(Object.keys(CVD).map(k => [CVD[k].label + ' (' + CVD[k].about + ')', k]));
+const cvdDemoHtml = () => `<div class="tscroll"><table class="cvdtbl"><caption class="sr">The same eight colors as seen with typical vision and with each type of color blindness</caption><thead><tr><th scope="col">Vision</th>${CVD_SAMPLE.map(([n]) => `<th scope="col">${n}</th>`).join('')}</tr></thead><tbody>${cvdRows().map(([l, t]) => `<tr><th scope="row">${esc(l)}</th>${CVD_SAMPLE.map(([n, h]) => { const c = t ? simHex(h, t) : h; return `<td><span class="cvdsw" style="background:${c}" role="img" aria-label="${n} as ${esc(l)}: ${c.toUpperCase()}"></span><span class="cvdhx">${c.toUpperCase()}</span></td>` }).join('')}</tr>`).join('')}</tbody></table></div>`;
+const cvdStatusHtml = () => { const ok = '#2e7d32', bad = '#c62828'; return `<div class="tscroll"><table class="cvdtbl"><caption class="sr">Success and danger shown by color alone, then with an icon and a label</caption><thead><tr><th scope="col">Vision</th><th scope="col">Color only</th><th scope="col">Color, icon and label</th></tr></thead><tbody>${cvdRows().map(([l, t]) => { const a = t ? simHex(ok, t) : ok, b = t ? simHex(bad, t) : bad; return `<tr><th scope="row">${esc(l)}</th><td><span class="cvdpill" style="background:${a}" role="img" aria-label="Status A"></span> <span class="cvdpill" style="background:${b}" role="img" aria-label="Status B"></span></td><td><span class="cvdpill lab" style="background:${a};color:${inkOn(a)}"><span aria-hidden="true">✓</span> Saved</span> <span class="cvdpill lab" style="background:${b};color:${inkOn(b)}"><span aria-hidden="true">✕</span> Failed</span></td></tr>` }).join('')}</tbody></table></div>` };
 const gMatch = g => {
   if (G.topics.size && !G.topics.has(g.topic)) return false; if (G.levels.size && !G.levels.has(g.level)) return false;
   const q = G.q.trim().toLowerCase(); if (!q) return true;
@@ -12,7 +21,7 @@ const gHl = (t, on) => { const q = G.q.trim(); if (!q || !on) return esc(t); con
 function inlineMd(t) {
   const codes = []; t = t.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return '\u0000' + (codes.length - 1) + '\u0000' });
   t = esc(t).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/(^|[\s(])_([^_]+)_(?=[\s).,;:]|$)/g, '$1<em>$2</em>');
-  t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, l, u) => /^(https?:|#|[\w./-]+\.(zip|md|txt))/.test(u) ? `<a href="${u}" ${/^https?:/.test(u) ? 'target="_blank" rel="noopener"' : ''}>${l}</a>` : l);
+  t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)(\{\.btn\})?/g, (_, l, u, b) => /^(https?:|#|[\w./-]+\.(zip|md|txt))/.test(u) ? `<a ${b ? 'class="btn solid" ' : ''}href="${u}" ${/^https?:/.test(u) ? 'target="_blank" rel="noopener"' : ''}>${l}</a>` : l);
   return t.replace(/\u0000(\d+)\u0000/g, (_, i) => '<code>' + esc(codes[i]) + '</code>');
 }
 function mdToHtml(md) {
@@ -22,6 +31,8 @@ function mdToHtml(md) {
     const l = lines[i];
     if (/^```/.test(l)) { const lang = l.slice(3).trim(); const buf = []; i++; while (i < lines.length && !/^```/.test(lines[i])) buf.push(lines[i++]); i++; out += `<pre tabindex="0"><code${lang ? ` class="lang-${esc(lang)}"` : ''}>${esc(buf.join('\n'))}</code></pre>`; continue }
     let m;
+    if (/^:::cvd-demo\s*$/.test(l)) { out += cvdDemoHtml(); i++; continue }
+    if (/^:::cvd-status\s*$/.test(l)) { out += cvdStatusHtml(); i++; continue }
     if ((m = l.match(/^(#{2,3})\s+(.*)$/))) { const n = m[1].length; out += `<h${n} id="${slugH(m[2])}">${inlineMd(m[2])}</h${n}>`; i++; continue }
     if (/^\|.*\|\s*$/.test(l) && /^\|[\s:|-]+\|\s*$/.test(lines[i + 1] || '')) {
       const row = r => r.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim()); const head = row(l); i += 2; const rows = [];
@@ -59,17 +70,19 @@ function renderGuideFilters() {
   $('#gclear').onclick = () => { G.q = ''; G.topics.clear(); G.levels.clear(); renderGuideFilters(); list() };
 }
 function renderGuideList(missing) {
-  const items = GUIDES.filter(gMatch);
+  const items = GUIDES.filter(gMatch), rd = readSet();
   $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Guides</p><h1>Learn the foundations</h1></div><p class="empty" role="status">${items.length} of ${GUIDES.length} guides</p></div>
   <p class="lede">Short, plain-language lessons for designers: how the web is built, how to hand work to engineers, and how AI reads your design system.</p>
   ${missing ? '<p class="callout" role="alert">That guide was not found. Pick one below.</p>' : ''}
-  ${items.length ? `<ol class="glist">${items.map(g => `<li><a class="gcard" href="#/guide/${esc(g.id)}"><span class="gmeta"><span class="tag">${esc(g.topic)}</span><span class="tag">${esc(g.level)}</span><span class="empty">${g.minutes} min read</span></span><strong>${gHl(g.title, G.scope === 'name')}</strong><span>${gHl(g.summary, G.scope === 'description')}</span></a></li>`).join('')}</ol>` : '<p class="empty">No guides match these filters. Try clearing some.</p>'}`;
+  ${items.length ? `<ol class="glist">${items.map(g => `<li><a class="gcard" href="#/guide/${esc(g.id)}"><span class="gmeta"><span class="tag">${esc(g.topic)}</span><span class="tag">${esc(g.level)}</span></span><span class="gstat ${rd.has(g.id) ? 'is-read' : ''}">${rd.has(g.id) ? '<span aria-hidden="true">✓</span> Read' : 'Unread'}</span><strong>${gHl(g.title, G.scope === 'name')}</strong><span class="gmin">${g.minutes} min read</span><span>${gHl(g.summary, G.scope === 'description')}</span></a></li>`).join('')}</ol>` : '<p class="empty">No guides match these filters. Try clearing some.</p>'}`;
 }
 function renderGuide(g) {
   const i = GUIDES.findIndex(x => x.id === g.id), prev = GUIDES[i - 1], next = GUIDES[i + 1];
   const nav = (x, l) => x ? `<a class="gnav" href="#/guide/${esc(x.id)}"><span class="eyebrow">${l}</span><strong>${esc(x.title)}</strong></a>` : '<span></span>';
   $('#main').innerHTML = `<article class="guide"><p><a class="lnk" href="#/guides">← All guides</a></p>
-  <p class="eyebrow">${esc(g.topic)} · ${esc(g.level)} · ${g.minutes} min read</p><h1>${esc(g.title)}</h1><p class="lede">${esc(g.summary)}</p>
-  <div class="gbody">${mdToHtml(g.body)}</div><nav class="gpn" aria-label="More guides">${nav(prev, 'Previous')}${nav(next, 'Next')}</nav></article>`;
+  <p class="eyebrow">${esc(g.topic)} · ${esc(g.level)}</p><h1>${esc(g.title)}</h1><p class="gmin">${g.minutes} min read</p><p class="lede">${esc(g.summary)}</p>
+  <div class="gbody">${mdToHtml(g.body)}</div><p class="gdone"><span class="gstat is-read" id="gread-s"><span aria-hidden="true">✓</span> Read</span> <button type="button" class="btn sm" id="gread-b">Mark as unread</button></p><nav class="gpn" aria-label="More guides">${nav(prev, 'Previous')}${nav(next, 'Next')}</nav></article>`;
+  setRead(g.id, true);
+  $('#gread-b').onclick = () => { const on = $('#gread-b').textContent === 'Mark as read'; setRead(g.id, on); $('#gread-b').textContent = on ? 'Mark as unread' : 'Mark as read'; $('#gread-s').hidden = !on; toast(on ? 'Marked as read' : 'Marked as unread') };
   document.title = g.title + ' · Mambo Database'; $('#main').focus({ preventScroll: true }); window.scrollTo(0, 0);
 }

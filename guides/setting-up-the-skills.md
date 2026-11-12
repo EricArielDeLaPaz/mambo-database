@@ -7,6 +7,8 @@ level: Beginner
 order: 2
 ---
 
+> **Heads up: this guide is not finished yet.** The AI skills are still being developed, so some steps may change or not work as described. Once the skills are fully built, this guide will be updated.
+
 A **skill** is a folder of instructions that an AI assistant can load when a task matches. Mambo Database offers two.
 
 | Skill | What it does |

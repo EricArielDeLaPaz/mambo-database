@@ -18,14 +18,14 @@ const SHADOW_PRESETS = {
   'Flat (borders instead of shadows)': () => []
 };
 function newSystem(o = {}) {
-  return { id: uid(), name: 'Untitled system', folder: 'Unsorted', platforms: ['desktop-web', 'mobile-web', 'ios', 'android'], industries: ['all'], hidden: [], colors: [{ id: uid(), name: 'Background', hex: '#ffffff', role: 'Background' }, { id: uid(), name: 'Text', hex: '#0a0a0a', role: 'Text' }], fonts: [], states: ['default', 'focus', 'disabled', 'error'], spacing: '4', radii: '4, 8, 12', shadows: SHADOW_PRESETS['Soft (subtle, most apps)'](), components: [], ...o }
+  return { id: uid(), name: 'Untitled system', folder: 'Unsorted', platforms: ['desktop-web', 'mobile-web', 'ios', 'android'], industries: ['all'], hidden: [], colors: [{ id: uid(), name: 'Background', hex: '#ffffff', role: 'Background' }, { id: uid(), name: 'Text', hex: '#0a0a0a', role: 'Text' }], fonts: [], states: ['default', 'focus', 'disabled', 'error'], spacing: '4', radii: '4, 8, 12', shadows: SHADOW_PRESETS['Soft (subtle, most apps)'](), components: [], icons: [], ...o }
 }
 function loadStore() {
   try {
     const d = JSON.parse(localStorage.getItem(KEY));
     if (d && d.systems) {
       S.folders = d.folders && d.folders.length ? d.folders : ['Unsorted']; if (!S.folders.includes('Unsorted')) S.folders.unshift('Unsorted'); S.systems = d.systems; S.active = d.active || null; S.last = d.last || S.active;
-      S.systems.forEach(sy => { sy.shadows = sy.shadows || []; sy.components = sy.components || []; sy.hidden = sy.hidden || []; if (!sy.industries) sy.industries = [sy.industry && sy.industry !== 'all' ? sy.industry : 'all']; sy.platforms = [...new Set((sy.platforms || []).flatMap(p => p === 'desktop' ? ['desktop-web', 'desktop-app'] : p === 'mobile-app' ? ['ios', 'android'] : [p]))]; sy.components.forEach(c => { c.os = c.os || [] }); sy.fonts.forEach(f => { if (!Array.isArray(f.weights)) f.weights = String(f.weights || '').split(',').map(x => parseInt(x, 10)).filter(Boolean) }) }); return
+      S.systems.forEach(sy => { sy.shadows = sy.shadows || []; sy.icons = sy.icons || []; sy.components = sy.components || []; sy.hidden = sy.hidden || []; if (!sy.industries) sy.industries = [sy.industry && sy.industry !== 'all' ? sy.industry : 'all']; sy.platforms = [...new Set((sy.platforms || []).flatMap(p => p === 'desktop' ? ['desktop-web', 'desktop-app'] : p === 'mobile-app' ? ['ios', 'android'] : [p]))]; sy.components.forEach(c => { c.os = c.os || [] }); sy.fonts.forEach(f => { if (!Array.isArray(f.weights)) f.weights = String(f.weights || '').split(',').map(x => parseInt(x, 10)).filter(Boolean) }) }); return
     }
   } catch { }
   try { (JSON.parse(localStorage.getItem(OLD)) || []).forEach(o => { const cols = flat(o.tokens).filter(([k, v]) => normHex(v)).map(([k, v]) => ({ id: uid(), name: k, hex: normHex(v), role: 'Other' })); S.systems.push(newSystem({ name: o.name, colors: cols })) }) } catch { }
@@ -66,6 +66,7 @@ function systemReadme(s) {
 }
 function systemFiles(s) {
   const files = [{ name: slug(s.name) + '/tokens.json', data: JSON.stringify(tokens(s), null, 2) }, { name: slug(s.name) + '/variables.css', data: cssVars(s) }, { name: slug(s.name) + '/README.md', data: systemReadme(s) }];
+  (s.icons || []).forEach(i => files.push({ name: `${slug(s.name)}/icons/${i.setId}-${slug(i.name)}.svg`, data: i.svg }));
   s.components.forEach(c => { const e = compById(c.id); if (e) files.push({ name: `${slug(s.name)}/components/${e.id}.html`, data: compDoc(e, c.states, c.os) }) });
   return files;
 }

@@ -54,6 +54,10 @@ Platforms ship their own icons that match their interface.
 
 ## Free libraries (check each license)
 
+Browse has every library below as real icons you can filter by design system and style, then copy or download.
+
+[View all libraries in Browse](#/browse/icon){.btn}
+
 | Library | License (at time of writing) | Style |
 | --- | --- | --- |
 | Material Symbols | Apache 2.0 | Outline, rounded, sharp |
