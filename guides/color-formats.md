@@ -17,6 +17,14 @@ A hex code is a `#` followed by six characters, like `#1D4ED8`. It is three pair
 - A short form exists when each pair repeats: `#FFF` is `#FFFFFF` (white), and `#0AF` is `#00AAFF`.
 - Add two more characters for transparency (alpha): `#1D4ED880` is about 50% opaque.
 
+**Why does "80" mean 50%?** Hex counts in base 16, and two hex characters hold a number from 0 to 255, the same range as each color channel. So the alpha pair is a position on a 0 to 255 scale, not a percentage:
+
+- `00` is 0, fully transparent (0% opaque).
+- `80` is 8 × 16 + 0 = 128. Since 128 ÷ 255 ≈ 0.50, that is about 50% opaque.
+- `FF` is 255, fully opaque (100%).
+
+The number 80 you see at the end is hexadecimal, so read it as "eighty in base 16", which is 128, not as 80 out of 100. A few handy ones: `40` is about 25%, `80` is about 50%, `BF` is about 75%, `FF` is 100%. In design tools and CSS `rgba()` or `hsla()` the same idea is written as a plain 0 to 1 number or a percentage, such as `rgba(29, 78, 216, 0.5)`.
+
 **Use it for:** handing colors to engineers, design tokens, and anywhere a short, copyable code is easiest. It is the default in Figma and on this site.
 
 ## RGB

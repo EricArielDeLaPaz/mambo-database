@@ -9,6 +9,18 @@ order: 6
 
 CSS (Cascading Style Sheets) controls **how** HTML looks: color, type, spacing, layout.
 
+### Think of a house
+
+A website is a bit like a house. Each of the three web languages has its own job.
+
+| Part of the house | Language | What it does |
+| --- | --- | --- |
+| The frame and rooms: walls, doors, which rooms exist | HTML | Structure. What is on the page and what each thing is. See [HTML basics](#/guide/html-basics). |
+| Paint, furniture, lighting, decorating | CSS | Looks. How everything is styled and arranged. |
+| Electricity and plumbing | JavaScript | Behavior. What happens when you flip a switch. See [JavaScript basics](#/guide/javascript-basics). |
+
+This guide is about the decorating. The same house can be painted and furnished in a hundred ways without moving a single wall.
+
 ## How a rule is written
 
 ```css
@@ -88,7 +100,7 @@ Design at least a small and a large version, and tell engineers where the layout
 .button:disabled { opacity: .5; }
 ```
 
-`:hover` is the mouse over it, `:focus-visible` is keyboard focus, `:disabled` is unavailable. Each state you list in Design Systems becomes rules like these.
+`:hover` is the mouse over it, `:focus-visible` is keyboard focus, `:disabled` is unavailable. Each state you list in Design Systems becomes rules like these. In house terms, it is how the light switch looks when you hover over it, and the glow of the lamp once it is on.
 
 ## Variables are design tokens (Figma variables)
 

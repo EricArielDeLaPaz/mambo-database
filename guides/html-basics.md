@@ -9,6 +9,18 @@ order: 5
 
 HTML (HyperText Markup Language) describes **what things are** on a page: a heading, a button, a list. CSS then decides how they look. Knowing HTML helps you name layers well, design the right states and talk to engineers.
 
+### Think of a house
+
+A website is a bit like a house. Each of the three web languages has its own job.
+
+| Part of the house | Language | What it does |
+| --- | --- | --- |
+| The frame and rooms: walls, doors, which rooms exist | HTML | Structure. What is on the page and what each thing is. |
+| Paint, furniture, lighting, decorating | CSS | Looks. How everything is styled and arranged. |
+| Electricity and plumbing | JavaScript | Behavior. What happens when you flip a switch. See [JavaScript basics](#/guide/javascript-basics). |
+
+This guide is about the frame. A house with no paint is still a house, and a page with no CSS is still a usable page.
+
 ## Elements, attributes and nesting
 
 An element is a tag pair with content between them.
@@ -21,7 +33,7 @@ An element is a tag pair with content between them.
 - `href` and `class` are **attributes**, extra information about the element.
 - "See pricing" is the content.
 
-Elements nest like boxes inside boxes. This is why Figma frames inside frames map well to HTML.
+Elements nest like rooms inside a house, and furniture inside rooms. This is why Figma frames inside frames map well to HTML.
 
 ## The skeleton of a page
 
@@ -67,7 +79,7 @@ These are called **semantic** elements. They give meaning, free keyboard behavio
 
 ## Headings are an outline
 
-Headings should nest in order: `h1`, then `h2`, then `h3`. Choose a heading level for its **meaning**, not its size. Size is the job of CSS. In your designs, name text styles for meaning (Heading 1, Heading 2) as well as size.
+Headings should nest in order: `h1`, then `h2`, then `h3`. Choose a heading level for its **meaning**, not its size. Size is the job of CSS, the paint. In your designs, name text styles for meaning (Heading 1, Heading 2) as well as size.
 
 ## Forms
 

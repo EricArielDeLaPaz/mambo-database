@@ -22,19 +22,43 @@ function labOf(hex) {
 }
 const deltaE = (a, b) => { const p = labOf(a), q = labOf(b); return Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]) };
 /* Two colors are flagged when they look clearly different normally (distance 20 or more) but get close (under 11) for someone with a type of color blindness. */
+const CVD_SEM = ['Success', 'Warning', 'Danger', 'Info'], CVD_GUIDE = '#/guide/color-blindness';
+const CVD_KEEP = ['Background', 'Text', 'Primary', 'Text secondary', 'Link', 'Surface', 'Border'];
 function cvdIssues(colors) {
   const out = [], list = colors.filter(c => normHex(c.hex));
   for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
     const a = list[i], b = list[j], base = deltaE(a.hex, b.hex); if (base < 20) continue;
     const types = Object.keys(CVD).filter(t => deltaE(simHex(a.hex, t), simHex(b.hex, t)) < 11);
-    if (types.length) out.push({ a, b, types });
+    if (types.length) out.push({ a, b, types, semantic: !!a.role && !!b.role && CVD_SEM.includes(a.role) && CVD_SEM.includes(b.role) });
   }
   return out;
 }
-function cvdNotice(colors, label) {
-  const iss = cvdIssues(colors);
-  if (!iss.length) return `<p class="cvd ok">${TICK} <b>Colorblind check${label ? ' (' + esc(label) + ')' : ''}:</b> no two colors are likely to be confused. This is an estimate, so also test with the Colorblind simulator.</p>`;
-  return `<div class="cvd warn" role="note"><p><b><span aria-hidden="true">!</span> Colorblind check${label ? ' (' + esc(label) + ')' : ''}: ${iss.length} pair${iss.length > 1 ? 's' : ''} may look alike.</b> Never rely on color alone to tell these apart; add an icon, label or pattern.</p><ul>${iss.map(x => `<li><i class="sq" style="background:${esc(x.a.hex)}"></i> ${esc(x.a.name)} and <i class="sq" style="background:${esc(x.b.hex)}"></i> ${esc(x.b.name)}: ${x.types.map(t => CVD[t].label + ' (' + CVD[t].about + ')').join(', ')}</li>`).join('')}</ul></div>`;
+/* Find the smallest lightness change to one color of a pair that makes the pair safe for every type, without creating new problems or breaking contrast on the background. */
+function cvdFix(pair, colors, bg, avoid) {
+  const before = cvdIssues(colors).length, rank = c => { const i = CVD_KEEP.indexOf(c.role); return i < 0 ? 99 : i };
+  const sides = rank(pair.a) < rank(pair.b) ? ['b', 'a'] : ['a', 'b'];
+  for (const side of sides) {
+    if (avoid && avoid.has(pair[side].id)) continue;
+    const c = pair[side], o = pair[side === 'a' ? 'b' : 'a'], q = hsl(c.hex), need = bg ? (ratio(c.hex, bg) >= 4.5 ? 4.5 : ratio(c.hex, bg) >= 3 ? 3 : 0) : 0;
+    for (let d = .02; d <= .5; d += .02) for (const sg of [1, -1]) {
+      const l = q.l + sg * d; if (l < .06 || l > .94) continue;
+      const hex = hslHex(q.h, q.s, l); if (need && ratio(hex, bg) < need) continue;
+      if (!Object.keys(CVD).every(t => deltaE(simHex(hex, t), simHex(o.hex, t)) >= 11)) continue;
+      if (cvdIssues(colors.map(x => x === c ? { ...x, hex } : x)).length < before) return { side, color: c, other: o, hex };
+    }
+  }
+  return null;
+}
+const cvdSq = h => `<i class="sq" style="background:${esc(h)}"></i>`;
+/* opt.fix: show a Fix button per pair (the caller wires [data-cvdfix]); opt.bg: background used to keep contrast when fixing. */
+function cvdNotice(colors, label, opt = {}) {
+  const iss = cvdIssues(colors), more = `<a href="${CVD_GUIDE}">Read more about color blindness</a>`;
+  if (!iss.length) return `<p class="cvd ok">${TICK} <b>Colorblind check${label ? ' (' + esc(label) + ')' : ''}:</b> no two colors are likely to be confused. This is an estimate, so also test with the Colorblind simulator. ${more}.</p>`;
+  const sem = iss.some(x => x.semantic);
+  return `<div class="cvd warn" role="note"><p><b><span aria-hidden="true">!</span> Colorblind check${label ? ' (' + esc(label) + ')' : ''}: ${iss.length} pair${iss.length > 1 ? 's' : ''} may look alike to some people.</b> This is a heads up, not a rule against these colors. Add an icon, label or pattern so the meaning never depends on color alone. ${more}.</p><ul>${iss.map((x, i) => {
+    const fx = opt.fix ? cvdFix(x, colors, opt.bg) : null;
+    return `<li><span class="cvd-pair">${cvdSq(x.a.hex)} ${esc(x.a.name)} and ${cvdSq(x.b.hex)} ${esc(x.b.name)}: ${x.types.map(t => CVD[t].label + ' (' + CVD[t].about + ')').join(', ')}${x.semantic ? ' <span class="tag">Used together on purpose</span>' : ''}</span>${opt.fix ? (fx ? `<span class="fixwrap"><button type="button" class="btn sm" data-cvdfix="${esc(fx.color.id || '')}" data-hex="${fx.hex}" aria-describedby="fp-${i}">Fix</button><span class="fixprev" role="tooltip" id="fp-${i}"><b>Before</b><span class="fp-row">${cvdSq(x.a.hex)}${cvdSq(x.b.hex)}</span><b>After</b><span class="fp-row">${cvdSq(fx.side === 'a' ? fx.hex : x.a.hex)}${cvdSq(fx.side === 'b' ? fx.hex : x.b.hex)}</span><span class="fp-t">${esc(fx.color.name)} changes from ${esc(fmtColor(fx.color.hex))} to ${esc(fmtColor(fx.hex))}. Hue stays the same; only lightness moves, so the pair is easier to tell apart for every type.</span></span></span>` : '<span class="note">No small change fixes this one. Use an icon or label.</span>') : ''}</li>`;
+  }).join('')}</ul>${sem ? '<p class="note">Feedback colors like success and danger are usually shown together, because most people read green and red as good and bad. Some types of color blindness cannot tell them apart. You do not have to drop them: keep the colors and add an icon (a check or a warning sign) and a text label so everyone gets the same message.</p>' : ''}</div>`;
 }
 
 /* ---------- Color Extract: pull the main colors out of an image ---------- */
@@ -137,9 +161,8 @@ function renderLorem(el) {
   el.innerHTML = `<p class="lede">Placeholder text for layouts. Choose a type and an amount and the text updates as you go. Characters and words are exact, so asking for 100 characters gives you exactly 100, letters and spaces included.</p>
   <div class="lorem-ctl"><label class="f"><span class="f-t">Type</span><select id="lo-type" aria-label="Type of text">${Object.keys(LOREM_MAX).map(k => `<option value="${k}" ${S.type === k ? 'selected' : ''}>${k[0].toUpperCase() + k.slice(1)}</option>`).join('')}</select></label>
   <label class="f"><span class="f-t">Amount</span><input type="number" id="lo-n" min="1" inputmode="numeric" value="${S.n}" aria-describedby="lo-max"></label>
-  <label class="chk"><input type="checkbox" id="lo-classic" ${S.classic ? 'checked' : ''}> Start with "Lorem ipsum dolor sit amet"</label>
-  <button class="btn" id="lo-shuffle" type="button">Shuffle</button></div><p class="note" id="lo-max"></p>
-  <div class="lorem-out"><div class="row" style="margin:0 0 8px"><button class="btn solid" id="lo-copy" type="button">Copy text</button><button class="btn" id="lo-copyhtml" type="button">Copy as HTML</button><span class="empty" id="lo-stats" role="status"></span></div><div id="lo-text" class="lorem-text" tabindex="0" aria-label="Generated text"></div></div>`;
+  <label class="chk"><input type="checkbox" id="lo-classic" ${S.classic ? 'checked' : ''}> Start with "Lorem ipsum dolor sit amet"</label></div><p class="note" id="lo-max"></p>
+  <div class="lorem-out"><div class="row" style="margin:0 0 8px"><button class="btn solid" id="lo-copy" type="button">Copy text</button><span class="empty" id="lo-stats" role="status"></span></div><div id="lo-text" class="lorem-text" tabindex="0" aria-label="Generated text"></div></div>`;
   let text = '';
   const gen = () => {
     const max = LOREM_MAX[S.type], raw = parseInt($('#lo-n', el).value, 10); let n = raw;
@@ -152,8 +175,7 @@ function renderLorem(el) {
   };
   $('#lo-type', el).addEventListener('change', e => { S.type = e.target.value; gen() });
   $('#lo-n', el).oninput = gen; $('#lo-classic', el).onchange = e => { S.classic = e.target.checked; gen() };
-  $('#lo-shuffle', el).onclick = gen; $('#lo-copy', el).onclick = () => copy(text, 'text');
-  $('#lo-copyhtml', el).onclick = () => copy(text.split('\n\n').map(p => `<p>${p}</p>`).join('\n'), 'HTML');
+  $('#lo-copy', el).onclick = () => copy(text, 'text');
   upgradeSelects(el); gen();
 }
 
@@ -295,15 +317,15 @@ async function convertImage(file, fmt, q, bg) {
 }
 const fmtSize = n => n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(1) + ' KB' : (n / 1048576).toFixed(1) + ' MB';
 function renderConvert(el) {
-  el.innerHTML = `<p class="lede">Convert images from one format to another, as many as you like at once. Everything happens in your browser; your files never leave your device. Right now this handles images (PNG, JPG, WEBP, GIF, BMP, SVG, AVIF, ICO and anything else your browser can open). Documents, audio and video need heavier tools and are not here yet.</p>
-  <div class="cx-drop" id="cv-drop" role="group" aria-label="Drop images here or press Enter to choose files"><b>Drop images here</b><span>or</span><button class="btn solid" type="button" id="cv-up">Choose files from your device</button><input type="file" id="cv-file" accept="image/*" multiple hidden></div>
+  el.innerHTML = `<p class="lede">Convert images from one format to another, as many as you like at once. Everything happens in your browser; your files never leave your device. Right now this handles images (PNG, JPG, WEBP, GIF, BMP, SVG, AVIF, ICO and anything else your browser can open).</p>
+  <div class="cx-drop" id="cv-drop" role="group" aria-label="Drop images here or press Enter to choose images"><b>Drop images here</b><span>or</span><button class="btn solid" type="button" id="cv-up">Choose images from your device</button><input type="file" id="cv-file" accept="image/*" multiple hidden></div>
   <div class="row conv-opt" style="align-items:end"><label class="f"><span class="f-t">Convert to</span><select id="cv-target" aria-label="Convert to">${CONV_OUT.map(o => `<option value="${o[0]}" ${CONV.target === o[0] ? 'selected' : ''}>${o[1]}</option>`).join('')}</select></label>
   <label class="f"><span class="f-t">Quality (JPG, WEBP, PDF): <output id="cv-qv">${CONV.quality}</output>%</span><input type="range" id="cv-q" min="30" max="100" value="${CONV.quality}"></label>
   <label class="f"><span class="f-t">Background for formats without transparency</span><input type="color" id="cv-bg" value="${CONV.bg}" aria-label="Background color"></label></div>
-  <div id="cv-list"></div><div class="row" id="cv-actions" hidden><button class="btn solid" type="button" id="cv-zip">Download all (.zip)</button><button class="btn" type="button" id="cv-clear">Clear list</button></div>`;
+  <div id="cv-list"></div><div class="row" id="cv-actions" hidden><button class="btn solid" type="button" id="cv-zip">Download</button><button class="btn" type="button" id="cv-clear">Clear list</button></div>`;
   const list = $('#cv-list', el), baseName = n => n.replace(/\.[^.]+$/, '');
   const draw = () => {
-    $('#cv-actions', el).hidden = !CONV.files.length;
+    $('#cv-actions', el).hidden = !CONV.files.length; $('#cv-zip', el).textContent = CONV.files.filter(f => f.out).length > 1 ? 'Download all' : 'Download';
     list.innerHTML = CONV.files.length ? `<div class="tscroll"><table class="ct-tbl"><caption class="sr">Files to convert</caption><thead><tr><th scope="col">File</th><th scope="col">Size</th><th scope="col">Status</th><th scope="col"><span class="sr">Actions</span></th></tr></thead><tbody>${CONV.files.map((f, i) => `<tr><th scope="row">${esc(f.file.name)}</th><td>${fmtSize(f.file.size)}</td><td class="${f.err ? 'fail' : f.out ? 'pass' : ''}">${f.err ? esc(f.err) : f.out ? TICK + ' ' + esc(baseName(f.file.name)) + '.' + f.fmt + ' (' + fmtSize(f.out.size) + ')' : 'Converting…'}</td><td>${f.out ? `<button class="btn sm" data-dl="${i}" type="button">Download</button>` : ''}<button class="btn sm" data-rm="${i}" type="button" aria-label="Remove ${esc(f.file.name)}">Remove</button></td></tr>`).join('')}</tbody></table></div>` : '';
     $$('[data-dl]', list).forEach(b => b.onclick = () => { const f = CONV.files[+b.dataset.dl]; download(baseName(f.file.name) + '.' + f.fmt, f.out, f.out.type) });
     $$('[data-rm]', list).forEach(b => b.onclick = () => { CONV.files.splice(+b.dataset.rm, 1); draw() });
@@ -316,22 +338,25 @@ function renderConvert(el) {
   const redo = () => CONV.files.forEach(f => { if (f.file.type.startsWith('image/') || f.out) run(f) });
   $('#cv-target', el).addEventListener('change', e => { CONV.target = e.target.value; redo() });
   let qt; $('#cv-q', el).oninput = e => { CONV.quality = +e.target.value; $('#cv-qv', el).textContent = CONV.quality; clearTimeout(qt); qt = setTimeout(redo, 250) };
-  $('#cv-bg', el).onchange = e => { CONV.bg = e.target.value; redo() };
+  $('#cv-bg', el).oninput = e => { CONV.bg = e.target.value; redo() };
   $('#cv-clear', el).onclick = () => { CONV.files = []; draw() };
-  $('#cv-zip', el).onclick = async () => { const ok = CONV.files.filter(f => f.out); if (!ok.length) return toast('Nothing converted yet.'); const used = new Set(); const items = await Promise.all(ok.map(async f => { let n = baseName(f.file.name) + '.' + f.fmt, k = 1; while (used.has(n)) n = baseName(f.file.name) + '-' + (k++) + '.' + f.fmt; used.add(n); return { name: n, data: new Uint8Array(await f.out.arrayBuffer()) } })); download("converted-images.zip", makeBinZip(items), 'application/zip') };
+  $('#cv-zip', el).onclick = async () => { const ok = CONV.files.filter(f => f.out); if (!ok.length) return toast('Nothing converted yet.'); if (ok.length === 1) { const f = ok[0]; return download(baseName(f.file.name) + '.' + f.fmt, f.out, f.out.type) } const used = new Set(); const items = await Promise.all(ok.map(async f => { let n = baseName(f.file.name) + '.' + f.fmt, k = 1; while (used.has(n)) n = baseName(f.file.name) + '-' + (k++) + '.' + f.fmt; used.add(n); return { name: n, data: new Uint8Array(await f.out.arrayBuffer()) } })); download("converted-images.zip", makeBinZip(items), 'application/zip') };
   upgradeSelects(el); draw();
 }
 
 /* ---------- Background remover (color-based, in the browser) ---------- */
 const BGR = { tol: 30, feather: 1, global: false, brush: 'none', size: 24 };
+const MODK = /Mac|iPhone|iPad/.test(navigator.platform || '') ? '⌘' : 'Ctrl';
+let BG_KEYS = null;
 function renderBgRemove(el) {
   el.innerHTML = `<p class="lede">Remove a plain background and download the result as a transparent PNG. It works by finding the background color at the edges of your picture and clearing it, so it does best on solid or evenly colored backgrounds. It cannot recognize a person or object the way AI tools like remove.bg do, so for busy photos use the brush to clean up, or try a dedicated AI tool. Your image never leaves your device.</p>
   <div class="cx-drop" id="bg-drop" role="group" aria-label="Drop an image here or press Enter to choose one"><b>Drop an image here</b><span>or</span><button class="btn solid" type="button" id="bg-up">Choose an image from your device</button><input type="file" id="bg-file" accept="image/*" hidden></div><p class="ct-err" id="bg-err" role="alert"></p>
   <div id="bg-work" hidden><div class="bg-ctl"><label class="f"><span class="f-t">Tolerance: <output id="bg-tv"></output></span><input type="range" id="bg-tol" min="1" max="100" value="${BGR.tol}"></label><label class="f"><span class="f-t">Edge softness: <output id="bg-fv"></output> px</span><input type="range" id="bg-f" min="0" max="6" value="${BGR.feather}"></label>
   <label class="chk"><input type="checkbox" id="bg-glob" ${BGR.global ? 'checked' : ''}> Remove this color everywhere, not only around the edges</label></div>
-  <div class="row" style="align-items:end"><div class="seg" role="radiogroup" aria-label="Tool">${[['none', 'Pick background color'], ['erase', 'Erase brush'], ['restore', 'Restore brush']].map(([k, l]) => `<button type="button" role="radio" aria-checked="${BGR.brush === k}" data-br="${k}">${l}</button>`).join('')}</div><label class="f"><span class="f-t">Brush size: <output id="bg-sv"></output></span><input type="range" id="bg-size" min="4" max="120" value="${BGR.size}"></label></div>
-  <p class="note" id="bg-help"></p><div class="bg-stage"><canvas id="bg-cv" aria-label="Image with the background removed. Click to pick the background color, or paint with the brush."></canvas></div>
-  <div class="row"><button class="btn solid" id="bg-dl" type="button">Download PNG</button><button class="btn" id="bg-reset" type="button">Reset edits</button><button class="btn" id="bg-new" type="button">Choose another image</button><span class="empty" id="bg-info" role="status"></span></div></div>`;
+  <div class="row bg-tools" id="bg-tools" style="align-items:end"><div class="seg" role="radiogroup" aria-label="Tool">${[['none', 'Pick background color'], ['erase', 'Erase brush'], ['restore', 'Restore brush']].map(([k, l]) => `<button type="button" role="radio" aria-checked="${BGR.brush === k}" data-br="${k}">${l}</button>`).join('')}</div><label class="f"><span class="f-t">Brush size: <output id="bg-sv"></output></span><input type="range" id="bg-size" min="4" max="120" value="${BGR.size}"></label><button class="btn" id="bg-rbrush" type="button">Reset brush settings</button>
+  <span class="bg-hist"><button class="btn" id="bg-undo" type="button" aria-keyshortcuts="Control+Z Meta+Z" title="Undo (${MODK}+Z)" disabled>Undo</button><button class="btn" id="bg-redo" type="button" aria-keyshortcuts="Control+Shift+Z Control+Y Meta+Shift+Z" title="Redo (${MODK}+Shift+Z)" disabled>Redo</button></span></div>
+  <p class="note" id="bg-help"></p><div class="bg-stage" id="bg-stage"><button class="btn sm bg-zoom-btn" id="bg-zoom" type="button" aria-label="Open zoomed editor">Zoom in</button><canvas id="bg-cv" aria-label="Image with the background removed. Click to pick the background color, or paint with the brush."></canvas></div>
+  <div class="row"><button class="btn solid" id="bg-dl" type="button">Download PNG</button><button class="btn" id="bg-new" type="button">Choose another image</button><span class="empty" id="bg-info" role="status"></span></div></div>`;
   let W = 0, H = 0, orig = null, mask = null, manual = null, bgc = null, raf = 0;
   const cv = $('#bg-cv', el), cx = cv.getContext('2d');
   const sampleBg = () => { const d = orig.data, pts = [], m = 3; for (let x = 0; x < W; x += Math.max(1, W >> 5)) { pts.push((x) * 4, ((H - 1) * W + x) * 4) } for (let y = 0; y < H; y += Math.max(1, H >> 5)) { pts.push((y * W) * 4, (y * W + W - 1) * 4) } const q = c => { const a = pts.map(i => d[i + c]).sort((u, v) => u - v); return a[a.length >> 1] }; return [q(0), q(1), q(2)] };
@@ -350,25 +375,66 @@ function renderBgRemove(el) {
     $('#bg-info', el).textContent = `Background color found: ${fmtColor(rgbHex(...bgc))}`;
   };
   const redo = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { compute(); paint() }) };
-  const labels = () => { $('#bg-tv', el).textContent = BGR.tol; $('#bg-fv', el).textContent = BGR.feather; $('#bg-sv', el).textContent = BGR.size + ' px'; $('#bg-help', el).textContent = BGR.brush === 'none' ? 'Click the picture to choose which color counts as the background.' : BGR.brush === 'erase' ? 'Paint over parts you want removed.' : 'Paint over parts you want to bring back.' };
+  /* undo / redo: a list of snapshots of everything that shapes the result */
+  let hist = [], hi = -1;
+  const snap = () => ({ m: manual.slice(), bgc: bgc.slice(), tol: BGR.tol, f: BGR.feather, g: BGR.global });
+  const syncHist = () => { $('#bg-undo', document).disabled = hi <= 0; $('#bg-redo', document).disabled = hi >= hist.length - 1 };
+  const commit = () => { if (!manual) return; hist = hist.slice(0, hi + 1); hist.push(snap()); if (hist.length > 30) hist.shift(); hi = hist.length - 1; syncHist() };
+  const applySnap = h => { manual = h.m.slice(); bgc = h.bgc.slice(); BGR.tol = h.tol; BGR.feather = h.f; BGR.global = h.g; $('#bg-tol', el).value = h.tol; $('#bg-f', el).value = h.f; $('#bg-glob', el).checked = h.g; labels(); redo(); syncHist() };
+  const undo = () => { if (hi > 0) { hi--; applySnap(hist[hi]) } }, redoStep = () => { if (hi < hist.length - 1) { hi++; applySnap(hist[hi]) } };
+  const labels = () => { $('#bg-tv', el).textContent = BGR.tol; $('#bg-fv', el).textContent = BGR.feather; $('#bg-sv', document).textContent = BGR.size + ' px'; $('#bg-help', el).textContent = BGR.brush === 'none' ? 'Click the picture to choose which color counts as the background.' : BGR.brush === 'erase' ? 'Paint over parts you want removed.' : 'Paint over parts you want to bring back.' };
   const load = f => {
     if (!f || !/^image\//.test(f.type)) return $('#bg-err', el).textContent = 'That file is not an image.';
     const u = URL.createObjectURL(f), im = new Image();
-    im.onload = () => { const s = Math.min(1, 1600 / Math.max(im.naturalWidth, im.naturalHeight)); W = Math.max(1, Math.round(im.naturalWidth * s)); H = Math.max(1, Math.round(im.naturalHeight * s)); cv.width = W; cv.height = H; cx.clearRect(0, 0, W, H); cx.drawImage(im, 0, 0, W, H); URL.revokeObjectURL(u); orig = cx.getImageData(0, 0, W, H); manual = new Uint8Array(W * H); bgc = sampleBg(); $('#bg-err', el).textContent = ''; $('#bg-drop', el).hidden = true; $('#bg-work', el).hidden = false; labels(); redo() };
+    im.onload = () => { const s = Math.min(1, 1600 / Math.max(im.naturalWidth, im.naturalHeight)); W = Math.max(1, Math.round(im.naturalWidth * s)); H = Math.max(1, Math.round(im.naturalHeight * s)); cv.width = W; cv.height = H; cx.clearRect(0, 0, W, H); cx.drawImage(im, 0, 0, W, H); URL.revokeObjectURL(u); orig = cx.getImageData(0, 0, W, H); manual = new Uint8Array(W * H); bgc = sampleBg(); hist = []; hi = -1; commit(); $('#bg-err', el).textContent = ''; $('#bg-drop', el).hidden = true; $('#bg-work', el).hidden = false; labels(); redo() };
     im.onerror = () => $('#bg-err', el).textContent = 'That image could not be opened.'; im.src = u;
   };
   $('#bg-up', el).onclick = () => $('#bg-file', el).click(); $('#bg-file', el).onchange = e => load(e.target.files[0]); $('#bg-new', el).onclick = () => { $('#bg-work', el).hidden = true; $('#bg-drop', el).hidden = false; $('#bg-file', el).value = '' };
   const dz = $('#bg-drop', el); dz.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#bg-file', el).click() } };
   ['dragover', 'dragenter'].forEach(t => dz.addEventListener(t, e => { e.preventDefault(); dz.classList.add('over') })); ['dragleave', 'drop'].forEach(t => dz.addEventListener(t, () => dz.classList.remove('over'))); dz.addEventListener('drop', e => { e.preventDefault(); load(e.dataTransfer.files[0]) });
-  $('#bg-tol', el).oninput = e => { BGR.tol = +e.target.value; labels(); redo() }; $('#bg-f', el).oninput = e => { BGR.feather = +e.target.value; labels(); redo() }; $('#bg-size', el).oninput = e => { BGR.size = +e.target.value; labels() };
-  $('#bg-glob', el).onchange = e => { BGR.global = e.target.checked; redo() };
-  $$('[data-br]', el).forEach(b => b.onclick = () => { BGR.brush = b.dataset.br; $$('[data-br]', el).forEach(x => x.setAttribute('aria-checked', x === b)); labels() });
-  $('#bg-reset', el).onclick = () => { manual.fill(0); bgc = sampleBg(); redo() };
+  $('#bg-tol', el).oninput = e => { BGR.tol = +e.target.value; labels(); redo() }; $('#bg-f', el).oninput = e => { BGR.feather = +e.target.value; labels(); redo() }; $('#bg-size', document).oninput = e => { BGR.size = +e.target.value; labels(); moveRing() };
+  ['#bg-tol', '#bg-f'].forEach(q => $(q, el).addEventListener('change', commit));
+  $('#bg-glob', el).onchange = e => { BGR.global = e.target.checked; redo(); commit() };
+  $$('[data-br]', document).forEach(b => b.onclick = () => { BGR.brush = b.dataset.br; $$('[data-br]', document).forEach(x => x.setAttribute('aria-checked', x === b)); labels(); cv.style.cursor = BGR.brush === 'none' ? 'crosshair' : 'none'; ring.hidden = true });
+  $('#bg-rbrush', document).onclick = () => { BGR.size = 24; $('#bg-size', document).value = 24; labels(); toast('Brush size reset.') };
+  $('#bg-undo', document).onclick = undo; $('#bg-redo', document).onclick = redoStep;
   $('#bg-dl', el).onclick = () => cv.toBlob(b => download('background-removed.png', b, 'image/png'), 'image/png');
   const pos = e => { const r = cv.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) * W / r.width), Math.floor((e.clientY - r.top) * H / r.height), W / r.width] };
   const stamp = e => { const [x, y, sc] = pos(e), rad = BGR.size / 2 * sc, v = BGR.brush === 'erase' ? 1 : 2; for (let yy = Math.max(0, Math.floor(y - rad)); yy <= Math.min(H - 1, y + rad); yy++) for (let xx = Math.max(0, Math.floor(x - rad)); xx <= Math.min(W - 1, x + rad); xx++) if ((xx - x) ** 2 + (yy - y) ** 2 <= rad * rad) manual[yy * W + xx] = v; paint() };
-  let down = false; cv.onpointerdown = e => { if (!orig) return; if (BGR.brush === 'none') { const [x, y] = pos(e), k = (Math.min(H - 1, y) * W + Math.min(W - 1, x)) * 4; bgc = [orig.data[k], orig.data[k + 1], orig.data[k + 2]]; redo(); return } down = true; cv.setPointerCapture(e.pointerId); stamp(e) };
-  cv.onpointermove = e => { if (down) stamp(e) }; cv.onpointerup = () => { down = false }; cv.style.cursor = 'crosshair';
+  let down = false; cv.onpointerdown = e => { if (!orig) return; if (BGR.brush === 'none') { const [x, y] = pos(e), k = (Math.min(H - 1, y) * W + Math.min(W - 1, x)) * 4; bgc = [orig.data[k], orig.data[k + 1], orig.data[k + 2]]; redo(); commit(); return } down = true; cv.setPointerCapture(e.pointerId); stamp(e) };
+  /* a circle that follows the pointer and matches the brush size */
+  $$('.bg-ring').forEach(r => r.remove()); const ring = document.createElement('div'); ring.className = 'bg-ring'; ring.hidden = true; ring.setAttribute('aria-hidden', 'true'); document.body.appendChild(ring);
+  let lastEv = null; const moveRing = () => { if (!lastEv || BGR.brush === 'none') { ring.hidden = true; return } ring.hidden = false; ring.dataset.mode = BGR.brush; ring.style.width = ring.style.height = BGR.size + 'px'; ring.style.transform = `translate(${lastEv.clientX - BGR.size / 2}px,${lastEv.clientY - BGR.size / 2}px)` };
+  cv.onpointermove = e => { lastEv = e; moveRing(); if (down) stamp(e) }; cv.onpointerenter = e => { lastEv = e; moveRing() }; cv.onpointerleave = () => { lastEv = null; ring.hidden = true };
+  const endStroke = () => { if (down) { down = false; commit() } }; cv.onpointerup = endStroke; cv.onpointercancel = endStroke; cv.style.cursor = 'crosshair';
+  /* zoomed editor: the same canvas and tool bar move into a near full screen layer */
+  const zoomBtn = $('#bg-zoom', el), tools = $('#bg-tools', el), stage = $('#bg-stage', el);
+  let ov = null;
+  const fit = () => { if (!ov) return; const z = $('.bg-zstage', ov), cs = getComputedStyle(z), aw = z.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight), ah = z.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom), k = Math.min(aw / W, ah / H); cv.style.width = Math.max(40, Math.floor(W * k)) + 'px'; cv.style.height = Math.max(40, Math.floor(H * k)) + 'px' };
+  window.addEventListener('resize', fit);
+  const closeZoom = () => { if (!ov) return; const mk = $('#bg-mk-c', document); stage.appendChild(cv); const m2 = $('#bg-mk-t', document); m2.replaceWith(tools); mk && mk.remove(); ov.remove(); ov = null; cv.style.width = cv.style.height = ''; document.body.classList.remove('bg-zooming'); zoomBtn.focus(); ring.hidden = true };
+  const openZoom = () => {
+    if (!orig || ov) return;
+    const mt = document.createElement('i'); mt.id = 'bg-mk-t'; mt.hidden = true; tools.replaceWith(mt);
+    ov = document.createElement('div'); ov.className = 'bg-zoom'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', 'Zoomed editor');
+    ov.innerHTML = '<div class="bg-zbar"><div class="bg-zbar-in"></div><button type="button" class="bg-zx" aria-label="Close zoomed view">×</button></div><div class="bg-zstage"><i id="bg-mk-c" hidden></i></div>';
+    $('.bg-zbar-in', ov).appendChild(tools); $('.bg-zstage', ov).appendChild(cv); document.body.appendChild(ov); document.body.classList.add('bg-zooming');
+    $('.bg-zx', ov).onclick = closeZoom; ov.addEventListener('pointerdown', e => { if (e.target === ov || e.target.classList.contains('bg-zstage')) closeZoom() });
+    fit(); requestAnimationFrame(fit); if (window.ResizeObserver) new ResizeObserver(fit).observe($('.bg-zstage', ov)); $('.bg-zx', ov).focus();
+  };
+  zoomBtn.onclick = openZoom;
+  /* keyboard: undo and redo, plus Escape to leave the zoomed view */
+  if (BG_KEYS) document.removeEventListener('keydown', BG_KEYS);
+  BG_KEYS = e => {
+    if (!document.body.contains(cv)) { document.removeEventListener('keydown', BG_KEYS); BG_KEYS = null; return }
+    if (e.key === 'Escape' && ov) { e.preventDefault(); closeZoom(); return }
+    if ($('#bg-work', el).hidden) return;
+    const t = e.target, typing = t && (t.isContentEditable || t.tagName === 'TEXTAREA' || (t.tagName === 'INPUT' && !['range', 'checkbox', 'radio', 'button'].includes(t.type)));
+    if (typing || !(e.ctrlKey || e.metaKey) || e.altKey) return;
+    const k = e.key.toLowerCase();
+    if (k === 'z' && !e.shiftKey) { e.preventDefault(); undo() } else if ((k === 'z' && e.shiftKey) || k === 'y') { e.preventDefault(); redoStep() }
+  };
+  document.addEventListener('keydown', BG_KEYS);
 }
 
 const TOOL_RENDER = { contrast: renderContrast, randomizer: renderRandomizer, cvd: renderCvd, lorem: renderLorem, persona: renderPersona, convert: renderConvert, bgremove: renderBgRemove, units: renderUnits };

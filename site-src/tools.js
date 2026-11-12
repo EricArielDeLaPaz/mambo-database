@@ -5,8 +5,8 @@ const TOOLS = [
   ['cvd', 'Colorblind simulator', 'See colors and images the way color-blind people do.', 'Color'],
   ['lorem', 'Lorem ipsum generator', 'Placeholder text by paragraphs, sentences, words or characters.', 'Content'],
   ['persona', 'Persona generator', 'Random names with illustrated profile pictures.', 'Content'],
-  ['convert', 'File converter', 'Convert images between formats, many at once.', 'Images and files'],
-  ['bgremove', 'Background remover', 'Remove a plain background from an image.', 'Images and files'],
+  ['convert', 'Image Converter', 'Convert images between formats, many at once.', 'Images'],
+  ['bgremove', 'Background remover', 'Remove a plain background from an image.', 'Images'],
   ['units', 'Unit converter', 'px, rem, em, pt, vw and more for CSS and handoff.', 'Measure']
 ];
 const h2x = (h, s, l) => { h = ((h % 360) + 360) % 360; s = Math.max(0, Math.min(1, s)); l = Math.max(0, Math.min(1, l)); const a = s * Math.min(l, 1 - l), f = n => { const k = (n + h / 30) % 12; return Math.round(255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1)))) }; return '#' + [f(0), f(8), f(4)].map(v => v.toString(16).padStart(2, '0')).join('') };
@@ -40,7 +40,8 @@ function renderContrast(el) {
     <div class="ct-prev" style="background:${esc(CT.bg)};color:${esc(CT.fg)}"><p class="ct-lg">Large text sample</p><p>Normal text sample. The quick brown fox jumps over the lazy dog.</p><span class="ct-ui" style="border-color:${esc(CT.fg)}">UI component</span></div>
     <table class="ct-tbl"><caption class="sr">WCAG results for this color pair</caption><thead><tr><th scope="col">Use</th><th scope="col">Level</th><th scope="col">Needs</th><th scope="col">Result</th></tr></thead><tbody>${rows.map(([u, lv, t]) => `<tr><th scope="row">${u}</th><td>WCAG ${lv}</td><td>${t}:1</td><td class="${r >= t ? 'pass' : 'fail'}">${r >= t ? TICK + ' Pass' : CROSS + ' Fail'}</td></tr>`).join('')}</tbody></table>
     <p class="note">Large text means 24px or bigger, or 18.66px or bigger in bold (14pt bold).</p>
-    <div class="row ct-act"><a class="btn" href="${webaimUrl(CT.fg, CT.bg)}" target="_blank" rel="noopener">Check on WebAIM</a>${fix && fix !== CT.fg ? `<button class="btn fixcolor" id="ct-fix" type="button" style="background:${fix};color:${inkOn(fix)};border-color:${fix}">Suggested Fix (${esc(fmtColor(fix))})</button><span class="note">${fmtRatio(fr)}:1 on this background, ${need === 4.5 ? 'passes AA' : 'passes AAA'}. This changes the foreground.</span>` : ''}</div></div>`;
+    <div class="row ct-act"><a class="btn" href="${webaimUrl(CT.fg, CT.bg)}" target="_blank" rel="noopener">Check on WebAIM</a><button class="btn" id="ct-copyfg" type="button">Copy color codes</button>${fix && fix !== CT.fg ? `<button class="btn fixcolor" id="ct-fix" type="button" style="background:${fix};color:${inkOn(fix)};border-color:${fix}">Suggested Fix (${esc(fmtColor(fix))})</button><span class="note">${fmtRatio(fr)}:1 on this background, ${need === 4.5 ? 'passes AA' : 'passes AAA'}. This changes the foreground.</span>` : ''}</div></div>`;
+    $('#ct-copyfg', out).onclick = () => copy('Foreground: ' + fmtColor(CT.fg) + '\nBackground: ' + fmtColor(CT.bg), 'both color codes');
     const b = $('#ct-fix', out); if (b) b.onclick = () => { CT.fg = fix; sync(); update() };
   };
   const sync = () => ['fg', 'bg'].forEach(k => { $('#ct-' + k, el).value = fmtColor(CT[k]); $('#ct-' + k + '-p', el).value = CT[k]; $('#ct-err-' + k, el).textContent = ''; $('#ct-' + k, el).removeAttribute('aria-invalid') });
@@ -84,12 +85,12 @@ const isChromatic = c => RZ.mode !== 'system' || !NEUTRAL.includes(c.role);
 const famOf = hex => { const q = hsl(hex); let best = HUES[0], bd = 999; HUES.forEach(h => { const d = Math.min(Math.abs(q.h - h[1]), 360 - Math.abs(q.h - h[1])); if (d < bd) { bd = d; best = h } }); return best[0] };
 const kebab = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-function saveRz() { try { localStorage.setItem(RZ_KEY, JSON.stringify({ mode: RZ.mode, themes: RZ.themes, rand: RZ.rand, sys: RZ.sys })) } catch { } }
+function saveRz() { try { localStorage.setItem(RZ_KEY, JSON.stringify({ mode: RZ.mode, themes: RZ.themes, cvd: RZ.cvd, rand: RZ.rand, sys: RZ.sys })) } catch { } }
 function rzInit() {
   if (RZ) return;
   let d = null; try { d = JSON.parse(localStorage.getItem(RZ_KEY)) } catch { }
   const ok = d && Array.isArray(d.sys) && Array.isArray(d.rand);
-  RZ = { mode: ok && d.mode === 'random' ? 'random' : 'system', themes: ok && d.themes && (d.themes.light || d.themes.dark) ? { light: !!d.themes.light, dark: !!d.themes.dark } : { light: true, dark: false }, rand: ok ? d.rand.filter(c => normHex(c.hex)) : [], sys: ok ? d.sys.filter(c => normHex(c.hex) && ROLES.includes(c.role)) : [], hist: [] };
+  RZ = { cvd: ok && d.cvd === false ? false : true, mode: ok && d.mode === 'random' ? 'random' : 'system', themes: ok && d.themes && (d.themes.light || d.themes.dark) ? { light: !!d.themes.light, dark: !!d.themes.dark } : { light: true, dark: false }, rand: ok ? d.rand.filter(c => normHex(c.hex)) : [], sys: ok ? d.sys.filter(c => normHex(c.hex) && ROLES.includes(c.role)) : [], hist: [] };
   if (!RZ.sys.length) { RZ.sys = SYS_DEFAULT.map(r => mkc(r)); genSystem(RZ.sys) }
   if (!RZ.rand.length) { RZ.rand = [1, 2, 3, 4, 5].map(i => mkc('Other', 'Color ' + i)); genRandom(RZ.rand) }
   deriveDark(RZ.sys, true); deriveDark(RZ.rand, false);
@@ -128,6 +129,33 @@ function deriveDark(list, sys) {
   const inv = list.find(c => c.role === 'Inverse text'), pr = list.find(c => c.role === 'Primary'); if (sys && inv && !inv.dkLock) inv.dk = inkOn(pr ? pr.dk : bgd);
 }
 
+/* When the box is ticked, nudge the lightness of any unlocked color until no pair is likely to be confused by a color-blind person. Hue stays the same. */
+function rzCvdSafe(list, sys) {
+  const pass = t => {
+    for (let k = 0; k < 40; k++) {
+      const items = list.filter(c => !['Overlay', 'Disabled'].includes(c.role)).map(c => ({ id: c.id, name: c.name, hex: val(c, t), role: c.role })), iss = cvdIssues(items); if (!iss.length) return;
+      const avoid = new Set(list.filter(c => c.locked).map(c => c.id)); let changed = false;
+      for (const x of iss) { const f = cvdFix(x, items, bgFor(list, t), avoid); if (!f) continue; const ref = list.find(c => c.id === f.color.id); if (t === 'dark') ref.dk = f.hex; else ref.hex = f.hex; changed = true; break }
+      /* nothing fixable in this round */
+      if (!changed) return;
+    }
+  };
+  pass('light'); deriveDark(list, sys); if (sys ? RZ.themes.dark : false) pass('dark');
+}
+
+const rzScore = (list, sys) => (sys ? themesOn() : ['light']).reduce((n, t) => n + cvdIssues(list.filter(c => !['Overlay', 'Disabled'].includes(c.role)).map(c => ({ id: c.id, name: c.name, hex: val(c, t), role: sys ? c.role : '' }))).length, 0);
+/* Generate a palette. With the color blindness box ticked, try several times and keep the first palette with no confusable pairs, or the best one found. */
+function rzGenerate(list, sys) {
+  const one = () => { sys ? genSystem(list) : genRandom(list); deriveDark(list, sys) };
+  if (!RZ.cvd) return one();
+  let best = null;
+  for (let i = 0; i < 40; i++) {
+    one(); rzCvdSafe(list, sys); const n = rzScore(list, sys);
+    if (!best || n < best.n) best = { n, s: list.map(c => ({ hex: c.hex, dk: c.dk })) }; if (n === 0) break;
+  }
+  list.forEach((c, i) => { c.hex = best.s[i].hex; c.dk = best.s[i].dk });
+}
+
 /* ---------- limits, shown the same way as in Design Systems ---------- */
 function limitRows(rows) {
   return `<ul class="lim">${rows.map(([label, n, L]) => { const rec = L.rec || L.max, st = n < L.min ? ['bad', 'Below the minimum'] : n > L.max ? ['bad', 'Over the maximum'] : n > rec ? ['warn', 'Above recommended'] : ['ok', 'In the healthy range']; return `<li class="${st[0]}"><b>${label}</b><span class="n">${n}</span><span class="r">min ${L.min} · recommended up to ${rec} · max ${L.max}</span><em>${st[0] === 'ok' ? TICK : '<span aria-hidden="true">!</span>'} ${st[1]}</em></li>` }).join('')}</ul>`;
@@ -152,6 +180,12 @@ async function addColorsToSystem(sel, items, source) {
 }
 const sortRoles = list => { const idx = r => { const i = ROLES.indexOf(r); return i < 0 ? 999 : i }; list.sort((a, b) => idx(a.role) - idx(b.role)) };
 
+const PENCIL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+function ratioLine(c, t, list, sys, both) {
+  const check = sys && c.role !== 'Background' && [...BRAND, ...FEEDBACK, 'Text', 'Text secondary', 'Link', 'Border'].includes(c.role); if (!check) return '';
+  const need = c.role === 'Border' ? 3 : 4.5, r = ratio(val(c, t), bgFor(list, t));
+  return `<p class="rz-r ${r >= need ? 'pass' : 'fail'}" data-th="${t}">${r >= need ? TICK : CROSS} ${fmtRatio(r)}:1${both ? ' ' + THEME_NAME[t] : ''} on Background${r >= need ? '' : ' (needs ' + need + ':1)'}</p>`;
+}
 function renderRandomizer(el) {
   rzInit(); RZ_EL = el;
   const rerender = f => { renderRandomizer(el); if (f) { const t = $(f, el); if (t) t.focus() } };
@@ -163,18 +197,19 @@ function renderRandomizer(el) {
   <div class="rz-top"><div><span class="f-t">Output</span>${seg('Mode', RZ.mode, [['system', 'For a design system'], ['random', 'Completely random']])}</div>
   ${sys ? `<fieldset class="themes"><legend class="f-t">Theme</legend><label class="chk"><input type="checkbox" data-theme="light" ${RZ.themes.light ? 'checked' : ''}> Light</label><label class="chk"><input type="checkbox" data-theme="dark" ${RZ.themes.dark ? 'checked' : ''}> Dark</label></fieldset>` : ''}
   ${cfmtSelect()}
+  <div class="rz-cvd"><label class="chk"><input type="checkbox" data-cvdsafe ${RZ.cvd ? 'checked' : ''}> Avoid colors color-blind people may confuse</label><small>${RZ.cvd ? 'Randomizing adjusts lightness so no two colors look alike to any type of color blindness.' : 'Unticked: a random result may include colors some people cannot tell apart.'} <a href="#/guide/color-blindness">Read more</a></small></div>
   <div><span class="f-t">From a picture</span><button class="btn cx-btn" type="button" data-act="extract">${CAMERA_ICON}Color Extract</button></div>
   <div class="rz-go"><button class="btn solid big" data-act="random" type="button">Randomize</button><button class="btn" data-act="undo" type="button" ${RZ.hist.length ? '' : 'disabled'}>Undo</button></div></div>
   <p class="note">${sys ? 'Each role gets a color that fits its job, and text-like roles are adjusted to pass WCAG AA on the Background. Tick Light, Dark or both: the dark version of each color is the accessible opposite of the light one (a white Background becomes near-black). Lock a Primary, Secondary or Accent and the rest will match its hue.' : 'Every color is random and spread around the color wheel. Roles are not assigned, so they are added to a design system as Other.'} The randomizer follows simple color rules; it is not an AI model.</p>`;
-  h += `<h2 class="h3">Palette</h2>`;
+  h += `<h2 class="h3">Palette</h2><p class="note">Tap a color to edit it. The ratio and color code update as you drag.</p>`;
   h += sys ? limitRows([['Brand colors', cnt(list, BRAND), LIMITS.brand], ['Neutrals', cnt(list, NEUTRAL), LIMITS.neutral], ['Feedback colors', cnt(list, FEEDBACK), LIMITS.feedback], ['All colors', list.length, LIMITS.colors]]) : `<p class="note"><b>${list.length} colors.</b> Minimum 2, maximum 12. Design systems usually settle on 6 to 16 colors in total (recommended up to ${LIMITS.colors.rec}).</p>`;
   h += `<ul class="rz-grid ${both ? 'two' : ''}" aria-label="Palette">${list.map(c => {
-    const checkR = sys && c.role !== 'Background' && [...BRAND, ...FEEDBACK, 'Text', 'Text secondary', 'Link', 'Border'].includes(c.role), need = c.role === 'Border' ? 3 : 4.5;
-    return `<li class="rz-card" data-id="${c.id}"><div class="rz-sws">${TH.map(t => { const v = val(c, t); return `<div class="rz-sw" data-th="${t}" style="background:${esc(v)};--ink:${inkOn(v)};--chip:${inkOn(v) === '#000000' ? '#ffffff' : '#000000'}"><b>${esc(c.name)}</b><span>${esc(fmtColor(v))}</span>${sys ? `<small>${THEME_NAME[t]}</small>` : ''}${c.locked && t === TH[0] ? '<em>Locked</em>' : ''}</div>` }).join('')}</div>
-    ${TH.map(t => { if (!checkR) return ''; const r = ratio(val(c, t), bgFor(list, t)); return `<p class="rz-r ${r >= need ? 'pass' : 'fail'}">${r >= need ? TICK : CROSS} ${fmtRatio(r)}:1${both ? ' ' + THEME_NAME[t] : ''} on Background${r >= need ? '' : ' (needs ' + need + ':1)'}</p>` }).join('') || '<p class="rz-r"> </p>'}
-    <div class="rz-bar"><button type="button" class="ib" data-lock="${c.id}" aria-pressed="${c.locked}" aria-label="Lock ${esc(c.name)}" title="${c.locked ? 'Unlock' : 'Lock'}">${c.locked ? '🔒' : '🔓'}</button>${TH.map(t => `<button type="button" class="ib" data-copyhex="${c.id}" data-th="${t}" aria-label="Copy ${esc(c.name)} ${both ? THEME_NAME[t].toLowerCase() + ' ' : ''}hex code">Copy${both ? ' ' + THEME_NAME[t][0] : ''}</button>`).join('')}${TH.map(t => `<label class="ib pick" title="Edit color"><span class="sr">Edit ${esc(c.name)} ${both ? THEME_NAME[t].toLowerCase() : ''} color</span><input type="color" data-edit="${c.id}" data-th="${t}" value="${esc(val(c, t))}"><span aria-hidden="true">Edit${both ? ' ' + THEME_NAME[t][0] : ''}</span></label>`).join('')}<button type="button" class="ib" data-remove="${c.id}" aria-label="Remove ${esc(c.name)}" title="Remove">✕</button></div></li>`;
+    return `<li class="rz-card" data-id="${c.id}"><div class="rz-sws">${TH.map(t => { const v = val(c, t); return `<label class="rz-sw" data-th="${t}" style="background:${esc(v)};--ink:${inkOn(v)}"><input type="color" class="rz-pick" data-edit="${c.id}" data-th="${t}" value="${esc(v)}" aria-label="Edit ${esc(c.name)} ${both ? THEME_NAME[t].toLowerCase() + ' ' : ''}color. Currently ${esc(fmtColor(v))}"><span class="rz-pen" aria-hidden="true">${PENCIL}</span>${c.locked && t === TH[0] ? '<em>Locked</em>' : ''}</label>` }).join('')}</div>
+    <div class="rz-info">${TH.map(t => `<div class="rz-i" data-th="${t}"><b>${esc(c.name)}</b>${sys && c.role !== c.name ? `<small>${esc(c.role)}</small>` : ''}<span class="rz-hex">${esc(fmtColor(val(c, t)))}</span>${sys ? `<small>${THEME_NAME[t]}</small>` : ''}</div>`).join('')}</div>
+    ${TH.map(t => ratioLine(c, t, list, sys, both)).join('') || '<p class="rz-r"> </p>'}
+    <div class="rz-bar"><button type="button" class="ib" data-lock="${c.id}" aria-pressed="${c.locked}" aria-label="Lock ${esc(c.name)}" title="${c.locked ? 'Unlock' : 'Lock'}">${c.locked ? '🔒' : '🔓'}</button>${TH.map(t => `<button type="button" class="ib" data-copyhex="${c.id}" data-th="${t}" aria-label="Copy ${esc(c.name)} ${both ? THEME_NAME[t].toLowerCase() + ' ' : ''}color code">Copy${both ? ' ' + THEME_NAME[t][0] : ''}</button>`).join('')}<button type="button" class="ib" data-remove="${c.id}" aria-label="Remove ${esc(c.name)}" title="Remove">✕</button></div></li>`;
   }).join('')}</ul>`;
-  h += TH.map(t => cvdNotice(list.filter(c => !['Overlay', 'Disabled'].includes(c.role)).map(c => ({ name: c.name, hex: val(c, t) })), both ? THEME_NAME[t] : '')).join('');
+  h += TH.map(t => cvdNotice(list.filter(c => !['Overlay', 'Disabled'].includes(c.role)).map(c => ({ name: c.name, hex: val(c, t), role: sys ? c.role : '' })), both ? THEME_NAME[t] : '')).join('');
   if (sys) {
     const avail = ROLES.filter(r => (r === 'Other' || !list.some(c => c.role === r)) && !(BRAND.includes(r) && cnt(list, BRAND) >= LIMITS.brand.max) && !(NEUTRAL.includes(r) && cnt(list, NEUTRAL) >= LIMITS.neutral.max) && !(FEEDBACK.includes(r) && cnt(list, FEEDBACK) >= LIMITS.feedback.max));
     h += `<div class="row rz-add">${list.length < LIMITS.colors.max && avail.length ? `<label class="f"><span class="f-t">Add another color</span><select id="rz-role">${avail.map(r => `<option>${r}</option>`).join('')}</select></label><button class="btn" data-act="add" type="button">Add color</button>` : `<p class="note" role="status">${list.length >= LIMITS.colors.max ? `You have reached the maximum of ${LIMITS.colors.max} colors.` : 'Every role that fits is already in the palette.'} Remove one to add another.</p>`}</div>`;
@@ -199,22 +234,28 @@ function renderRandomizer(el) {
   /* ----- events ----- */
   $$('[data-mode]', el).forEach(b => b.onclick = () => { RZ.mode = b.dataset.mode; rerender('[data-mode="' + RZ.mode + '"]') });
   $$('input[data-theme]', el).forEach(i => i.onchange = () => { RZ.themes[i.dataset.theme] = i.checked; if (!RZ.themes.light && !RZ.themes.dark) { RZ.themes[i.dataset.theme] = true; toast('Keep at least one theme ticked.') } rerender('[data-theme="' + i.dataset.theme + '"]') });
+  $$('input[data-cvdsafe]', el).forEach(i => i.onchange = () => { RZ.cvd = i.checked; saveRz(); rerender('[data-cvdsafe]') });
   const act = (a, fn) => $$('[data-act="' + a + '"]', el).forEach(b => b.onclick = fn);
   act('extract', () => openColorExtract({}));
-  act('random', () => { snap(); sys ? genSystem(list) : genRandom(list); deriveDark(list, sys); if (list.every(c => c.locked)) toast('Every color is locked. Unlock one to randomize.'); rerender('[data-act="random"]') });
+  act('random', () => { snap(); rzGenerate(list, sys); if (list.every(c => c.locked)) toast('Every color is locked. Unlock one to randomize.'); rerender('[data-act="random"]') });
   act('undo', () => { const x = RZ.hist.pop(); if (!x) return; if (x.mode === 'system') RZ.sys = JSON.parse(x.s); else RZ.rand = JSON.parse(x.s); RZ.mode = x.mode; rerender('[data-act="random"]') });
   /* Adding a color should not change the others, so lock them while the new one is generated. */
-  const addOne = c => { snap(); const o = list.map(x => x.locked); list.forEach(x => x.locked = true); list.push(c); sys ? genSystem(list) : genRandom(list); list.forEach((x, i) => { if (i < o.length) x.locked = o[i] }); if (sys) sortRoles(list); deriveDark(list, sys) };
+  const addOne = c => { snap(); const o = list.map(x => x.locked); list.forEach(x => x.locked = true); list.push(c); rzGenerate(list, sys); list.forEach((x, i) => { if (i < o.length) x.locked = o[i] }); if (sys) sortRoles(list); deriveDark(list, sys) };
   act('add', () => { const r = $('#rz-role', el).value; const c = mkc(r, r === 'Other' ? 'Other ' + (list.filter(x => x.role === 'Other').length + 1) : r); addOne(c); rerender('[data-lock="' + c.id + '"]') });
   act('inc', () => { const c = mkc('Other', 'Color ' + (list.length + 1)); addOne(c); rerender('[data-act="inc"]') });
   act('dec', () => { snap(); const c = [...list].reverse().find(x => !x.locked) || list[list.length - 1]; list.splice(list.indexOf(c), 1); rerender('[data-act="dec"]') });
   $$('[data-lock]', el).forEach(b => b.onclick = () => { const c = list.find(x => x.id === b.dataset.lock); c.locked = !c.locked; if (!c.locked) { c.dkLock = false; deriveDark(list, sys) } rerender('[data-lock="' + c.id + '"]') });
   $$('[data-remove]', el).forEach(b => b.onclick = () => { if (list.length <= 1) return toast('Keep at least one color.'); snap(); const i = list.findIndex(x => x.id === b.dataset.remove); list.splice(i, 1); deriveDark(list, sys); const n = list[Math.min(i, list.length - 1)]; rerender(n ? '[data-remove="' + n.id + '"]' : null) });
   $$('[data-copyhex]', el).forEach(b => b.onclick = () => { const c = list.find(x => x.id === b.dataset.copyhex), v = val(c, b.dataset.th); copy(fmtColor(v), c.name + ' ' + fmtColor(v)) });
+  /* Tapping a swatch opens the browser's color picker. Everything on the page updates while the color is dragged, without waiting for the picker to close. */
+  const liveUpdate = () => $$('.rz-card', el).forEach(card => {
+    const c = list.find(x => x.id === card.dataset.id); if (!c) return;
+    TH.forEach(t => { const v = val(c, t), sw = $('.rz-sw[data-th="' + t + '"]', card), inf = $('.rz-i[data-th="' + t + '"] .rz-hex', card), pk = $('input', sw); sw.style.background = v; sw.style.setProperty('--ink', inkOn(v)); if (pk !== document.activeElement || pk.value !== v) pk.value = v; pk.setAttribute('aria-label', 'Edit ' + c.name + ' ' + (both ? t + ' ' : '') + 'color. Currently ' + fmtColor(v)); inf.textContent = fmtColor(v); const old = $('.rz-r[data-th="' + t + '"]', card), nw = ratioLine(c, t, list, sys, both); if (old && nw) { const d = document.createElement('div'); d.innerHTML = nw; old.className = d.firstChild.className; old.innerHTML = d.firstChild.innerHTML } });
+  });
   $$('input[data-edit]', el).forEach(i => {
-    const c = list.find(x => x.id === i.dataset.edit), t = i.dataset.th, sw = $('.rz-sw[data-th="' + t + '"]', i.closest('.rz-card'));
-    i.oninput = () => { sw.style.background = i.value; sw.style.setProperty('--ink', inkOn(i.value)); sw.style.setProperty('--chip', inkOn(i.value) === '#000000' ? '#ffffff' : '#000000'); $('span', sw).textContent = fmtColor(i.value) };
-    i.onchange = () => { if (t === 'dark') { c.dk = i.value.toLowerCase(); c.dkLock = true } else { c.hex = i.value.toLowerCase(); deriveDark(list, sys) } c.locked = true; rerender('[data-edit="' + c.id + '"][data-th="' + t + '"]') };
+    const c = list.find(x => x.id === i.dataset.edit), t = i.dataset.th;
+    i.oninput = () => { if (t === 'dark') { c.dk = i.value.toLowerCase(); c.dkLock = true } else { c.hex = i.value.toLowerCase(); deriveDark(list, sys) } c.locked = true; liveUpdate(); saveRz() };
+    i.onchange = () => rerender('[data-edit="' + c.id + '"][data-th="' + t + '"]');
   });
   const nameOf = (c, k) => sys ? kebab(c.role) + (list.filter(x => x.role === c.role).length > 1 ? '-' + (list.filter(x => x.role === c.role).indexOf(c) + 1) : '') : String(k + 1);
   act('copycss', () => { const one = t => list.map((c, k) => `--color-${nameOf(c, k)}: ${val(c, t)};`); copy(TH.length === 2 ? ':root {\n  ' + one('light').join('\n  ') + '\n}\n@media (prefers-color-scheme: dark) {\n  :root {\n    ' + one('dark').join('\n    ') + '\n  }\n}' : ':root {\n  ' + one(TH[0]).join('\n  ') + '\n}', 'CSS variables') });
