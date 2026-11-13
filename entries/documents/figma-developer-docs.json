@@ -1,0 +1,13 @@
+{
+  "id": "figma-developer-docs",
+  "type": "document",
+  "name": "Figma Developer Docs",
+  "category": "Design & dev tools",
+  "summary": "The REST API, plugin API and Dev Mode for developers.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Figma",
+  "url": "https://www.figma.com/developers/",
+  "keywords": "figma api plugins"
+}

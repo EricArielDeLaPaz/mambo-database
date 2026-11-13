@@ -1,0 +1,14 @@
+{
+  "id": "spectrum",
+  "type": "document",
+  "name": "Spectrum",
+  "category": "Design systems & guidelines",
+  "summary": "Adobe's design system for creative and document tools.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "Adobe",
+  "url": "https://spectrum.adobe.com/",
+  "keywords": "adobe spectrum"
+}

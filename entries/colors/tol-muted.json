@@ -1,0 +1,78 @@
+{
+  "id": "tol-muted",
+  "type": "color",
+  "name": "Paul Tol Muted",
+  "category": "accessible",
+  "summary": "Softer, earthy colors from Paul Tol's Muted scheme: indigo, rose, sand, green, wine, cyan and teal.",
+  "industries": [
+    "all"
+  ],
+  "mood": "Calm, editorial",
+  "roles": {
+    "bg": "#ffffff",
+    "surface": "#f2f2f2",
+    "ink": "#111111",
+    "text-secondary": "#595959",
+    "primary": "#332288",
+    "primary-text": "#ffffff",
+    "accent": "#CC6677",
+    "danger": "#882255",
+    "success": "#117733",
+    "warning": "#DDCC77",
+    "info": "#88CCEE"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "ink",
+      "accent"
+    ],
+    [
+      "primary-text",
+      "danger"
+    ],
+    [
+      "primary-text",
+      "success"
+    ],
+    [
+      "ink",
+      "warning"
+    ],
+    [
+      "ink",
+      "info"
+    ]
+  ],
+  "guidance": [
+    "Muted is designed for many categories at once while staying readable for color blindness, which suits dashboards and calmer brands.",
+    "Indigo (primary) is dark, so white text on it has very high contrast.",
+    "Built for color-blind accessibility: the hues stay distinguishable for the most common types of color blindness, mainly by differing in lightness as well as hue.",
+    "Several of these colors are too light to carry white text. Put dark text (ink) on them, as the contrast checks below show, and never white text.",
+    "Body text needs 4.5:1 against its background; large text and UI outlines need 3:1.",
+    "Still pair every status color with an icon or text. Color alone should never be the only signal."
+  ],
+  "credit": {
+    "text": "Paul Tol, Colour Schemes, SRON technical note SRON/EPS/TN/09-002. The hex values are the published Muted scheme.",
+    "url": "https://sronpersonalpages.nl/~pault/"
+  }
+}

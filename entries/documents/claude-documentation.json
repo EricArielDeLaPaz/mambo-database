@@ -1,0 +1,14 @@
+{
+  "id": "claude-documentation",
+  "type": "document",
+  "name": "Claude documentation",
+  "category": "Design & dev tools",
+  "summary": "Guides for using Claude, Claude Code and the API.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Anthropic",
+  "url": "https://docs.claude.com/",
+  "keywords": "claude ai skills"
+}

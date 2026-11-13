@@ -1,0 +1,13 @@
+{
+  "id": "react",
+  "type": "document",
+  "name": "React",
+  "category": "Frameworks & libraries",
+  "summary": "Learn components, state and hooks, with an API reference.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Meta and the React community",
+  "url": "https://react.dev/",
+  "keywords": "react components hooks jsx"
+}

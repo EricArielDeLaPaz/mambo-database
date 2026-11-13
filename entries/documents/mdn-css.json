@@ -1,0 +1,14 @@
+{
+  "id": "mdn-css",
+  "type": "document",
+  "name": "MDN: CSS",
+  "category": "CSS & styling",
+  "summary": "The reference for every CSS property, selector and value, with examples and browser support.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Mozilla",
+  "url": "https://developer.mozilla.org/en-US/docs/Web/CSS",
+  "keywords": "css properties selectors layout flexbox grid"
+}

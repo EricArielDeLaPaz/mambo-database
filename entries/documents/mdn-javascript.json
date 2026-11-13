@@ -1,0 +1,13 @@
+{
+  "id": "mdn-javascript",
+  "type": "document",
+  "name": "MDN: JavaScript",
+  "category": "JavaScript & TypeScript",
+  "summary": "Guides and reference for the JavaScript language.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Mozilla",
+  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+  "keywords": "javascript language reference"
+}

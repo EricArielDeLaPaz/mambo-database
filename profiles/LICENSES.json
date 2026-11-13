@@ -1,0 +1,41 @@
+{
+ "tones": {
+  "ffe0cc": "Very light",
+  "f6c9a6": "Light",
+  "e4a672": "Light brown",
+  "c68642": "Medium brown",
+  "a0693f": "Brown",
+  "7a4a2b": "Dark brown",
+  "5a3825": "Deep brown",
+  "3f2a1d": "Deepest brown"
+ },
+ "styles": {
+  "lorelei": {
+   "style": "Illustrated",
+   "label": "Lorelei",
+   "creator": "Lisa Wischofsky",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "source": "https://www.figma.com/community/file/1198749693280469639",
+   "tool": "DiceBear 9.4.3"
+  },
+  "open-peeps": {
+   "style": "Drawing",
+   "label": "Open Peeps",
+   "creator": "Pablo Stanley",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "source": "https://www.openpeeps.com/",
+   "tool": "DiceBear 9.4.3"
+  },
+  "pixel-art": {
+   "style": "Pixel",
+   "label": "Pixel Art",
+   "creator": "DiceBear",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "source": "https://www.figma.com/community/file/1198754108850888330",
+   "tool": "DiceBear 9.4.3"
+  }
+ }
+}

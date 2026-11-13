@@ -1,0 +1,14 @@
+{
+  "id": "carbon-design-system",
+  "type": "document",
+  "name": "Carbon Design System",
+  "category": "Design systems & guidelines",
+  "summary": "IBM's open design system, with guidance and code.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "IBM",
+  "url": "https://carbondesignsystem.com/",
+  "keywords": "carbon ibm"
+}

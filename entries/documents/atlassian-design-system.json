@@ -1,0 +1,14 @@
+{
+  "id": "atlassian-design-system",
+  "type": "document",
+  "name": "Atlassian Design System",
+  "category": "Design systems & guidelines",
+  "summary": "Foundations, components and content guidelines from Atlassian.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "Atlassian",
+  "url": "https://atlassian.design/",
+  "keywords": "atlassian jira"
+}

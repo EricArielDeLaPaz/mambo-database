@@ -1,0 +1,13 @@
+{
+  "id": "next-js",
+  "type": "document",
+  "name": "Next.js",
+  "category": "Frameworks & libraries",
+  "summary": "The React framework for routing, rendering and full-stack apps.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Vercel",
+  "url": "https://nextjs.org/docs",
+  "keywords": "nextjs react routing"
+}

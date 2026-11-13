@@ -1,0 +1,14 @@
+{
+  "id": "web-dev-learn-css",
+  "type": "document",
+  "name": "web.dev: Learn CSS",
+  "category": "CSS & styling",
+  "summary": "A free course that covers CSS from the box model to modern layout.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Google Chrome team",
+  "url": "https://web.dev/learn/css",
+  "keywords": "course box model layout"
+}

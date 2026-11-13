@@ -1,0 +1,13 @@
+{
+  "id": "style-dictionary",
+  "type": "document",
+  "name": "Style Dictionary",
+  "category": "Design & dev tools",
+  "summary": "Turn design tokens into CSS, iOS, Android and more.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Amazon and contributors",
+  "url": "https://styledictionary.com/",
+  "keywords": "tokens build transform"
+}

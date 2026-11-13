@@ -1,0 +1,14 @@
+{
+  "id": "web-dev-learn-html",
+  "type": "document",
+  "name": "web.dev: Learn HTML",
+  "category": "HTML & web platform",
+  "summary": "A free course on semantic, accessible HTML.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Google Chrome team",
+  "url": "https://web.dev/learn/html",
+  "keywords": "course semantics"
+}

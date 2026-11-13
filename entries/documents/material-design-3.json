@@ -1,0 +1,14 @@
+{
+  "id": "material-design-3",
+  "type": "document",
+  "name": "Material Design 3",
+  "category": "Design systems & guidelines",
+  "summary": "Google's design system, with components, color and motion guidance.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "Google",
+  "url": "https://m3.material.io/",
+  "keywords": "material android google"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "shadcn-ui",
+  "type": "document",
+  "name": "shadcn/ui",
+  "category": "Component libraries",
+  "summary": "Copy-and-own accessible components built on Radix and Tailwind.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "shadcn",
+  "url": "https://ui.shadcn.com/docs",
+  "keywords": "shadcn components radix tailwind"
+}

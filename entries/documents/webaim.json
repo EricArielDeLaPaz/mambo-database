@@ -1,0 +1,14 @@
+{
+  "id": "webaim",
+  "type": "document",
+  "name": "WebAIM",
+  "category": "Accessibility",
+  "summary": "Articles and tools on accessibility, including the contrast checker.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "WebAIM at Utah State University",
+  "url": "https://webaim.org/",
+  "keywords": "contrast screen readers"
+}

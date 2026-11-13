@@ -1,0 +1,77 @@
+{
+  "id": "tol-bright",
+  "type": "color",
+  "name": "Paul Tol Bright",
+  "category": "accessible",
+  "summary": "Seven bold colors from Paul Tol's color-blind safe qualitative schemes: blue, red, green, yellow, cyan, purple and grey.",
+  "industries": [
+    "all"
+  ],
+  "mood": "Bold, friendly, clear",
+  "roles": {
+    "bg": "#ffffff",
+    "surface": "#f2f2f2",
+    "ink": "#111111",
+    "text-secondary": "#595959",
+    "primary": "#4477AA",
+    "primary-text": "#ffffff",
+    "accent": "#AA3377",
+    "danger": "#EE6677",
+    "success": "#228833",
+    "warning": "#CCBB44"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "primary-text",
+      "accent"
+    ],
+    [
+      "ink",
+      "danger"
+    ],
+    [
+      "primary-text",
+      "success"
+    ],
+    [
+      "ink",
+      "warning"
+    ],
+    [
+      "danger",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Paul Tol designed this scheme to stay distinguishable for the common types of color blindness.",
+    "Red (danger) is light, so use dark text on it and keep a 3:1 border or icon when it sits on white.",
+    "Built for color-blind accessibility: the hues stay distinguishable for the most common types of color blindness, mainly by differing in lightness as well as hue.",
+    "Several of these colors are too light to carry white text. Put dark text (ink) on them, as the contrast checks below show, and never white text.",
+    "Body text needs 4.5:1 against its background; large text and UI outlines need 3:1.",
+    "Still pair every status color with an icon or text. Color alone should never be the only signal."
+  ],
+  "credit": {
+    "text": "Paul Tol, Colour Schemes, SRON technical note SRON/EPS/TN/09-002. The hex values are the published Bright scheme.",
+    "url": "https://sronpersonalpages.nl/~pault/"
+  }
+}

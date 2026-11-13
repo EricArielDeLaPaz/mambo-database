@@ -1,0 +1,14 @@
+{
+  "id": "design-tokens-community-group",
+  "type": "document",
+  "name": "Design Tokens Community Group",
+  "category": "Design systems & guidelines",
+  "summary": "The open format for sharing design tokens between tools.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "W3C Design Tokens Community Group",
+  "url": "https://www.designtokens.org/",
+  "keywords": "tokens json format"
+}

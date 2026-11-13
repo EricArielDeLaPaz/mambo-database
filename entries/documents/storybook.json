@@ -1,0 +1,14 @@
+{
+  "id": "storybook",
+  "type": "document",
+  "name": "Storybook",
+  "category": "Design & dev tools",
+  "summary": "Build and document UI components in isolation.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Storybook",
+  "url": "https://storybook.js.org/docs",
+  "keywords": "storybook components docs"
+}

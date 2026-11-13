@@ -1,0 +1,13 @@
+{
+  "id": "vite",
+  "type": "document",
+  "name": "Vite",
+  "category": "Frameworks & libraries",
+  "summary": "The build tool and dev server many frameworks use.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Vite team",
+  "url": "https://vite.dev/guide/",
+  "keywords": "vite build bundler"
+}

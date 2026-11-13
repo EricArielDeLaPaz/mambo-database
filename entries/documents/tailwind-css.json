@@ -1,0 +1,14 @@
+{
+  "id": "tailwind-css",
+  "type": "document",
+  "name": "Tailwind CSS",
+  "category": "CSS & styling",
+  "summary": "Utility-first CSS framework. Search any class name to see what it does and its values.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Tailwind Labs",
+  "url": "https://tailwindcss.com/docs",
+  "keywords": "utility classes tailwind"
+}

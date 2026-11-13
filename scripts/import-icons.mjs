@@ -35,8 +35,35 @@ const SETS = [
   { id: 'bootstrap-icons', dir: P('bootstrap-icons/package/icons'), file: n => [kebab(n)], lic: P('bootstrap-icons/package/LICENSE') },
   { id: 'carbon', dir: P('_carbon_icons/package/svg/32'), file: n => [kebab(n), dbl(kebab(n))], lic: P('_carbon_icons/package/LICENSE') },
   { id: 'fluent', dir: P('_fluentui_svg-icons/package/icons'), file: n => [snake(n) + '_24_regular'], lic: null },
-  { id: 'ionicons', dir: P('ionicons/package/dist/svg'), file: n => [kebab(n) + '-outline', kebab(n)], lic: P('ionicons/package/LICENSE') },
+  { id: 'ionicons', dir: P('ionicons/package/dist/svg'), file: n => [kebab(n) + '-outline'], lic: P('ionicons/package/LICENSE') },
   { id: 'octicons', dir: P('_primer_octicons/package/build/svg'), file: n => [kebab(n) + '-24'], lic: P('_primer_octicons/package/LICENSE') },
+  // More styles of the same libraries (same license, same folder of the same package)
+  { id: 'material-icons-filled', base: 'material-icons', style: 'Filled', dir: P('_material-design-icons_svg/package/filled'), file: n => [snake(n)], lic: P('_material-design-icons_svg/package/LICENSE') },
+  { id: 'material-icons-rounded', base: 'material-icons', style: 'Rounded', dir: P('_material-design-icons_svg/package/round'), file: n => [snake(n)], lic: P('_material-design-icons_svg/package/LICENSE') },
+  { id: 'material-icons-sharp', base: 'material-icons', style: 'Sharp', dir: P('_material-design-icons_svg/package/sharp'), file: n => [snake(n)], lic: P('_material-design-icons_svg/package/LICENSE') },
+  { id: 'material-icons-duotone', base: 'material-icons', style: 'Duotone', dir: P('_material-design-icons_svg/package/two-tone'), file: n => [snake(n)], lic: P('_material-design-icons_svg/package/LICENSE') },
+  { id: 'phosphor-fill', base: 'phosphor', style: 'Filled', dir: P('_phosphor-icons_core/package/assets/fill'), file: n => [kebab(n) + '-fill'], lic: P('_phosphor-icons_core/package/LICENSE') },
+  { id: 'phosphor-bold', base: 'phosphor', style: 'Bold', dir: P('_phosphor-icons_core/package/assets/bold'), file: n => [kebab(n) + '-bold'], lic: P('_phosphor-icons_core/package/LICENSE') },
+  { id: 'phosphor-duotone', base: 'phosphor', style: 'Duotone', dir: P('_phosphor-icons_core/package/assets/duotone'), file: n => [kebab(n) + '-duotone'], lic: P('_phosphor-icons_core/package/LICENSE') },
+  { id: 'phosphor-light', base: 'phosphor', style: 'Light', dir: P('_phosphor-icons_core/package/assets/light'), file: n => [kebab(n) + '-light'], lic: P('_phosphor-icons_core/package/LICENSE') },
+  { id: 'phosphor-thin', base: 'phosphor', style: 'Thin', dir: P('_phosphor-icons_core/package/assets/thin'), file: n => [kebab(n) + '-thin'], lic: P('_phosphor-icons_core/package/LICENSE') },
+  { id: 'tabler-filled', base: 'tabler', style: 'Filled', dir: P('_tabler_icons/package/icons/filled'), file: n => [kebab(n)], lic: P('_tabler_icons/package/LICENSE') },
+  { id: 'heroicons-solid', base: 'heroicons', style: 'Filled', dir: P('heroicons/package/24/solid'), file: n => [kebab(n)], lic: P('heroicons/package/LICENSE') },
+  { id: 'bootstrap-icons-filled', base: 'bootstrap-icons', style: 'Filled', dir: P('bootstrap-icons/package/icons'), file: n => [kebab(n) + '-fill'], lic: P('bootstrap-icons/package/LICENSE') },
+  { id: 'carbon-filled', base: 'carbon', style: 'Filled', dir: P('_carbon_icons/package/svg/32'), file: n => [kebab(n) + '--filled', dbl(kebab(n)) + '--filled'], lic: P('_carbon_icons/package/LICENSE') },
+  { id: 'fluent-filled', base: 'fluent', style: 'Filled', dir: P('_fluentui_svg-icons/package/icons'), file: n => [snake(n) + '_24_filled'], lic: null },
+  { id: 'ionicons-filled', base: 'ionicons', style: 'Filled', dir: P('ionicons/package/dist/svg'), file: n => [kebab(n)], lic: P('ionicons/package/LICENSE') },
+  { id: 'ionicons-sharp', base: 'ionicons', style: 'Sharp', dir: P('ionicons/package/dist/svg'), file: n => [kebab(n) + '-sharp'], lic: P('ionicons/package/LICENSE') },
+  // More libraries (all MIT)
+  { id: 'iconoir', style: 'Outline', dir: P('iconoir/package/icons/regular'), file: n => [kebab(n)], lic: P('iconoir/package/LICENSE'), meta: { name: 'Iconoir', designSystem: 'Iconoir', vendor: 'Luca Burgio', license: 'MIT', copyright: 'Copyright (c) 2021 Luca Burgio', website: 'https://iconoir.com', source: 'https://github.com/iconoir-icons/iconoir', package: 'iconoir 7.12.2 (regular)' } },
+  { id: 'iconoir-solid', base: 'iconoir', style: 'Filled', dir: P('iconoir/package/icons/solid'), file: n => [kebab(n)], lic: P('iconoir/package/LICENSE') },
+  { id: 'eva', style: 'Outline', dir: P('eva-icons/package/outline/svg'), file: n => [kebab(n) + '-outline'], lic: P('eva-icons/package/LICENSE'), meta: { name: 'Eva Icons', designSystem: 'Eva Icons (Akveo)', vendor: 'Akveo', license: 'MIT', copyright: 'Copyright (c) 2018 Akveo.', website: 'https://akveo.github.io/eva-icons/', source: 'https://github.com/akveo/eva-icons', package: 'eva-icons 1.1.3 (outline)' } },
+  { id: 'eva-fill', base: 'eva', style: 'Filled', dir: P('eva-icons/package/fill/svg'), file: n => [kebab(n)], lic: P('eva-icons/package/LICENSE') },
+  { id: 'majesticons', style: 'Outline', dir: P('majesticons/package/line'), file: n => [kebab(n) + '-line'], lic: P('majesticons/package/LICENSE'), meta: { name: 'Majesticons', designSystem: 'Majesticons', vendor: 'Gerrit Halfmann', license: 'MIT', copyright: 'Copyright (c) 2021 Gerrit Halfmann', website: 'https://majesticons.com', source: 'https://github.com/halfmage/majesticons', package: 'majesticons 2.1.3 (line)' } },
+  { id: 'majesticons-solid', base: 'majesticons', style: 'Filled', dir: P('majesticons/package/solid'), file: n => [kebab(n)], lic: P('majesticons/package/LICENSE') },
+  { id: 'teenyicons', style: 'Outline', dir: P('teenyicons/package/outline'), file: n => [kebab(n)], lic: P('teenyicons/package/LICENSE'), meta: { name: 'Teenyicons', designSystem: 'Teenyicons', vendor: 'Anja van Staden', license: 'MIT', copyright: 'Copyright (c) 2020, Anja van Staden', website: 'https://teenyicons.com', source: 'https://github.com/teenyicons/teenyicons', package: 'teenyicons 0.4.1 (outline, 15px grid)' } },
+  { id: 'teenyicons-solid', base: 'teenyicons', style: 'Filled', dir: P('teenyicons/package/solid'), file: n => [kebab(n)], lic: P('teenyicons/package/LICENSE') },
+  { id: 'pixelarticons', style: 'Pixel', dir: P('pixelarticons/package/svg'), file: n => [kebab(n)], lic: P('pixelarticons/package/LICENSE'), meta: { name: 'Pixelarticons', designSystem: 'Pixelarticons', vendor: 'Gerrit Halfmann', license: 'MIT', copyright: 'Copyright (c) 2019 Gerrit Halfmann', website: 'https://pixelarticons.com', source: 'https://github.com/halfmage/pixelarticons', package: 'pixelarticons 2.4.2' } },
 ];
 function norm(raw) {
   raw = raw.replace(/<!--[\s\S]*?-->/g, '').replace(/<title>[\s\S]*?<\/title>/g, '').replace(/<desc>[\s\S]*?<\/desc>/g, '');
@@ -54,19 +81,31 @@ const O = {
   'bootstrap-icons': { minus: 'dash-lg', plus: 'plus-lg', info: 'info-circle', help: 'question-circle' },
   ionicons: { help: 'help-circle-outline', stop: 'stop-circle-outline' }
 };
+const O2 = { 'material-icons-filled': { 'arrow-left': 'arrow_back', 'arrow-right': 'arrow_forward', heart: 'favorite', star: 'star', bookmark: 'bookmark', camera: 'photo_camera', battery: null, help: 'help', error: 'error', briefcase: 'work', tag: 'sell', maximize: 'fullscreen', minimize: 'fullscreen_exit' }, 'bootstrap-icons-filled': { info: 'info-circle-fill', help: 'question-circle-fill', plus: 'plus-circle-fill' } };
+for (const v of ['rounded', 'sharp', 'duotone']) O2['material-icons-' + v] = { ...O['material-icons'], 'arrow-left': 'arrow_back', 'arrow-right': 'arrow_forward' };
+const keepFluent = fs.readFileSync(path.join(root, 'icons/fluent/LICENSE'), 'utf8');
 const report = {};
 for (const s of SETS) {
   const out = path.join(root, 'icons', s.id); fs.rmSync(out, { recursive: true, force: true }); fs.mkdirSync(out, { recursive: true });
   let n = 0;
   for (const [concept, syn] of Object.entries(C)) {
-    let found = null; const ov = O[s.id] && O[s.id][concept]; if (ov === null) continue; if (ov && fs.existsSync(path.join(s.dir, ov + '.svg'))) found = path.join(s.dir, ov + '.svg');
+    let found = null; const ov = (O[s.id] || O2[s.id] || {})[concept]; if (ov === null) continue; if (ov && fs.existsSync(path.join(s.dir, ov + '.svg'))) found = path.join(s.dir, ov + '.svg');
     if (!found) for (const cand of [concept, ...syn.split(' ')]) { for (const f of s.file(cand)) { const p = path.join(s.dir, f + '.svg'); if (fs.existsSync(p)) { found = p; break } } if (found) break }
     if (!found) continue;
     const svg = norm(fs.readFileSync(found, 'utf8')); if (!svg) continue;
     fs.writeFileSync(path.join(out, concept + '.svg'), svg + '\n'); n++;
   }
-  if (s.lic) fs.copyFileSync(s.lic, path.join(out, 'LICENSE'));
+  if (s.lic) fs.copyFileSync(s.lic, path.join(out, 'LICENSE')); else fs.writeFileSync(path.join(out, 'LICENSE'), keepFluent);
+  if (!n) fs.rmSync(out, { recursive: true, force: true });
   report[s.id] = n;
+}
+{ // sets.json = hand-kept base entries + generated style variants and new libraries
+  const sj = path.join(root, 'icons/sets.json'), all = JSON.parse(fs.readFileSync(sj, 'utf8')), baseSets = all.filter(x => !x.base && !SETS.some(y => y.meta && y.id === x.id)), cap = t => t === 'regular' ? 'Outline' : t[0].toUpperCase() + t.slice(1);
+  const byId = Object.fromEntries(baseSets.map(x => [x.id, { ...x, style: cap(x.style) }]));
+  for (const s of SETS) { if (s.meta) byId[s.id] = { id: s.id, ...s.meta, style: s.style, note: 'Normalized for this site (color set to currentColor, size attributes removed).' } }
+  const out = [];
+  for (const s of SETS) { if (!report[s.id]) continue; if (s.base) { const b = byId[s.base]; out.push({ ...b, id: s.id, base: s.base, name: b.name + ' (' + s.style + ')', style: s.style, package: b.package.replace(/\s*\(.*\)$/, '') + ' (' + s.style.toLowerCase() + ')' }) } else out.push(byId[s.id]) }
+  fs.writeFileSync(sj, JSON.stringify(out, null, 1) + '\n');
 }
 fs.writeFileSync(path.join(root, 'icons/concepts.json'), JSON.stringify(Object.fromEntries(Object.entries(C).map(([k, v]) => [k, v.split(' ').filter(x => x !== k)])), null, 1) + '\n');
 console.log(report, 'concepts', Object.keys(C).length);

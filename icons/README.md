@@ -5,7 +5,7 @@ Each folder holds normalized SVGs (`currentColor`, no fixed size) plus the libra
 To re-import, `npm pack` the packages listed in `sets.json` into one folder and run `node scripts/import-icons.mjs <folder>`.
 
 ## Licenses (checked against each package's LICENSE file)
-MIT: Feather, Heroicons, Tabler, Phosphor, Bootstrap Icons, Fluent UI System Icons, Ionicons, Octicons. ISC: Lucide. Apache-2.0: Material Icons, Carbon.
+MIT: Feather, Heroicons, Tabler, Phosphor, Bootstrap Icons, Fluent UI System Icons, Ionicons, Octicons, Iconoir, Eva Icons, Majesticons, Teenyicons, Pixelarticons. ISC: Lucide. Apache-2.0: Material Icons, Carbon.
 All allow commercial use, modification and redistribution when the copyright notice and license text are kept. Apache-2.0 also asks that changes are stated (these files were normalized).
 
 ## Not included, and why

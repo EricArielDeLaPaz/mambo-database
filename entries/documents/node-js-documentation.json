@@ -1,0 +1,13 @@
+{
+  "id": "node-js-documentation",
+  "type": "document",
+  "name": "Node.js documentation",
+  "category": "JavaScript & TypeScript",
+  "summary": "API reference for running JavaScript outside the browser.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "OpenJS Foundation",
+  "url": "https://nodejs.org/docs/latest/api/",
+  "keywords": "node server runtime"
+}

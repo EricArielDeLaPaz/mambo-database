@@ -1,0 +1,14 @@
+{
+  "id": "wcag-2-2-quick-reference",
+  "type": "document",
+  "name": "WCAG 2.2 Quick Reference",
+  "category": "Accessibility",
+  "summary": "Every WCAG 2.2 success criterion, filterable by level and topic.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "W3C",
+  "url": "https://www.w3.org/WAI/WCAG22/quickref/",
+  "keywords": "wcag contrast standards"
+}

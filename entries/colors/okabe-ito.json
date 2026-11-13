@@ -1,0 +1,81 @@
+{
+  "id": "okabe-ito",
+  "type": "color",
+  "name": "Okabe-Ito",
+  "category": "accessible",
+  "summary": "The eight-color palette designed so people with color blindness can tell the colors apart. Orange, sky blue, green, yellow, blue, vermillion and reddish purple, plus black.",
+  "industries": [
+    "all"
+  ],
+  "mood": "Clear, scientific, neutral",
+  "roles": {
+    "bg": "#ffffff",
+    "surface": "#f2f2f2",
+    "ink": "#000000",
+    "text-secondary": "#595959",
+    "primary": "#0072B2",
+    "primary-text": "#ffffff",
+    "accent": "#E69F00",
+    "danger": "#D55E00",
+    "success": "#009E73",
+    "warning": "#F0E442"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "ink",
+      "accent"
+    ],
+    [
+      "ink",
+      "danger"
+    ],
+    [
+      "ink",
+      "success"
+    ],
+    [
+      "ink",
+      "warning"
+    ],
+    [
+      "danger",
+      "bg"
+    ],
+    [
+      "success",
+      "bg"
+    ]
+  ],
+  "guidance": [
+    "Use the blue (primary) and orange (accent) together: they stay clearly different for every common type of color blindness.",
+    "Success (bluish green) and danger (vermillion) are the pair that stays apart best for red-green color blindness, though you should still add an icon and a label.",
+    "Built for color-blind accessibility: the hues stay distinguishable for the most common types of color blindness, mainly by differing in lightness as well as hue.",
+    "Several of these colors are too light to carry white text. Put dark text (ink) on them, as the contrast checks below show, and never white text.",
+    "Body text needs 4.5:1 against its background; large text and UI outlines need 3:1.",
+    "Still pair every status color with an icon or text. Color alone should never be the only signal."
+  ],
+  "credit": {
+    "text": "Masataka Okabe and Kei Ito, Color Universal Design (2008). Popularised for scientific figures by Bang Wong, Nature Methods 8, 441 (2011). The hex values are the published palette.",
+    "url": "https://jfly.uni-koeln.de/color/"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "angular",
+  "type": "document",
+  "name": "Angular",
+  "category": "Frameworks & libraries",
+  "summary": "Documentation for the Angular framework.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Google",
+  "url": "https://angular.dev/",
+  "keywords": "angular typescript"
+}

@@ -155,8 +155,8 @@
     "popover"
   ],
   "code": {
-    "html": "<div class=\"row\">\n  <button class=\"btn btn--solid\" type=\"button\">Save changes</button>\n  <button class=\"btn btn--outline\" type=\"button\">Preview</button>\n  <button class=\"btn btn--text\" type=\"button\">Cancel</button>\n  <button class=\"btn btn--destructive\" type=\"button\">Delete project</button>\n</div>",
-    "css": ".row{display:flex;flex-wrap:wrap;gap:8px}\n.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid #0a0a0a;border-radius:999px;font:600 14px/1 system-ui,sans-serif;cursor:pointer}\n.btn--solid{background:#0a0a0a;color:#fff}\n.btn--outline{background:#fff;color:#0a0a0a}\n.btn--text{border-color:transparent;background:none;text-decoration:underline;color:#0a0a0a}\n.btn--destructive{background:#b91c1c;border-color:#b91c1c;color:#fff}"
+    "html": "<button class=\"btn btn--solid\" type=\"button\">Save changes</button>\n<button class=\"btn btn--outline\" type=\"button\">Preview</button>\n<button class=\"btn btn--text\" type=\"button\">Cancel</button>\n<button class=\"btn btn--destructive\" type=\"button\">Delete project</button>",
+    "css": ".btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid #0a0a0a;border-radius:999px;font:600 14px/1 system-ui,sans-serif;cursor:pointer}\n.btn--solid{background:#0a0a0a;color:#fff}\n.btn--outline{background:#fff;color:#0a0a0a}\n.btn--text{border-color:transparent;background:none;text-decoration:underline;color:#0a0a0a}\n.btn--destructive{background:#b91c1c;border-color:#b91c1c;color:#fff}"
   },
   "os": {
     "ios": {

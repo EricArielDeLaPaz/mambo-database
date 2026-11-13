@@ -17,6 +17,8 @@ Icons are small pictures that speed up scanning. Used well, they support text. U
 | Filled (solid) | Solid shapes | Selected or active states, emphasis |
 | Duotone | Two tones or opacity levels | Marketing, empty states |
 | Rounded or sharp | Corner treatment | Matches the brand's personality |
+| Bold, light or thin | Stroke weight of the same icon | Matches text weight or brand tone |
+| Pixel | Blocky, retro look | Games and playful brands |
 
 Pick **one style per product** and keep stroke weight consistent. Mixing outline and filled is fine only when it means something, such as inactive and active.
 
@@ -58,15 +60,24 @@ Browse has every library below as real icons you can filter by design system and
 
 [View all libraries in Browse](#/browse/icon){.btn}
 
-| Library | License (at time of writing) | Style |
+| Library | License (at time of writing) | Styles in Browse |
 | --- | --- | --- |
-| Material Symbols | Apache 2.0 | Outline, rounded, sharp |
-| Lucide | ISC | Clean outline |
-| Feather | MIT | Simple outline |
-| Heroicons | MIT | Outline and solid |
-| Phosphor | MIT | Six weights |
-| Tabler Icons | MIT | Large outline set |
-| Bootstrap Icons | MIT | Mixed, general-purpose |
+| Material Icons (Google) | Apache 2.0 | Outline, filled, rounded, sharp, duotone |
+| Lucide | ISC | Outline |
+| Feather | MIT | Outline |
+| Heroicons (Tailwind CSS) | MIT | Outline and filled |
+| Phosphor | MIT | Outline, filled, bold, light, thin, duotone |
+| Tabler Icons | MIT | Outline and filled |
+| Bootstrap Icons | MIT | Outline and filled |
+| Carbon (IBM) | Apache 2.0 | Outline and filled |
+| Fluent UI (Microsoft) | MIT | Outline and filled |
+| Ionicons | MIT | Outline, filled and sharp |
+| Octicons (GitHub Primer) | MIT | Outline |
+| Iconoir | MIT | Outline and filled |
+| Eva Icons | MIT | Outline and filled |
+| Majesticons | MIT | Outline and filled |
+| Teenyicons | MIT | Outline and filled (15px grid) |
+| Pixelarticons | MIT | Pixel |
 
 Always check the license on the project page before shipping, and keep any required notice.
 

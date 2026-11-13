@@ -1,0 +1,14 @@
+{
+  "id": "can-i-use",
+  "type": "document",
+  "name": "Can I use",
+  "category": "HTML & web platform",
+  "summary": "Check which browsers support a web feature before you design or build with it.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Alexis Deveria and contributors",
+  "url": "https://caniuse.com/",
+  "keywords": "browser support compatibility"
+}

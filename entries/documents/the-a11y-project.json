@@ -1,0 +1,14 @@
+{
+  "id": "the-a11y-project",
+  "type": "document",
+  "name": "The A11Y Project",
+  "category": "Accessibility",
+  "summary": "Community checklists and explanations for accessible design and code.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "The A11Y Project community",
+  "url": "https://www.a11yproject.com/",
+  "keywords": "checklist community"
+}

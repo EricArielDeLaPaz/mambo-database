@@ -1,0 +1,14 @@
+{
+  "id": "web-dev-learn-responsive-design",
+  "type": "document",
+  "name": "web.dev: Learn Responsive Design",
+  "category": "HTML & web platform",
+  "summary": "How layouts adapt to screen sizes, with media queries and fluid sizing.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Google Chrome team",
+  "url": "https://web.dev/learn/design",
+  "keywords": "responsive mobile breakpoints"
+}

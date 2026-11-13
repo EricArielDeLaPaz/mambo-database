@@ -1,0 +1,14 @@
+{
+  "id": "ant-design",
+  "type": "document",
+  "name": "Ant Design",
+  "category": "Component libraries",
+  "summary": "An enterprise-focused React component library and design language.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Ant Group",
+  "url": "https://ant.design/docs/react/introduce",
+  "keywords": "antd enterprise react"
+}

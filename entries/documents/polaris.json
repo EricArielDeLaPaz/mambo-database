@@ -1,0 +1,14 @@
+{
+  "id": "polaris",
+  "type": "document",
+  "name": "Polaris",
+  "category": "Design systems & guidelines",
+  "summary": "Shopify's design system for commerce tools.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "Shopify",
+  "url": "https://polaris.shopify.com/",
+  "keywords": "shopify commerce"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "wai-aria-authoring-practices-guide",
+  "type": "document",
+  "name": "WAI-ARIA Authoring Practices Guide",
+  "category": "Accessibility",
+  "summary": "Patterns and keyboard behavior for accessible widgets like menus, tabs and dialogs.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "W3C",
+  "url": "https://www.w3.org/WAI/ARIA/apg/",
+  "keywords": "aria keyboard patterns"
+}

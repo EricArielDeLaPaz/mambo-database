@@ -1,0 +1,73 @@
+{
+  "id": "ibm-accessible",
+  "type": "color",
+  "name": "IBM color-blind safe",
+  "category": "accessible",
+  "summary": "Five colors from IBM Design Language's color-blind safe palette: ultramarine, indigo, magenta, orange and gold.",
+  "industries": [
+    "all"
+  ],
+  "mood": "Confident, technical",
+  "roles": {
+    "bg": "#ffffff",
+    "surface": "#f2f2f2",
+    "ink": "#111111",
+    "text-secondary": "#595959",
+    "primary": "#785EF0",
+    "primary-text": "#ffffff",
+    "accent": "#FFB000",
+    "danger": "#DC267F",
+    "warning": "#FE6100",
+    "info": "#648FFF"
+  },
+  "pairs": [
+    [
+      "ink",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "bg"
+    ],
+    [
+      "text-secondary",
+      "surface"
+    ],
+    [
+      "primary-text",
+      "primary"
+    ],
+    [
+      "primary",
+      "bg"
+    ],
+    [
+      "ink",
+      "accent"
+    ],
+    [
+      "primary-text",
+      "danger"
+    ],
+    [
+      "ink",
+      "warning"
+    ],
+    [
+      "ink",
+      "info"
+    ]
+  ],
+  "guidance": [
+    "IBM publishes this five-color set so charts and status colors can be told apart by people with color blindness.",
+    "It has no green. If you need a success color, use the info blue or a checkmark icon with a text label rather than adding a green that blends with the orange.",
+    "Built for color-blind accessibility: the hues stay distinguishable for the most common types of color blindness, mainly by differing in lightness as well as hue.",
+    "Several of these colors are too light to carry white text. Put dark text (ink) on them, as the contrast checks below show, and never white text.",
+    "Body text needs 4.5:1 against its background; large text and UI outlines need 3:1.",
+    "Still pair every status color with an icon or text. Color alone should never be the only signal."
+  ],
+  "credit": {
+    "text": "IBM Design Language, Color blind safe palette (data visualization). The hex values are the published palette.",
+    "url": "https://www.ibm.com/design/language/color/"
+  }
+}

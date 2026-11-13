@@ -1,0 +1,14 @@
+{
+  "id": "fluent-2",
+  "type": "document",
+  "name": "Fluent 2",
+  "category": "Design systems & guidelines",
+  "summary": "Microsoft's design system for Windows and Microsoft 365.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "Microsoft",
+  "url": "https://fluent2.microsoft.design/",
+  "keywords": "fluent microsoft"
+}

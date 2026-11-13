@@ -1,0 +1,13 @@
+{
+  "id": "flutter",
+  "type": "document",
+  "name": "Flutter",
+  "category": "Frameworks & libraries",
+  "summary": "Build iOS, Android and web apps from one codebase.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Google",
+  "url": "https://docs.flutter.dev/",
+  "keywords": "mobile dart widgets"
+}

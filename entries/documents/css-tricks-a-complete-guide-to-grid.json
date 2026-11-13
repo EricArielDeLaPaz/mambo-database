@@ -1,0 +1,14 @@
+{
+  "id": "css-tricks-a-complete-guide-to-grid",
+  "type": "document",
+  "name": "CSS-Tricks: A Complete Guide to Grid",
+  "category": "CSS & styling",
+  "summary": "A picture-first cheat sheet for every CSS Grid property.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "CSS-Tricks",
+  "url": "https://css-tricks.com/snippets/css/complete-guide-grid/",
+  "keywords": "grid cheat sheet layout"
+}

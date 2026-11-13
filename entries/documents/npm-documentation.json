@@ -1,0 +1,13 @@
+{
+  "id": "npm-documentation",
+  "type": "document",
+  "name": "npm documentation",
+  "category": "Design & dev tools",
+  "summary": "Installing and publishing packages with npm.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "npm",
+  "url": "https://docs.npmjs.com/",
+  "keywords": "npm packages"
+}

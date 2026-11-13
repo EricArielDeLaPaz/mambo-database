@@ -1,0 +1,13 @@
+{
+  "id": "mui-material-ui",
+  "type": "document",
+  "name": "MUI (Material UI)",
+  "category": "Component libraries",
+  "summary": "React components that implement Material Design.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "MUI",
+  "url": "https://mui.com/material-ui/getting-started/",
+  "keywords": "material react components"
+}

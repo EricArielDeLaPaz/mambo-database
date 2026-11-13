@@ -1,0 +1,14 @@
+{
+  "id": "the-modern-javascript-tutorial",
+  "type": "document",
+  "name": "The Modern JavaScript Tutorial",
+  "category": "JavaScript & TypeScript",
+  "summary": "A step-by-step tutorial from the basics to advanced topics.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "javascript.info",
+  "url": "https://javascript.info/",
+  "keywords": "tutorial learn javascript"
+}

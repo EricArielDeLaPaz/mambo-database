@@ -72,11 +72,12 @@ ${e.code.css}
 ${e.code.js ? '```js\n' + e.code.js + '\n```' : ''}
 Related: ${(e.related || []).join(', ')}
 `;
+  if (e.type === 'document') return `# ${e.name} (documentation link)\n\n${e.summary}\n\nCategory: ${e.category} | Publisher: ${e.publisher} | For: ${e.audience.join(', ')}\n\nOfficial documentation: ${e.url}\n\nThis entry links to the official documentation; the content belongs to its publisher and keeps its own license.\n`;
   if (e.type === 'color') return `# ${e.name} (color set)\n\n${e.summary}\n\nIndustries: ${(e.industries||[]).join(', ')} | Mood: ${e.mood||'-'}\n\n## Roles\n${Object.entries(e.roles).map(([k, v]) => `- ${k}: ${v}`).join('\n')}\n\n## Contrast checks (WCAG 2.2)\n${e.contrast.map(c => `- ${c.fg} on ${c.bg}: ${c.ratio}:1 | normal text ${c.normalText ? 'PASS' : 'FAIL'} | large text/UI ${c.largeTextAndUI ? 'PASS' : 'FAIL'}`).join('\n')}\n\n## Guidance\n${list(e.guidance)}\n`;
   if (e.type === 'typeface') return `# ${e.name} (typeface)\n\n${e.summary}\n\nCategory: ${e.category} | Roles: ${e.roles.join(', ')} | Weights: ${e.weights.join(', ')} | Industries: ${(e.industries||[]).join(', ')}\n\n## Details\n- Designer: ${e.designer}\n- Font version: ${e.fontVersion || 'n/a'}; Google Fonts file version ${e.apiVersion} (updated ${e.lastModified})\n- Scripts: ${e.scripts.join(', ')}\n- Languages supported: ${e.languageCount} (examples: ${e.languages.slice(0, 15).join(', ')})\n- Web font (.woff2, ${e.woff2Subset} subset, weight ${e.woff2Weight}): ${e.woff2}\n- License: SIL Open Font License 1.1 (https://openfontlicense.org/)\n- Copyright: ${e.copyright}\n- Source: ${e.source}\n\n## Pairings\nVerified: both fonts are on Google Fonts and the suggested weights exist.\n${e.pairings.map(p => `- **${p.family}** works as the ${p.role === 'body' ? 'body' : 'header / display'} font for ${e.name} (display weights ${p.displayWeights.join(', ')}; body weights ${p.bodyWeights.join(', ')}). ${p.why}`).join('\n')}\n\n## CSS\n\`\`\`css\n${e.css}\n\`\`\`\n`;
 }
 fs.rmSync(out, { recursive: true, force: true });
-const folder = { component: 'components', color: 'colors', typeface: 'typography' };
+const folder = { component: 'components', color: 'colors', typeface: 'typography', document: 'documents', profile: 'profiles' };
 const skillRef = path.join(out, 'skill/mambo-database/references');
 for (const e of entries) { const rel = `${folder[e.type]}/${e.id}.md`; e.md = md(e); w(path.join(out, 'entries', rel), e.md); w(path.join(skillRef, rel), e.md); }
 
@@ -153,18 +154,30 @@ for (const set of iconSets) {
   const dir = path.join(root, 'icons', set.id);
   for (const f of fs.readdirSync(dir).filter(x => x.endsWith('.svg')).sort()) {
     const concept = f.slice(0, -4), name = concept.split('-').map(x => x[0].toUpperCase() + x.slice(1)).join(' ');
-    iconEntries.push({ id: `icon-${set.id}-${concept}`, type: 'icon', name, category: set.designSystem, set: set.name, setId: set.id, style: set.style, license: set.license, summary: `${name} icon from ${set.name} (${set.style}), ${set.license}.`, keywords: [concept, ...(iconConcepts[concept] || [])].join(' '), industries: ['all'], svg: fs.readFileSync(path.join(dir, f), 'utf8').trim() });
+    iconEntries.push({ id: `icon-${set.id}-${concept}`, type: 'icon', name, category: set.designSystem, set: set.name, setId: set.id, libId: set.base || set.id, style: set.style, license: set.license, summary: `${name} icon from ${set.name} (${set.style}), ${set.license}.`, keywords: [concept, ...(iconConcepts[concept] || [])].join(' '), industries: ['all'], svg: fs.readFileSync(path.join(dir, f), 'utf8').trim() });
   }
-  fs.mkdirSync(path.join(out, 'site/licenses/icons'), { recursive: true }); fs.copyFileSync(path.join(dir, 'LICENSE'), path.join(out, `site/licenses/icons/${set.id}-LICENSE.txt`));
+  fs.mkdirSync(path.join(out, 'site/licenses/icons'), { recursive: true }); fs.copyFileSync(path.join(dir, 'LICENSE'), path.join(out, `site/licenses/icons/${set.base || set.id}-LICENSE.txt`));
 }
 w(path.join(out, 'data/icons.json'), JSON.stringify({ sets: iconSets, icons: iconEntries.map(({ type, summary, ...e }) => e) }));
 w(path.join(out, 'entries/icons/index.md'), `# Icons\n\n${iconEntries.length} UI icons from ${iconSets.length} free, commercially usable libraries, grouped by design system. SVG source is in data/icons.json.\n\n${iconSets.map(x => `- **${x.designSystem}**: ${x.name}, ${x.style}, ${x.license}. ${x.copyright}. [Source](${x.source})`).join('\n')}\n`);
 fs.appendFileSync(path.join(out, 'llms.txt'), `\n## Icons\n\n- [Icon libraries and licenses](entries/icons/index.md): ${iconEntries.length} UI icons, all free for commercial use.\n- [All icon SVGs as JSON](data/icons.json)\n`);
+// ---------- profiles (illustrated people, all CC0; see profiles/README.md) ----------
+const profLic = read(path.join(root, 'profiles/LICENSES.json')), profileEntries = [];
+for (const [folderName, L] of Object.entries(profLic.styles)) {
+  const dir = path.join(root, 'profiles', folderName);
+  for (const f of fs.readdirSync(dir).filter(x => x.endsWith('.svg')).sort()) {
+    const m = f.match(/^(\d+)-([0-9a-f]{6})\.svg$/), tone = profLic.tones[m[2]], num = m[1];
+    profileEntries.push({ id: `profile-${folderName}-${num}`, type: 'profile', name: `${L.label} ${num}`, category: L.style, set: L.label, creator: L.creator, license: L.license, licenseUrl: L.licenseUrl, source: L.source, tone, skin: '#' + m[2], keywords: `${L.label} ${tone} skin person face portrait avatar profile picture ${L.style}`, industries: ['all'], svg: fs.readFileSync(path.join(dir, f), 'utf8').trim() });
+  }
+  fs.mkdirSync(path.join(out, 'site/licenses/profiles'), { recursive: true }); fs.copyFileSync(path.join(dir, 'LICENSE.txt'), path.join(out, `site/licenses/profiles/${folderName}-LICENSE.txt`));
+}
+w(path.join(out, 'data/profiles.json'), JSON.stringify({ styles: profLic.styles, profiles: profileEntries.map(({ type, ...e }) => e) }));
+w(path.join(out, 'entries/profiles/index.md'), `# Profiles\n\n${profileEntries.length} illustrated profile pictures of people facing the camera, in ${Object.keys(profLic.styles).length} styles, across eight skin tones. All are CC0 1.0 (public domain), so they are free to use commercially without attribution.\n\n${Object.values(profLic.styles).map(x => `- **${x.style}**: ${x.label} by ${x.creator}, ${x.license}. [Source](${x.source})`).join('\n')}\n`);
 const tpl = fs.readFileSync(path.join(root, 'site-src/template.html'), 'utf8');
 fs.copyFileSync(path.join(root, 'site-src/mambo.png'), (fs.mkdirSync(path.join(out, 'site'), { recursive: true }), path.join(out, 'site/mambo.png')));
 const src = f => fs.readFileSync(path.join(root, 'site-src', f), 'utf8');
 const fonts = JSON.parse(fs.readFileSync(path.join(root, 'data/google-fonts.json'), 'utf8'));
 let js = ['core.js', 'store.js', 'browse.js', 'systems.js', 'guides.js', 'tools.js', 'tools2.js', 'app.js'].map(src).join('\n');
-js = js.replace('/*__DATA__*/[]', () => JSON.stringify([...entries, ...iconEntries]).replace(/</g, '\\u003c')).replace('/*__ICONSETS__*/[]', () => JSON.stringify(iconSets)).replace('/*__FONTS__*/[]', () => JSON.stringify(fonts)).replace('/*__GUIDES__*/[]', () => JSON.stringify(guides).replace(/</g, '\\u003c'));
+js = js.replace('/*__DATA__*/[]', () => JSON.stringify([...entries, ...iconEntries, ...profileEntries]).replace(/</g, '\\u003c')).replace('/*__ICONSETS__*/[]', () => JSON.stringify(iconSets)).replace('/*__FONTS__*/[]', () => JSON.stringify(fonts)).replace('/*__GUIDES__*/[]', () => JSON.stringify(guides).replace(/</g, '\\u003c'));
 w(path.join(out, 'site/index.html'), tpl.replace('/*__CSS__*/', () => src('styles.css')).replace('/*__JS__*/', () => js.replace(/<\/script/gi, '<\\/script')));
-console.log(`Built ${entries.length} entries + ${iconEntries.length} icons + ${guides.length} guides -> dist/ (site, llms.txt, skill, markdown, json)`);
+console.log(`Built ${entries.length} entries + ${iconEntries.length} icons + ${profileEntries.length} profiles + ${guides.length} guides -> dist/ (site, llms.txt, skill, markdown, json)`);

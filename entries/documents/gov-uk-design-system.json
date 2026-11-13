@@ -1,0 +1,14 @@
+{
+  "id": "gov-uk-design-system",
+  "type": "document",
+  "name": "GOV.UK Design System",
+  "category": "Design systems & guidelines",
+  "summary": "Researched, accessible patterns for public services.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "UK Government Digital Service",
+  "url": "https://design-system.service.gov.uk/",
+  "keywords": "gov uk accessible patterns forms"
+}

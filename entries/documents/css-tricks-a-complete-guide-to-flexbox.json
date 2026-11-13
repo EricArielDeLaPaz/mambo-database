@@ -1,0 +1,14 @@
+{
+  "id": "css-tricks-a-complete-guide-to-flexbox",
+  "type": "document",
+  "name": "CSS-Tricks: A Complete Guide to Flexbox",
+  "category": "CSS & styling",
+  "summary": "A picture-first cheat sheet for every flexbox property.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "CSS-Tricks",
+  "url": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
+  "keywords": "flexbox cheat sheet layout"
+}

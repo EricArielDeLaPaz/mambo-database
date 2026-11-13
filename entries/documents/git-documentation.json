@@ -1,0 +1,13 @@
+{
+  "id": "git-documentation",
+  "type": "document",
+  "name": "Git documentation",
+  "category": "Design & dev tools",
+  "summary": "The Git book and command reference.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Git",
+  "url": "https://git-scm.com/doc",
+  "keywords": "git version control"
+}

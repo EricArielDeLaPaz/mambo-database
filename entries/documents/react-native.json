@@ -1,0 +1,13 @@
+{
+  "id": "react-native",
+  "type": "document",
+  "name": "React Native",
+  "category": "Frameworks & libraries",
+  "summary": "Build iOS and Android apps with React.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Meta",
+  "url": "https://reactnative.dev/docs/getting-started",
+  "keywords": "mobile ios android"
+}

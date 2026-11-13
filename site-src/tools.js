@@ -4,7 +4,7 @@ const TOOLS = [
   ['randomizer', 'Color randomizer', 'Random palettes and hues for light and dark themes.', 'Color'],
   ['cvd', 'Colorblind simulator', 'See colors and images the way color-blind people do.', 'Color'],
   ['lorem', 'Lorem ipsum generator', 'Placeholder text by paragraphs, sentences, words or characters.', 'Content'],
-  ['persona', 'Persona generator', 'Random names with illustrated profile pictures.', 'Content'],
+  ['persona', 'Persona generator', 'Random names with profile pictures from Browse, by style.', 'Content'],
   ['convert', 'Image Converter', 'Convert images between formats, many at once.', 'Images'],
   ['bgremove', 'Background remover', 'Remove a plain background from an image.', 'Images'],
   ['units', 'Unit converter', 'px, rem, em, pt, vw and more for CSS and handoff.', 'Measure']

@@ -1,0 +1,14 @@
+{
+  "id": "mdn-html",
+  "type": "document",
+  "name": "MDN: HTML",
+  "category": "HTML & web platform",
+  "summary": "Every HTML element and attribute, what it is for, and how it behaves.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Mozilla",
+  "url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+  "keywords": "html elements attributes semantics"
+}

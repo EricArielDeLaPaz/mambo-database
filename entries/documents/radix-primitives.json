@@ -1,0 +1,13 @@
+{
+  "id": "radix-primitives",
+  "type": "document",
+  "name": "Radix Primitives",
+  "category": "Component libraries",
+  "summary": "Unstyled, accessible building blocks such as dialogs, menus and tabs.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "WorkOS",
+  "url": "https://www.radix-ui.com/primitives/docs/overview/introduction",
+  "keywords": "radix accessible primitives"
+}

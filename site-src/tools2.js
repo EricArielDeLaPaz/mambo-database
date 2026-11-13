@@ -204,47 +204,40 @@ function renderUnits(el) {
 /* ---------- Persona generator ---------- */
 const FIRST = 'Aaliyah Aiden Amara Andre Anika Aria Arjun Ava Ayesha Benjamin Bianca Camila Carlos Chen Chloe Daniel Deja Diego Dmitri Elena Eli Emeka Emma Esperanza Ethan Fatima Felix Freya Gabriel Grace Hana Hassan Hiro Imani Isabella Ivan Jamal Jasmine Javier Jin Joaquin Kai Kamala Kenji Keisha Lars Layla Leila Leo Liam Lina Lucas Luna Malik Marcus Maya Mei Mateo Mina Mohammed Nadia Naomi Nia Noah Nora Olivia Omar Priya Rafael Rahul Ravi Rosa Ruth Sakura Samir Sana Santiago Sara Sofia Soren Tariq Tessa Thandi Theo Tomas Valentina Wei Xavier Yara Yuki Zainab Zane Zara Zoe'.split(' ');
 const LAST = 'Abara Adeyemi Ahmed Alvarez Andersson Banerjee Bauer Bennett Brooks Castillo Chang Chavez Chowdhury Clarke Costa Cruz Dang Diaz Dubois Edwards Fernandez Fischer Flores Foster Garcia Gonzalez Gupta Hamidi Hansen Haruna Hernandez Hoang Hughes Ibrahim Ivanov Jackson Jensen Johansson Kapoor Kaur Khan Kim Kowalski Kumar Lee Lopez Mahmoud Martin Martinez Mbeki Mendoza Miller Mitchell Moreau Morales Murphy Nakamura Nguyen Novak Nowak Okafor Okoye Olsen Ortiz Osei Park Patel Perez Petrov Phillips Popov Ramirez Reyes Rivera Robinson Rossi Russo Saito Sanchez Santos Schmidt Sharma Silva Singh Smith Suzuki Tanaka Taylor Thompson Torres Tran Varga Vasquez Wang Watanabe Williams Wilson Wong Yamamoto Yilmaz Young Zhang Zhou'.split(' ');
-const SKIN = ['#f6d5c0', '#efbf9b', '#d9a070', '#b87b4e', '#8a5a39', '#5d3b25'], HAIR = ['#1b1b1f', '#3b2a1e', '#5a3a22', '#8a5a2b', '#c18a3d', '#d9c08a', '#8f9399', '#a83a2a', '#3a2d6b'], BGS = ['#dbeafe', '#fde68a', '#fecaca', '#bbf7d0', '#e9d5ff', '#fed7aa', '#a5f3fc', '#fbcfe8', '#d9f99d', '#e2e8f0'], CLOTH = ['#1d4ed8', '#0f766e', '#b91c1c', '#7c3aed', '#b45309', '#0369a1', '#be185d', '#166534', '#374151', '#0a0a0a'];
-function avatarSvg(seed) {
-  const r = (a, b) => a + Math.floor(Math.random() * (b - a + 1)), P = a => pick(a);
-  const skin = P(SKIN), hair = P(HAIR), bg = P(BGS), cloth = P(CLOTH), style = r(0, 6), face = r(0, 2), glasses = Math.random() < .3, beard = Math.random() < .25 && style !== 2, brow = r(0, 2), mouth = r(0, 2);
-  const dark = c => c; let hairBack = '', hairFront = '';
-  const faceW = [44, 48, 52][face];
-  if (style === 0) hairFront = `<path d="M${100 - faceW} 88 C${100 - faceW} 34 ${100 + faceW} 34 ${100 + faceW} 88 C${100 + faceW - 6} 66 ${100 - faceW + 14} 60 ${100 - faceW} 88Z" fill="${hair}"/>`;
-  if (style === 1) { hairBack = `<path d="M${100 - faceW - 8} 170 L${100 - faceW - 12} 80 C${100 - faceW - 6} 28 ${100 + faceW + 6} 28 ${100 + faceW + 12} 80 L${100 + faceW + 8} 170Z" fill="${hair}"/>`; hairFront = `<path d="M${100 - faceW} 84 C${100 - faceW + 6} 40 ${100 + faceW - 6} 40 ${100 + faceW} 84 C${100 + 10} 62 ${100 - 20} 62 ${100 - faceW} 84Z" fill="${hair}"/>` }
-  if (style === 2) hairFront = '';
-  if (style === 3) { hairBack = `<circle cx="100" cy="30" r="20" fill="${hair}"/>`; hairFront = `<path d="M${100 - faceW} 86 C${100 - faceW} 38 ${100 + faceW} 38 ${100 + faceW} 86 C${100 + 14} 64 ${100 - 14} 64 ${100 - faceW} 86Z" fill="${hair}"/>` }
-  if (style === 4) hairFront = [-34, -12, 12, 34].map((x, i) => `<circle cx="${100 + x}" cy="${i % 2 ? 52 : 58}" r="${i % 2 ? 22 : 20}" fill="${hair}"/>`).join('') + `<path d="M${100 - faceW} 90 C${100 - faceW} 60 ${100 + faceW} 60 ${100 + faceW} 90 C${100 + 16} 74 ${100 - 16} 74 ${100 - faceW} 90Z" fill="${hair}"/>`;
-  if (style === 5) hairFront = `<path d="M${100 - faceW - 2} 90 C${100 - faceW - 4} 30 ${100 + faceW + 4} 30 ${100 + faceW + 2} 90 C${100 + 30} 56 ${100 - 4} 52 ${100 - faceW - 2} 90Z" fill="${hair}"/>`;
-  if (style === 6) { hairBack = `<path d="M${100 - faceW - 6} 130 L${100 - faceW - 8} 76 C${100 - faceW} 26 ${100 + faceW} 26 ${100 + faceW + 8} 76 L${100 + faceW + 6} 130Z" fill="${hair}"/>`; hairFront = `<path d="M${100 - faceW} 82 C${100 - faceW + 8} 44 ${100 + faceW - 8} 44 ${100 + faceW} 82 C${100 + 4} 70 ${100 - 6} 60 ${100 - faceW} 82Z" fill="${hair}"/>` }
-  const eyes = `<circle cx="84" cy="96" r="4" fill="#1b1b1f"/><circle cx="116" cy="96" r="4" fill="#1b1b1f"/>`;
-  const brows = [`<path d="M76 86 q8-6 16 0 M108 86 q8-6 16 0" stroke="${hair}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`, `<path d="M76 88 l16-4 M108 84 l16 4" stroke="${hair}" stroke-width="3.5" stroke-linecap="round"/>`, `<path d="M76 85 h16 M108 85 h16" stroke="${hair}" stroke-width="3.5" stroke-linecap="round"/>`][brow];
-  const mouths = [`<path d="M86 124 q14 12 28 0" stroke="#7a2e2e" stroke-width="3.5" fill="none" stroke-linecap="round"/>`, `<path d="M88 126 q12 6 24 0" stroke="#7a2e2e" stroke-width="3.5" fill="none" stroke-linecap="round"/>`, `<path d="M86 122 q14 18 28 0 z" fill="#7a2e2e"/><path d="M90 124 q10 6 20 0" fill="#fff"/>`][mouth];
-  const gl = glasses ? `<g fill="none" stroke="#1b1b1f" stroke-width="3"><circle cx="84" cy="96" r="12"/><circle cx="116" cy="96" r="12"/><path d="M96 96 h8"/></g>` : '';
-  const bd = beard ? `<path d="M${100 - faceW + 2} 108 C${100 - faceW} 150 ${100 + faceW} 150 ${100 + faceW - 2} 108 C${100 + 20} 130 ${100 - 20} 130 ${100 - faceW + 2} 108Z" fill="${hair}" opacity=".95"/>` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Illustrated profile picture"><rect width="200" height="200" fill="${bg}"/>${hairBack}<path d="M30 200 C34 160 66 150 100 150 C134 150 166 160 170 200Z" fill="${cloth}"/><rect x="88" y="128" width="24" height="28" rx="8" fill="${skin}"/><ellipse cx="${100 - faceW - 1}" cy="102" rx="6" ry="10" fill="${skin}"/><ellipse cx="${100 + faceW + 1}" cy="102" rx="6" ry="10" fill="${skin}"/><ellipse cx="100" cy="98" rx="${faceW}" ry="${[48, 52, 46][face]}" fill="${skin}"/>${bd}${eyes}${gl}${brows}<path d="M100 100 v12 q-5 4 -9 1" stroke="rgba(0,0,0,.25)" stroke-width="3" fill="none" stroke-linecap="round"/>${mouths}${hairFront}</svg>`;
+const PERSONA = { n: 6, style: '', list: [] };
+const profPool = () => DATA.filter(e => e.type === 'profile' && (!PERSONA.style || e.category === PERSONA.style));
+const profStyleList = () => [...new Set(DATA.filter(e => e.type === 'profile').map(e => e.category))].sort(styleSort);
+function newPersonas(n) {
+  const pool = profPool(), out = []; let bag = [];
+  for (let i = 0; i < n; i++) { if (!bag.length) bag = pool.slice().sort(() => Math.random() - .5); out.push({ first: pick(FIRST), last: pick(LAST), e: bag.pop() }) }
+  return out;
 }
-const PERSONA = { n: 6, list: [] };
-function newPersona() { return { first: pick(FIRST), last: pick(LAST), svg: avatarSvg() } }
 async function svgToPngBlob(svg, size = 512) {
+  if (!/ width=/.test(svg.slice(0, 200))) svg = svg.replace('<svg ', `<svg width="${size}" height="${size}" `);
   const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })), im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url }), c = document.createElement('canvas'); c.width = c.height = size; c.getContext('2d').drawImage(im, 0, 0, size, size); URL.revokeObjectURL(url);
   return new Promise(res => c.toBlob(res, 'image/png'));
 }
 function renderPersona(el) {
-  el.innerHTML = `<p class="lede">Random first and last names with illustrated profile pictures, for personas, mockups and user-research boards. Hover (or tab to) a picture to download or copy it. The pictures are original illustrations, not photos of real people, and names are random combinations, so any match with a real person is a coincidence.</p>
-  <div class="row" style="align-items:end"><label class="f"><span class="f-t">How many</span><select id="pe-n" aria-label="How many personas">${[1, 3, 6, 9, 12].map(n => `<option ${n === PERSONA.n ? 'selected' : ''}>${n}</option>`).join('')}</select></label><button class="btn solid" id="pe-go" type="button">Generate again</button><button class="btn" id="pe-copyall" type="button">Copy all names</button></div>
+  const styles = profStyleList(), MAXN = 100;
+  el.innerHTML = `<p class="lede">Random first and last names with profile pictures, for personas, mockups and user-research boards. The pictures come from the <a href="#/browse/profile">Profiles</a> collection in Browse, so pick a style to match. Hover (or tab to) a picture to download or copy it. The pictures are illustrations of invented people, free for commercial use (CC0), and names are random combinations, so any match with a real person is a coincidence.</p>
+  <div class="row" style="align-items:end"><label class="f"><span class="f-t">Style</span><select id="pe-style" aria-label="Profile picture style"><option value="">All styles</option>${styles.map(x => `<option ${x === PERSONA.style ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select></label>
+  <label class="f"><span class="f-t">How many</span><input type="number" id="pe-n" min="1" max="${MAXN}" step="1" inputmode="numeric" value="${PERSONA.n}" aria-describedby="pe-note"></label><button class="btn solid" id="pe-go" type="button">Generate again</button><button class="btn" id="pe-copyall" type="button">Copy all names</button></div>
+  <p class="note" id="pe-note" role="status"></p>
   <ul class="persona-grid" id="pe-grid" aria-label="Personas"></ul>`;
+  const note = () => { const pool = profPool().length, raw = parseInt($('#pe-n', el).value, 10); $('#pe-note', el).textContent = !raw || raw < 1 ? `Enter a number from 1 to ${MAXN}.` : raw > MAXN ? `The most at once is ${MAXN}. Showing ${MAXN}.` : raw > pool ? `This style has ${pool} pictures, so some will repeat. Choose All styles for more variety.` : `Pick any number from 1 to ${MAXN}. ${pool} pictures are available in ${PERSONA.style ? 'the ' + PERSONA.style + ' style' : 'all styles'}. Realistic photos are not in Profiles yet.` };
   const draw = () => {
-    $('#pe-grid', el).innerHTML = PERSONA.list.map((p, i) => `<li class="persona"><div class="pav"><div class="pimg" role="img" aria-label="Profile picture for ${esc(p.first)} ${esc(p.last)}">${p.svg}</div><div class="pover"><button class="btn sm" data-dl="png" data-i="${i}" type="button">Download PNG</button><button class="btn sm" data-dl="svg" data-i="${i}" type="button">Download SVG</button><button class="btn sm" data-cpimg="${i}" type="button">Copy image</button></div></div>
+    $('#pe-grid', el).innerHTML = PERSONA.list.map((p, i) => `<li class="persona"><div class="pav"><div class="pimg"><img src="${svgUri(p.e.svg)}" alt="Profile picture for ${esc(p.first)} ${esc(p.last)}" width="200" height="200" loading="lazy"></div><div class="pover"><button class="btn sm" data-dl="png" data-i="${i}" type="button">Download PNG</button><button class="btn sm" data-cpimg="${i}" type="button">Copy image</button></div></div>
     <div class="pname"><div><span class="eyebrow">First name</span><b>${esc(p.first)}</b></div><button class="btn sm" data-cn="first" data-i="${i}" type="button" aria-label="Copy first name ${esc(p.first)}">Copy</button></div>
     <div class="pname"><div><span class="eyebrow">Last name</span><b>${esc(p.last)}</b></div><button class="btn sm" data-cn="last" data-i="${i}" type="button" aria-label="Copy last name ${esc(p.last)}">Copy</button></div>
     <button class="btn sm" data-cn="full" data-i="${i}" type="button">Copy full name</button></li>`).join('');
     $$('[data-cn]', el).forEach(b => b.onclick = () => { const p = PERSONA.list[+b.dataset.i], t = b.dataset.cn === 'first' ? p.first : b.dataset.cn === 'last' ? p.last : p.first + ' ' + p.last; copy(t, t) });
-    $$('[data-dl]', el).forEach(b => b.onclick = async () => { const p = PERSONA.list[+b.dataset.i], nm = (p.first + '-' + p.last).toLowerCase(); if (b.dataset.dl === 'svg') download(nm + '.svg', p.svg, 'image/svg+xml'); else download(nm + '.png', await svgToPngBlob(p.svg), 'image/png') });
-    $$('[data-cpimg]', el).forEach(b => b.onclick = async () => { const p = PERSONA.list[+b.dataset.cpimg]; try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': svgToPngBlob(p.svg) })]); toast('Copied image') } catch { copy(p.svg, 'image as SVG code (this browser cannot copy pictures)') } });
+    $$('[data-dl]', el).forEach(b => b.onclick = async () => { const p = PERSONA.list[+b.dataset.i]; download((p.first + '-' + p.last).toLowerCase() + '.png', await svgToPngBlob(p.e.svg), 'image/png') });
+    $$('[data-cpimg]', el).forEach(b => b.onclick = async () => { const p = PERSONA.list[+b.dataset.cpimg]; try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': svgToPngBlob(p.e.svg) })]); toast('Copied image') } catch { copy(p.e.svg, 'image as SVG code (this browser cannot copy pictures)') } });
   };
-  const gen = () => { PERSONA.list = Array.from({ length: PERSONA.n }, newPersona); draw() };
-  $('#pe-n', el).addEventListener('change', e => { PERSONA.n = +e.target.value; gen() }); $('#pe-go', el).onclick = gen;
+  const gen = () => { const raw = parseInt($('#pe-n', el).value, 10); PERSONA.n = Math.min(MAXN, Math.max(1, raw || 1)); note(); PERSONA.list = newPersonas(PERSONA.n); draw() };
+  let t; $('#pe-n', el).oninput = () => { note(); clearTimeout(t); const raw = parseInt($('#pe-n', el).value, 10); if (raw >= 1) t = setTimeout(gen, 300) };
+  $('#pe-n', el).onchange = () => { $('#pe-n', el).value = Math.min(MAXN, Math.max(1, parseInt($('#pe-n', el).value, 10) || PERSONA.n)); gen() };
+  $('#pe-style', el).addEventListener('change', e => { PERSONA.style = e.target.value; gen() }); $('#pe-go', el).onclick = gen;
   $('#pe-copyall', el).onclick = () => copy(PERSONA.list.map(p => p.first + ' ' + p.last).join('\n'), 'names');
   upgradeSelects(el); gen();
 }

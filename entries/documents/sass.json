@@ -1,0 +1,13 @@
+{
+  "id": "sass",
+  "type": "document",
+  "name": "Sass",
+  "category": "CSS & styling",
+  "summary": "Variables, nesting and mixins that compile to CSS.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Sass",
+  "url": "https://sass-lang.com/documentation/",
+  "keywords": "scss preprocessor"
+}

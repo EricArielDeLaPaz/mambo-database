@@ -1,0 +1,13 @@
+{
+  "id": "vue-js",
+  "type": "document",
+  "name": "Vue.js",
+  "category": "Frameworks & libraries",
+  "summary": "The progressive JavaScript framework guide.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Vue team",
+  "url": "https://vuejs.org/guide/introduction.html",
+  "keywords": "vue components"
+}

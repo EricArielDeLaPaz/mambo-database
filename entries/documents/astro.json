@@ -1,0 +1,13 @@
+{
+  "id": "astro",
+  "type": "document",
+  "name": "Astro",
+  "category": "Frameworks & libraries",
+  "summary": "A framework for content-focused, fast websites.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Astro",
+  "url": "https://docs.astro.build/",
+  "keywords": "astro static sites"
+}

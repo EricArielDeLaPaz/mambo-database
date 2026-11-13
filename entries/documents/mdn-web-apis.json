@@ -1,0 +1,13 @@
+{
+  "id": "mdn-web-apis",
+  "type": "document",
+  "name": "MDN: Web APIs",
+  "category": "HTML & web platform",
+  "summary": "Browser features you can call from JavaScript, such as the DOM, Fetch and Canvas.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Mozilla",
+  "url": "https://developer.mozilla.org/en-US/docs/Web/API",
+  "keywords": "dom fetch canvas storage"
+}

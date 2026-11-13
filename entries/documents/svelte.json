@@ -1,0 +1,13 @@
+{
+  "id": "svelte",
+  "type": "document",
+  "name": "Svelte",
+  "category": "Frameworks & libraries",
+  "summary": "A compiler-based framework with very little boilerplate.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Svelte team",
+  "url": "https://svelte.dev/docs",
+  "keywords": "svelte sveltekit"
+}

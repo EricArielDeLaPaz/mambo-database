@@ -1,0 +1,14 @@
+{
+  "id": "inclusive-components",
+  "type": "document",
+  "name": "Inclusive Components",
+  "category": "Accessibility",
+  "summary": "How to build common interface components so everyone can use them.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "Heydon Pickering",
+  "url": "https://inclusive-components.design/",
+  "keywords": "inclusive components patterns"
+}

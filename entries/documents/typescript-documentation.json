@@ -1,0 +1,13 @@
+{
+  "id": "typescript-documentation",
+  "type": "document",
+  "name": "TypeScript documentation",
+  "category": "JavaScript & TypeScript",
+  "summary": "The handbook and reference for JavaScript with types.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Microsoft",
+  "url": "https://www.typescriptlang.org/docs/",
+  "keywords": "typescript types"
+}

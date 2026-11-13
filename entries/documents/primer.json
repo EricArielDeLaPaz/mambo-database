@@ -1,0 +1,14 @@
+{
+  "id": "primer",
+  "type": "document",
+  "name": "Primer",
+  "category": "Design systems & guidelines",
+  "summary": "GitHub's design system, with components and guidelines.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "GitHub",
+  "url": "https://primer.style/",
+  "keywords": "github primer"
+}

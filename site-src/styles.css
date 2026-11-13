@@ -500,3 +500,7 @@ td.selc,th.selc{width:36px;padding-right:0}td.selc input{width:18px;height:18px;
 .gmin{display:block;font:500 13px var(--font-body);color:var(--text-2);margin:2px 0 4px}.guide .gmin{margin:-6px 0 12px}.gdone{margin:28px 0 0;display:flex;gap:12px;align-items:center}
 .cvdtbl th,.cvdtbl td{text-align:center;vertical-align:middle}.cvdtbl th[scope=row]{text-align:left;min-width:120px}.cvdtbl th,.cvdtbl td{padding:8px 4px}.cvdsw{display:block;width:34px;height:34px;margin:0 auto 4px;border-radius:10px;border:1px solid rgba(0,0,0,.25)}.cvdhx{font:500 11px var(--font-mono);color:var(--text-2)}
 .cvdpill{display:inline-block;min-width:64px;height:30px;border-radius:999px;vertical-align:middle;margin:3px 2px;border:1px solid rgba(0,0,0,.2)}.cvdpill.lab{padding:0 12px;line-height:28px;min-width:0;font:700 13px var(--font-body)}
+
+.docmeta{display:block;font-size:13px;color:var(--text-2);margin-top:2px}
+
+.pfhero{margin:12px 0}.pfhero img{display:block;width:256px;max-width:100%;height:auto;border-radius:16px;border:1px solid var(--border)}.pfprev img{display:block;border-radius:8px}

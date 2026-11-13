@@ -16,8 +16,8 @@ function matches(e) {
 /* Platform only narrows components; colors and typography always show. */
 /* Industry only applies to colors and typography. Style only applies to icons (and profiles). */
 const indShown = () => !B.types.size || [...B.types].some(t => t === 'color' || t === 'typeface');
-const styleShown = () => B.types.size === 1 && ['icon', 'profile'].includes([...B.types][0]);
-const STYLE_ORDER = ['Outline', 'Filled', 'Duotone', 'Rounded', 'Sharp', 'Bold', 'Realistic', 'Illustrated', 'Flat', 'Cartoon', 'Pixel', 'Sketch'];
+const styleShown = () => B.types.size === 1 && [...B.types][0] === 'icon';
+const STYLE_ORDER = ['Realistic', 'Illustrated', 'Drawing', 'Outline', 'Filled', 'Duotone', 'Rounded', 'Sharp', 'Bold', 'Light', 'Thin', 'Realistic', 'Illustrated', 'Flat', 'Cartoon', 'Pixel', 'Sketch'];
 const styleSort = (a, b) => { const x = STYLE_ORDER.indexOf(a), y = STYLE_ORDER.indexOf(b); return (x < 0 ? 99 : x) - (y < 0 ? 99 : y) || a.localeCompare(b) };
 /* Component states: ticking one here ticks it for every component, and unticking clears it (same choice the details panel remembers). */
 const stateUnion = () => { const m = new Map(STATE_LIST.map(([id, l]) => [id, { id, label: l, n: 0 }])); DATA.filter(e => e.type === 'component').forEach(e => (e.states || []).forEach(x => { const r = m.get(x.id) || (m.set(x.id, { id: x.id, label: x.label, n: 0 }), m.get(x.id)); r.n++ })); return [...m.values()].filter(r => r.n) };
@@ -76,7 +76,7 @@ function renderFilters() {
   <input id="q" type="search" placeholder="${B.scope === 'name' ? 'Search names' : 'Search descriptions'}" autocomplete="off" value="${esc(B.q)}">
   <div class="scope" role="group" aria-label="Search in">${[['name', 'Name'], ['description', 'Description']].map(([k, l]) => `<button type="button" class="chip" data-scope="${k}" aria-pressed="${B.scope === k}">${l}</button>`).join('')}</div>
   <fieldset><legend class="eyebrow">Type</legend>${[['', 'All', DATA.length]].concat(Object.keys(TYPE).map(t => [t, TYPE_PLURAL[t], types[t] || 0])).map(([v, l, n]) => `<label class="chk"><input type="radio" name="type" data-type value="${v}" ${(B.types.has(v) || (!v && !B.types.size)) ? 'checked' : ''}><span>${esc(l)}</span><span class="n">${n}</span></label>`).join('')}</fieldset>
-  ${B.types.size === 1 ? `<fieldset><legend class="eyebrow">${esc(TYPE_PLURAL[[...B.types][0]])} category</legend>${catList.map(c => checkbox('cats', c, c, cats[c], B.cats.has(c))).join('')}</fieldset>` : ''}
+  ${B.types.size === 1 ? `<fieldset><legend class="eyebrow">${[...B.types][0] === 'profile' ? 'Style' : esc(TYPE_PLURAL[[...B.types][0]]) + ' category'}</legend>${catList.map(c => checkbox('cats', c, c, cats[c], B.cats.has(c))).join('')}</fieldset>` : ''}
   ${styleShown() ? `<fieldset><legend class="eyebrow">${[...B.types][0] === 'icon' ? 'Icon style' : 'Style'}</legend>${Object.keys(sty).sort(styleSort).map(c => checkbox('styles', c, c, sty[c], B.styles.has(c))).join('')}</fieldset>` : ''}
   ${platShown() ? `<fieldset><legend class="eyebrow">Platform</legend>${Object.keys(PLAT).map(p => checkbox('plats', p, PLAT[p], plats[p] || 0, B.plats.has(p))).join('')}</fieldset>` : ''}
   ${statesShown() ? `<fieldset><legend class="eyebrow">Component states</legend><p class="note" style="margin:0 0 6px">Ticking a state turns it on for every component. Unticking turns it off.</p>${stateUnion().map(r => `<label class="chk"><input type="checkbox" data-stf="${esc(r.id)}" ${stateOn(r.id) ? 'checked' : ''} ${r.id === 'default' ? 'disabled' : ''}><span>${esc(r.label)}</span><span class="n">${r.n}</span></label>`).join('')}</fieldset>` : ''}
@@ -99,9 +99,9 @@ function renderResults() {
   const sample = e => e.type === 'typeface' ? `<span class="tsample" data-font="${esc(e.name)}" style="font-family:'${esc(e.name)}',${fontFallback(e.name)}">The quick brown fox jumps over the lazy dog. 0123456789</span>` : '';
   $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries</p></div>
   ${xt ? `<div class="expbar" id="expbar"><label class="chk"><input type="checkbox" id="selall"><span>Select all</span></label><span class="expn" id="expn" role="status"></span><div class="expw" id="expw"></div></div>` : ''}
-  ${items.length ? `<table class="db"><thead><tr>${xt ? '<th scope="col" class="selc"><span class="sr">Select</span></th>' : ''}${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', 'Category') : ''}${styleShown() ? th('style', 'Style') : ''}${platShown() ? th('platforms', 'Platforms') : ''}${indShown() ? th('industries', 'Industries') : ''}</tr></thead><tbody>${items.map(e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
+  ${items.length ? `<table class="db"><thead><tr>${xt ? '<th scope="col" class="selc"><span class="sr">Select</span></th>' : ''}${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', B.types.has('profile') ? 'Style' : 'Category') : ''}${styleShown() ? th('style', 'Style') : ''}${platShown() ? th('platforms', 'Platforms') : ''}${indShown() ? th('industries', 'Industries') : ''}</tr></thead><tbody>${items.map(e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
    ${xt ? `<td class="selc"><input type="checkbox" data-sel="${esc(e.id)}" ${SEL[xt].includes(e.id) ? 'checked' : ''} aria-label="Select ${esc(e.name)}${e.type === 'icon' ? ' (' + esc(e.category) + ')' : ''}"></td>` : ''}
-   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${sample(e)}${e.type === 'icon' ? `<span class="iconprev" aria-hidden="true">${iconSvg(e, 24)}</span>` : ''}${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
+   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${sample(e)}${e.type === 'profile' ? `<span class="iconprev pfprev" aria-hidden="true"><img src="${svgUri(e.svg)}" alt="" width="48" height="48" loading="lazy"></span>` : ''}${e.type === 'color' ? (cvdOf(e).length ? `<span class="docmeta cvdnote">Colorblind note: ${cvdOf(e).length} pair${cvdOf(e).length > 1 ? 's' : ''} may look alike to some people. <a href="${CVD_GUIDE}">Read more</a></span>` : e.category === 'accessible' ? '<span class="docmeta">Color-blind accessible</span>' : '') : ''}${e.type === 'document' ? `<span class="docmeta">${esc(e.publisher)} · For ${esc((e.audience || []).join(' and '))}</span>` : ''}${e.type === 'icon' ? `<span class="iconprev" aria-hidden="true">${iconSvg(e, 24)}</span>` : ''}${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}" data-tip="${tipData(k, c, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"></i>`).join('')}</span>` : ''}</td>
    <td data-l="Type">${TYPE[e.type]}</td>${B.types.size === 1 ? `<td data-l="Category">${esc(e.category)}</td>` : ''}${styleShown() ? `<td data-l="Style">${esc(e.style || '')}</td>` : ''}
    ${platShown() ? `<td data-l="Platforms">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('') || '<span class="empty">Any</span>'}</td>` : ''}
    ${indShown() ? `<td data-l="Industries">${e.type === 'color' || e.type === 'typeface' ? (e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('') : '<span class="empty">Not used</span>'}</td>` : ''}</tr>`).join('')}</tbody></table>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
@@ -177,7 +177,7 @@ function wireExport(items, xt) {
   const ids = items.map(e => e.id), all = $('#selall'), n = $('#expn');
   const fl = document.createElement('div'); fl.className = 'expfloat'; fl.hidden = true; fl.setAttribute('aria-label', 'Export selected'); $('#main').appendChild(fl); selExportMenu($("#expw"), xt, false); selExportMenu(fl, xt, true);
   let topVisible = true;
-  const upd = () => { const c = SEL[xt].length, inView = ids.filter(i => SEL[xt].includes(i)).length; n.textContent = c ? `${c} selected` + (c !== inView ? ` (${inView} shown)` : '') : 'None selected'; all.checked = ids.length > 0 && inView === ids.length; all.indeterminate = inView > 0 && inView < ids.length; fl.hidden = !c || topVisible; $$('.exp-btn', $('#expw')).forEach(b => b.disabled = !c); $$('.exp-btn', fl).forEach(b => b.textContent = `Export (${c})`) };
+  const upd = () => { if (!$('#expw') || !document.body.contains(all)) { if (expIO) { expIO.disconnect(); expIO = null } return } const c = SEL[xt].length, inView = ids.filter(i => SEL[xt].includes(i)).length; n.textContent = c ? `${c} selected` + (c !== inView ? ` (${inView} shown)` : '') : 'None selected'; all.checked = ids.length > 0 && inView === ids.length; all.indeterminate = inView > 0 && inView < ids.length; fl.hidden = !c || topVisible; $$('.exp-btn', $('#expw')).forEach(b => b.disabled = !c); $$('.exp-btn', fl).forEach(b => b.textContent = `Export (${c})`) };
   if ('IntersectionObserver' in window) { expIO = new IntersectionObserver(es => { topVisible = es[0].isIntersecting; upd() }); expIO.observe($('#expbar')) }
   $$('input[data-sel]', $('#main')).forEach(i => i.onchange = () => { const a = SEL[xt]; if (i.checked) { if (!a.includes(i.dataset.sel)) a.push(i.dataset.sel) } else SEL[xt] = a.filter(x => x !== i.dataset.sel); saveSel(); upd() });
   all.onchange = () => { const on = new Set(SEL[xt]); ids.forEach(i => all.checked ? on.add(i) : on.delete(i)); SEL[xt] = [...on]; saveSel(); $$('input[data-sel]', $('#main')).forEach(i => i.checked = on.has(i.dataset.sel)); upd() };
@@ -227,6 +227,25 @@ const iconJsx = (e, size, nm) => { const body = e.svg.replace(/<svg /, `<svg wid
 const iconUri = (e, size) => 'data:image/svg+xml,' + encodeURIComponent(iconSvg(e, size).replace(/currentColor/g, '#000000'));
 let curIconSize = 24;
 function iconClip(e) { clipStore.svg = iconSvg(e, curIconSize); clipStore.jsx = iconJsx(e, curIconSize); clipStore.uri = `background-image: url("${iconUri(e, curIconSize)}");\nwidth: ${curIconSize}px;\nheight: ${curIconSize}px;`; }
+const CVD_ROLE = { danger: 'Danger', success: 'Success', warning: 'Warning', info: 'Info' };
+const cvdColors = e => Object.entries(e.roles).filter(([k]) => ['primary', 'accent', 'danger', 'success', 'warning', 'info'].includes(k)).map(([k, v]) => ({ id: k, name: k, hex: v, role: CVD_ROLE[k] || '' }));
+const cvdCache = new Map(), cvdOf = e => { if (!cvdCache.has(e.id)) cvdCache.set(e.id, cvdIssues(cvdColors(e))); return cvdCache.get(e.id) };
+const svgUri = svg => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg), profFile = e => 'profile-' + slug(e.set) + '-' + e.id.split('-').pop();
+function profileDetails(e) {
+  clipStore.svg = e.svg;
+  return `<p class="eyebrow">Profile · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>An illustrated profile picture of a person facing the camera. Free for commercial use.</p>
+  <div class="meta"><span class="tag">Style: ${esc(e.category)}</span><span class="tag">Skin tone: ${esc(e.tone)}</span><span class="tag">${esc(e.license)}</span></div>
+  <div class="pfhero"><img src="${svgUri(e.svg)}" alt="Illustrated profile picture, ${esc(e.category.toLowerCase())} style" width="256" height="256"></div>
+  <div class="row"><button class="btn solid" id="pf-png" type="button">Download PNG</button><button class="btn" id="pf-svg" type="button">Download SVG</button><button class="btn" id="pf-cpimg" type="button">Copy image</button><button class="btn" data-copy="svg">Copy SVG</button><button class="btn" data-copy="json">Copy JSON</button></div>
+  <table class="detail"><tbody>${drow('Artwork', `${esc(e.set)} by ${esc(e.creator)} · <a href="${esc(e.source)}" target="_blank" rel="noopener">Source<span class="sr"> (opens in a new tab)</span></a>`)}${drow('License', `<a href="${esc(e.licenseUrl)}" target="_blank" rel="noopener">${esc(e.license)}<span class="sr"> (opens in a new tab)</span></a> · public domain dedication, so you can use it in personal and commercial work without asking or crediting. <a href="licenses/profiles/${esc(e.id.split('-').slice(1, -1).join('-'))}-LICENSE.txt" target="_blank" rel="noopener">Notice</a>`)}${drow('Made up', 'These are illustrations of invented people, not photos of anyone real.')}</tbody></table>`;
+}
+function docDetails(e) {
+  clipStore.link = e.url; const host = (() => { try { return new URL(e.url).host } catch { return e.url } })();
+  return `<p class="eyebrow">Document · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>
+  <div class="meta"><span class="tag">${esc(e.category)}</span>${(e.audience || []).map(a => `<span class="tag">For ${esc(a)}</span>`).join('')}</div>
+  <div class="row"><a class="btn solid" href="${esc(e.url)}" target="_blank" rel="noopener">Open documentation<span class="sr"> (opens in a new tab)</span></a><button class="btn" data-copy="link">Copy link</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button></div>
+  <table class="detail"><tbody>${drow('Publisher', esc(e.publisher))}${drow('Address', `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(host)}</a>`)}${drow('About this link', 'Mambo Database links to the official documentation and does not copy it. The content belongs to its publisher and keeps its own license.')}</tbody></table>`;
+}
 function iconDetails(e) {
   const set = ICON_SETS.find(x => x.id === e.setId) || {}, others = DATA.filter(x => x.type === 'icon' && x.name === e.name && x.id !== e.id).sort((a, b) => a.category.localeCompare(b.category));
   iconClip(e);
@@ -239,7 +258,7 @@ function iconDetails(e) {
   <h2>License</h2><table class="detail"><tbody>
   ${drow('Design system', esc(e.category))}
   ${drow('Library', `<a href="${esc(set.website)}" target="_blank" rel="noopener">${esc(e.set)}</a> · ${esc(set.package || '')}`)}
-  ${drow('License', `<a href="licenses/icons/${esc(e.setId)}-LICENSE.txt" target="_blank" rel="noopener">${esc(e.license)}</a> · free for personal and commercial use, including in products you sell. Keep the copyright notice when you redistribute the files.`)}
+  ${drow('License', `<a href="licenses/icons/${esc(e.libId || e.setId)}-LICENSE.txt" target="_blank" rel="noopener">${esc(e.license)}</a>. Keep the copyright notice when you redistribute the files.`)}
   ${drow('Copyright', esc(set.copyright || ''))}
   ${drow('Source', `<a href="${esc(set.source)}" target="_blank" rel="noopener">${esc(set.source)}</a>`)}
   ${set.note ? drow('Note', esc(set.note)) : ''}
@@ -251,6 +270,8 @@ function renderEntry(e) {
   clipStore.md = e.md; clipStore.json = JSON.stringify(e, (k, v) => k === 'md' ? undefined : v, 2);
   const back = '';
   if (e.type === 'icon') return iconDetails(e);
+  if (e.type === 'document') return docDetails(e);
+  if (e.type === 'profile') return profileDetails(e);
   if (e.type === 'component') {
     curStates = applyPref(e, statesFor(e, cur())); curOS = PREF.os.filter(o => e.os && e.os[o]);
     clipStore.html = e.code.html; clipStore.js = e.code.js || '';
@@ -279,8 +300,9 @@ function renderEntry(e) {
   <div class="row"><button class="btn solid" data-copy="vars">Copy CSS variables</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button></div>
   ${addToSystemRow('Add colors')}
   <h2>Roles</h2><div class="swatches">${Object.entries(e.roles).map(([k, v]) => `<div class="sw" tabindex="0" data-tip="${tipData(k, v, Object.entries(e.roles).filter(([x]) => x !== k).map(([x, y]) => ({ name: x, hex: y })), true)}"><i style="background:${esc(v)}"></i><span>${esc(k)}<br>${esc(v)}</span></div>`).join('')}</div>
+  <h2>Colorblind check</h2>${cvdNotice(cvdColors(e), '')}${e.category === 'accessible' ? '<p class="note">This set is in the Accessible colors category because it is built from a published color-blind safe palette. These are chosen to stay distinguishable for the common red-green and blue-yellow types. Total color blindness (achromatopsia) is rare and depends on lightness alone, so some pairs below may still be listed. Always add an icon or text as well, so color is never the only signal.</p>' : ''}
   <h2>Contrast checks</h2><table><thead><tr><th>Pair</th><th>Ratio</th><th>Normal text (4.5)</th><th>Large text / UI (3)</th></tr></thead><tbody>${e.contrast.map(c => `<tr><td>${esc(c.fg)} on ${esc(c.bg)}</td><td>${c.ratio.toFixed(2)}:1 <a class="lnk" href="${webaimUrl(e.roles[c.fg], e.roles[c.bg])}" target="_blank" rel="noopener">WebAIM<span class="sr"> (opens in a new tab): ${esc(c.fg)} on ${esc(c.bg)}</span></a></td><td class="${c.normalText ? 'pass' : 'fail'}">${c.normalText ? '✓ Pass' : '✕ Fail'}</td><td class="${c.largeTextAndUI ? 'pass' : 'fail'}">${c.largeTextAndUI ? '✓ Pass' : '✕ Fail'}</td></tr>`).join('')}</tbody></table>
-  <h2>Guidance</h2>${ul(e.guidance)}`;
+  <h2>Guidance</h2>${ul(e.guidance)}${e.credit ? `<h2>Source</h2><p>${esc(e.credit.text)} <a href="${esc(e.credit.url)}" target="_blank" rel="noopener">Read the source<span class="sr"> (opens in a new tab)</span></a></p>` : ''}`;
   }
   clipStore.css = e.css; clipStore.woff2 = e.woff2; clipStore.csslink = cssLink(e); loadFontCss(e.name);
   const fb = f => ({ serif: 'Georgia, serif', monospace: 'ui-monospace, monospace' }[(FONTMAP.get(f) || [])[1]] || 'system-ui, sans-serif');
@@ -307,6 +329,12 @@ function refreshComponent(e) {
   const pv = $('#pv'); if (pv) { pv.srcdoc = previewDoc(e, curStates, curOS); pv.onload = () => { try { pv.style.height = Math.min(1100, Math.max(e.code.pvHeight || 260, pv.contentDocument.documentElement.scrollHeight + 4)) + 'px' } catch { } } }
 }
 function wireEntry(e, root) {
+  if (e.type === 'profile') {
+    $('#pf-png', root).onclick = async () => download(profFile(e) + '.png', await svgToPngBlob(e.svg, 512), 'image/png'); $('#pf-svg', root).onclick = () => download(profFile(e) + '.svg', e.svg, 'image/svg+xml');
+    $('#pf-cpimg', root).onclick = async () => { try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': svgToPngBlob(e.svg, 512) })]); toast('Copied image') } catch { copy(e.svg, 'image as SVG code (this browser cannot copy pictures)') } };
+    root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase()) }); return
+  }
+  if (e.type === 'document') { root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.dataset.copy === 'link' ? 'link' : b.textContent.replace(/^Copy /, '').toLowerCase()) }); return }
   if (e.type === 'icon') {
     const sz = $('#ico-size'), upd = () => { curIconSize = +sz.value; iconClip(e); $('#ico-pv').innerHTML = iconSvg(e, curIconSize); $('#ico-pv2').innerHTML = iconSvg(e, curIconSize) };
     sz.addEventListener('change', upd); $('#ico-dl').onclick = () => download(e.setId + '-' + e.name.toLowerCase().replace(/ /g, '-') + '.svg', clipStore.svg, 'image/svg+xml');
@@ -337,4 +365,4 @@ function wireEntry(e, root) {
   };
   root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase().split(' (')[0]) });
 }
-const SET_ROLE = { bg: 'Background', surface: 'Surface', ink: 'Text', 'text-secondary': 'Text secondary', primary: 'Primary', 'primary-text': 'Inverse text', accent: 'Accent', danger: 'Danger', 'border-strong': 'Border', 'text-primary': 'Text' };
+const SET_ROLE = { success: 'Success', warning: 'Warning', info: 'Info', bg: 'Background', surface: 'Surface', ink: 'Text', 'text-secondary': 'Text secondary', primary: 'Primary', 'primary-text': 'Inverse text', accent: 'Accent', danger: 'Danger', 'border-strong': 'Border', 'text-primary': 'Text' };

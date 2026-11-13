@@ -1,0 +1,14 @@
+{
+  "id": "github-docs",
+  "type": "document",
+  "name": "GitHub Docs",
+  "category": "Design & dev tools",
+  "summary": "Repositories, pull requests, Pages and Actions.",
+  "audience": [
+    "developers",
+    "designers"
+  ],
+  "publisher": "GitHub",
+  "url": "https://docs.github.com/",
+  "keywords": "github pages pull requests"
+}

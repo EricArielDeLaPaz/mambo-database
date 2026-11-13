@@ -1,0 +1,13 @@
+{
+  "id": "figma-help-center",
+  "type": "document",
+  "name": "Figma Help Center",
+  "category": "Design & dev tools",
+  "summary": "How to use Figma, from frames to variables and Dev Mode.",
+  "audience": [
+    "designers"
+  ],
+  "publisher": "Figma",
+  "url": "https://help.figma.com/",
+  "keywords": "figma help learn"
+}

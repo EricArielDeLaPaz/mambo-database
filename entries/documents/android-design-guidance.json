@@ -1,0 +1,14 @@
+{
+  "id": "android-design-guidance",
+  "type": "document",
+  "name": "Android design guidance",
+  "category": "Design systems & guidelines",
+  "summary": "Android's design guidance and the way it connects to Material.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "Google",
+  "url": "https://developer.android.com/design",
+  "keywords": "android design"
+}

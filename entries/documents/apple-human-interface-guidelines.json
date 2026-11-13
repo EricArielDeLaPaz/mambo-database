@@ -1,0 +1,14 @@
+{
+  "id": "apple-human-interface-guidelines",
+  "type": "document",
+  "name": "Apple Human Interface Guidelines",
+  "category": "Design systems & guidelines",
+  "summary": "How Apple designs for iOS, iPadOS, macOS, watchOS and visionOS.",
+  "audience": [
+    "designers",
+    "developers"
+  ],
+  "publisher": "Apple",
+  "url": "https://developer.apple.com/design/human-interface-guidelines/",
+  "keywords": "hig ios apple platform"
+}

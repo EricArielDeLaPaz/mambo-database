@@ -1,0 +1,13 @@
+{
+  "id": "html-living-standard",
+  "type": "document",
+  "name": "HTML Living Standard",
+  "category": "HTML & web platform",
+  "summary": "The official specification for HTML. Dense, but the final word.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "WHATWG",
+  "url": "https://html.spec.whatwg.org/",
+  "keywords": "spec standard"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "bootstrap",
+  "type": "document",
+  "name": "Bootstrap",
+  "category": "CSS & styling",
+  "summary": "Components and a grid system with ready-made classes.",
+  "audience": [
+    "developers"
+  ],
+  "publisher": "Bootstrap",
+  "url": "https://getbootstrap.com/docs/",
+  "keywords": "grid components framework"
+}

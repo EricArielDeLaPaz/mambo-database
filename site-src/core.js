@@ -61,8 +61,8 @@ function fixFg(fg, bg, target) {
 }
 
 /* ---------- constants ---------- */
-const TYPE = { component: 'Component', color: 'Color', typeface: 'Typography', icon: 'Icon' };
-const TYPE_PLURAL = { component: 'Components', color: 'Colors', typeface: 'Typography', icon: 'Icons' };
+const TYPE = { component: 'Component', color: 'Color', typeface: 'Typography', icon: 'Icon', profile: 'Profile', document: 'Document' };
+const TYPE_PLURAL = { component: 'Components', color: 'Colors', typeface: 'Typography', icon: 'Icons', profile: 'Profiles', document: 'Documents' };
 const ICON_SETS = /*__ICONSETS__*/[];
 const PLAT = { 'desktop-web': 'Desktop website', 'desktop-app': 'Desktop app', tablet: 'Tablet', 'mobile-web': 'Mobile website', ios: 'iOS app', android: 'Android app' };
 const POINTER = ['desktop-web', 'desktop-app'];
