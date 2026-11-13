@@ -22,7 +22,7 @@ const styleSort = (a, b) => { const x = STYLE_ORDER.indexOf(a), y = STYLE_ORDER.
 /* Component states: ticking one here ticks it for every component, and unticking clears it (same choice the details panel remembers). */
 const stateUnion = () => { const m = new Map(STATE_LIST.map(([id, l]) => [id, { id, label: l, n: 0 }])); DATA.filter(e => e.type === 'component').forEach(e => (e.states || []).forEach(x => { const r = m.get(x.id) || (m.set(x.id, { id: x.id, label: x.label, n: 0 }), m.get(x.id)); r.n++ })); return [...m.values()].filter(r => r.n) };
 const stateOn = id => id === 'default' || (PREF.on.includes(id) ? true : PREF.off.includes(id) ? false : (cur() ? cur().states.includes(id) : true));
-const statesShown = () => !B.types.size || B.types.has('component');
+const statesShown = () => B.types.size === 1 && B.types.has('component');
 const platShown = () => !B.types.size || B.types.has('component');
 const platOk = e => !B.plats.size || !platShown() || e.type !== 'component' || (e.platforms || []).some(x => B.plats.has(x));
 const hl = t => { const q = B.q.trim(); if (!q) return esc(t); const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); return String(t).split(re).map((x, i) => i % 2 ? '<mark>' + esc(x) + '</mark>' : esc(x)).join('') };
@@ -69,7 +69,7 @@ document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && route().
 const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || B.styles.size || (B.plats.size && platShown()) || (B.inds.size && indShown()));
 function renderFilters() {
   const types = countBy(e => e.type, DATA), cats = countBy(e => e.category, DATA.filter(e => (!B.types.size || B.types.has(e.type)) && platOk(e))), plats = countBy(e => e.platforms, DATA.filter(e => e.type === 'component')), inds = countBy(e => (e.industries || ['all']).includes('all') ? INDUSTRIES.slice(1).map(i => i[0]) : e.industries, DATA.filter(e => e.type === 'color' || e.type === 'typeface')), sty = countBy(e => e.style, DATA.filter(e => styleShown() && e.type === [...B.types][0] && (!B.cats.size || B.cats.has(e.category))));
-  const catList = Object.keys(cats).sort();
+  const catList = (B.types.has('profile') ? Object.keys(cats).sort(styleSort) : Object.keys(cats).sort());
   $('#side').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
   <label class="f" style="margin-bottom:10px"><span class="eyebrow f-t">Design system</span><select id="syssel"><option value="">None</option>${S.systems.map(s => `<option value="${s.id}" ${S.active === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}</select></label>
   <label for="q" class="eyebrow">Search</label>
@@ -233,11 +233,14 @@ const cvdCache = new Map(), cvdOf = e => { if (!cvdCache.has(e.id)) cvdCache.set
 const svgUri = svg => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg), profFile = e => 'profile-' + slug(e.set) + '-' + e.id.split('-').pop();
 function profileDetails(e) {
   clipStore.svg = e.svg;
-  return `<p class="eyebrow">Profile · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>An illustrated profile picture of a person facing the camera. Free for commercial use.</p>
-  <div class="meta"><span class="tag">Style: ${esc(e.category)}</span><span class="tag">Skin tone: ${esc(e.tone)}</span><span class="tag">${esc(e.license)}</span></div>
-  <div class="pfhero"><img src="${svgUri(e.svg)}" alt="Illustrated profile picture, ${esc(e.category.toLowerCase())} style" width="256" height="256"></div>
-  <div class="row"><button class="btn solid" id="pf-png" type="button">Download PNG</button><button class="btn" id="pf-svg" type="button">Download SVG</button><button class="btn" id="pf-cpimg" type="button">Copy image</button><button class="btn" data-copy="svg">Copy SVG</button><button class="btn" data-copy="json">Copy JSON</button></div>
-  <table class="detail"><tbody>${drow('Artwork', `${esc(e.set)} by ${esc(e.creator)} · <a href="${esc(e.source)}" target="_blank" rel="noopener">Source<span class="sr"> (opens in a new tab)</span></a>`)}${drow('License', `<a href="${esc(e.licenseUrl)}" target="_blank" rel="noopener">${esc(e.license)}<span class="sr"> (opens in a new tab)</span></a> · public domain dedication, so you can use it in personal and commercial work without asking or crediting. <a href="licenses/profiles/${esc(e.id.split('-').slice(1, -1).join('-'))}-LICENSE.txt" target="_blank" rel="noopener">Notice</a>`)}${drow('Made up', 'These are illustrations of invented people, not photos of anyone real.')}</tbody></table>`;
+  const what = e.photo ? 'A photo of a real person facing the camera.' : e.category === 'Illustrated' ? 'A cartoon-style profile picture of a person facing the camera.' : 'A hand-drawn style profile picture of a person facing the camera.';
+  const lic = e.photo ? `<a href="${esc(e.licenseUrl)}" target="_blank" rel="noopener">${esc(e.license)}<span class="sr"> (opens in a new tab)</span></a> · free to use in personal and commercial work without credit. Do not use the photo in a way that puts the person in a bad light or suggests they endorse something. <a href="licenses/profiles/${esc(e.id.split('-').slice(1, -1).join('-'))}-LICENSE.txt" target="_blank" rel="noopener">Notice</a>`
+    : `<a href="${esc(e.licenseUrl)}" target="_blank" rel="noopener">${esc(e.license)}<span class="sr"> (opens in a new tab)</span></a> · ${e.attribution ? '<b>free for commercial use, but you must credit the creator</b> (for example "' + esc(e.set) + ' by ' + esc(e.creator) + ', ' + esc(e.license) + '") and say if you changed it' : /CC0/.test(e.license) ? 'public domain dedication, so you can use it in personal and commercial work without asking or crediting' : 'free for personal and commercial use; crediting the creator is kind'}. <a href="licenses/profiles/${esc(e.id.split('-').slice(1, -1).join('-'))}-LICENSE.txt" target="_blank" rel="noopener">Notice</a>`;
+  return `<p class="eyebrow">Profile · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${what} Free for commercial use${e.attribution ? ' with credit' : ''}.</p>
+  <div class="meta"><span class="tag">Style: ${esc(e.category)}</span>${e.tone ? `<span class="tag">Skin tone: ${esc(e.tone)}</span>` : ''}<span class="tag">${esc(e.photo ? 'Free for commercial use' : e.license)}</span></div>
+  <div class="pfhero"><img src="${svgUri(e.svg)}" alt="${e.photo ? 'Photo' : 'Illustrated'} profile picture, ${esc(e.category.toLowerCase())} style" width="256" height="256"></div>
+  <div class="row"><button class="btn solid" id="pf-png" type="button">Download PNG</button>${e.photo ? '' : '<button class="btn" id="pf-svg" type="button">Download SVG</button>'}<button class="btn" id="pf-cpimg" type="button">Copy image</button>${e.photo ? '' : '<button class="btn" data-copy="svg">Copy SVG</button>'}<button class="btn" data-copy="json">Copy JSON</button></div>
+  <table class="detail"><tbody>${drow(e.photo ? 'Photo' : 'Artwork', e.photo ? `${esc(e.creator)} · <a href="${esc(e.source)}" target="_blank" rel="noopener">Original<span class="sr"> (opens in a new tab)</span></a>` : `${esc(e.set)} by ${esc(e.creator)} · <a href="${esc(e.source)}" target="_blank" rel="noopener">Source<span class="sr"> (opens in a new tab)</span></a>`)}${drow('License', lic)}${drow(e.photo ? 'Real person' : 'Made up', e.photo ? 'This shows a real person. Use it for mockups, personas and examples, and avoid sensitive topics such as health, crime or politics.' : 'These are illustrations of invented people, not photos of anyone real.')}</tbody></table>`
 }
 function docDetails(e) {
   clipStore.link = e.url; const host = (() => { try { return new URL(e.url).host } catch { return e.url } })();
@@ -267,7 +270,7 @@ function iconDetails(e) {
 }
 function renderEntry(e) {
   Object.keys(clipStore).forEach(k => delete clipStore[k]);
-  clipStore.md = e.md; clipStore.json = JSON.stringify(e, (k, v) => k === 'md' ? undefined : v, 2);
+  clipStore.md = e.md; clipStore.json = JSON.stringify(e, (k, v) => k === 'md' || (k === 'svg' && e.photo) ? undefined : v, 2);
   const back = '';
   if (e.type === 'icon') return iconDetails(e);
   if (e.type === 'document') return docDetails(e);
@@ -330,7 +333,7 @@ function refreshComponent(e) {
 }
 function wireEntry(e, root) {
   if (e.type === 'profile') {
-    $('#pf-png', root).onclick = async () => download(profFile(e) + '.png', await svgToPngBlob(e.svg, 512), 'image/png'); $('#pf-svg', root).onclick = () => download(profFile(e) + '.svg', e.svg, 'image/svg+xml');
+    $('#pf-png', root).onclick = async () => download(profFile(e) + '.png', await svgToPngBlob(e.svg, 512), 'image/png'); if ($('#pf-svg', root)) $('#pf-svg', root).onclick = () => download(profFile(e) + '.svg', e.svg, 'image/svg+xml');
     $('#pf-cpimg', root).onclick = async () => { try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': svgToPngBlob(e.svg, 512) })]); toast('Copied image') } catch { copy(e.svg, 'image as SVG code (this browser cannot copy pictures)') } };
     root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase()) }); return
   }

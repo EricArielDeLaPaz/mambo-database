@@ -1,0 +1,5 @@
+Realistic profile pictures
+Photos come from the "royalty-free-user-avatars" (inter-faces) collection, https://github.com/leonadler/royalty-free-user-avatars, released under CC0 1.0.
+Each original was published on Pexels (https://www.pexels.com/license/) or Unsplash (https://unsplash.com/license) and is free to use commercially without credit.
+The link to every original is in photos.json. The photos were cropped to a square and resized.
+These show real people. Do not use them in a way that puts the person in a bad light (for example medical, political, criminal or adult content), and do not suggest the person endorses a product.

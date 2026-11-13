@@ -41,7 +41,7 @@ The root `LICENSE` (MIT, © 2026 Eric Ariel De La Paz) covers this project's own
 | Typefaces (listed, not hosted) | SIL Open Font License 1.1 | `THIRD_PARTY_NOTICES.md`, `licenses/OFL-1.1.txt` |
 | Icons | Each library's own license (MIT, ISC or Apache-2.0) | `icons/<library>/LICENSE`, `icons/sets.json` |
 | Profile pictures | CC0 1.0 (public domain), made with DiceBear | `profiles/LICENSES.json`, `profiles/<style>/LICENSE.txt` |
-| Accessible color sets | Based on published palettes (Okabe-Ito, Paul Tol, IBM); credited on each entry | `entries/colors/*.json` (`credit`) |
+| Accessible color sets | Based on published palettes (Okabe-Ito and Paul Tol); credited on each entry | `entries/colors/*.json` (`credit`) |
 | Documents | Links only; the documentation belongs to its publishers | `entries/documents/*.json` |
 
 License files for third-party icons are kept exactly as their authors published them (for example, Carbon's Apache-2.0 file is byte-for-byte the one in the Carbon repository).

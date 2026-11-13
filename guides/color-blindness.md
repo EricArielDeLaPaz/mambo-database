@@ -43,7 +43,7 @@ Notice how the first pair (color only) is hard to tell apart for several rows, w
 - **Add a second signal.** Icons, labels, patterns, underlines on links, shapes on chart markers, or different line styles.
 - **Change lightness, not only hue.** Two colors that differ a lot in how light or dark they are stay different for every type. Test by converting your design to grayscale.
 - **Avoid risky pairs side by side.** Red and green, green and brown, blue and purple, and pink and gray are the classic confusions.
-- **Use a color-blind-safe palette for charts and data.** Palettes like Okabe and Ito, Paul Tol's sets and the IBM color-blind-safe set were built so each color stays distinct. In Mambo Database, look for the **Accessible** tag in Colors.
+- **Use a color-blind-safe palette for charts and data.** Palettes like Okabe and Ito and Paul Tol's sets were built so each color stays distinct. In Mambo Database, look for the **Accessible** tag in Colors.
 - **Check, do not guess.** Use the Colorblind simulator in Tools, and the warnings on the Color randomizer and Design Systems pages. They estimate when two colors might look alike. They are a heads up, not a ban on any color.
 - **Keep contrast.** Contrast is a different test. A pair can pass WCAG contrast and still be confused by a color-blind person if both colors have the same lightness. Do both checks.
 

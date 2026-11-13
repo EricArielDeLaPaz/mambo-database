@@ -10,32 +10,35 @@
   "3f2a1d": "Deepest brown"
  },
  "styles": {
-  "lorelei": {
+  "avataaars": {
+   "attribution": false,
    "style": "Illustrated",
-   "label": "Lorelei",
-   "creator": "Lisa Wischofsky",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "source": "https://www.figma.com/community/file/1198749693280469639",
-   "tool": "DiceBear 9.4.3"
-  },
-  "open-peeps": {
-   "style": "Drawing",
-   "label": "Open Peeps",
+   "label": "Avataaars",
    "creator": "Pablo Stanley",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "source": "https://www.openpeeps.com/",
+   "license": "Free for personal and commercial use",
+   "licenseUrl": "https://avataaars.com/",
+   "source": "https://avataaars.com/",
    "tool": "DiceBear 9.4.3"
   },
-  "pixel-art": {
-   "style": "Pixel",
-   "label": "Pixel Art",
-   "creator": "DiceBear",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "source": "https://www.figma.com/community/file/1198754108850888330",
+  "micah": {
+   "attribution": true,
+   "style": "Drawing",
+   "label": "Micah",
+   "creator": "Micah Lanier",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "source": "https://www.figma.com/community/file/829741575478342595",
    "tool": "DiceBear 9.4.3"
+  },
+  "realistic": {
+   "style": "Realistic",
+   "label": "Portrait photo",
+   "photo": true,
+   "creator": "Various photographers (see each photo)",
+   "license": "Free for commercial use",
+   "licenseUrl": "https://www.pexels.com/license/",
+   "source": "https://github.com/leonadler/royalty-free-user-avatars",
+   "tool": "Collection \"inter-faces\" (CC0 1.0), photos cropped and resized"
   }
  }
 }

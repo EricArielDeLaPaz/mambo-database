@@ -165,14 +165,20 @@ fs.appendFileSync(path.join(out, 'llms.txt'), `\n## Icons\n\n- [Icon libraries a
 const profLic = read(path.join(root, 'profiles/LICENSES.json')), profileEntries = [];
 for (const [folderName, L] of Object.entries(profLic.styles)) {
   const dir = path.join(root, 'profiles', folderName);
-  for (const f of fs.readdirSync(dir).filter(x => x.endsWith('.svg')).sort()) {
+  if (L.photo) {
+    // photos are wrapped in a small SVG so they copy, download and work in the Persona tool like the drawings do
+    for (const ph of read(path.join(dir, 'photos.json'))) {
+      const num = ph.file.replace('.jpg', ''), b64 = fs.readFileSync(path.join(dir, ph.file)).toString('base64'), pex = ph.site === 'Pexels';
+      profileEntries.push({ id: `profile-${folderName}-${num}`, type: 'profile', name: `Portrait photo ${num}`, category: L.style, set: L.label, creator: `a ${ph.site} photographer`, license: `${ph.site} license (free for commercial use)`, licenseUrl: pex ? 'https://www.pexels.com/license/' : 'https://unsplash.com/license', source: ph.source, tone: '', photo: true, keywords: `real person photo portrait headshot face avatar profile picture photograph ${L.style} ${ph.site}`, industries: ['all'], svg: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="256" height="256" viewBox="0 0 256 256"><image width="256" height="256" href="data:image/jpeg;base64,${b64}"/></svg>` });
+    }
+  } else for (const f of fs.readdirSync(dir).filter(x => x.endsWith('.svg')).sort()) {
     const m = f.match(/^(\d+)-([0-9a-f]{6})\.svg$/), tone = profLic.tones[m[2]], num = m[1];
-    profileEntries.push({ id: `profile-${folderName}-${num}`, type: 'profile', name: `${L.label} ${num}`, category: L.style, set: L.label, creator: L.creator, license: L.license, licenseUrl: L.licenseUrl, source: L.source, tone, skin: '#' + m[2], keywords: `${L.label} ${tone} skin person face portrait avatar profile picture ${L.style}`, industries: ['all'], svg: fs.readFileSync(path.join(dir, f), 'utf8').trim() });
+    profileEntries.push({ id: `profile-${folderName}-${num}`, type: 'profile', name: `${L.label} ${num}`, category: L.style, set: L.label, creator: L.creator, license: L.license, licenseUrl: L.licenseUrl, source: L.source, attribution: !!L.attribution, tone, skin: '#' + m[2], keywords: `${L.label} ${tone} skin person face portrait avatar profile picture ${L.style}`, industries: ['all'], svg: fs.readFileSync(path.join(dir, f), 'utf8').trim() });
   }
   fs.mkdirSync(path.join(out, 'site/licenses/profiles'), { recursive: true }); fs.copyFileSync(path.join(dir, 'LICENSE.txt'), path.join(out, `site/licenses/profiles/${folderName}-LICENSE.txt`));
 }
 w(path.join(out, 'data/profiles.json'), JSON.stringify({ styles: profLic.styles, profiles: profileEntries.map(({ type, ...e }) => e) }));
-w(path.join(out, 'entries/profiles/index.md'), `# Profiles\n\n${profileEntries.length} illustrated profile pictures of people facing the camera, in ${Object.keys(profLic.styles).length} styles, across eight skin tones. All are CC0 1.0 (public domain), so they are free to use commercially without attribution.\n\n${Object.values(profLic.styles).map(x => `- **${x.style}**: ${x.label} by ${x.creator}, ${x.license}. [Source](${x.source})`).join('\n')}\n`);
+w(path.join(out, 'entries/profiles/index.md'), `# Profiles\n\n${profileEntries.length} profile pictures of people facing the camera, in ${Object.keys(profLic.styles).length} styles: realistic photos, cartoony illustrations and human-like drawings. All allow commercial use. Micah (CC BY 4.0) needs credit.\n\n${Object.values(profLic.styles).map(x => `- **${x.style}**: ${x.label} by ${x.creator}, ${x.license}. [Source](${x.source})`).join('\n')}\n`);
 const tpl = fs.readFileSync(path.join(root, 'site-src/template.html'), 'utf8');
 fs.copyFileSync(path.join(root, 'site-src/mambo.png'), (fs.mkdirSync(path.join(out, 'site'), { recursive: true }), path.join(out, 'site/mambo.png')));
 const src = f => fs.readFileSync(path.join(root, 'site-src', f), 'utf8');
