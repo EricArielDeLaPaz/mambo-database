@@ -11,10 +11,10 @@ const HAIR = ['1b1b1b', '2e1d12', '4a2c17', '6b4423', 'a0522d', 'c9a24a', 'd9d9d
 const AV_TOPS = ['hijab', 'turban', 'bob', 'bun', 'curly', 'curvy', 'dreads', 'fro', 'froBand', 'longButNotTooLong', 'miaWallace', 'shavedSides', 'straight02', 'straight01', 'straightAndStrand', 'dreads01', 'dreads02', 'frizzle', 'shaggy', 'shaggyMullet', 'shortCurly', 'shortFlat', 'shortRound', 'shortWaved', 'sides', 'theCaesar', 'theCaesarAndSidePart', 'bigHair'];
 const STYLES = [
   { folder: 'avataaars', key: 'avataaars', style: 'Illustrated', label: 'Avataaars', skinKey: 'skinColor', hair: true, opt: { top: AV_TOPS, topProbability: 100, mouth: ['smile', 'default', 'twinkle', 'serious'], eyes: ['default', 'happy', 'squint'], eyebrows: ['defaultNatural', 'default', 'raisedExcitedNatural', 'flatNatural'], accessories: ['prescription01', 'prescription02', 'round', 'wayfarers'], accessoriesProbability: 20, clothing: ['blazerAndShirt', 'blazerAndSweater', 'collarAndSweater', 'hoodie', 'overall', 'shirtCrewNeck', 'shirtScoopNeck', 'shirtVNeck'], facialHairProbability: 25 } },
-  { folder: 'micah', key: 'micah', style: 'Drawing', label: 'Micah', skinKey: 'baseColor', hair: true, opt: { hair: ['full', 'pixie', 'fonze', 'turban'], hairProbability: 100, mouth: ['smile', 'laughing', 'smirk'], eyes: ['eyes', 'round', 'smiling'], glassesProbability: 25, facialHairProbability: 20 } },
+  { folder: 'notionists', key: 'notionists', style: 'Drawing', label: 'Notionists', noTone: true, hair: false, opt: { beardProbability: 20, glassesProbability: 25, gestureProbability: 0, bodyIconProbability: 0 } },
 ];
 // Licenses that allow commercial use. Anything else stops the script.
-const OK_LICENSE = /CC0|CC BY 4\.0|Free for personal and commercial use/;
+const OK_LICENSE = /CC0|Free for personal and commercial use/;
 const PER_TONE = 5, lic = {};
 // small seeded random so the output is the same every time
 const rng = s => { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296 } };
@@ -23,12 +23,13 @@ for (const s of STYLES) {
   if (!OK_LICENSE.test(m.license.name)) throw new Error(s.label + ' license is not on the allowed list: ' + m.license.name);
   lic[s.folder] = { attribution: /CC BY/.test(m.license.name), style: s.style, label: s.label, creator: m.creator, license: m.license.name, licenseUrl: m.license.url, source: m.source, tool: 'DiceBear ' + (JSON.parse(fs.readFileSync(path.join(scratch, 'node_modules/@dicebear/core/package.json'), 'utf8')).version) };
   let n = 0;
-  for (let t = 0; t < TONES.length; t++) for (let k = 0; k < PER_TONE; k++) {
-    n++; const seed = `${s.folder}-${TONES[t][1]}-${k}`, r = rng(seed), opt = { seed, size: 256, [s.skinKey]: [TONES[t][1]], backgroundColor: [BG[Math.floor(r() * BG.length)]], backgroundType: ['solid'] };
+  const tones = s.noTone ? [['None', 'ffffff']] : TONES, per = s.noTone ? 40 : PER_TONE;
+  for (let t = 0; t < tones.length; t++) for (let k = 0; k < per; k++) {
+    n++; const seed = `${s.folder}-${tones[t][1]}-${k}`, r = rng(seed), opt = { seed, size: 256, ...(s.noTone ? {} : { [s.skinKey]: [tones[t][1]] }), backgroundColor: [BG[Math.floor(r() * BG.length)]], backgroundType: ['solid'] };
     if (s.hair) opt.hairColor = [HAIR[Math.floor(r() * HAIR.length)]];
     Object.assign(opt, s.opt || {});
     const svg = createAvatar(st, opt).toString().replace(/<\?xml[^>]*\?>\s*/, '').replace(/>\s+</g, '><').trim();
-    fs.writeFileSync(path.join(dir, `${String(n).padStart(2, '0')}-${TONES[t][1]}.svg`), svg + '\n');
+    fs.writeFileSync(path.join(dir, `${String(n).padStart(2, '0')}-${tones[t][1]}.svg`), svg + '\n');
   }
   fs.writeFileSync(path.join(dir, 'LICENSE.txt'), `${s.label} by ${m.creator}\nLicense: ${m.license.name} (${m.license.url})\nSource: ${m.source}\nGenerated with DiceBear (https://www.dicebear.com), MIT licensed code.\n` + (/CC0/.test(m.license.name) ? 'CC0 places the artwork in the public domain; no attribution is required, but it is given here anyway.\n' : /CC BY/.test(m.license.name) ? 'CC BY 4.0 allows commercial use, but you must give credit to the creator, link to the license and say if you changed it. Credit line: "' + s.label + ' by ' + m.creator + ', CC BY 4.0".\n' : 'The creator allows personal and commercial use. Please credit the creator where you can.\n'));
 }

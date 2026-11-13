@@ -20,14 +20,14 @@
    "source": "https://avataaars.com/",
    "tool": "DiceBear 9.4.3"
   },
-  "micah": {
-   "attribution": true,
+  "notionists": {
+   "attribution": false,
    "style": "Drawing",
-   "label": "Micah",
-   "creator": "Micah Lanier",
-   "license": "CC BY 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-   "source": "https://www.figma.com/community/file/829741575478342595",
+   "label": "Notionists",
+   "creator": "Zoish",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "source": "https://heyzoish.gumroad.com/l/notionists",
    "tool": "DiceBear 9.4.3"
   },
   "realistic": {
