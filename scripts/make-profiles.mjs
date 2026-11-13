@@ -8,13 +8,12 @@ const scratch = path.resolve(process.argv[2] || '/tmp/db'), req = createRequire(
 const { createAvatar } = req('@dicebear/core'), col = req('@dicebear/collection');
 const TONES = [['Very light', 'ffe0cc'], ['Light', 'f6c9a6'], ['Light brown', 'e4a672'], ['Medium brown', 'c68642'], ['Brown', 'a0693f'], ['Dark brown', '7a4a2b'], ['Deep brown', '5a3825'], ['Deepest brown', '3f2a1d']];
 const HAIR = ['1b1b1b', '2e1d12', '4a2c17', '6b4423', 'a0522d', 'c9a24a', 'd9d9d9', '0f0f0f'], BG = ['e8eef7', 'f7ece8', 'ecf7e8', 'f3e8f7', 'f7f3e8', 'e8f5f7'];
-const AV_TOPS = ['hijab', 'turban', 'bob', 'bun', 'curly', 'curvy', 'dreads', 'fro', 'froBand', 'longButNotTooLong', 'miaWallace', 'shavedSides', 'straight02', 'straight01', 'straightAndStrand', 'dreads01', 'dreads02', 'frizzle', 'shaggy', 'shaggyMullet', 'shortCurly', 'shortFlat', 'shortRound', 'shortWaved', 'sides', 'theCaesar', 'theCaesarAndSidePart', 'bigHair'];
 const STYLES = [
-  { folder: 'avataaars', key: 'avataaars', style: 'Illustrated', label: 'Avataaars', skinKey: 'skinColor', hair: true, opt: { top: AV_TOPS, topProbability: 100, mouth: ['smile', 'default', 'twinkle', 'serious'], eyes: ['default', 'happy', 'squint'], eyebrows: ['defaultNatural', 'default', 'raisedExcitedNatural', 'flatNatural'], accessories: ['prescription01', 'prescription02', 'round', 'wayfarers'], accessoriesProbability: 20, clothing: ['blazerAndShirt', 'blazerAndSweater', 'collarAndSweater', 'hoodie', 'overall', 'shirtCrewNeck', 'shirtScoopNeck', 'shirtVNeck'], facialHairProbability: 25 } },
+  { folder: 'open-peeps', key: 'openPeeps', style: 'Illustrated', label: 'Open Peeps', skinKey: 'skinColor', hair: false, opt: { face: ['calm', 'smile', 'smileBig', 'smileTeethGap', 'cute', 'lovingGrin1', 'lovingGrin2'], accessories: ['glasses', 'glasses2', 'glasses3', 'glasses4', 'glasses5'], accessoriesProbability: 25, maskProbability: 0, facialHairProbability: 25 } },
   { folder: 'notionists', key: 'notionists', style: 'Drawing', label: 'Notionists', noTone: true, hair: false, opt: { beardProbability: 20, glassesProbability: 25, gestureProbability: 0, bodyIconProbability: 0 } },
 ];
 // Licenses that allow commercial use. Anything else stops the script.
-const OK_LICENSE = /CC0|Free for personal and commercial use/;
+const OK_LICENSE = /CC0/;
 const PER_TONE = 5, lic = {};
 // small seeded random so the output is the same every time
 const rng = s => { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296 } };

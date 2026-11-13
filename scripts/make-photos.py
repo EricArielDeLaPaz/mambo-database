@@ -24,7 +24,7 @@ for n in sorted(credits):
 json.dump(meta, open(os.path.join(out, 'photos.json'), 'w'), indent=1)
 print(len(meta), 'photos', sum(os.path.getsize(os.path.join(out, m['file'])) for m in meta) // 1024, 'KB')
 lp = os.path.join(root, 'profiles/LICENSES.json'); lic = json.load(open(lp))
-lic['styles']['realistic'] = {'style': 'Realistic', 'label': 'Portrait photo', 'photo': True, 'creator': 'Various photographers (see each photo)', 'license': 'Free for commercial use', 'licenseUrl': 'https://www.pexels.com/license/', 'source': 'https://github.com/leonadler/royalty-free-user-avatars', 'tool': 'Collection "inter-faces" (CC0 1.0), photos cropped and resized'}
+lic['styles']['realistic'] = {'style': 'Realistic', 'label': 'Portrait photo', 'photo': True, 'creator': 'Various photographers (see each photo)', 'license': 'CC0 1.0', 'licenseUrl': 'https://creativecommons.org/publicdomain/zero/1.0/', 'source': 'https://github.com/leonadler/royalty-free-user-avatars', 'tool': 'Collection "inter-faces" (CC0 1.0), photos cropped and resized'}
 json.dump(lic, open(lp, 'w'), indent=1); open(lp, 'a').write('\n')
 open(os.path.join(out, 'LICENSE.txt'), 'w').write('''Realistic profile pictures
 Photos come from the "royalty-free-user-avatars" (inter-faces) collection, https://github.com/leonadler/royalty-free-user-avatars, released under CC0 1.0.

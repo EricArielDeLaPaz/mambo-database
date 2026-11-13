@@ -1,5 +1,0 @@
-Avataaars by Pablo Stanley
-License: Free for personal and commercial use (https://avataaars.com/)
-Source: https://avataaars.com/
-Generated with DiceBear (https://www.dicebear.com), MIT licensed code.
-The creator allows personal and commercial use. Please credit the creator where you can.

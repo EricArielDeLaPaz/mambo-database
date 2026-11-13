@@ -10,14 +10,14 @@
   "3f2a1d": "Deepest brown"
  },
  "styles": {
-  "avataaars": {
+  "open-peeps": {
    "attribution": false,
    "style": "Illustrated",
-   "label": "Avataaars",
+   "label": "Open Peeps",
    "creator": "Pablo Stanley",
-   "license": "Free for personal and commercial use",
-   "licenseUrl": "https://avataaars.com/",
-   "source": "https://avataaars.com/",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "source": "https://www.openpeeps.com/",
    "tool": "DiceBear 9.4.3"
   },
   "notionists": {
@@ -35,8 +35,8 @@
    "label": "Portrait photo",
    "photo": true,
    "creator": "Various photographers (see each photo)",
-   "license": "Free for commercial use",
-   "licenseUrl": "https://www.pexels.com/license/",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "source": "https://github.com/leonadler/royalty-free-user-avatars",
    "tool": "Collection \"inter-faces\" (CC0 1.0), photos cropped and resized"
   }
