@@ -3,6 +3,8 @@ const DATA = /*__DATA__*/[];
 const FONTS = /*__FONTS__*/[];
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+/* Delay a repeated action (search-as-you-type) so fast typing does not queue full re-renders. */
+const debounce = (fn, ms = 150) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms) } };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'item';
 const uid = () => Math.random().toString(36).slice(2, 9);

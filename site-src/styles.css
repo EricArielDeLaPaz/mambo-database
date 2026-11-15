@@ -404,6 +404,7 @@ dialog.mdl.wide .fstrip{max-width:100%}
 @media (max-width:820px){.ct-in{grid-template-columns:1fr}.rz-go{margin-left:0}.modes{grid-template-columns:1fr}.scale{grid-template-columns:repeat(5,1fr)}.hue-head .f{margin-left:0;width:100%}}
 
 .iconprev{display:inline-flex;vertical-align:middle;margin-left:10px;color:var(--text)}
+.iconprev[data-ico]{width:24px;height:24px}
 .iconhero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.ih{display:flex;align-items:center;justify-content:center;min-height:140px;border:1px solid var(--border);border-radius:12px}.ih.light{background:#fff;color:#0a0a0a}.ih.dark{background:#121212;color:#f5f5f5}
 .iconalt{list-style:none;padding:0;margin:8px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}.iconalt .name-btn{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:8px;padding:8px 10px;width:100%;font-weight:600;font-size:13px}.iconalt .name-btn:hover{background:var(--surface)}.ia{display:inline-flex;color:var(--text)}
 

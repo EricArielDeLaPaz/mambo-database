@@ -78,7 +78,7 @@ function systemMenu(s, x, y) {
 }
 function renderTree() {
   const folderOf = f => S.systems.filter(s => s.folder === f);
-  $('#sside').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
+  $('#sside').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="" decoding="async">Mambo Database</p>
   <div class="row" style="margin-top:0"><button class="btn solid sm" id="newsys">+ New system</button><button class="btn sm" id="newfolder">+ New folder</button></div>
   ${S.systems.length ? '<p class="note" style="margin:0 0 6px">Double-click to rename, right-click for more, drag to move.</p>' : '<p class="empty">No systems yet. Create one to get started.</p>'}
   ${S.folders.map(f => { const items = folderOf(f), open = !S.collapsed.has(f); return `<div class="folder" data-folder="${esc(f)}"><div class="folder-h" ${f !== 'Unsorted' ? 'draggable="true"' : ''} data-fh="${esc(f)}"><input type="checkbox" aria-label="Select all in ${esc(f)}" data-folder-all="${esc(f)}" ${items.length && items.every(s => S.checked.has(s.id)) ? 'checked' : ''} ${items.length ? '' : 'disabled'}>

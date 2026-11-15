@@ -1,5 +1,6 @@
 /* ===== Browse: database view ===== */
 const B = { q: '', types: new Set(), cats: new Set(), plats: new Set(), inds: new Set(), styles: new Set(), scope: 'name', sort: 'name', dir: 1 };
+let onRowSel = null;
 const clipStore = {}; let curStates = [];
 const route = () => { const h = location.hash.replace(/^#\/?/, ''); if (h === 'systems') return { view: 'systems' }; if (h === 'guides') return { view: 'guides' }; if (h === 'tools') return { view: 'tools' }; if (h.startsWith('tools/')) return { view: 'tools', id: h.slice(6) }; if (h.startsWith('browse/')) { B.types = new Set([h.slice(7)]); B.cats.clear(); B.styles.clear(); try { history.replaceState(null, '', '#/') } catch { } return { view: 'browse' } } if (h.startsWith('guide/')) return { view: 'guides', id: h.slice(6) }; if (h.startsWith('entry/')) return { view: 'browse', id: h.slice(6) }; return { view: 'browse' } };
 const go = h => { location.hash = h };
@@ -31,6 +32,10 @@ const checkbox = (grp, val, label, n, on) => `<label class="chk"><input type="ch
 
 function renderBrowse() {
   $('#app').innerHTML = `<div class="layout3" id="lay"><aside id="side" aria-label="Filters"></aside><div class="rz" data-rz="left" role="separator" aria-orientation="vertical" aria-label="Resize filters panel. Use left and right arrow keys." tabindex="0"></div><main id="main" tabindex="-1"></main><div class="rz rz-r" data-rz="right" role="separator" aria-orientation="vertical" aria-label="Resize details panel. Use left and right arrow keys." tabindex="0" hidden></div><aside id="detail" class="dpanel" aria-label="Details" hidden></aside></div><div class="sheet-bd" id="dbd" hidden></div>`;
+  /* One listener for the whole table instead of one per row (thousands of rows). */
+  const main = $('#main');
+  main.addEventListener('click', e => { const open = e.target.closest('[data-open]'); if (open) { go('#/entry/' + open.dataset.open); return } const srt = e.target.closest('[data-sort]'); if (srt) { const k = srt.dataset.sort; if (B.sort === k) B.dir *= -1; else { B.sort = k; B.dir = 1 } renderResults() } });
+  main.addEventListener('change', e => { const cb = e.target.closest('input[data-sel]'); if (cb && onRowSel) onRowSel(cb) });
   renderFilters(); renderResults(); initPanes($('#lay')); showDetail();
 }
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -70,7 +75,7 @@ const filtersActive = () => !!(B.q.trim() || B.types.size || B.cats.size || B.st
 function renderFilters() {
   const types = countBy(e => e.type, DATA), cats = countBy(e => e.category, DATA.filter(e => (!B.types.size || B.types.has(e.type)) && platOk(e))), plats = countBy(e => e.platforms, DATA.filter(e => e.type === 'component')), inds = countBy(e => (e.industries || ['all']).includes('all') ? INDUSTRIES.slice(1).map(i => i[0]) : e.industries, DATA.filter(e => e.type === 'color' || e.type === 'typeface')), sty = countBy(e => e.style, DATA.filter(e => styleShown() && e.type === [...B.types][0] && (!B.cats.size || B.cats.has(e.category))));
   const catList = (B.types.has('profile') ? Object.keys(cats).sort(styleSort) : Object.keys(cats).sort());
-  $('#side').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
+  $('#side').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="" decoding="async">Mambo Database</p>
   <label class="f" style="margin-bottom:10px"><span class="eyebrow f-t">Design system</span><select id="syssel"><option value="">None</option>${S.systems.map(s => `<option value="${s.id}" ${S.active === s.id ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}</select></label>
   <label for="q" class="eyebrow">Search</label>
   <input id="q" type="search" placeholder="${B.scope === 'name' ? 'Search names' : 'Search descriptions'}" autocomplete="off" value="${esc(B.q)}">
@@ -85,7 +90,8 @@ function renderFilters() {
   upgradeSelects($('#side'));
   $$('[data-scope]', $('#side')).forEach(b => b.onclick = () => { B.scope = b.dataset.scope; renderFilters(); renderResults() });
   $('#syssel').onchange = ev => { S.active = ev.target.value || null; saveStore(); renderResults(); showDetail() };
-  $('#q').oninput = ev => { B.q = ev.target.value; afterFilter(false); const c = $('#clear'); if (c) c.disabled = !filtersActive() };
+  const debouncedResults = debounce(() => afterFilter(false), 150);
+  $('#q').oninput = ev => { B.q = ev.target.value; const c = $('#clear'); if (c) c.disabled = !filtersActive(); debouncedResults() };
   $$('input[data-type]', $('#side')).forEach(i => i.onchange = () => { B.types = i.value ? new Set([i.value]) : new Set(); B.cats.clear(); B.styles.clear(); afterFilter(true) });
   $$('input[data-grp]', $('#side')).forEach(i => i.onchange = () => { const s = B[i.dataset.grp]; i.checked ? s.add(i.value) : s.delete(i.value); afterFilter(true) });
   $$('input[data-stf]', $('#side')).forEach(i => i.onchange = () => { const id = i.dataset.stf; PREF.on = PREF.on.filter(x => x !== id); PREF.off = PREF.off.filter(x => x !== id); (i.checked ? PREF.on : PREF.off).push(id); savePref(); showDetail() });
@@ -101,13 +107,23 @@ function renderResults() {
   ${xt ? `<div class="expbar" id="expbar"><label class="chk"><input type="checkbox" id="selall"><span>Select all</span></label><span class="expn" id="expn" role="status"></span><div class="expw" id="expw"></div></div>` : ''}
   ${items.length ? `<table class="db"><thead><tr>${xt ? '<th scope="col" class="selc"><span class="sr">Select</span></th>' : ''}${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', B.types.has('profile') ? 'Style' : 'Category') : ''}${styleShown() ? th('style', 'Style') : ''}${platShown() ? th('platforms', 'Platforms') : ''}${indShown() ? th('industries', 'Industries') : ''}</tr></thead><tbody>${items.map(e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
    ${xt ? `<td class="selc"><input type="checkbox" data-sel="${esc(e.id)}" ${SEL[xt].includes(e.id) ? 'checked' : ''} aria-label="Select ${esc(e.name)}${e.type === 'icon' ? ' (' + esc(e.category) + ')' : ''}"></td>` : ''}
-   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${sample(e)}${e.type === 'profile' ? `<span class="iconprev pfprev" aria-hidden="true"><img src="${svgUri(e.svg)}" alt="" width="48" height="48" loading="lazy"></span>` : ''}${e.type === 'color' ? (cvdOf(e).length ? `<span class="docmeta cvdnote">Colorblind note: ${cvdOf(e).length} pair${cvdOf(e).length > 1 ? 's' : ''} may look alike to some people. <a href="${CVD_GUIDE}">Read more</a></span>` : e.category === 'accessible' ? '<span class="docmeta">Color-blind accessible</span>' : '') : ''}${e.type === 'document' ? `<span class="docmeta">${esc(e.publisher)} · For ${esc((e.audience || []).join(' and '))}</span>` : ''}${e.type === 'extension' ? `<span class="docmeta">${esc(e.price)} · ${esc(e.browsers.join(', '))}</span>` : ''}${e.type === 'icon' ? `<span class="iconprev" aria-hidden="true">${iconSvg(e, 24)}</span>` : ''}${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}"></i>`).join('')}</span>` : ''}</td>
+   <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${sample(e)}${e.type === 'profile' ? `<span class="iconprev pfprev" aria-hidden="true"><img src="${svgUri(e.svg)}" alt="" width="48" height="48" loading="lazy" decoding="async"></span>` : ''}${e.type === 'color' ? (cvdOf(e).length ? `<span class="docmeta cvdnote">Colorblind note: ${cvdOf(e).length} pair${cvdOf(e).length > 1 ? 's' : ''} may look alike to some people. <a href="${CVD_GUIDE}">Read more</a></span>` : e.category === 'accessible' ? '<span class="docmeta">Color-blind accessible</span>' : '') : ''}${e.type === 'document' ? `<span class="docmeta">${esc(e.publisher)} · For ${esc((e.audience || []).join(' and '))}</span>` : ''}${e.type === 'extension' ? `<span class="docmeta">${esc(e.price)} · ${esc(e.browsers.join(', '))}</span>` : ''}${e.type === 'icon' ? `<span class="iconprev" aria-hidden="true" data-ico="${esc(e.id)}"></span>` : ''}${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}"></i>`).join('')}</span>` : ''}</td>
    <td data-l="Type">${TYPE[e.type]}</td>${B.types.size === 1 ? `<td data-l="Category">${esc(e.category)}</td>` : ''}${styleShown() ? `<td data-l="Style">${esc(e.style || '')}</td>` : ''}
    ${platShown() ? `<td data-l="Platforms">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('') || '<span class="empty">Any</span>'}</td>` : ''}
    ${indShown() ? `<td data-l="Industries">${e.type === 'color' || e.type === 'typeface' ? (e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('') : '<span class="empty">Not used</span>'}</td>` : ''}</tr>`).join('')}</tbody></table>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
-  $$('[data-sort]', $('#main')).forEach(b => b.onclick = () => { const k = b.dataset.sort; if (B.sort === k) B.dir *= -1; else { B.sort = k; B.dir = 1 } renderResults() });
-  $$('[data-open]', $('#main')).forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
+  watchIcons();
   watchFonts(); wireExport(items, xt);
+}
+/* Icon previews render only when a row is near the viewport, like the font samples above. The SVG strings are the bulk of the table. */
+let iconIO = null;
+function watchIcons() {
+  if (iconIO) iconIO.disconnect();
+  const els = $$('[data-ico]', $('#main'));
+  if (!els.length) return;
+  const fill = el => { const e = BY_ID.get(el.dataset.ico); if (e) el.innerHTML = iconSvg(e, 24); el.removeAttribute('data-ico') };
+  if (!('IntersectionObserver' in window)) { els.slice(0, 60).forEach(fill); return }
+  iconIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { fill(en.target); iconIO.unobserve(en.target) } }), { rootMargin: '400px' });
+  els.forEach(x => iconIO.observe(x));
 }
 /* Typography rows show a sample in the font; the font file is fetched only when the row scrolls into view. */
 const fontFallback = f => ({ serif: 'Georgia, serif', monospace: 'ui-monospace, monospace' }[(FONTMAP.get(f) || [])[1]] || 'system-ui, sans-serif');
@@ -179,7 +195,7 @@ function wireExport(items, xt) {
   let topVisible = true;
   const upd = () => { if (!$('#expw') || !document.body.contains(all)) { if (expIO) { expIO.disconnect(); expIO = null } return } const c = SEL[xt].length, inView = ids.filter(i => SEL[xt].includes(i)).length; n.textContent = c ? `${c} selected` + (c !== inView ? ` (${inView} shown)` : '') : 'None selected'; all.checked = ids.length > 0 && inView === ids.length; all.indeterminate = inView > 0 && inView < ids.length; fl.hidden = !c || topVisible; $$('.exp-btn', $('#expw')).forEach(b => b.disabled = !c); $$('.exp-btn', fl).forEach(b => b.textContent = `Export (${c})`) };
   if ('IntersectionObserver' in window) { expIO = new IntersectionObserver(es => { topVisible = es[0].isIntersecting; upd() }); expIO.observe($('#expbar')) }
-  $$('input[data-sel]', $('#main')).forEach(i => i.onchange = () => { const a = SEL[xt]; if (i.checked) { if (!a.includes(i.dataset.sel)) a.push(i.dataset.sel) } else SEL[xt] = a.filter(x => x !== i.dataset.sel); saveSel(); upd() });
+  onRowSel = i => { const a = SEL[xt]; if (i.checked) { if (!a.includes(i.dataset.sel)) a.push(i.dataset.sel) } else SEL[xt] = a.filter(x => x !== i.dataset.sel); saveSel(); upd() };
   all.onchange = () => { const on = new Set(SEL[xt]); ids.forEach(i => all.checked ? on.add(i) : on.delete(i)); SEL[xt] = [...on]; saveSel(); $$('input[data-sel]', $('#main')).forEach(i => i.checked = on.has(i.dataset.sel)); upd() };
   upd();
 }

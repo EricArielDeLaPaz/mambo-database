@@ -75,7 +75,7 @@ function renderGuides() {
 function renderGuideFilters() {
   const topics = [...new Set(GUIDES.map(g => g.topic))], levels = ['Beginner', 'Intermediate'].filter(l => GUIDES.some(g => g.level === l));
   const n = (k, v) => GUIDES.filter(g => g[k] === v).length;
-  $('#gside').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
+  $('#gside').innerHTML = `<p class="wordmark"><img src="mambo.png" alt="" decoding="async">Mambo Database</p>
   <label for="gq" class="eyebrow">Search</label>
   <input id="gq" type="search" placeholder="Search ${G.scope === 'name' ? 'titles' : G.scope === 'description' ? 'descriptions' : 'the full text'}" autocomplete="off" value="${esc(G.q)}">
   <div class="scope" role="group" aria-label="Search in">${[['name', 'Name'], ['description', 'Description'], ['content', 'Full text']].map(([k, l]) => `<button type="button" class="chip" data-gscope="${k}" aria-pressed="${G.scope === k}">${l}</button>`).join('')}</div>

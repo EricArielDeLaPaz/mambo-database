@@ -18,7 +18,7 @@ const TICK = '<span aria-hidden="true">✓</span>', CROSS = '<span aria-hidden="
 
 function renderTools() {
   const id = TOOLS.some(t => t[0] === route().id) ? route().id : 'contrast', cur = TOOLS.find(t => t[0] === id), groups = [...new Set(TOOLS.map(t => t[3]))];
-  $('#app').innerHTML = `<div class="layout" id="tlay"><aside id="tside" aria-label="Tools"><p class="wordmark"><img src="mambo.png" alt="">Mambo Database</p>
+  $('#app').innerHTML = `<div class="layout" id="tlay"><aside id="tside" aria-label="Tools"><p class="wordmark"><img src="mambo.png" alt="" decoding="async">Mambo Database</p>
   ${groups.map(g => `<fieldset><legend class="eyebrow">${g}</legend>${TOOLS.filter(t => t[3] === g).map(t => `<label class="chk radio"><input type="radio" name="tool" value="${t[0]}" ${t[0] === id ? 'checked' : ''}><span><b>${t[1]}</b><small>${t[2]}</small></span></label>`).join('')}</fieldset>`).join('')}</aside>
   <main id="main" tabindex="-1" class="toolwrap"><div class="dbhead"><div><p class="eyebrow">${cur[3]}</p><h1>${cur[1]}</h1></div></div><div id="toolbody"></div></main></div>`;
   document.title = cur[1] + ' · Mambo Database';
