@@ -18,14 +18,23 @@ const gMatch = g => {
 };
 const gHl = (t, on) => { const q = G.q.trim(); if (!q || !on) return esc(t); const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); return String(t).split(re).map((x, i) => i % 2 ? '<mark>' + esc(x) + '</mark>' : esc(x)).join('') };
 /* A small markdown renderer: headings, paragraphs, lists, tables, code blocks, quotes, bold, code, links. */
-function inlineMd(t) {
-  const codes = []; t = t.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return '\u0000' + (codes.length - 1) + '\u0000' });
+function inlineMd(t, fn) {
+  const codes = []; t = t.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return '\\u0000' + (codes.length - 1) + '\\u0000' });
   t = esc(t).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/(^|[\s(])_([^_]+)_(?=[\s).,;:]|$)/g, '$1<em>$2</em>');
+  if (fn) t = t.replace(/\[\^(\d+)\]/g, (m0, n0) => { const n = Number(n0); if (!fn.defs[n]) return m0; fn.seen[n] = (fn.seen[n] || 0) + 1; const id = fn.seen[n] === 1 ? 'fnref-' + n : 'fnref-' + n + '-' + fn.seen[n]; return '<sup class="fnref"><a class="fnlink" href="#src-' + n + '" id="' + id + '" data-fn="' + n + '" aria-label="Source ' + n + '">[' + n + ']</a></sup>' });
   t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)(\{\.btn\})?/g, (_, l, u, b) => /^(https?:|#|[\w./-]+\.(zip|md|txt))/.test(u) ? `<a ${b ? 'class="btn solid" ' : ''}href="${u}" ${/^https?:/.test(u) ? 'target="_blank" rel="noopener"' : ''}>${l}</a>` : l);
-  return t.replace(/\u0000(\d+)\u0000/g, (_, i) => '<code>' + esc(codes[i]) + '</code>');
+  return t.replace(/\\u0000(\\d+)\\u0000/g, (_, i) => '<code>' + esc(codes[i]) + '</code>');
 }
 function mdToHtml(md) {
-  const lines = md.split('\n'); let out = '', i = 0;
+  /* Collect footnote definitions ([^n]: body) first; they render as a numbered list under the `## Where to read more` heading. */
+  const defs = {}, lines = [];
+  for (const raw of md.split('\n')) { const m = raw.match(/^\[\^(\d+)\]:\s?(.*)$/); if (m) { defs[Number(m[1])] = m[2]; continue } lines.push(raw) }
+  /* Pre-scan for refs so the sources list (rendered at the heading) knows which sources have a jump target. */
+  const used = {};
+  for (const raw of lines) for (const m of raw.matchAll(/\[\^(\d+)\]/g)) { const n = Number(m[1]); if (Object.prototype.hasOwnProperty.call(defs, n)) used[n] = true }
+  const fn = { defs, seen: {} };
+  const fnList = () => `<ol class="fnlist">${Object.keys(defs).map(Number).sort((a, b) => a - b).map(n => `<li id="src-${n}" tabindex="-1" class="fn-item">${inlineMd(defs[n], fn)}${used[n] ? ` <a class="fnback" href="#fnref-${n}" data-fnback="${n}" aria-label="Back to text for source ${n}">&#8617; Back to text</a>` : ''}</li>`).join('')}</ol>`;
+  let out = '', i = 0, sourcesDone = false;
   const slugH = t => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   while (i < lines.length) {
     const l = lines[i];
@@ -33,20 +42,31 @@ function mdToHtml(md) {
     let m;
     if (/^:::cvd-demo\s*$/.test(l)) { out += cvdDemoHtml(); i++; continue }
     if (/^:::cvd-status\s*$/.test(l)) { out += cvdStatusHtml(); i++; continue }
-    if ((m = l.match(/^(#{2,3})\s+(.*)$/))) { const n = m[1].length; out += `<h${n} id="${slugH(m[2])}">${inlineMd(m[2])}</h${n}>`; i++; continue }
+    if ((m = l.match(/^(#{2,3})\s+(.*)$/))) { const n = m[1].length; out += `<h${n} id="${slugH(m[2])}">${inlineMd(m[2], fn)}</h${n}>`; if (!sourcesDone && /^where to read more$/i.test(m[2].trim()) && Object.keys(defs).length) { out += fnList(); sourcesDone = true } i++; continue }
     if (/^\|.*\|\s*$/.test(l) && /^\|[\s:|-]+\|\s*$/.test(lines[i + 1] || '')) {
       const row = r => r.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim()); const head = row(l); i += 2; const rows = [];
       while (i < lines.length && /^\|.*\|\s*$/.test(lines[i])) rows.push(row(lines[i++]));
-      out += `<div class="tscroll"><table><thead><tr>${head.map(c => `<th scope="col">${inlineMd(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, k) => k ? `<td>${inlineMd(c)}</td>` : `<th scope="row">${inlineMd(c)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`; continue
+      out += `<div class="tscroll"><table><thead><tr>${head.map(c => `<th scope="col">${inlineMd(c, fn)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, k) => k ? `<td>${inlineMd(c, fn)}</td>` : `<th scope="row">${inlineMd(c, fn)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`; continue
     }
-    if (/^>\s?/.test(l)) { const buf = []; while (i < lines.length && /^>\s?/.test(lines[i])) buf.push(lines[i++].replace(/^>\s?/, '')); out += `<div class="callout" role="note">${inlineMd(buf.join(' '))}</div>`; continue }
-    if (/^\s*[-*]\s+/.test(l)) { const buf = []; while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) buf.push(lines[i++].replace(/^\s*[-*]\s+/, '')); out += `<ul>${buf.map(x => `<li>${inlineMd(x)}</li>`).join('')}</ul>`; continue }
-    if (/^\s*\d+\.\s+/.test(l)) { const buf = []; while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) buf.push(lines[i++].replace(/^\s*\d+\.\s+/, '')); out += `<ol>${buf.map(x => `<li>${inlineMd(x)}</li>`).join('')}</ol>`; continue }
+    if (/^>\s?/.test(l)) { const buf = []; while (i < lines.length && /^>\s?/.test(lines[i])) buf.push(lines[i++].replace(/^>\s?/, '')); out += `<div class="callout" role="note">${inlineMd(buf.join(' '), fn)}</div>`; continue }
+    if (/^\s*[-*]\s+/.test(l)) { const buf = []; while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) buf.push(lines[i++].replace(/^\s*[-*]\s+/, '')); out += `<ul>${buf.map(x => `<li>${inlineMd(x, fn)}</li>`).join('')}</ul>`; continue }
+    if (/^\s*\d+\.\s+/.test(l)) { const buf = []; while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) buf.push(lines[i++].replace(/^\s*\d+\.\s+/, '')); out += `<ol>${buf.map(x => `<li>${inlineMd(x, fn)}</li>`).join('')}</ol>`; continue }
     if (!l.trim()) { i++; continue }
-    const buf = []; while (i < lines.length && lines[i].trim() && !/^(```|#{2,3}\s|>|\s*[-*]\s|\s*\d+\.\s|\|)/.test(lines[i])) buf.push(lines[i++]); out += `<p>${inlineMd(buf.join(' '))}</p>`;
+    const buf = []; while (i < lines.length && lines[i].trim() && !/^(```|#{2,3}\s|>|\s*[-*]\s|\s*\d+\.\s|\|)/.test(lines[i])) buf.push(lines[i++]); out += `<p>${inlineMd(buf.join(' '), fn)}</p>`;
   }
+  if (!sourcesDone && Object.keys(defs).length) out += fnList();
   return out;
 }
+/* Footnote jumps: the app owns location.hash (hash routing), so intercept the click instead of navigating, scroll the paired element into view and move keyboard focus to it. */
+document.addEventListener('click', e => {
+  const a = e.target.closest ? e.target.closest('.fnlink, .fnback') : null; if (!a) return;
+  e.preventDefault();
+  const id = a.classList.contains('fnlink') ? 'src-' + a.dataset.fn : 'fnref-' + a.dataset.fnback;
+  const t = document.getElementById(id); if (!t) return;
+  const smooth = !window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  t.scrollIntoView({ block: 'start', behavior: smooth ? 'smooth' : 'auto' });
+  t.focus({ preventScroll: true });
+});
 function renderGuides() {
   const id = route().id, g = id && gById(id);
   $('#app').innerHTML = `<div class="layout" id="glay"><aside id="gside" aria-label="Guide filters"></aside><main id="main" tabindex="-1"></main></div>`;

@@ -29,6 +29,13 @@ Mambo Database is a free, open-source library for designers. It has two goals.
 
 ## Is it free to use?
 
-Yes. The code and original entries use the MIT license. Every typeface listed is open source under the SIL Open Font License, so it is free for commercial use. Credits are at the bottom of every page.
+Yes. The code and original entries use the MIT license[^1]. Every typeface listed is open source under the SIL Open Font License[^2], so it is free for commercial use. Credits are at the bottom of every page.
 
 > **Good to know.** Mambo Database is a learning and starting-point tool. It gives well-reasoned defaults, but you and your team still decide what is right for your product and your users.
+
+## Where to read more
+
+The two license names above are the only outside facts; everything else in this guide describes this site itself.
+
+[^1]: MIT License — Open Source Initiative. https://opensource.org/license/mit . Accessed 2026-11-14.
+[^2]: SIL Open Font License 1.1 — Open Source Initiative. https://opensource.org/license/ofl-1-1 . Accessed 2026-11-14.

@@ -12,7 +12,7 @@ Good hand-off means an engineer can build your design without guessing. Most del
 ## The checklist
 
 ### 1. Every state
-For each interactive component, design or describe: default, hover (desktop only), focus, pressed, disabled, loading and error. Mobile has no hover, so skip it there. See the state row on any component in Browse.
+For each interactive component, design or describe: default, hover (desktop only), focus, pressed, disabled, loading and error. Mobile has no hover, so skip it there.[^1] See the state row on any component in Browse.
 
 ### 2. Tokens (variables), not loose values
 Use named styles and variables for color, type, spacing and radius. Use the same names the code uses, for example `color/primary`, `space/4`. In Design Systems, the export includes CSS and token files you can share.
@@ -57,3 +57,7 @@ Open questions: should the promo field collapse?
 ## Where to read more
 
 - In this database: [PerfectPixel](#/entry/perfectpixel), [Page Ruler](#/entry/page-ruler), [CSS Scan](#/entry/css-scan) and [Responsive Viewer](#/entry/responsive-viewer) — browser extensions for comparing the build to the mockup and checking the layout at several viewport sizes.
+
+The other claims in this guide describe this site's own Browse and Design Systems features; they were checked against the site itself on 2026-11-14 and need no outside sources.
+
+[^1]: hover — MDN Web Docs (Mozilla). https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover . Accessed 2026-11-14. (The (hover: none) media feature: the primary input cannot hover; many mobile devices emulate hover on a long tap.)

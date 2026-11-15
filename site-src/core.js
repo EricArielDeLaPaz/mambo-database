@@ -57,7 +57,7 @@ function parseColor(str) {
 const COLOR_HINT = 'a hex code like #1d4ed8, or rgb(29, 78, 216), hsl(224, 76%, 48%), hsb(224, 87%, 85%) or cmyk(87%, 64%, 0%, 15%)';
 const cfmtSelect = () => `<label class="f cfmt"><span class="f-t">Color format</span><select data-cfmt aria-label="Color format">${CFMT.map(f => `<option ${f === colorFmt ? 'selected' : ''}>${f}</option>`).join('')}</select></label>`;
 const wireCfmt = (root, onChange) => $$('select[data-cfmt]', root).forEach(sel => sel.addEventListener('change', () => { setColorFmt(sel.value); $$('select[data-cfmt]').forEach(o => { if (o !== sel) { o.value = sel.value; o.dispatchEvent(new Event('sync')) } }); onChange && onChange() }));
-function lum(h) { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2] }
+function lum(h) { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2] } /* WCAG 2.2 cut-off is .04045 (.03928 was the pre-2021 value; for 8-bit sRGB both give identical results) */
 /* WebAIM shows the ratio cut off (not rounded) at 2 decimals, so 4.496 reads 4.49 and fails, never 4.50 */
 const fmtRatio = r => (Math.floor(r * 100 + 1e-9) / 100).toFixed(2);
 const webaimUrl = (fg, bg) => 'https://webaim.org/resources/contrastchecker/?fcolor=' + String(fg).replace('#', '').toUpperCase() + '&bcolor=' + String(bg).replace('#', '').toUpperCase();

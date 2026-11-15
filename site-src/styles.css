@@ -345,6 +345,14 @@ dialog.mdl.wide .fstrip{max-width:100%}
 .gbody code{font:500 .9em var(--font-mono);background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
 .gbody pre{margin:14px 0}.gbody pre code{background:none;border:0;padding:0;font-size:13px}
 .callout{border:1px solid var(--border-strong);border-left:4px solid var(--text);border-radius:8px;padding:10px 14px;margin:16px 0;background:var(--surface);font-size:15.5px;line-height:1.6}
+.fnref{line-height:0;vertical-align:super}
+.fnlink{font-size:.78em;font-weight:700;padding:4px 6px;margin:0 1px;border-radius:4px;text-decoration:none;color:inherit;line-height:1}
+.fnlink:hover{text-decoration:underline}
+.fn-item:target{background:var(--surface)}
+.fnlist{margin:12px 0;padding-left:20px;scroll-margin-top:76px}
+.fn-item{margin:4px 0;padding:4px 8px;border-radius:6px;font-size:14.5px;line-height:1.5;scroll-margin-top:76px}
+.fnback{display:inline-block;margin:0 0 0 8px;padding:4px 8px;border-radius:4px;text-decoration:none;color:inherit;border:1px solid var(--border)}
+.fnback:hover{text-decoration:underline;border-color:var(--border-strong)}
 .tscroll{overflow-x:auto;margin:14px 0}.gbody table{min-width:420px}
 .gpn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:44px;padding-top:20px;border-top:1px solid var(--border)}
 .gnav{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border:1px solid var(--border-strong);border-radius:10px;color:var(--text);text-decoration:none}

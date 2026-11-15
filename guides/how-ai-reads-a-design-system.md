@@ -7,7 +7,7 @@ level: Intermediate
 order: 10
 ---
 
-AI assistants do not see your Figma file the way you do. They read **text**: names, values, descriptions and code. The clearer that text, the better the result.
+AI assistants work from the text and data they are given, not the picture you see. They read **text**: names, values, descriptions and code. The clearer that text, the better the result.
 
 ## What an AI tool can use
 
@@ -24,7 +24,7 @@ AI assistants do not see your Figma file the way you do. They read **text**: nam
 Compare two instructions.
 
 - **Vague.** "Make a button that looks nice."
-- **Clear.** "Use `color/primary` for the fill and `color/primary-text` for the label. Radius `radius-md`. Include hover, focus-visible, pressed and disabled states. The label needs 4.5:1 contrast."
+- **Clear.** "Use `color/primary` for the fill and `color/primary-text` for the label. Radius `radius-md`. Include hover, focus-visible, pressed and disabled states. The label needs 4.5:1 contrast[^2]."
 
 The second one is possible only when your system is written down with names.
 
@@ -56,7 +56,7 @@ Every component in Browse follows this shape.
 ## How Mambo Database helps
 
 - Every entry exists as **Markdown** and **JSON**. Use "Copy as Markdown (for AI)" or "Copy JSON" to paste an entry into an assistant.
-- The site publishes an `llms.txt` file, a short index that AI tools can read to learn what is here.
+- The site publishes an `llms.txt` file, a short index that AI tools can read to learn what is here.[^1]
 - The [AI skills](#/guide/setting-up-the-skills) let an assistant search the whole database and run an interview before building a system.
 - Design Systems exports files your tools and engineers can both read, such as CSS variables and a README.
 
@@ -72,3 +72,10 @@ Every component in Browse follows this shape.
 1. Create a system in Design Systems and give every color a clear role.
 2. Export it.
 3. Paste the README into an assistant and ask it to describe your system back to you. Anything it gets wrong shows where your documentation is unclear.
+
+## Where to read more
+
+The other claims in this guide describe this site and its repository (dist/llms.txt, the AI skills, the export files, the entry shape); they were verified against the repo itself on 2026-11-14 and need no outside sources.
+
+[^1]: llms.txt — the site convention for a short, plain-text index of a site, written by its maintainers. https://llmstxt.org/ . Accessed 2026-11-14. (A community convention, not an official standard.)
+[^2]: Web Content Accessibility Guidelines (WCAG) 2.2, Success Criterion 1.4.3 Contrast (Minimum) — W3C. https://www.w3.org/TR/WCAG22/#contrast-minimum . Accessed 2026-11-14.
