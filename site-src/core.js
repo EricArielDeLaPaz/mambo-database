@@ -57,6 +57,22 @@ function parseColor(str) {
   return null;
 }
 const COLOR_HINT = 'a hex code like #1d4ed8, or rgb(29, 78, 216), hsl(224, 76%, 48%), hsb(224, 87%, 85%) or cmyk(87%, 64%, 0%, 15%)';
+/* Smart fill, like Figma: when a hex field holds only 1 or 2 characters, Enter (or leaving the field) fills in the rest. "0" becomes 000000, "a" becomes aaaaaa, "12" becomes 121212. Three characters ("abc" -> aabbcc) are already handled by normHex. Bare numbers in RGB/HSL/HSB/CMYK mode are left alone because they belong to that format. */
+function smartHex(str) {
+  const raw = String(str).trim(), h = raw.replace(/^#/, '');
+  if (!/^[0-9a-f]{1,2}$/i.test(h)) return null;
+  if (colorFmt !== 'HEX' && !raw.startsWith('#')) return null;
+  return '#' + h.repeat(h.length === 1 ? 6 : 3).toLowerCase();
+}
+const HEX_FIELDS = '#ct-fg, #ct-bg, .cv-in, [data-cf=hex]';
+const applySmartFill = inp => {
+  if (!inp || !inp.matches || !inp.matches(HEX_FIELDS)) return;
+  const hx = smartHex(inp.value); if (!hx) return;
+  inp.value = fmtColor(hx);
+  inp.dispatchEvent(new Event('input', { bubbles: true })); /* runs each field's own update code */
+};
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) applySmartFill(e.target) });
+document.addEventListener('focusout', e => applySmartFill(e.target));
 const cfmtSelect = () => `<label class="f cfmt"><span class="f-t">Color format</span><select data-cfmt aria-label="Color format">${CFMT.map(f => `<option ${f === colorFmt ? 'selected' : ''}>${f}</option>`).join('')}</select></label>`;
 const wireCfmt = (root, onChange) => $$('select[data-cfmt]', root).forEach(sel => sel.addEventListener('change', () => { setColorFmt(sel.value); $$('select[data-cfmt]').forEach(o => { if (o !== sel) { o.value = sel.value; o.dispatchEvent(new Event('sync')) } }); onChange && onChange() }));
 function lum(h) { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2] } /* WCAG 2.2 cut-off is .04045 (.03928 was the pre-2021 value; for 8-bit sRGB both give identical results) */
