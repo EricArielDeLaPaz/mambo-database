@@ -1,0 +1,24 @@
+{
+  "id": "page-ruler",
+  "type": "extension",
+  "name": "Page Ruler",
+  "category": "Measurement",
+  "summary": "Drags a labeled pixel ruler rectangle over the page that continuously reports width, height, start and end coordinates for measuring elements and spacing.",
+  "publisher": "leocompson",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/page-ruler/jcbmcnpepaddcedmjdcmhbekjhbfnlff",
+  "browsers": [
+    "Chrome",
+    "Edge"
+  ],
+  "browsersNote": "Edge listing carries the same description text; AMO has a same-name 'Page Ruler' by another author, publisher match unconfirmed.",
+  "license": "Proprietary; no open-source license stated on the store page.",
+  "goodFor": "Measuring widths, heights and coordinates with a draggable pixel ruler.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "ruler measure pixels spacing coordinates dimensions",
+  "checked": "2026-11-14"
+}

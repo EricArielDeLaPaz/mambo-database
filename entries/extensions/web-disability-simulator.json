@@ -1,0 +1,23 @@
+{
+  "id": "web-disability-simulator",
+  "type": "extension",
+  "name": "Web Disability Simulator",
+  "category": "Vision-deficiency simulation",
+  "summary": "Adds filter-based simulations of how a page renders for several disability types (color blindness, low vision, dyslexia-style effects) so designers can spot perception problems.",
+  "publisher": "Metamatrix (developer Patrik Hassel)",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/web-disability-simulator/olioanlbgbpmdlgjnnampnnlohigkjla",
+  "browsers": [
+    "Chrome"
+  ],
+  "browsersNote": "No Firefox or Edge listing found on the check date.",
+  "license": "Proprietary; no open-source license stated on the store page.",
+  "goodFor": "Experiencing how filters change a page for people with low vision, color blindness or dyslexia-style effects.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "disability simulator color blindness low vision dyslexia filter accessibility",
+  "checked": "2026-11-14"
+}

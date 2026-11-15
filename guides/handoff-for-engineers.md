@@ -53,3 +53,7 @@ Tokens: from "Brand v2" file
 Notes: error summary receives focus after submit
 Open questions: should the promo field collapse?
 ```
+
+## Where to read more
+
+- In this database: [PerfectPixel](#/entry/perfectpixel), [Page Ruler](#/entry/page-ruler), [CSS Scan](#/entry/css-scan) and [Responsive Viewer](#/entry/responsive-viewer) — browser extensions for comparing the build to the mockup and checking the layout at several viewport sizes.

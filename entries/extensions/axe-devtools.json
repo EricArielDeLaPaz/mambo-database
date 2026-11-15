@@ -1,0 +1,25 @@
+{
+  "id": "axe-devtools",
+  "type": "extension",
+  "name": "axe DevTools",
+  "category": "Accessibility checking",
+  "summary": "Runs automated WCAG accessibility checks (including color-contrast rules) inside the browser and walks you through failures with guided tests.",
+  "publisher": "Deque Systems Inc",
+  "price": "Freemium (free core; paid Pro tier per deque.com)",
+  "url": "https://chromewebstore.google.com/detail/axe-devtools-web-accessib/lhdoppojpmngadmnindnejefpokejbdd",
+  "browsers": [
+    "Chrome",
+    "Firefox",
+    "Edge"
+  ],
+  "browsersNote": "",
+  "license": "Proprietary; store page links Deque's terms of use for the extension (deque.com/terms-of-use/axe-ext).",
+  "goodFor": "Running automated WCAG checks, including contrast, and fixing failures one by one.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "axe accessibility wcag contrast checker automated audit deque",
+  "checked": "2026-11-14"
+}

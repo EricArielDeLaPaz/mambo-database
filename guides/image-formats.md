@@ -62,3 +62,7 @@ Engineers can offer several formats and let the browser pick the best one.
 Setting `width` and `height` reserves the space and stops the page from jumping as the image loads.
 
 Next: [Icon types and formats](#/guide/icon-types).
+
+## Where to read more
+
+- In this database: [Imageye](#/entry/imageye) and [SVG Export](#/entry/svg-export) — browser extensions for finding, filtering and downloading every image (including SVGs) on a page.

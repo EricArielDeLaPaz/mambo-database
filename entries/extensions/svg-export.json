@@ -1,0 +1,25 @@
+{
+  "id": "svg-export",
+  "type": "extension",
+  "name": "SVG Export",
+  "category": "Asset extraction",
+  "summary": "Scans a site for inline and linked SVGs and exports them as SVG, PNG or JPEG with styles inlined, ready to paste into tools like Figma.",
+  "publisher": "svgexport.io (delanebob)",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/svg-export/naeaaedieihlkmdajjefioajbbdbdjgp",
+  "browsers": [
+    "Chrome",
+    "Firefox",
+    "Edge"
+  ],
+  "browsersNote": "",
+  "license": "Proprietary; no open-source license stated on the store page.",
+  "goodFor": "Exporting a site's SVGs as SVG, PNG or JPEG with styles inlined.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "svg export download vector figma inline linked images",
+  "checked": "2026-11-14"
+}

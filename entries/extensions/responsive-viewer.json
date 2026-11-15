@@ -1,0 +1,23 @@
+{
+  "id": "responsive-viewer",
+  "type": "extension",
+  "name": "Responsive Viewer",
+  "category": "Responsive testing",
+  "summary": "Renders the page inside preset device frames (desktop, laptop, tablet, mobile) with custom dimensions, rotation and a pixel-grid overlay for responsive checks.",
+  "publisher": "bojita.com",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/responsive-viewer/idkjhjlkhcoagockknjpbkkakbcegifk",
+  "browsers": [
+    "Chrome"
+  ],
+  "browsersNote": "Edge store has a same-name listing; author match unconfirmed; no Firefox listing found.",
+  "license": "Proprietary; no open-source license stated on the store page.",
+  "goodFor": "Previewing a page inside device frames and custom viewport sizes.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "responsive viewport device frames mobile tablet pixel grid test",
+  "checked": "2026-11-14"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "window-resizer",
+  "type": "extension",
+  "name": "Window Resizer",
+  "category": "Responsive testing",
+  "summary": "Resizes the browser window or viewport to saved presets or custom dimensions, with shortcuts and import/export, for testing layouts at different resolutions.",
+  "publisher": "coolx10.com",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/window-resizer/kkelicaakdanhinjdeammmilcgefonfh",
+  "browsers": [
+    "Chrome"
+  ],
+  "browsersNote": "AMO and the Edge store have same-name listings by other publishers; neither was confirmed as this project on the check date.",
+  "license": "Proprietary; no open-source license stated on the Chrome store page.",
+  "goodFor": "Testing layouts at saved viewport presets or custom sizes.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "window resize viewport resolution presets shortcuts responsive",
+  "checked": "2026-11-14"
+}

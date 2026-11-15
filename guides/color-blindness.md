@@ -55,3 +55,4 @@ Notice how the first pair (color only) is hard to tell apart for several rows, w
 - WCAG 2.2: [Understanding Use of Color (1.4.1)](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)
 - Okabe and Ito, [Color Universal Design](https://jfly.uni-koeln.de/color/)
 - Paul Tol, [Colour schemes](https://personal.sron.nl/~pault/)
+- In this database: [Grayscale Screen](#/entry/grayscale-screen), [Web Disability Simulator](#/entry/web-disability-simulator) and [Colorblindly](#/entry/colorblindly) — free browser extensions for checking a page in grayscale or through simulated color-vision deficiency.

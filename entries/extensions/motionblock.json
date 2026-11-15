@@ -1,0 +1,23 @@
+{
+  "id": "motionblock",
+  "type": "extension",
+  "name": "MotionBlock",
+  "category": "Motion",
+  "summary": "Blocks GIFs, CSS/JS/SVG animations, parallax and other motion globally or per site so designers can verify a page's reduced-motion state and readability.",
+  "publisher": "molodchyk.com",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/motionblock-gif-blocker-a/hakggpkloechnmgdkojohpahbglnhcng",
+  "browsers": [
+    "Chrome"
+  ],
+  "browsersNote": "No Firefox or Edge listing found on the check date.",
+  "license": "GPL-3.0 (stated on the store page; GitHub molodchyk/MotionBlock).",
+  "goodFor": "Checking readability and behavior with GIFs and animations blocked.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "motion block animation gif parallax reduced motion accessibility readability",
+  "checked": "2026-11-14"
+}

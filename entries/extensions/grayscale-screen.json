@@ -1,0 +1,23 @@
+{
+  "id": "grayscale-screen",
+  "type": "extension",
+  "name": "Grayscale Screen",
+  "category": "Vision-deficiency simulation",
+  "summary": "Applies a one-toggle grayscale filter to the whole page, which doubles as a crude check for places where color alone carries meaning.",
+  "publisher": "paperlite831",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/grayscale-screen/mccgphkdghdpebkjkokhbodbjobpihal",
+  "browsers": [
+    "Chrome"
+  ],
+  "browsersNote": "No Firefox or Edge listing found on the check date.",
+  "license": "Proprietary; no open-source license stated on the store page.",
+  "goodFor": "Quickly seeing whether a page still works when color is removed.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "grayscale grayscale converter vision deficiency simulation filter accessibility",
+  "checked": "2026-11-14"
+}

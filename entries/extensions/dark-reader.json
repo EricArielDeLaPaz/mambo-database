@@ -1,0 +1,25 @@
+{
+  "id": "dark-reader",
+  "type": "extension",
+  "name": "Dark Reader",
+  "category": "Dark mode",
+  "summary": "Generates dynamic dark themes for any site via several filter modes, with per-site controls and system-dark-mode sync, useful for previewing forced-dark rendering.",
+  "publisher": "Dark Reader Ltd",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh",
+  "browsers": [
+    "Chrome",
+    "Firefox",
+    "Edge"
+  ],
+  "browsersNote": "",
+  "license": "MIT (GitHub repo darkreader/darkreader); the store page additionally requires agreement to darkreader.org terms of use on install.",
+  "goodFor": "Previewing how any site looks with dynamic dark themes applied.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "dark mode theme filter forced dark preview invert brightness",
+  "checked": "2026-11-14"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "fireshot",
+  "type": "extension",
+  "name": "FireShot",
+  "category": "Screenshots",
+  "summary": "Captures the visible area, a selection, or the full page, then annotates, saves or exports the result to PDF/PNG/clipboard or an external editor.",
+  "publisher": "getfireshot.com (Evgeny Suslikov)",
+  "price": "Freemium (free core; paid Pro per getfireshot.com)",
+  "url": "https://chromewebstore.google.com/detail/take-webpage-screenshots/mcbpblocgmgfnpjjppndjkmgjaogfceg",
+  "browsers": [
+    "Chrome",
+    "Firefox",
+    "Edge"
+  ],
+  "browsersNote": "",
+  "license": "Proprietary; no open-source license stated on the store page.",
+  "goodFor": "Capturing, annotating and exporting visible, selected or full-page shots.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "screenshot capture annotate pdf png selection export",
+  "checked": "2026-11-14"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "wave-evaluation-tool",
+  "type": "extension",
+  "name": "WAVE Evaluation Tool",
+  "category": "Accessibility checking",
+  "summary": "WebAIM's evaluation extension injects icons and indicators onto the live page to flag accessibility errors, alerts and structural issues, with all analysis done locally in the browser.",
+  "publisher": "WebAIM",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh",
+  "browsers": [
+    "Chrome",
+    "Firefox"
+  ],
+  "browsersNote": "wave.webaim.org/extension states a WAVE Edge extension exists, but no Edge Add-ons listing was confirmed in store search.",
+  "license": "Proprietary; no open-source license stated on the store page.",
+  "goodFor": "Seeing errors, alerts and structure issues overlaid on the live page.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "wave webaim accessibility evaluation errors alerts structure contrast",
+  "checked": "2026-11-14"
+}

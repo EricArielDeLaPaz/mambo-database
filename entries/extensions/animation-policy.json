@@ -1,0 +1,23 @@
+{
+  "id": "animation-policy",
+  "type": "extension",
+  "name": "Animation Policy",
+  "category": "Motion",
+  "summary": "Controls page motion by running image/GIF/SVG animations only once or disabling them entirely, which tests how a page behaves with animation removed (videos unaffected).",
+  "publisher": "chrome-a11y-extensions",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/animation-policy/ncigbofjfbodhkaffojakplpmnleeoee",
+  "browsers": [
+    "Chrome"
+  ],
+  "browsersNote": "No Firefox or Edge listing found on the check date.",
+  "license": "Proprietary; no open-source license or source link stated on the store page.",
+  "goodFor": "Testing a page with animations stopped or played only once.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "animation reduced motion gif svg policy accessibility prefers-reduced-motion",
+  "checked": "2026-11-14"
+}

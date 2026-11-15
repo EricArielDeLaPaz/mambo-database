@@ -52,3 +52,7 @@ The contrast badges in the Design Systems tab use the same formula and threshold
 - **Disabled controls.** WCAG does not require contrast for disabled controls, but people still need to find them. Aim for readable anyway.
 
 > **Rule of thumb.** Aim a little above the minimum, for example 5:1 for body text. Screens, sunlight and aging eyes all reduce real-world contrast.
+
+## Where to read more
+
+- In this database: [axe DevTools](#/entry/axe-devtools), [WAVE Evaluation Tool](#/entry/wave-evaluation-tool) and [Dark Reader](#/entry/dark-reader) — browser extensions for automated contrast checks and a dark-mode preview.

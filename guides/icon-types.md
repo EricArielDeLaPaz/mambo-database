@@ -86,3 +86,7 @@ Always check the license on the project page before shipping, and keep any requi
 1. Match the platform. Use SF Symbols on iOS and Material on Android where it makes sense.
 2. Use a single library for a product when possible, so style and weight stay consistent.
 3. Check that the set has every icon you need before you commit.
+
+## Where to read more
+
+- In this database: [SVG Export](#/entry/svg-export) — a browser extension for exporting the SVGs on a page as SVG, PNG or JPEG, with styles inlined.

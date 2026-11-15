@@ -79,3 +79,7 @@ CMYK is for print: cyan, magenta, yellow and black ink, each 0% to 100%: `cmyk(8
 | Print | CMYK |
 
 Whichever you use, check contrast afterward. The format never changes the contrast ratio, only the color itself does. See [Contrast and WCAG](#/guide/contrast-and-wcag).
+
+## Where to read more
+
+- In this database: [ColorZilla](#/entry/colorzilla) and [Eye Dropper](#/entry/eye-dropper) — browser extensions for picking a color from any page and reading it in several formats.

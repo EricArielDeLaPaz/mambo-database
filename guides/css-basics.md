@@ -114,3 +114,7 @@ Design at least a small and a large version, and tell engineers where the layout
 ```
 
 Variables in CSS are the same idea as Figma variables. Change one value and everything using it updates. Use matching names in design and code. See [Hand-off for engineers](#/guide/handoff-for-engineers).
+
+## Where to read more
+
+- In this database: [CSS Peeper](#/entry/css-peeper), [VisBug](#/entry/visbug), [WhatFont](#/entry/whatfont) and [Pesticide](#/entry/pesticide-without-hover-bar) — browser extensions for reading computed styles, measuring type and seeing the box-model outline of every element.

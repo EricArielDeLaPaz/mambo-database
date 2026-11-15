@@ -1,0 +1,25 @@
+{
+  "id": "colorzilla",
+  "type": "extension",
+  "name": "ColorZilla",
+  "category": "Color picker",
+  "summary": "Eyedropper-and-picker suite that reads any pixel on the page, copies the value in several formats, and adds a gradient editor and a page-wide color analyzer.",
+  "publisher": "Iosart Labs LLC",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/colorzilla/bhlhnicpbhignbdhedgjhgdocnmhomnp",
+  "browsers": [
+    "Chrome",
+    "Firefox",
+    "Edge"
+  ],
+  "browsersNote": "",
+  "license": "Proprietary; no open-source license stated on the store page.",
+  "goodFor": "Picking any color from the page and copying it in several formats.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "color picker eyedropper gradient analyzer palette",
+  "checked": "2026-11-14"
+}

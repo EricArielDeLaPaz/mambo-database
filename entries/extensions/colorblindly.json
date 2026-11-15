@@ -1,0 +1,23 @@
+{
+  "id": "colorblindly",
+  "type": "extension",
+  "name": "Colorblindly",
+  "category": "Vision-deficiency simulation",
+  "summary": "Lays a CSS color filter over the page to simulate eight color-vision deficiencies (protanopia, deuteranopia, tritanopia and their weak variants) for checking whether meaning survives without color.",
+  "publisher": "oftheheadland",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/colorblindly/floniaahmccleoclneebhhmnjgdfijgg",
+  "browsers": [
+    "Chrome"
+  ],
+  "browsersNote": "The project's GitHub states it is Chrome-only; no Firefox or Edge listing found.",
+  "license": "MIT (GitHub repo oftheheadland/Colorblindly, linked from the project).",
+  "goodFor": "Checking that meaning survives for all eight common color-vision deficiencies.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "colorblind color vision deficiency simulator protanopia deuteranopia tritanopia accessibility",
+  "checked": "2026-11-14"
+}

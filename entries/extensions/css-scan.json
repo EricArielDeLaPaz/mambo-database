@@ -1,0 +1,23 @@
+{
+  "id": "css-scan",
+  "type": "extension",
+  "name": "CSS Scan",
+  "category": "Design tokens",
+  "summary": "Paid point-and-copy inspector that shows the active CSS of any hovered element with declarations cleaned up, including pseudo-classes and media queries, with optional Tailwind output.",
+  "publisher": "getcssscan.com (Guilherme Vieira Rizzo listed as developer)",
+  "price": "Paid (store text: \"This extension is paid and requires a license to use it\")",
+  "url": "https://chromewebstore.google.com/detail/css-scan/gieabiemggnpnminflinemaickipbebg",
+  "browsers": [
+    "Chrome"
+  ],
+  "browsersNote": "Vendor site claims Chrome, Firefox, Safari and Edge builds, but no Firefox or Edge store listing was found on the check date.",
+  "license": "Proprietary commercial license (purchase required).",
+  "goodFor": "Copying clean, computed CSS for any element, including pseudo-classes.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "css scanner design tokens style extractor tailwind computed declarations",
+  "checked": "2026-11-14"
+}

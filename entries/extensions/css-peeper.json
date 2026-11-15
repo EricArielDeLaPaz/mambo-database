@@ -1,0 +1,24 @@
+{
+  "id": "css-peeper",
+  "type": "extension",
+  "name": "CSS Peeper",
+  "category": "CSS inspection",
+  "summary": "Designer-oriented panel that lists a page's colors, typography and downloadable assets and shows the CSS values behind the element under the cursor, with premium features behind in-app purchases.",
+  "publisher": "Sparkglare Sp. z o.o.",
+  "price": "Freemium (store lists in-app purchases)",
+  "url": "https://chromewebstore.google.com/detail/css-peeper/mbnbehikldjhnfehhnaidhjhoofhpehk",
+  "browsers": [
+    "Chrome",
+    "Edge"
+  ],
+  "browsersNote": "Edge listing carries the same tagline; author not independently confirmed; no Firefox listing found.",
+  "license": "Proprietary; store page links Terms & Conditions and Privacy Policy (csspeeper.com).",
+  "goodFor": "Reading a page's colors, type and assets with their CSS values in one panel.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "css inspector style extractor colors typography assets designer",
+  "checked": "2026-11-14"
+}

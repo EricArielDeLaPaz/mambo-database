@@ -59,3 +59,7 @@ Some animation can make people dizzy or sick. Keep it short, avoid large movemen
 
 - [Contrast and WCAG](#/guide/contrast-and-wcag)
 - Every component in **Browse** lists its role, keyboard behavior and focus notes under Accessibility.
+
+## Where to read more
+
+- In this database: [axe DevTools](#/entry/axe-devtools), [WAVE Evaluation Tool](#/entry/wave-evaluation-tool), [Animation Policy](#/entry/animation-policy) and [MotionBlock](#/entry/motionblock) — browser extensions for automated accessibility audits and testing a page with motion reduced or removed.

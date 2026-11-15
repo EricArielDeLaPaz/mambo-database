@@ -1,0 +1,25 @@
+{
+  "id": "perfectpixel",
+  "type": "extension",
+  "name": "PerfectPixel",
+  "category": "Measurement",
+  "summary": "Drops a semi-transparent mockup (PNG/JPG/SVG) onto the live page with opacity, blend modes and click-through controls so the build can be compared against the design pixel-for-pixel.",
+  "publisher": "WELLDONECODE LLC",
+  "price": "Freemium (free tier 2 layers per domain; paid Pro per store text)",
+  "url": "https://chromewebstore.google.com/detail/perfectpixel-by-welldonec/dkaagdgjmgdmbnecmcefdhjekcoceebi",
+  "browsers": [
+    "Chrome",
+    "Firefox",
+    "Edge"
+  ],
+  "browsersNote": "",
+  "license": "Proprietary; no open-source license stated on the store page.",
+  "goodFor": "Comparing a design overlay against the live build, pixel for pixel.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "pixel perfect overlay compare mockup design QA blend opacity",
+  "checked": "2026-11-14"
+}

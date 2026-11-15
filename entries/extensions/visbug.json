@@ -1,0 +1,25 @@
+{
+  "id": "visbug",
+  "type": "extension",
+  "name": "VisBug",
+  "category": "CSS inspection",
+  "summary": "Open-source in-page design toolbar that lets you move, resize, restyle and measure live elements, and inspect spacing, alignment and accessibility properties like a design tool.",
+  "publisher": "Google Ireland, Ltd. (GoogleChromeLabs project)",
+  "price": "Free",
+  "url": "https://chromewebstore.google.com/detail/visbug/cdockenadnadldjbbgcallicgledbeoc",
+  "browsers": [
+    "Chrome",
+    "Firefox",
+    "Edge"
+  ],
+  "browsersNote": "",
+  "license": "Apache-2.0 (GitHub repo GoogleChromeLabs/ProjectVisBug).",
+  "goodFor": "Editing live elements in place — move, resize, restyle and measure them.",
+  "install": [
+    "Open the store page in your browser.",
+    "Choose Add to Chrome (or Add to browser) and confirm the permissions the store page lists.",
+    "Find the extension in the extensions menu (chrome://extensions in Chrome) and pin it if you want it in the toolbar."
+  ],
+  "keywords": "css inspector visual design toolbar open source measure restyle",
+  "checked": "2026-11-14"
+}
