@@ -7,7 +7,8 @@ const TOOLS = [
   ['persona', 'Persona generator', 'Random names with profile pictures from Browse, by style.', 'Content'],
   ['convert', 'Image Converter', 'Convert images between formats, many at once.', 'Images'],
   ['bgremove', 'Background remover', 'Remove a plain background from an image.', 'Images'],
-  ['units', 'Unit converter', 'px, rem, em, pt, vw and more for CSS and handoff.', 'Measure']
+  ['units', 'Unit converter', 'px, rem, em, pt, vw and more for CSS and handoff.', 'Measure'],
+  ['iconcreator', 'Icon creator', 'Draw an icon on a grid, name it, then export it or add it to a design system.', 'Icons']
 ];
 const h2x = (h, s, l) => { h = ((h % 360) + 360) % 360; s = Math.max(0, Math.min(1, s)); l = Math.max(0, Math.min(1, l)); const a = s * Math.min(l, 1 - l), f = n => { const k = (n + h / 30) % 12; return Math.round(255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1)))) }; return '#' + [f(0), f(8), f(4)].map(v => v.toString(16).padStart(2, '0')).join('') };
 const rnd = (a, b) => a + Math.random() * (b - a);

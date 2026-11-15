@@ -146,9 +146,9 @@ async function runExport(type, act) {
     S.last = s.id; S.active = s.id; saveStore(); toast('Added ' + what + ' to ' + s.name); return;
   }
   if (type === 'icon') {
-    if (act === 'svg') return copy(items.map(e => many ? `<!-- ${e.name} (${e.category}) -->\n` + iconSvg(e, curIconSize) : iconSvg(e, curIconSize)).join('\n\n'), what + ' as SVG');
+    if (act === 'svg') return copy(items.map(e => many ? `<!-- ${e.name} (${e.category}) -->\n` + iconClipSvg(e) : iconClipSvg(e)).join('\n\n'), what + ' as SVG');
     if (act === 'jsx') return copy(items.map(e => iconJsx(e, curIconSize, many ? pascal(e.setId) + pascal(e.name) + 'Icon' : null)).join('\n\n'), what + ' as React');
-    if (act === 'dl') return many ? download('icons.zip', makeZip(items.map(e => ({ name: `icons/${e.setId}-${slug(e.name)}.svg`, data: iconSvg(e, curIconSize) }))), 'application/zip') : download(items[0].setId + '-' + slug(items[0].name) + '.svg', iconSvg(items[0], curIconSize), 'image/svg+xml');
+    if (act === 'dl') return many ? download('icons.zip', makeZip(items.map(e => ({ name: `icons/${e.setId}-${slug(e.name)}.svg`, data: iconClipSvg(e) }))), 'application/zip') : download(items[0].setId + '-' + slug(items[0].name) + '.svg', iconClipSvg(items[0]), 'image/svg+xml');
   }
   if (type === 'typeface') {
     items.forEach(e => loadFontCss(e.name));
@@ -226,7 +226,9 @@ const iconSvg = (e, size) => e.svg.replace('<svg ', `<svg width="${size}" height
 const iconJsx = (e, size, nm) => { const body = e.svg.replace(/<svg /, `<svg width={${size}} height={${size}} `).replace(/([a-z]+)-([a-z]+)=/g, (m, a, b) => a + b[0].toUpperCase() + b.slice(1) + '='); return `export function ${nm || e.name.replace(/ /g, '') + 'Icon'}(props) {\n  return (\n    ${body.replace('>', ' {...props}>')}\n  );\n}` };
 const iconUri = (e, size) => 'data:image/svg+xml,' + encodeURIComponent(iconSvg(e, size).replace(/currentColor/g, '#000000'));
 let curIconSize = 24;
-function iconClip(e) { clipStore.svg = iconSvg(e, curIconSize); clipStore.jsx = iconJsx(e, curIconSize); clipStore.uri = `background-image: url("${iconUri(e, curIconSize)}");\nwidth: ${curIconSize}px;\nheight: ${curIconSize}px;`; }
+/* The copied/downloaded SVG carries id="<name>-icon" on the root <svg> so Figma names the pasted frame after the icon. iconSvg() itself stays id-free because it also renders inline previews, where duplicate ids would be invalid HTML. */
+const iconClipSvg = e => iconSvg(e, curIconSize).replace('<svg ', `<svg id="${slug(e.name)}-icon" `);
+function iconClip(e) { clipStore.svg = iconClipSvg(e); clipStore.jsx = iconJsx(e, curIconSize); clipStore.uri = `background-image: url("${iconUri(e, curIconSize)}");\nwidth: ${curIconSize}px;\nheight: ${curIconSize}px;`; }
 const CVD_ROLE = { danger: 'Danger', success: 'Success', warning: 'Warning', info: 'Info' };
 const cvdColors = e => Object.entries(e.roles).filter(([k]) => ['primary', 'accent', 'danger', 'success', 'warning', 'info'].includes(k)).map(([k, v]) => ({ id: k, name: k, hex: v, role: CVD_ROLE[k] || '' }));
 const cvdCache = new Map(), cvdOf = e => { if (!cvdCache.has(e.id)) cvdCache.set(e.id, cvdIssues(cvdColors(e))); return cvdCache.get(e.id) };
@@ -330,19 +332,23 @@ function refreshComponent(e) {
   const fr = $('#frames'); if (fr) renderFrames(fr, e, curStates, [''].concat(curOS));
   const pv = $('#pv'); if (pv) { pv.srcdoc = previewDoc(e, curStates, curOS); pv.onload = () => { try { pv.style.height = Math.min(1100, Math.max(e.code.pvHeight || 260, pv.contentDocument.documentElement.scrollHeight + 4)) + 'px' } catch { } } }
 }
+function wireCopy(root) {
+  if (root.__copyWired) return;
+  root.__copyWired = true;
+  root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase().split(' (')[0]) });
+}
 function wireEntry(e, root) {
   if (e.type === 'profile') {
-    $('#pf-png', root).onclick = async () => download(profFile(e) + '.png', await svgToPngBlob(e.svg, 512), 'image/png'); if ($('#pf-svg', root)) $('#pf-svg', root).onclick = () => download(profFile(e) + '.svg', e.svg, 'image/svg+xml');
+    $('#pf-png', root).onclick = async () => download(profFile(e) + '.png', await svgToPngBlob(e.svg, 512), 'image/png'); if($('#pf-svg', root)) $('#pf-svg', root).onclick = () => download(profFile(e) + '.svg', e.svg, 'image/svg+xml');
     $('#pf-cpimg', root).onclick = async () => { try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': svgToPngBlob(e.svg, 512) })]); toast('Copied image') } catch { copy(e.svg, 'image as SVG code (this browser cannot copy pictures)') } };
-    root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase()) }); return
+    wireCopy(root); return
   }
-  if (e.type === 'document') { root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.dataset.copy === 'link' ? 'link' : b.textContent.replace(/^Copy /, '').toLowerCase()) }); return }
+  if (e.type === 'document') { wireCopy(root); return }
   if (e.type === 'icon') {
     const sz = $('#ico-size'), upd = () => { curIconSize = +sz.value; iconClip(e); $('#ico-pv').innerHTML = iconSvg(e, curIconSize); $('#ico-pv2').innerHTML = iconSvg(e, curIconSize) };
     sz.addEventListener('change', upd); $('#ico-dl').onclick = () => download(e.setId + '-' + e.name.toLowerCase().replace(/ /g, '-') + '.svg', clipStore.svg, 'image/svg+xml');
     $$('[data-open]', root).forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
-    root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase()) });
-    return;
+    wireCopy(root); return
   }
   if (e.type === 'component') {
     refreshComponent(e);
@@ -351,6 +357,7 @@ function wireEntry(e, root) {
     $('#pv-reset').onclick = () => { const pv = $('#pv'); pv.srcdoc = previewDoc(e, curStates, curOS) + '<!-- ' + Date.now() + ' -->' };
     $('#figma-copy').onclick = async () => { await copy(clipStore.both, 'HTML + CSS'); showFigma('html') };
     $('#dl-html').onclick = () => download(e.id + '.html', compDoc(e, curStates, curOS), 'text/html');
+    wireCopy(root); return
   }
   const systemFrom = async sel => { const id = sel.value; if (id === '__new') { const n = await ask({ title: 'Name your design system', input: { label: 'Name', value: 'My design system' }, confirm: 'Create' }); if (!n) return null; const s = newSystem({ name: n }); S.systems.push(s); return s } return S.systems.find(x => x.id === id) };
   const targetSystem = () => systemFrom($('#addsys'));
@@ -358,13 +365,12 @@ function wireEntry(e, root) {
   $$('#addsys,[data-pairsys]').forEach(sel => sel.addEventListener('change', () => { if (sel.value !== '__new') syncSys(sel.value, sel) }));
   $$('[data-usepair]').forEach(b => b.onclick = async () => { const sel = $('[data-pairsys]', b.closest('.pair')), s = await systemFrom(sel); if (!s) return; const p = e.pairings.find(x => x.id === b.dataset.usepair), pd = p.role === 'body'; const mk = (role, fam, w) => ({ id: uid(), role, family: fam, weights: w.slice() }); s.fonts = s.fonts.filter(f => !['Display', 'Body'].includes(f.role)); s.fonts.unshift(mk('Display', pd ? e.name : p.family, p.displayWeights), mk('Body', pd ? p.family : e.name, p.bodyWeights)); S.last = s.id; S.active = s.id; saveStore(); toast('Pairing added to ' + s.name); $('[data-pairmsg]', b.closest('.pair')).innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>` });
   $$('.pair [data-open]').forEach(b => b.onclick = () => go('#/entry/' + b.dataset.open));
-  $('#addbtn').onclick = async () => {
-    const s = await targetSystem(); if (!s) return;
+  $('#addbtn').onclick = async () => { const s = await targetSystem(); if (!s) return;
     if (e.type === 'component') { s.components = s.components.filter(c => c.id !== e.id); s.components.push({ id: e.id, states: curStates.slice(), os: curOS.slice() }) }
     else if (e.type === 'color') { Object.entries(e.roles).forEach(([k, v]) => { if (k === 'border') return; const role = SET_ROLE[k] || 'Other'; if (!s.colors.some(c => c.hex === v && c.role === role)) s.colors.push({ id: uid(), name: role, hex: v, role, source: e.name }) }) }
     else { const role = e.roles[0] === 'display' ? 'Display' : e.roles[0] === 'mono' ? 'Mono' : 'Body'; s.fonts = s.fonts.filter(f => f.role !== role); s.fonts.push({ id: uid(), role, family: e.name, weights: keepThree(e.weights.filter(w => [400, 500, 600, 700].includes(w))) }) }
     S.last = s.id; S.active = s.id; saveStore(); $('#addmsg').innerHTML = `${CHECK} Added to ${esc(s.name)}.${route().view === 'systems' ? '' : ' <a href="#/systems">Open it</a>'}`; toast('Added to ' + s.name); if (onEntryAdded && route().view === 'systems') onEntryAdded(s);
   };
-  root.addEventListener('click', ev => { const b = ev.target.closest('[data-copy]'); if (b) copy(clipStore[b.dataset.copy], b.textContent.replace(/^Copy /, '').toLowerCase().split(' (')[0]) });
+  wireCopy(root);
 }
 const SET_ROLE = { success: 'Success', warning: 'Warning', info: 'Info', bg: 'Background', surface: 'Surface', ink: 'Text', 'text-secondary': 'Text secondary', primary: 'Primary', 'primary-text': 'Inverse text', accent: 'Accent', danger: 'Danger', 'border-strong': 'Border', 'text-primary': 'Text' };

@@ -430,4 +430,132 @@ function renderBgRemove(el) {
   document.addEventListener('keydown', BG_KEYS);
 }
 
-const TOOL_RENDER = { contrast: renderContrast, randomizer: renderRandomizer, cvd: renderCvd, lorem: renderLorem, persona: renderPersona, convert: renderConvert, bgremove: renderBgRemove, units: renderUnits };
+/* ---------- Icon creator: draw a pixel icon on a grid ---------- */
+const IC_SIZES = [16, 20, 24, 32, 48, 64];
+const IC_CELL = { 16: 32, 20: 24, 24: 20, 32: 16, 48: 8, 64: 8 };
+const ICO = { size: 24, filled: new Set(), undo: [], eraser: false, guide: true, name: '' };
+const icKey = (r, c) => r + ',' + c;
+const icName = () => (ICO.name || '').trim();
+const icStem = () => icName().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const icSvg = (withId) => {
+  const n = ICO.size, out = [];
+  for (let r = 0; r < n; r++) {
+    let c = 0;
+    while (c < n) {
+      if (ICO.filled.has(icKey(r, c))) { let e = c; while (e < n && ICO.filled.has(icKey(r, e))) e++; out.push(`<rect x="${c}" y="${r}" width="${e - c}" height="1"/>`); c = e } else c++
+    }
+  }
+  return out.length ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${n}" fill="currentColor" shape-rendering="crispEdges"${withId ? ` id="${icStem()}-icon"` : ''}>${out.join('')}</svg>` : '';
+};
+function renderIconCreator(el) {
+  el.innerHTML = `<p class="lede">Draw an icon on a grid, name it, then export it as SVG or add it to a design system. Click or drag to fill cells; the eraser mode and right-click clear them. The exported SVG uses one merged <code>&lt;rect&gt;</code> per row run and <code>currentColor</code>, like the icons in Browse.</p>
+  <div class="row ic-bar">
+    <label class="f"><span class="f-t">Grid size</span><select id="ic-size" aria-label="Grid size">${IC_SIZES.map(n => `<option value="${n}" ${n === ICO.size ? 'selected' : ''}>${n} × ${n}</option>`).join('')}</select></label>
+    <label class="chk ic-chk"><input type="checkbox" id="ic-eraser" ${ICO.eraser ? 'checked' : ''}> Eraser (right-click also erases)</label>
+    <label class="chk ic-chk"><input type="checkbox" id="ic-guide" ${ICO.guide ? 'checked' : ''}> Show live-area guide</label>
+    <button class="btn" id="ic-clear" type="button">Clear</button>
+    <button class="btn" id="ic-undo" type="button" disabled>Undo</button>
+  </div>
+  <div class="ic-gridwrap"><div class="ic-grid" id="ic-grid" role="group" aria-label="Icon grid. Use the arrow keys to move between cells, Space or Enter to toggle a cell."></div>
+    <div class="ic-guide" id="ic-guide-lines" aria-hidden="true" ${ICO.guide ? '' : 'hidden'}><span class="ic-live"></span><span class="ic-ch"></span><span class="ic-cv"></span></div></div>
+  <ul class="ic-list panel" aria-label="Icon drawing guidelines">
+    <li>Keep a live-area margin of about 1/12 of the grid (2px on a 24px grid). The toggle above shows the boundary and center lines.</li>
+    <li>One idea per icon.</li>
+    <li>Keep the stroke or fill weight consistent.</li>
+    <li>Simple shapes and little detail, especially at small sizes.</li>
+    <li>Check the icon at 16px before shipping.</li>
+    <li>The icon size is not the tap target. Aim for 44px (iOS) or 48px (Android) touch areas.</li>
+  </ul>
+  <p class="note"><a href="#/guide/icon-types">Read the full icon types guide</a> for styles, grids and libraries.</p>
+  <div class="f ic-name"><label class="f-t" for="ic-name">Icon name</label><input type="text" id="ic-name" maxlength="40" autocomplete="off" spellcheck="false" value="${esc(ICO.name)}" aria-describedby="ic-name-err"><code id="ic-file" class="ic-file"></code><p class="ct-err" id="ic-name-err" role="alert"></p></div>
+  <div class="row ic-bar"><button class="btn solid" id="ic-copy" type="button">Copy SVG</button><button class="btn" id="ic-dl" type="button">Download .svg</button></div>
+  <div class="panel addrow"><h2 style="font-size:16px;margin:0 0 8px">Add to a design system</h2><div class="row" style="margin:0;align-items:end"><label class="f" style="min-width:220px"><span class="f-t">Design system</span><select id="ic-sys" aria-label="Design system to add the icon to">${sysOptions()}</select></label><button class="btn solid" id="ic-add" type="button">Add to design system</button><span class="empty" id="ic-sys-msg" role="status"></span></div><p class="note" style="margin:8px 0 0">Custom icons are added with the name, a <code>Custom</code> set and <code>Pixel</code> style. They are written into the exported zip under <code>icons/</code> like any other icon.</p></div>`;
+  const grid = $('#ic-grid', el), guide = $('#ic-guide-lines', el), nameIn = $('#ic-name', el), err = $('#ic-name-err', el), fileOut = $('#ic-file', el), undoBtn = $('#ic-undo', el);
+  const cellPx = () => IC_CELL[ICO.size];
+  const buildGrid = () => {
+    const n = ICO.size, s = cellPx();
+    grid.style.gridTemplateColumns = `repeat(${n}, ${s}px)`;
+    grid.innerHTML = '';
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'ic-cell'; b.dataset.r = r; b.dataset.c = c;
+      b.style.width = b.style.height = s + 'px';
+      b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-label', `Row ${r + 1}, column ${c + 1}, empty`);
+      b.tabIndex = (r === 0 && c === 0) ? 0 : -1;
+      grid.appendChild(b);
+    }
+    paintAll();
+  };
+  const cellBtn = (r, c) => grid.children[r * ICO.size + c];
+  const setCell = (b, on) => { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.setAttribute('aria-label', `Row ${+b.dataset.r + 1}, column ${+b.dataset.c + 1}, ${on ? 'filled' : 'empty'}`) };
+  const paintAll = () => { for (let r = 0; r < ICO.size; r++) for (let c = 0; c < ICO.size; c++) setCell(cellBtn(r, c), ICO.filled.has(icKey(r, c))) };
+  const commit = () => { ICO.undo.push(Array.from(ICO.filled)); if (ICO.undo.length > 30) ICO.undo.shift(); undoBtn.disabled = false };
+  const cellFrom = ev => { const t = ev.target.closest('.ic-cell'); return t ? [+t.dataset.r, +t.dataset.c] : null };
+  grid.addEventListener('contextmenu', e => e.preventDefault());
+  let scrub = null;
+  grid.addEventListener('pointerdown', e => {
+    const p = cellFrom(e); if (!p) return;
+    commit();
+    scrub = (ICO.eraser || e.button === 2) ? 'erase' : (ICO.filled.has(icKey(p[0], p[1])) ? 'erase' : 'fill');
+    const k = icKey(p[0], p[1]); if (scrub === 'fill') ICO.filled.add(k); else ICO.filled.delete(k);
+    setCell(cellBtn(p[0], p[1]), scrub === 'fill');
+    grid.setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  grid.addEventListener('pointermove', e => {
+    if (!scrub) return;
+    const p = cellFrom(e); if (!p) return;
+    const k = icKey(p[0], p[1]); const on = scrub === 'fill';
+    if (on === ICO.filled.has(k)) return;
+    if (on) ICO.filled.add(k); else ICO.filled.delete(k);
+    setCell(cellBtn(p[0], p[1]), on);
+  });
+  const endScrub = () => { scrub = null };
+  grid.addEventListener('pointerup', endScrub); grid.addEventListener('pointercancel', endScrub);
+  grid.addEventListener('keydown', e => {
+    const t = e.target.closest('.ic-cell'); if (!t) return;
+    let r = +t.dataset.r, c = +t.dataset.c;
+    const moves = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
+    if (moves[e.key]) { e.preventDefault(); const mv = moves[e.key], n = ICO.size; r = Math.min(n - 1, Math.max(0, r + mv[0])); c = Math.min(n - 1, Math.max(0, c + mv[1])); t.tabIndex = -1; const nb = cellBtn(r, c); nb.tabIndex = 0; nb.focus(); return }
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); commit(); const k = icKey(r, c); if (ICO.filled.has(k)) ICO.filled.delete(k); else ICO.filled.add(k); setCell(t, ICO.filled.has(k)) }
+  });
+  $('#ic-clear', el).onclick = () => { if (!ICO.filled.size) return toast('The grid is already empty.'); commit(); ICO.filled.clear(); paintAll() };
+  $('#ic-undo', el).onclick = () => { if (!ICO.undo.length) return; ICO.filled = new Set(ICO.undo.pop()); paintAll(); undoBtn.disabled = !ICO.undo.length };
+  $('#ic-size', el).addEventListener('change', async e => {
+    const n = +e.target.value;
+    if (ICO.filled.size && n !== ICO.size) { const ok = await ask({ title: 'Change grid size?', body: 'Changing the grid size clears the drawing.', confirm: 'Clear and change', danger: true }); if (!ok) { e.target.value = String(ICO.size); return } }
+    ICO.size = n; ICO.filled.clear(); ICO.undo = []; buildGrid(); guide.style.setProperty('--m', Math.max(2, Math.round(n / 12)) * IC_CELL[n] + 'px'); undoBtn.disabled = true;
+  });
+  $('#ic-eraser', el).addEventListener('change', e => ICO.eraser = e.target.checked);
+  $('#ic-guide', el).addEventListener('change', e => { ICO.guide = e.target.checked; guide.hidden = !ICO.guide });
+  const nameState = () => {
+    const n = icName(); fileOut.textContent = (icStem() || 'name') + '-icon.svg';
+    let msg = '';
+    if (!n) msg = 'Enter a name for the icon. The name is required before you can export.';
+    else if (n.length > 40) msg = 'Keep the name to 40 characters or fewer.';
+    else if (!/^[A-Za-z0-9 -]+$/.test(n)) msg = 'Use only letters, numbers, spaces and hyphens.';
+    err.textContent = msg; nameIn.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    return !msg;
+  };
+  nameIn.addEventListener('input', () => { ICO.name = nameIn.value; nameState() });
+  const exportReady = () => { if (!nameState()) { nameIn.focus(); return false } if (!ICO.filled.size) { toast('Draw something on the grid first.'); return false } return true };
+  $('#ic-copy', el).onclick = async () => { if (!exportReady()) return; await copy(icSvg(true), (icStem() || 'icon') + '-icon.svg') };
+  $('#ic-dl', el).onclick = () => { if (!exportReady()) return; download(icStem() + '-icon.svg', icSvg(true), 'image/svg+xml') };
+  $('#ic-add', el).onclick = async () => {
+    if (!exportReady()) return;
+    const sel = $('#ic-sys', el);
+    let s;
+    if (sel.value === '__new') { const n = await ask({ title: 'Name your design system', input: { label: 'Name', value: 'My design system' }, confirm: 'Create' }); if (!n) return; s = newSystem({ name: n }); S.systems.push(s) }
+    else s = S.systems.find(x => x.id === sel.value);
+    if (!s) return toast('Pick a design system first.');
+    s.icons = s.icons || [];
+    if (s.icons.some(x => x.name === icName())) return toast('This system already has an icon with that name.');
+    s.icons.push({ id: uid(), name: icName(), setId: 'custom', set: 'Custom', style: 'Pixel', svg: icSvg() });
+    S.last = s.id; S.active = s.id; saveStore();
+    $('#ic-sys-msg', el).innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>`;
+    toast('Added to ' + s.name);
+  };
+  buildGrid(); upgradeSelects(el); nameState();
+}
+
+const TOOL_RENDER = { contrast: renderContrast, randomizer: renderRandomizer, cvd: renderCvd, lorem: renderLorem, persona: renderPersona, convert: renderConvert, bgremove: renderBgRemove, units: renderUnits, iconcreator: renderIconCreator };

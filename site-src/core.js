@@ -13,7 +13,18 @@ const WRENCH = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stro
 const DL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>';
 
 function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2000); }
-async function copy(text, label) { try { await navigator.clipboard.writeText(text); toast('Copied ' + label); return true } catch { toast('Copy blocked. Select the text and copy it manually.'); return false } }
+let copySeq = 0;
+async function copy(text, label) {
+  const seq = ++copySeq;
+  try {
+    await navigator.clipboard.writeText(text);
+    if (seq === copySeq) toast('Copied ' + label);
+    return true;
+  } catch {
+    if (seq === copySeq) toast('Copy blocked. Select the text and copy it manually.');
+    return false;
+  }
+}
 function download(name, data, type = 'text/plain') { const a = document.createElement('a'); a.href = URL.createObjectURL(data instanceof Blob ? data : new Blob([data], { type })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000) }
 
 /* ---------- colour maths ---------- */
