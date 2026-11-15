@@ -286,11 +286,11 @@ body.resizing{cursor:col-resize;user-select:none}body.resizing iframe{pointer-ev
 table.db tr.sel{background:rgba(29,78,216,.08)}
 table.db tr.sel .name-btn{text-decoration:underline}
 /* variant frames */
-.frames{display:flex;flex-direction:column;gap:18px;margin:8px 0 16px}
+.frames{display:flex;flex-direction:column;gap:16px;margin:8px 0 16px}
 .frow>.eyebrow{margin:0 0 6px;text-transform:none;letter-spacing:.04em;font-size:12px}
-.fstrip{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+.fstrip{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
 .fcell{margin:0;flex:none;scroll-snap-align:start;min-width:150px;width:max-content;max-width:100%}
-.fcell figcaption{font:700 11.5px var(--font-mono);color:var(--text-2);margin-bottom:6px}
+.fcell figcaption{font:700 11.5px var(--font-mono);color:var(--text-2);margin-bottom:8px}
 .fbox{border:1px dashed var(--border-strong);border-radius:8px;background:#fff;overflow-x:auto;overflow-y:visible;min-height:90px;width:100%}
 .states .f-t{align-self:center}
 @media (max-width:820px){
