@@ -2,7 +2,6 @@
 // Usage: npm i @dicebear/core @dicebear/collection in a scratch folder, then:
 //   node scripts/make-profiles.mjs <scratch folder>
 // Output: profiles/<style-folder>/*.svg, profiles/LICENSES.json (creator, license and source read from each style's own metadata).
-// Photos (Realistic style) are not generated here. To add some, put the files in profiles/realistic/ and describe them in profiles/photos.json (see profiles/README.md).
 import fs from 'fs'; import path from 'path'; import { createRequire } from 'module';
 const scratch = path.resolve(process.argv[2] || '/tmp/db'), req = createRequire(path.join(scratch, 'x.js')), root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const { createAvatar } = req('@dicebear/core'), col = req('@dicebear/collection');
@@ -32,6 +31,5 @@ for (const s of STYLES) {
   }
   fs.writeFileSync(path.join(dir, 'LICENSE.txt'), `${s.label} by ${m.creator}\nLicense: ${m.license.name} (${m.license.url})\nSource: ${m.source}\nGenerated with DiceBear (https://www.dicebear.com), MIT licensed code.\n` + (/CC0/.test(m.license.name) ? 'CC0 places the artwork in the public domain; no attribution is required, but it is given here anyway.\n' : /CC BY/.test(m.license.name) ? 'CC BY 4.0 allows commercial use, but you must give credit to the creator, link to the license and say if you changed it. Credit line: "' + s.label + ' by ' + m.creator + ', CC BY 4.0".\n' : 'The creator allows personal and commercial use. Please credit the creator where you can.\n'));
 }
-const prev = fs.existsSync(path.join(root, 'profiles/LICENSES.json')) ? JSON.parse(fs.readFileSync(path.join(root, 'profiles/LICENSES.json'), 'utf8')) : { styles: {} }; if (prev.styles.realistic) lic.realistic = prev.styles.realistic;
 fs.writeFileSync(path.join(root, 'profiles/LICENSES.json'), JSON.stringify({ tones: Object.fromEntries(TONES.map(([n, h]) => [h, n])), styles: lic }, null, 1) + '\n');
-console.log(Object.keys(lic).filter(k => k !== 'realistic').map(k => k + ': ' + fs.readdirSync(path.join(root, 'profiles', k)).filter(f => f.endsWith('.svg')).length).join(', '));
+console.log(Object.keys(lic).map(k => k + ': ' + fs.readdirSync(path.join(root, 'profiles', k)).filter(f => f.endsWith('.svg')).length).join(', '));

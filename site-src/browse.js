@@ -17,7 +17,7 @@ function matches(e) {
 /* Industry only applies to colors and typography. Style only applies to icons (and profiles). */
 const indShown = () => !B.types.size || [...B.types].some(t => t === 'color' || t === 'typeface');
 const styleShown = () => B.types.size === 1 && [...B.types][0] === 'icon';
-const STYLE_ORDER = ['Realistic', 'Illustrated', 'Drawing', 'Outline', 'Filled', 'Duotone', 'Rounded', 'Sharp', 'Bold', 'Light', 'Thin', 'Realistic', 'Illustrated', 'Flat', 'Cartoon', 'Pixel', 'Sketch'];
+const STYLE_ORDER = ['Illustrated', 'Drawing', 'Outline', 'Filled', 'Duotone', 'Rounded', 'Sharp', 'Bold', 'Light', 'Thin', 'Flat', 'Cartoon', 'Pixel', 'Sketch'];
 const styleSort = (a, b) => { const x = STYLE_ORDER.indexOf(a), y = STYLE_ORDER.indexOf(b); return (x < 0 ? 99 : x) - (y < 0 ? 99 : y) || a.localeCompare(b) };
 /* Component states: ticking one here ticks it for every component, and unticking clears it (same choice the details panel remembers). */
 const stateUnion = () => { const m = new Map(STATE_LIST.map(([id, l]) => [id, { id, label: l, n: 0 }])); DATA.filter(e => e.type === 'component').forEach(e => (e.states || []).forEach(x => { const r = m.get(x.id) || (m.set(x.id, { id: x.id, label: x.label, n: 0 }), m.get(x.id)); r.n++ })); return [...m.values()].filter(r => r.n) };
@@ -233,14 +233,13 @@ const cvdCache = new Map(), cvdOf = e => { if (!cvdCache.has(e.id)) cvdCache.set
 const svgUri = svg => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg), profFile = e => 'profile-' + slug(e.set) + '-' + e.id.split('-').pop();
 function profileDetails(e) {
   clipStore.svg = e.svg;
-  const what = e.photo ? 'A photo of a real person facing the camera.' : e.category === 'Illustrated' ? 'A cartoon-style profile picture of a person facing the camera.' : 'A hand-drawn style profile picture of a person facing the camera.';
-  const lic = e.photo ? `<a href="${esc(e.licenseUrl)}" target="_blank" rel="noopener">${esc(e.license)}<span class="sr"> (opens in a new tab)</span></a> as declared by the photo collection (originals: <a href="${esc(e.origLicenseUrl)}" target="_blank" rel="noopener">Pexels or Unsplash license<span class="sr"> (opens in a new tab)</span></a>) · free to use in personal and commercial work without credit. Do not use the photo in a way that puts the person in a bad light or suggests they endorse something. <a href="licenses/profiles/${esc(e.id.split('-').slice(1, -1).join('-'))}-LICENSE.txt" target="_blank" rel="noopener">Notice</a>`
-    : `<a href="${esc(e.licenseUrl)}" target="_blank" rel="noopener">${esc(e.license)}<span class="sr"> (opens in a new tab)</span></a> · ${e.attribution ? '<b>free for commercial use, but you must credit the creator</b> (for example "' + esc(e.set) + ' by ' + esc(e.creator) + ', ' + esc(e.license) + '") and say if you changed it' : /CC0/.test(e.license) ? 'public domain dedication, so you can use it in personal and commercial work without asking or crediting' : 'free for personal and commercial use; crediting the creator is kind'}. <a href="licenses/profiles/${esc(e.id.split('-').slice(1, -1).join('-'))}-LICENSE.txt" target="_blank" rel="noopener">Notice</a>`;
+  const what = e.category === 'Illustrated' ? 'A cartoon-style profile picture of a person facing the camera.' : 'A hand-drawn style profile picture of a person facing the camera.';
+  const lic = `<a href="${esc(e.licenseUrl)}" target="_blank" rel="noopener">${esc(e.license)}<span class="sr"> (opens in a new tab)</span></a> · ${e.attribution ? '<b>free for commercial use, but you must credit the creator</b> (for example "' + esc(e.set) + ' by ' + esc(e.creator) + '", ' + esc(e.license) + '") and say if you changed it' : /CC0/.test(e.license) ? 'public domain dedication, so you can use it in personal and commercial work without asking or crediting' : 'free for personal and commercial use; crediting the creator is kind'}. <a href="licenses/profiles/${esc(e.id.split('-').slice(1, -1).join('-'))}-LICENSE.txt" target="_blank" rel="noopener">Notice</a>`;
   return `<p class="eyebrow">Profile · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p>${what} Free for commercial use${e.attribution ? ' with credit' : ''}.</p>
   <div class="meta"><span class="tag">Style: ${esc(e.category)}</span>${e.tone ? `<span class="tag">Skin tone: ${esc(e.tone)}</span>` : ''}<span class="tag">${esc(e.license)}</span></div>
-  <div class="pfhero"><img src="${svgUri(e.svg)}" alt="${e.photo ? 'Photo' : 'Illustrated'} profile picture, ${esc(e.category.toLowerCase())} style" width="256" height="256"></div>
-  <div class="row"><button class="btn solid" id="pf-png" type="button">Download PNG</button>${e.photo ? '' : '<button class="btn" id="pf-svg" type="button">Download SVG</button>'}<button class="btn" id="pf-cpimg" type="button">Copy image</button>${e.photo ? '' : '<button class="btn" data-copy="svg">Copy SVG</button>'}<button class="btn" data-copy="json">Copy JSON</button></div>
-  <table class="detail"><tbody>${drow(e.photo ? 'Photo' : 'Artwork', e.photo ? `${esc(e.creator)} · <a href="${esc(e.source)}" target="_blank" rel="noopener">Original<span class="sr"> (opens in a new tab)</span></a>` : `${esc(e.set)} by ${esc(e.creator)} · <a href="${esc(e.source)}" target="_blank" rel="noopener">Source<span class="sr"> (opens in a new tab)</span></a>`)}${drow('License', lic)}${drow(e.photo ? 'Real person' : 'Made up', e.photo ? 'This shows a real person. Use it for mockups, personas and examples, and avoid sensitive topics such as health, crime or politics.' : 'These are illustrations of invented people, not photos of anyone real.')}</tbody></table>`
+  <div class="pfhero"><img src="${svgUri(e.svg)}" alt="Profile picture, ${esc(e.category.toLowerCase())} style" width="256" height="256" loading="lazy" decoding="async"></div>
+  <div class="row"><button class="btn solid" id="pf-png" type="button">Download PNG</button><button class="btn" id="pf-svg" type="button">Download SVG</button><button class="btn" id="pf-cpimg" type="button">Copy image</button><button class="btn" data-copy="svg">Copy SVG</button><button class="btn" data-copy="json">Copy JSON</button></div>
+  <table class="detail"><tbody>${drow('Artwork', `${esc(e.set)} by ${esc(e.creator)} · <a href="${esc(e.source)}" target="_blank" rel="noopener">Source<span class="sr"> (opens in a new tab)</span></a>`)}${drow('License', lic)}${drow('Made up', 'These are illustrations of invented people, not photos of anyone real.')}</tbody></table>`;
 }
 function docDetails(e) {
   clipStore.link = e.url; const host = (() => { try { return new URL(e.url).host } catch { return e.url } })();
@@ -270,7 +269,7 @@ function iconDetails(e) {
 }
 function renderEntry(e) {
   Object.keys(clipStore).forEach(k => delete clipStore[k]);
-  clipStore.md = e.md; clipStore.json = JSON.stringify(e, (k, v) => k === 'md' || (k === 'svg' && e.photo) ? undefined : v, 2);
+  clipStore.md = e.md; clipStore.json = JSON.stringify(e, (k, v) => k === 'md' ? undefined : v, 2);
   const back = '';
   if (e.type === 'icon') return iconDetails(e);
   if (e.type === 'document') return docDetails(e);

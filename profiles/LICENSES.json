@@ -29,16 +29,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "source": "https://heyzoish.gumroad.com/l/notionists",
    "tool": "DiceBear 9.4.3"
-  },
-  "realistic": {
-   "style": "Realistic",
-   "label": "Portrait photo",
-   "photo": true,
-   "creator": "Various photographers (see each photo)",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "source": "https://github.com/leonadler/royalty-free-user-avatars",
-   "tool": "Collection \"inter-faces\" (CC0 1.0), photos cropped and resized"
   }
  }
 }
