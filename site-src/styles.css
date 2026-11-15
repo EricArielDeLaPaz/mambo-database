@@ -64,7 +64,7 @@ pre{margin:0;padding:14px;background:var(--surface);border:1px solid var(--borde
 .name-btn{all:unset;cursor:pointer;font-weight:600;border-bottom:1px solid var(--border-strong)}
 .name-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .sum{display:block;color:var(--text-2);font-size:13px;margin-top:2px;max-width:46ch}
-.swatchrow{display:flex;gap:3px;margin-top:6px}.swatchrow i{width:18px;height:18px;border-radius:4px;border:1px solid rgba(0,0,0,.2);cursor:pointer}
+.swatchrow{display:flex;gap:3px;margin-top:6px}.swatchrow i{width:18px;height:18px;border-radius:4px;border:1px solid rgba(0,0,0,.2)}
 /* systems */
 .sys-layout{--wl:300px;--wr:520px;display:grid;grid-template-columns:var(--wl) 8px minmax(0,1fr);gap:0;min-height:calc(100vh - 76px)}
 .sys-layout.has-detail{grid-template-columns:var(--wl) 8px minmax(0,1fr) 8px var(--wr)}
@@ -104,10 +104,6 @@ label.f{display:grid;gap:4px;font:600 13px var(--font-body)}
 .viewall:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .ctip{position:fixed;z-index:60;width:min(300px,calc(100vw - 16px));background:#0a0a0a;color:#fff;border-radius:10px;padding:10px 12px;font:500 12.5px/1.4 var(--font-body);box-shadow:0 14px 34px -8px rgba(0,0,0,.5);pointer-events:none}
 .ctip b{font-weight:700}
-.ctip .r{display:flex;align-items:center;gap:8px;padding:3px 0;border-top:1px solid rgba(255,255,255,.18)}
-.ctip .r i{display:grid;place-items:center;width:30px;height:24px;border-radius:5px;font:700 12px var(--font-display);font-style:normal;border:1px solid rgba(255,255,255,.4);flex:none}
-.ctip .r span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ctip .r em{font:600 11.5px var(--font-mono);font-style:normal;white-space:nowrap}
 details.src{margin-top:8px;font-size:13px}details.src summary{cursor:pointer;font-weight:600}
 .check{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px}
 .check b{display:inline-block;width:22px}
@@ -142,15 +138,9 @@ input[type=color]{width:46px;height:46px;padding:2px;border:1px solid var(--bord
 
 /* ===== v2 additions ===== */
 .ctip{background:#fff;color:#0a0a0a;border:1px solid var(--border-strong);box-shadow:0 14px 34px -10px rgba(0,0,0,.28);width:min(320px,calc(100vw - 16px))}
-.ctip.int{pointer-events:auto}
-.ctip .r{border-top:1px solid var(--border)}
-.ctip .r i{border:1px solid rgba(0,0,0,.35)}
-.ctip .mut{color:var(--text-2)}
 .ctip .fx{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:6px 0}
 .ctip .sq{display:inline-block;width:16px;height:16px;border-radius:4px;border:1px solid rgba(0,0,0,.35)}
 .ctip .prev{margin-top:6px;padding:8px 10px;border-radius:8px;border:1px solid rgba(0,0,0,.25);font:700 15px var(--font-display)}
-.ctip .sysbox{margin-top:8px;padding-top:8px;border-top:2px solid var(--text)}
-.ctip .f-t{font:700 11px var(--font-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--text-2)}
 /* dropdown */
 .dd{position:relative;width:100%}
 .dd-native{position:absolute!important;opacity:0;pointer-events:none;width:1px!important;height:1px!important;min-height:0!important;padding:0!important;border:0!important;left:0;bottom:0}
@@ -230,7 +220,6 @@ ol.steps{margin:10px 0;padding-left:22px;display:grid;gap:8px;font-size:14.5px}
 .chip.nob{padding:0;border:0;background:none}.chip.nob i{display:block;width:26px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.35)}
 .chip.nob:hover i{outline:2px solid var(--text);outline-offset:2px}
 .pv{display:flex;justify-content:center;padding:32px 24px}
-.ctip .r span{overflow:hidden}
 .advice .txt strong{font-weight:700}
 .sw{cursor:default}
 .sw:focus-visible{outline:2px solid var(--focus);outline-offset:2px}

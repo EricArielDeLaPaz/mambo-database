@@ -175,36 +175,23 @@ window.addEventListener('blur', closeCtx); window.addEventListener('resize', clo
 
 /* ---------- hover overlays (white) ---------- */
 const tip = document.createElement('div'); tip.className = 'ctip'; tip.hidden = true; tip.setAttribute('aria-hidden', 'true'); document.body.appendChild(tip);
-const tipData = (name, hex, others, sys) => esc(JSON.stringify({ n: name, h: hex, sys: sys ? 1 : 0, o: others.map(o => ({ n: o.name, h: o.hex })) }));
-let tipSys = null, tipEl = null, hideT = 0;
-function sysCompare(d) {
-  if (!S.systems.length) return '<div class="sysbox"><div class="mut">Create a design system in Design Systems to see how this color fits.</div></div>';
-  const sys = S.systems.find(x => x.id === (tipSys || S.active)) || S.systems[0];
-  const rows = sys.colors.filter(o => normHex(o.hex)).slice(0, 10).map(o => { const r = ratio(d.h, o.hex), t = v => r >= v ? '✓' : '✕'; return `<div class="r"><i style="background:${esc(o.hex)};color:${esc(d.h)}">Aa</i><span>${esc(o.name)} ${esc(o.hex)}</span><em>${fmtRatio(r)}:1 AA ${t(4.5)} AAA ${t(7)}</em></div>` }).join('');
-  return `<div class="sysbox"><label class="f"><span class="f-t">Try it in</span><select id="tipsys" aria-label="Design system to compare with">${S.systems.map(x => `<option value="${x.id}" ${x.id === sys.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></label>${rows ? `<div class="mut" style="margin:6px 0 2px">With <b>${esc(sys.name)}</b> colors:</div>${rows}` : '<div class="mut" style="margin-top:6px">This system has no colors yet.</div>'}</div>`;
-}
+let tipEl = null, hideT = 0;
 function showTip(el) {
-  let html = '', inter = false;
+  let html = '';
   clearTimeout(hideT);
   if (el.dataset.tipfix) {
     let d; try { d = JSON.parse(el.dataset.tipfix) } catch { return }
     html = `<b>Fix contrast</b><div class="fx"><i class="sq" style="background:${esc(d.from)}"></i>${esc(d.n)} ${esc(d.from)} <span aria-hidden="true">→</span> <i class="sq" style="background:${esc(d.to)}"></i>${esc(d.to)}</div><div class="fx">Ratio <b>${d.r0}:1</b> <span aria-hidden="true">→</span> <b>${d.r1}:1</b> on ${esc(d.bgn)} ${esc(d.bg)}</div><div class="prev" style="background:${esc(d.bg)};color:${esc(d.to)}">Aa Preview text</div>`;
   } else if (el.dataset.tiptext) { html = esc(el.dataset.tiptext) }
-  else if (el.dataset.tip) {
-    let d; try { d = JSON.parse(el.dataset.tip) } catch { return }
-    const cap = d.sys ? 5 : 12, rows = d.o.filter(o => normHex(o.h)).slice(0, cap).map(o => { const r = ratio(d.h, o.h), t = v => r >= v ? '✓' : '✕'; return `<div class="r"><i style="background:${esc(o.h)};color:${esc(d.h)}">Aa</i><span>${esc(o.n)} ${esc(o.h)}</span><em>${fmtRatio(r)}:1 AA ${t(4.5)} AAA ${t(7)}</em></div>` }).join('');
-    html = `<b>${esc(d.n)}</b> <span class="mut">${esc(d.h)}</span>${rows ? `<div class="mut" style="margin:4px 0 2px">This color on top of:</div>${rows}` : ''}${d.o.length > cap ? `<div class="mut" style="padding-top:3px">+${d.o.length - cap} more</div>` : ''}`;
-    if (d.sys) { html += sysCompare(d); inter = true }
-  } else return;
-  tipEl = el; tip.innerHTML = html; tip.hidden = false; tip.classList.toggle('int', inter);
-  if (inter) { const sel = $('#tipsys', tip); if (sel) { upgradeSelects(tip); sel.onchange = () => { tipSys = sel.value; showTip(el) } } }
+  else return;
+  tipEl = el; tip.innerHTML = html; tip.hidden = false;
   const b = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
-  let x = Math.min(Math.max(8, b.left), innerWidth - w - 8), y = b.bottom + (inter ? 2 : 8); if (y + h > innerHeight - 8) y = Math.max(8, b.top - h - (inter ? 2 : 8));
+  let x = Math.min(Math.max(8, b.left), innerWidth - w - 8), y = b.bottom + 8; if (y + h > innerHeight - 8) y = Math.max(8, b.top - h - 8);
   tip.style.left = x + 'px'; tip.style.top = y + 'px';
 }
-const tipTarget = e => e.target.closest && e.target.closest('[data-tip],[data-tipfix],[data-tiptext]');
-const hideTip = () => { if (tip.classList.contains('int') && (tip.matches(':hover') || tip.contains(document.activeElement) || (ddOpen && tip.contains(ddOpen.wrap)))) return; tip.hidden = true };
-const hideSoon = () => { clearTimeout(hideT); hideT = setTimeout(hideTip, tip.classList.contains('int') ? 260 : 0) };
+const tipTarget = e => e.target.closest && e.target.closest('[data-tipfix],[data-tiptext]');
+const hideTip = () => { tip.hidden = true };
+const hideSoon = () => { clearTimeout(hideT); hideT = setTimeout(hideTip, 0) };
 document.addEventListener('mouseover', e => { if (tip.contains(e.target)) { clearTimeout(hideT); return } const t = tipTarget(e); if (t && t !== tipEl || (t && tip.hidden)) showTip(t); else if (t) clearTimeout(hideT) });
 document.addEventListener('mouseout', e => { if (tipTarget(e) || tip.contains(e.target)) hideSoon() });
 document.addEventListener('focusin', e => { const t = tipTarget(e); if (t) showTip(t) });
