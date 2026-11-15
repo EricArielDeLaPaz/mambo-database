@@ -243,24 +243,51 @@ function renderPersona(el) {
 }
 
 /* ---------- Colorblind simulator ---------- */
-const CVS = { text: '#1d4ed8\n#16a34a\n#dc2626\n#f59e0b\n#7c3aed\n#0a0a0a', tab: 'palette' };
-function parseColorList(text) {
-  return text.split(/\n|;/).map(l => l.trim()).filter(Boolean).map((l, i) => { const m = l.match(/^(.*?)[:=]\s*(.+)$/), nm = m ? m[1].trim() : '', hex = parseColor(m ? m[2] : l); return hex ? { name: nm || fmtColor(hex), hex } : null }).filter(Boolean).slice(0, 12);
-}
+const CVS = { lines: [['#1d4ed8', '#16a34a', '#dc2626', '#f59e0b', '#7c3aed', '#0a0a0a']], tab: 'palette' };
+const CV_MAX_LINES = 12, CV_MAX_BOXES = 12; /* plan caps: at most 12 lines, at most 12 boxes per line, never fewer */
+const cvFmtOf = raw => {
+  const s = String(raw).trim();
+  if (normHex(s)) return 'HEX';
+  const m = s.match(/^(rgb|hsl|hsb|hsv|cmyk)/i);
+  if (m) return m[1].toUpperCase().replace('HSV', 'HSB');
+  return colorFmt; /* bare numbers: the shared global format, since this tool has no format picker of its own */
+};
+const cvLine = ln => {
+  const boxes = ln.map(raw => { const hex = parseColor(raw); return { raw, hex, fmt: hex ? cvFmtOf(raw) : '' }; });
+  const first = boxes.find(b => b.hex);
+  const fmt = first ? first.fmt : 'HEX';
+  return { boxes, fmt, colors: boxes.filter(b => b.hex).map(b => ({ name: fmtColor(b.hex, fmt), hex: b.hex, fmt })) };
+};
 function renderCvd(el) {
-  el.innerHTML = `<p class="lede">About 1 in 12 men and 1 in 200 women have some form of color blindness. See how colors and pictures look with each type, and find color pairs that could be confused. These are close estimates, not medical tests.</p>
+  el.innerHTML = `<p class="lede">About 1 in 24 people have red-green color blindness, the most common form; the rate varies with ancestry. See how colors and pictures look with each type, and find color pairs that could be confused. These are close estimates, not medical tests.</p>
   <div class="seg-row"><div class="seg" role="radiogroup" aria-label="What to check">${[['palette', 'Colors'], ['image', 'An image']].map(([k, l]) => `<button type="button" role="radio" aria-checked="${CVS.tab === k}" data-cvt="${k}">${l}</button>`).join('')}</div></div><div id="cvd-body"></div>`;
   $$('[data-cvt]', el).forEach(b => b.onclick = () => { CVS.tab = b.dataset.cvt; renderCvd(el) });
   const body = $('#cvd-body', el);
   if (CVS.tab === 'palette') {
-    body.innerHTML = `<div class="cvd-in"><label class="f"><span class="f-t">Your colors, one per line (any format; add a name like <code>Primary: #1d4ed8</code>)</span><textarea id="cv-t" rows="7" spellcheck="false">${esc(CVS.text)}</textarea></label>
-    <div><label class="f"><span class="f-t">Or load from a design system</span><select id="cv-sys" aria-label="Load colors from a design system"><option value="">Choose one</option>${S.systems.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></label>${cfmtSelect()}</div></div><div id="cv-out"></div>`;
+    body.innerHTML = `<div class="cvd-in"><div class="cv-lines">${CVS.lines.map((ln, li) => {
+      const p = cvLine(ln);
+      const boxes = ln.map((raw, bi) => `<div class="cv-cell"><div class="cv-box"><label class="sr" for="cv-b-${li}-${bi}">Color ${bi + 1}, line ${li + 1}</label><input type="text" id="cv-b-${li}-${bi}" class="cv-in" value="${esc(raw)}" spellcheck="false" autocomplete="off" data-line="${li}" data-box="${bi}" aria-describedby="cv-e-${li}-${bi}"><i class="cv-sw" aria-hidden="true" data-sw="${li}-${bi}"></i><button type="button" class="cv-rm" data-rm="${li}-${bi}" aria-label="Remove color ${bi + 1} from line ${li + 1}">&times;</button></div><p class="ct-err" id="cv-e-${li}-${bi}" role="alert"></p></div>`).join('');
+      return `<div class="cv-line" data-line="${li}"><div class="cv-boxes">${boxes}</div><div class="cv-foot"><span class="note cv-fmt" data-fmt="${li}">Line ${li + 1} shows ${p.fmt}</span><button type="button" class="btn sm" data-addc="${li}"${ln.length >= CV_MAX_BOXES ? ' disabled' : ''}>Add color</button></div></div>`;
+    }).join('')}<button type="button" class="btn sm solid" id="cv-addline"${CVS.lines.length >= CV_MAX_LINES ? ' disabled' : ''}>Add line</button></div><div class="cv-side"><label class="f"><span class="f-t">Or load from a design system</span><select id="cv-sys" aria-label="Load colors from a design system"><option value="">Choose one</option>${S.systems.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></label></div></div><div id="cv-out"></div>`;
     const upd = () => {
-      const cols = parseColorList($('#cv-t', body).value); CVS.text = $('#cv-t', body).value;
-      $('#cv-out', body).innerHTML = cols.length ? `<div class="tscroll"><table class="cvd-t"><caption class="sr">Colors as seen with each type of color blindness</caption><thead><tr><th scope="col">Color</th><th scope="col">Normal vision</th>${Object.keys(CVD).map(k => `<th scope="col">${CVD[k].label}<small>${CVD[k].about}</small></th>`).join('')}</tr></thead><tbody>${cols.map(c => `<tr><th scope="row">${esc(c.name)}</th><td><i class="cv-sw" style="background:${c.hex}"></i><code>${esc(fmtColor(c.hex))}</code></td>${Object.keys(CVD).map(k => { const h = simHex(c.hex, k); return `<td><i class="cv-sw" style="background:${h}"></i><code>${esc(fmtColor(h))}</code></td>` }).join('')}</tr>`).join('')}</tbody></table></div>${cvdNotice(cols)}<p class="note">A pair is flagged when two colors look clearly different normally but become close for a type of color blindness. Protanopia and deuteranopia (red-green) are the most common; tritanopia and achromatopsia are rare.</p>` : '<p class="empty">Add at least two colors to check.</p>';
+      $$('.cv-in', body).forEach(inp => { CVS.lines[+inp.dataset.line][+inp.dataset.box] = inp.value });
+      const all = CVS.lines.map(cvLine);
+      const cols = all.flatMap((l, li) => l.colors.map(c => ({ ...c, line: li })));
+      all.forEach((l, li) => l.boxes.forEach((b, bi) => {
+        const inp = $(`#cv-b-${li}-${bi}`, body), err = $(`#cv-e-${li}-${bi}`, body), sw = $(`[data-sw="${li}-${bi}"]`, body);
+        if (!inp || !err) return;
+        if (b.raw.trim() && !b.hex) { inp.setAttribute('aria-invalid', 'true'); err.textContent = 'Enter ' + COLOR_HINT + '.'; if (sw) sw.style.background = '' }
+        else { inp.removeAttribute('aria-invalid'); err.textContent = ''; if (sw) sw.style.background = b.hex || '' }
+      }));
+      $('#cv-out', body).innerHTML = cols.length ? `<div class="tscroll"><table class="cvd-t"><caption class="sr">Colors as seen with each type of color blindness</caption><thead><tr><th scope="col">Color</th><th scope="col">Normal vision</th>${Object.keys(CVD).map(k => `<th scope="col">${CVD[k].label}<small>${CVD[k].about}</small></th>`).join('')}</tr></thead><tbody>${cols.map(c => `<tr><th scope="row">${esc(c.name)}</th><td><i class="cv-sw" style="background:${c.hex}"></i><code>${esc(fmtColor(c.hex, c.fmt))}</code></td>${Object.keys(CVD).map(k => { const h = simHex(c.hex, k); return `<td><i class="cv-sw" style="background:${h}"></i><code>${esc(fmtColor(h, c.fmt))}</code></td>` }).join('')}</tr>`).join('')}</tbody></table></div>${cvdNotice(cols)}<p class="note">A pair is flagged when two colors look clearly different normally but become close for a type of color blindness. Protanopia and deuteranopia (red-green) are the most common; tritanopia and achromatopsia are rare.</p>` : '<p class="empty">Add at least two colors to check.</p>';
+      $$('.cv-fmt', body).forEach((el2, i) => { el2.textContent = 'Line ' + (i + 1) + ' shows ' + all[i].fmt });
     };
-    $('#cv-t', body).oninput = upd; $('#cv-sys', body).addEventListener('change', e => { const s = S.systems.find(x => x.id === e.target.value); if (s) { $('#cv-t', body).value = s.colors.map(c => c.name + ': ' + c.hex).join('\n'); upd() } });
-    upgradeSelects(body); wireCfmt(body, upd); upd();
+    $$('.cv-in', body).forEach(inp => inp.oninput = upd);
+    $$('.cv-rm', body).forEach(btn => btn.onclick = () => { const [li, bi] = btn.dataset.rm.split('-').map(Number); if (CVS.lines[li].length > 1) { CVS.lines[li].splice(bi, 1); renderCvd(el) } });
+    $$('[data-addc]', body).forEach(btn => btn.onclick = () => { const li = +btn.dataset.addc; if (CVS.lines[li].length < CV_MAX_BOXES) { CVS.lines[li].push(''); renderCvd(el); const nb = $(`#cv-b-${li}-${CVS.lines[li].length - 1}`, el); if (nb) nb.focus() } });
+    const al = $('#cv-addline', body); if (al) al.onclick = () => { if (CVS.lines.length < CV_MAX_LINES) { CVS.lines.push(['']); renderCvd(el); const nb = $(`#cv-b-${CVS.lines.length - 1}-0`, el); if (nb) nb.focus() } };
+    $('#cv-sys', body).addEventListener('change', e => { const s = S.systems.find(x => x.id === e.target.value); if (s) { CVS.lines = [s.colors.map(c => c.hex)]; renderCvd(el) } });
+    upgradeSelects(body); upd();
   } else {
     body.innerHTML = `<div class="cx-drop" id="cv-drop" role="group" aria-label="Drop an image here or press Enter to choose one"><b>Drop an image here</b><span>or</span><button class="btn" type="button" id="cv-up">Upload image</button><input type="file" id="cv-file" accept="image/*" hidden></div><p class="ct-err" id="cv-err" role="alert"></p><div class="cvd-imgs" id="cv-imgs"></div>`;
     const show = f => {
