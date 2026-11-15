@@ -18,8 +18,8 @@ Every entry is one JSON file in `entries/`. Run the build and everything else is
 | `guides/*.md` (source) | The Guides tab. Plain Markdown with a short front matter block (`id`, `title`, `summary`, `topic`, `level`, `order`). Add a file and rebuild |
 | `dist/llms.txt` | Index for AI tools that read `llms.txt` |
 | `dist/data/library.json` | All data in one file |
-| `dist/skill/create-design-system/` | The `/create-design-system` skill: interviews you about the feel and platform, then picks accessible colors, type and optional components |
-| `dist/skill/mambo-database/` | A ready-made agent skill (`SKILL.md` + references). Copy the folder into your skills directory |
+| `dist/skill/create-design-system/` | The `/create-design-system` skill: asks whether you have a design system in Figma, want one from the database, or start from scratch, then builds and documents colors, type, foundations, components and icons step by step |
+| `dist/skill/product/` | The `/product` skill: asks the product type, proposes the steps to tick or untick, then guides research, definition, design and launch one step at a time |
 
 Requires Node 18+. No dependencies.
 
@@ -32,7 +32,7 @@ Copy `entries/components/modal-dialog.json`, edit it, run the build. Required fi
 - Only 4 sample entries exist. Preview rendering assumes simple HTML and CSS.
 
 ## Live site
-Pushing to `main` rebuilds and deploys the site with GitHub Pages (`.github/workflows/pages.yml`). The deployed site also serves `llms.txt`, `entries/`, `data/library.json`, `skill/` and `mambo-database-skill.zip`.
+Pushing to `main` rebuilds and deploys the site with GitHub Pages (`.github/workflows/pages.yml`). The deployed site also serves `llms.txt`, `entries/`, `data/library.json`, `skill/`, `create-design-system-skill.zip` and `product-skill.zip`.
 
 ## Licenses: what the MIT license covers
 The root `LICENSE` (MIT, © 2026 Eric Ariel De La Paz) covers this project's own code, guides and original entries. It does **not** replace the licenses of third-party material, which keeps its own terms:

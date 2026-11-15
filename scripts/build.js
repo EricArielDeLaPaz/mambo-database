@@ -79,41 +79,12 @@ Related: ${(e.related || []).join(', ')}
 }
 fs.rmSync(out, { recursive: true, force: true });
 const folder = { component: 'components', color: 'colors', typeface: 'typography', document: 'documents', profile: 'profiles', extension: 'extensions' };
-const skillRef = path.join(out, 'skill/mambo-database/references');
-for (const e of entries) { const rel = `${folder[e.type]}/${e.id}.md`; e.md = md(e); w(path.join(out, 'entries', rel), e.md); w(path.join(skillRef, rel), e.md); }
+for (const e of entries) { const rel = `${folder[e.type]}/${e.id}.md`; e.md = md(e); w(path.join(out, 'entries', rel), e.md); }
 
 // ---------- index, llms.txt, skill ----------
 const idx = entries.map(e => `- [${e.name}](${folder[e.type]}/${e.id}.md) (${e.type}${e.category ? ', ' + e.category : ''}): ${e.summary}`).join('\n');
 w(path.join(out, 'entries/index.md'), `# Mambo database index\n\n${idx}\n`);
-w(path.join(skillRef, 'index.md'), `# Mambo database index\n\n${idx}\n`);
 w(path.join(out, 'llms.txt'), `# Mambo Database\n\n> An open, structured library of UI components, color sets and font pairings with anatomy, content limits, accessibility notes and code. Written for designers and AI assistants.\n\n## Entries\n\n${entries.map(e => `- [${e.name}](entries/${folder[e.type]}/${e.id}.md): ${e.summary}`).join('\n')}\n\n## Data\n\n- [Full data as JSON](data/library.json)\n`);
-w(path.join(out, 'skill/mambo-database/SKILL.md'), `---
-name: mambo-database
-description: Use for any UI or visual design task (components, overlays, buttons, cards, pages, color palettes, accessible contrast, font pairings, mobile or desktop layouts). Look up the matching entry for anatomy, content limits, accessibility rules and code before designing or coding.
----
-
-# Mambo database
-
-Consult this library before inventing a component, color set or font pairing.
-
-## How to use
-1. Read \`references/index.md\` to find the entries that match the task.
-2. Open only the one to three entry files you need. Do not read the whole folder.
-3. Follow the entry's anatomy, content limits and accessibility rules. Use its tokens by name instead of raw hex values.
-4. If an entry says "when not to use", switch to the listed alternative.
-5. Check contrast with the color entry's computed ratios, and prefer colors whose industries include the project's industry; body text needs 4.5:1, large text and UI borders 3:1.
-
-## Branches
-- \`references/components/\` for overlays, buttons, cards and other parts, each with variants and code
-- \`references/colors/\` for color sets with contrast results and the industries they suit
-- \`references/typography/\` for single typefaces, each with its verified header/display and body pairings
-- Desktop and mobile patterns are noted in each component's \`platforms\` field
-
-## Rules
-- IMPORTANT: Never hardcode colors or sizes when a token exists in the entry.
-- IMPORTANT: Every interactive element needs a visible focus state and a keyboard path.
-- Prefer the smallest component that fits the content; check content limits before choosing.
-`);
 w(path.join(out, 'data/library.json'), JSON.stringify(entries.map(({ md: _m, ...e }) => e), null, 2));
 
 // ---------- third-party notices (font credits) ----------
@@ -122,15 +93,25 @@ const notices = `# Third-party notices\n\nMambo Database lists and links to open
 w(path.join(root, 'THIRD_PARTY_NOTICES.md'), notices); w(path.join(out, 'THIRD_PARTY_NOTICES.md'), notices);
 fs.mkdirSync(path.join(out, 'site/licenses'), { recursive: true }); fs.copyFileSync(path.join(root, 'licenses/OFL-1.1.txt'), path.join(out, 'site/licenses/OFL-1.1.txt'));
 
-// ---------- create-design-system skill ----------
-const dsSkill = path.join(root, 'skills/create-design-system'), dsOut = path.join(out, 'skill/create-design-system');
+// ---------- skills: create-design-system and product ----------
+// Sources live in skills/. _shared/shared-protocol.md is copied into both so the protocol has one source.
+const skillsSrc = path.join(root, 'skills'), skillsOut = path.join(out, 'skill');
 const copyDir = (a, d) => fs.readdirSync(a, { withFileTypes: true }).forEach(f => f.isDirectory() ? copyDir(path.join(a, f.name), path.join(d, f.name)) : (fs.mkdirSync(d, { recursive: true }), fs.copyFileSync(path.join(a, f.name), path.join(d, f.name))));
-copyDir(dsSkill, dsOut);
-w(path.join(dsOut, 'library-lite.json'), JSON.stringify({
+for (const name of ['create-design-system', 'product']) {
+  copyDir(path.join(skillsSrc, name), path.join(skillsOut, name));
+  w(path.join(skillsOut, name, 'references/shared-protocol.md'), fs.readFileSync(path.join(skillsSrc, '_shared/shared-protocol.md'), 'utf8'));
+}
+// Data for the skill's scripts (pick.js, brief.js). The skill reads it through the scripts, never directly.
+const dsOut = path.join(skillsOut, 'create-design-system');
+w(path.join(dsOut, 'data/library-lite.json'), JSON.stringify({
   colors: entries.filter(e => e.type === 'color').map(e => ({ id: e.id, name: e.name, mood: e.mood, industries: e.industries, roles: e.roles })),
   typography: entries.filter(e => e.type === 'typeface').map(e => ({ id: e.id, name: e.name, category: e.category, roles: e.roles, industries: e.industries, pairsWith: e.pairings.map(p => ({ family: p.family, as: p.role === 'body' ? 'body' : 'display', displayWeights: p.displayWeights, bodyWeights: p.bodyWeights })) })),
-  components: entries.filter(e => e.type === 'component').map(e => ({ id: e.id, name: e.name, category: e.category, platforms: e.platforms, states: (e.states || []).map(s => s.id) }))
-}, null, 1));
+  components: entries.filter(e => e.type === 'component').map(e => ({ id: e.id, name: e.name, category: e.category, platforms: e.platforms, states: (e.states || []).map(s => s.id), summary: e.summary, whenToUse: e.whenToUse, whenNotToUse: e.whenNotToUse, alternatives: e.alternatives, variants: (e.variants || []).map(v => v.name), tokens: e.tokens, role: e.accessibility && e.accessibility.role }))
+}));
+const iconSetsMeta = JSON.parse(fs.readFileSync(path.join(root, 'icons/sets.json'), 'utf8'));
+w(path.join(dsOut, 'data/icon-sets.json'), JSON.stringify(iconSetsMeta.map(s => ({ id: s.id, name: s.name, style: s.style, license: s.license, names: fs.readdirSync(path.join(root, 'icons', s.id)).filter(f => f.endsWith('.svg')).map(f => f.slice(0, -4)) }))));
+// Full component entries (states, device variants, static frame, values used) for building one component in Figma. Read on demand only.
+for (const e of entries) if (e.type === 'component') w(path.join(dsOut, 'entries/components', e.id + '.md'), e.md);
 
 // ---------- guides (markdown with front matter; kept out of the Browse database) ----------
 const guidesDir = path.join(root, 'guides');

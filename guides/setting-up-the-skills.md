@@ -1,24 +1,25 @@
 ---
 id: setting-up-the-skills
 title: Setting up the AI skills
-summary: Download the two skills, add them to Claude, and use /create-design-system to build an accessible design system by conversation.
+summary: Download the two skills, add them to Claude, and use them to build a design system or a product step by step, while keeping token use low.
 topic: Setup
 level: Beginner
 order: 2
 ---
 
-> **Heads up: this guide is not finished yet.** The AI skills are still being developed, so some steps may change or not work as described. Once the skills are fully built, this guide will be updated.
+> **New.** These skills are new and have not been tested in every tool. If a step does not work as described, tell us which tool you used and what happened.
 
 A **skill** is a folder of instructions (and sometimes scripts and other files) that an AI assistant can load when a task matches.[^1] Mambo Database offers two.
 
 | Skill | What it does |
 | --- | --- |
-| `create-design-system` | Interviews you about your product, then picks accessible colors, type and optional components from this database. Run it with `/create-design-system`. |
-| `mambo-database` | Gives an assistant the whole database as plain files it can search: components, color sets and typefaces. |
+| `create-design-system` | Takes you from nothing to a documented, accessible design system. It first asks whether you already have one in Figma, want to start from the Mambo Database, or want to start from scratch, then asks different questions for each. Run it with `/create-design-system`. |
+| `product` | Takes you from an idea to a plan for a new product. It asks the product type, proposes the steps that fit (research, definition, design, build and launch) for you to tick or untick, then works through them one at a time. Run it with `/product`. |
 
 ## Get the files
 
-**Download coming soon.** The zip files are not published yet; check back here for the links.
+- [create-design-system-skill.zip](https://ericarieldelapaz.github.io/mambo-database/create-design-system-skill.zip)
+- [product-skill.zip](https://ericarieldelapaz.github.io/mambo-database/product-skill.zip)
 
 Each zip contains one folder with a `SKILL.md` file inside. That file is the entry point. The assistant reads its short description to decide when to use the skill.[^4]
 
@@ -30,17 +31,41 @@ Where you add a skill depends on the tool. The steps below describe the common c
 2. **Claude Code and other coding agents.** Unzip the folder into your skills directory. For Claude Code that is `~/.claude/skills/` for all projects, or `.claude/skills/` inside one project.[^3]
 3. **Anything else.** A `SKILL.md` is markdown with a YAML header; the folder may also include supporting files and scripts. You can paste the contents of `SKILL.md` into the start of a chat, or point the tool at the folder.[^4]
 
-## Try it
+## What happens when you start one
 
-Start a new chat and type `/create-design-system`. You will be asked a few short questions: what the product is, who it is for, the feel you want, and the platforms. Then it proposes colors, type and components, and checks the contrast of every pair.
+1. **A quick check.** The skill looks at what your assistant can do (ask questions with tappable options, search the web, start a cheaper helper, write files, run scripts) and tells you in three lines what mode it will use and how it will save tokens.
+2. **Questions in batches.** If your assistant has a question tool, you get tappable options. If not, you get a numbered list and reply with numbers. You can always type your own answer.
+3. **One step at a time.** After each step it tells you exactly what it made, then the next step. Nothing runs ahead of you. Say "next" when you are ready, or ask for a change.
+4. **A progress file.** It keeps a short `progress.md` with your answers, decisions and finished steps. If you come back later or start a new chat, it offers to continue.
 
-> **Tip.** Answer in your own words. "Calm banking app for first-time savers, mobile first" tells the skill more than "fintech".
+### The design system skill
+
+- **Already in Figma:** it reads your variables, styles and component names (not the whole file), reports gaps against a checklist, then documents what each token and component is for, fixes what you choose, and exports.
+- **From the Mambo Database:** it asks about industry, platforms, feel and themes, proposes color sets and type pairings from the database with contrast already checked, then sets foundations, components and icons.
+- **From scratch:** the same questions plus brand colors, brand fonts, accessibility target and density. It builds the palette, type scale, spacing, radius, elevation and motion, and verifies every contrast pair with a script instead of estimating.
+- **Components and icons** is the step that points back to this site. You can take a preset for your product type or pick your own.
+
+### The product skill
+
+- It proposes steps for your product type and where you are now. A solo founder with a validated problem gets a different plan than a team starting from an idea.
+- When a step needs outside facts (for example a competitive audit), it asks first whether to search the web, hand the work to a cheaper helper, use research notes you paste or attach, or skip it.
+- The design system step hands off to the design system skill.
+
+## Keep token use low
+
+- Answer in batches and in your own words; one clear sentence beats many follow-ups.
+- Hand long research to a cheaper helper, or bring your own notes, instead of having the main chat read many pages.
+- Start a new chat after a long phase. The progress file carries your answers forward.
+- Do not paste whole files into the chat. Attach them, or give a link.
+- Everything long is written to files; the chat shows short summaries.
 
 ## When something goes wrong
 
 - **The slash command does nothing.** The skill is probably not in the right folder. Check that `SKILL.md` sits directly inside the skill folder, not inside a second nested folder.
-- **The colors look different from the site.** The skill reads the same data as the site. Ask it which entry it used and open that entry in Browse to compare.
-- **You want to edit the result.** Paste the output into a new system in the Design Systems tab. It will flag contrast and count problems for you.
+- **No tappable questions.** Your assistant has no question tool. The skill falls back to a numbered list; reply with the numbers.
+- **The scripts will not run.** Code execution may be off. The skill can still work from the written tables, but color suggestions and contrast checks are then less exact; turn code execution on if you can.
+- **The colors look different from the site.** The skill reads the same data as the site. Ask it which color set it used and open that entry in Browse to compare.
+- **You want to edit the result.** Paste the colors into a new system in the Design Systems tab. It flags contrast and count problems for you.
 
 ## Where to read more
 

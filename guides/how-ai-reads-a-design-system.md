@@ -57,7 +57,7 @@ Every component in Browse follows this shape.
 
 - Every entry exists as **Markdown** and **JSON**. Use "Copy as Markdown (for AI)" or "Copy JSON" to paste an entry into an assistant.
 - The site publishes an `llms.txt` file, a short index that AI tools can read to learn what is here.[^1]
-- The [AI skills](#/guide/setting-up-the-skills) let an assistant search the whole database and run an interview before building a system.
+- The [AI skills](#/guide/setting-up-the-skills) walk an assistant through building a system step by step, and they write down what each token and component is for, so the next assistant (or person) can read it.
 - Design Systems exports files your tools and engineers can both read, such as CSS variables and a README.
 
 ## Working with AI well
