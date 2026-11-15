@@ -1,0 +1,57 @@
+{
+  "id": "pricing-table",
+  "type": "component",
+  "name": "Pricing table",
+  "category": "data-display",
+  "level": "organism",
+  "platforms": ["desktop-web", "tablet", "mobile-web"],
+  "summary": "Side-by-side plan comparison with price, billing period, feature list and one CTA per plan. Highlights a recommended plan without hiding the others.",
+  "anatomy": [
+    { "part": "plan-card", "required": true, "purpose": "One column per plan: name, price, period, CTA, feature list." },
+    { "part": "recommended-badge", "required": false, "purpose": "Marks one plan as popular/best value. Never the only signal; pair with text." },
+    { "part": "price", "required": true, "purpose": "Amount, currency and billing period ('$24 / month, billed annually')." },
+    { "part": "feature-list", "required": true, "purpose": "Checkmarked included features; dash or muted text for excluded." },
+    { "part": "cta", "required": true, "purpose": "One button per plan, consistent placement." },
+    { "part": "billing-toggle", "required": false, "purpose": "Monthly/annual switch that updates prices without reload." }
+  ],
+  "variants": [
+    { "id": "three-tier", "name": "Three tiers", "use": "Standard good/better/best offering.", "contentLimits": { "plans": "3", "features": "max 8 per plan; longer lists move to a comparison page" } },
+    { "id": "two-tier", "name": "Two tiers", "use": "Free vs paid, or personal vs team.", "contentLimits": { "plans": "2", "features": "max 10 per plan" } },
+    { "id": "comparison", "name": "Full comparison", "use": "Long feature matrix for enterprise evaluation.", "contentLimits": { "plans": "up to 4", "rows": "group features under headings" } }
+  ],
+  "whenToUse": [
+    "Choosing between subscription plans.",
+    "Comparing feature sets across tiers.",
+    "Upgrading prompts where the current plan is highlighted."
+  ],
+  "whenNotToUse": [
+    "A single fixed price: use a simple CTA section.",
+    "Usage-based pricing with no tiers: use a calculator or estimator.",
+    "More than 4 plans: use a full comparison page with a filter."
+  ],
+  "alternatives": ["table", "card", "segmented-control"],
+  "tokens": ["color.surface.raised", "color.text.primary", "color.text.secondary", "color.accent", "color.border.default", "radius.lg", "space.4", "space.8"],
+  "accessibility": {
+    "role": "table (comparison variant) or list of regions labelled by plan name; CTAs are buttons/links",
+    "keyboard": [
+      "Billing toggle is a switch or segmented control, fully keyboard operable.",
+      "CTAs are in a logical tab order left-to-right, plan by plan.",
+      "Recommended badge is text, reachable and announced in the plan's accessible name."
+    ],
+    "focus": "Visible 2px focus outline on toggle and CTAs; focused plan card may gain a border, but color is not the only focus signal.",
+    "notes": [
+      "Feature inclusion must not rely on color or icon alone: use text ('Included' / em dash with sr-only text).",
+      "Price and period must be readable at 200% zoom without horizontal scroll on mobile — stack plans vertically.",
+      "Checkmark icons need aria-hidden with sr-only text, or visible words.",
+      "Body text 4.5:1 on card background; muted exclusion text still meets 4.5:1."
+    ]
+  },
+  "related": ["table", "card", "segmented-control", "button"],
+  "code": {
+    "html": "<section class=\"pricing\" aria-label=\"Plans\">\n  <ul class=\"pricing__plans\">\n    <li class=\"plan\">\n      <h2 class=\"plan__name\">Starter</h2>\n      <p class=\"plan__price\"><span class=\"plan__amount\">$0</span><span class=\"plan__period\"> / forever</span></p>\n      <ul class=\"plan__features\"><li>1 project</li><li>Community support</li></ul>\n      <a class=\"plan__cta\" href=\"/signup?plan=starter\">Start free</a>\n    </li>\n    <li class=\"plan plan--recommended\">\n      <p class=\"plan__badge\">Most popular</p>\n      <h2 class=\"plan__name\">Pro</h2>\n      <p class=\"plan__price\"><span class=\"plan__amount\">$24</span><span class=\"plan__period\"> / month, billed annually</span></p>\n      <ul class=\"plan__features\"><li>Unlimited projects</li><li>Priority support</li><li>Advanced analytics</li></ul>\n      <a class=\"plan__cta plan__cta--primary\" href=\"/signup?plan=pro\">Start 14-day trial</a>\n    </li>\n  </ul>\n</section>",
+    "css": ".pricing__plans{list-style:none;margin:0;padding:0;display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}\n.plan{display:flex;flex-direction:column;gap:16px;padding:24px;border:1px solid #e0e0e0;border-radius:16px;background:#fff}\n.plan--recommended{border:2px solid #111}\n.plan__badge{margin:0;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#111}\n.plan__name{margin:0;font-size:20px}\n.plan__price{margin:0}\n.plan__amount{font-size:40px;font-weight:700;line-height:1}\n.plan__period{font-size:14px;color:#525252}\n.plan__features{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:14px}\n.plan__cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;border-radius:999px;border:1px solid #111;color:#111;text-decoration:none;font-weight:600}\n.plan__cta--primary{background:#111;color:#fff}\n.plan__cta:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}\n@media (max-width:600px){.pricing__plans{grid-template-columns:1fr}}",
+    "frame": "<ul class=\"pricing__plans\">\n  <li class=\"plan\"><h2 class=\"plan__name\">Starter</h2><p class=\"plan__price\"><span class=\"plan__amount\">$0</span></p><a class=\"plan__cta\" href=\"#\">Start free</a></li>\n  <li class=\"plan plan--recommended\"><p class=\"plan__badge\">Most popular</p><h2 class=\"plan__name\">Pro</h2><p class=\"plan__price\"><span class=\"plan__amount\">$24</span><span class=\"plan__period\"> / month</span></p><a class=\"plan__cta plan__cta--primary\" href=\"#\">Start trial</a></li>\n</ul>"
+  },
+  "industries": ["all"],
+  "interactive": true
+}

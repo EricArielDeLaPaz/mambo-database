@@ -1,0 +1,103 @@
+{
+  "id": "video-player",
+  "type": "component",
+  "name": "Video player",
+  "category": "data-display",
+  "level": "organism",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet",
+    "mobile-web"
+  ],
+  "summary": "A themed wrapper around the native video element with captions, keyboard shortcuts and a visible focus order. Never autoplay with sound.",
+  "anatomy": [
+    {
+      "part": "video",
+      "required": true,
+      "purpose": "The native <video> with controls disabled in favour of themed buttons, or native controls as fallback."
+    },
+    {
+      "part": "captions",
+      "required": true,
+      "purpose": "A <track kind=\"captions\"> for prerecorded speech; required for any spoken content."
+    },
+    {
+      "part": "controls",
+      "required": true,
+      "purpose": "Play/pause, seek, time display, captions toggle, fullscreen; every control keyboard reachable."
+    },
+    {
+      "part": "transcript",
+      "required": false,
+      "purpose": "Link to a full text transcript next to the player for long-form content."
+    }
+  ],
+  "variants": [
+    {
+      "id": "inline",
+      "name": "Inline",
+      "use": "Embedded in an article or lesson body.",
+      "contentLimits": {
+        "aspect": "16:9 default",
+        "captions": "required when there is speech"
+      },
+      "width": "fill"
+    },
+    {
+      "id": "hero",
+      "name": "Hero",
+      "use": "Large player at the top of a page; still never autoplays with sound.",
+      "contentLimits": {
+        "aspect": "16:9",
+        "captions": "required when there is speech"
+      },
+      "width": "fill"
+    }
+  ],
+  "whenToUse": [
+    "The content is inherently motion/audio (demo, lesson, talk).",
+    "Captions can be provided for all speech."
+  ],
+  "whenNotToUse": [
+    "The content is short text or static images: use a figure instead.",
+    "You cannot caption the audio: do not publish the video."
+  ],
+  "alternatives": [
+    "carousel",
+    "empty-state"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.text.inverse",
+    "color.scrim",
+    "space.2",
+    "space.4",
+    "space.8"
+  ],
+  "accessibility": {
+    "role": "application (or native video with controls); captions via track element",
+    "keyboard": [
+      "Tab reaches play/pause, seek, captions toggle and fullscreen in visual order.",
+      "Space or K toggles play/pause; arrow Left/Right seek 5 seconds; F toggles fullscreen; C toggles captions."
+    ],
+    "focus": "Every control shows a 2px focus-visible ring with at least 3:1 contrast against the scrim behind the controls.",
+    "notes": [
+      "Captions are mandatory for prerecorded speech (WCAG 1.2.2); provide transcripts for audio-only content.",
+      "Do not autoplay with sound (WCAG 1.4.2); if autoplay is used, it must be muted and pausable.",
+      "Never rely on color alone for the captions-on indicator."
+    ]
+  },
+  "related": [
+    "image-gallery",
+    "carousel"
+  ],
+  "code": {
+    "html": "<figure class=\"vp\">\n  <video class=\"vp__video\" controls preload=\"metadata\" poster=\"poster.jpg\">\n    <source src=\"demo.mp4\" type=\"video/mp4\">\n    <track kind=\"captions\" srclang=\"en\" label=\"English\" src=\"demo.en.vtt\" default>\n    <p>Your browser cannot play this video. <a href=\"demo.mp4\">Download the video</a>.</p>\n  </video>\n  <figcaption class=\"vp__caption\">Product demo, 2 minutes. <a href=\"demo-transcript.html\">Read the transcript</a>.</figcaption>\n</figure>",
+    "css": ".vp { margin: 0; }\n.vp__video { width: 100%; aspect-ratio: 16 / 9; display: block; background: #121212; border-radius: 8px; }\n.vp__caption { margin-top: 8px; font-size: 12px; line-height: 16px; color: var(--color-text-secondary, #404040); }\n.vp__caption a { color: #1d4ed8; }\n.vp a:focus-visible, .vp video:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }\n"
+  },
+  "industries": [
+    "all"
+  ],
+  "interactive": true
+}

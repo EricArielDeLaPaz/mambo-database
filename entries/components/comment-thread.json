@@ -1,0 +1,57 @@
+{
+  "id": "comment-thread",
+  "type": "component",
+  "name": "Comment thread",
+  "category": "conversation",
+  "level": "organism",
+  "platforms": ["desktop-web", "desktop-app", "tablet", "mobile-web"],
+  "summary": "A nested list of comments with author, timestamp, actions (reply, like, resolve) and a composer. For async discussion attached to a document, task or issue.",
+  "anatomy": [
+    { "part": "thread", "required": true, "purpose": "Ordered list of comment nodes; visually indents replies one level." },
+    { "part": "comment", "required": true, "purpose": "Avatar, author, timestamp, body and action row." },
+    { "part": "actions", "required": true, "purpose": "Reply, like and (in review tools) resolve. Buttons with visible labels or tooltips." },
+    { "part": "composer", "required": true, "purpose": "Textarea plus submit. Present at the top level and inline under any comment being replied to." },
+    { "part": "resolve-toggle", "required": false, "purpose": "Marks the thread resolved; collapses it in review contexts." }
+  ],
+  "variants": [
+    { "id": "flat", "name": "Flat", "use": "Simple chronological discussion without replies.", "contentLimits": { "depth": "1 level", "body": "soft cap 2000 characters" } },
+    { "id": "nested", "name": "Nested", "use": "Reply-to-comment discussion.", "contentLimits": { "depth": "indent at most 2 levels, then flatten with @mentions", "body": "soft cap 2000 characters" } },
+    { "id": "review", "name": "Review (resolvable)", "use": "Document or code review threads that can be resolved.", "contentLimits": { "depth": "1-2 levels", "resolution": "resolved threads collapse but remain readable" } }
+  ],
+  "whenToUse": [
+    "Async, threaded feedback tied to a specific artifact (document, design, issue, video timestamp).",
+    "Review workflows that need resolve/unresolve state.",
+    "Community discussion where replies form sub-threads."
+  ],
+  "whenNotToUse": [
+    "Realtime chat: use chat-message instead.",
+    "Anonymous one-off reactions: use a rating or reaction bar.",
+    "Long-form publishing with full-page comments as content: use a dedicated page pattern."
+  ],
+  "alternatives": ["chat-message", "timeline", "drawer"],
+  "tokens": ["color.surface.raised", "color.text.primary", "color.text.secondary", "color.border.default", "radius.md", "space.2", "space.4", "space.8"],
+  "accessibility": {
+    "role": "list for the thread; article per comment; textbox for the composer",
+    "keyboard": [
+      "Tab moves through comment actions and the composer in DOM order.",
+      "Reply opens the inline composer and moves focus into it.",
+      "Escape closes an inline composer and returns focus to the Reply button.",
+      "Resolve toggle is a button with aria-pressed reflecting state."
+    ],
+    "focus": "Visible focus on every action button and the composer; after posting, focus moves to the new comment or stays in the composer per product convention — document the choice.",
+    "notes": [
+      "Announce new comments with aria-live=polite on the thread region.",
+      "Author and timestamp must be programmatically associated with the comment body.",
+      "Indentation alone must not carry meaning; replies are nested in the list structure.",
+      "Like/resolve counts are text, not icon-only."
+    ]
+  },
+  "related": ["chat-message", "avatar", "textarea", "button"],
+  "code": {
+    "html": "<section class=\"thread\" aria-label=\"Comments\">\n  <article class=\"comment\">\n    <img class=\"comment__avatar\" src=\"/avatars/taylor.png\" alt=\"\" width=\"32\" height=\"32\">\n    <div class=\"comment__main\">\n      <header class=\"comment__head\"><span class=\"comment__author\">Taylor</span><time datetime=\"2026-11-13T14:02\">2 hours ago</time></header>\n      <p class=\"comment__body\">Contrast on the caption fails AA, can we bump it?</p>\n      <div class=\"comment__actions\"><button type=\"button\">Reply</button><button type=\"button\" aria-pressed=\"false\">Like (2)</button></div>\n    </div>\n  </article>\n  <form class=\"thread__composer\"><label class=\"visually-hidden\" for=\"c1\">Add a comment</label><textarea id=\"c1\" rows=\"2\" placeholder=\"Add a comment\"></textarea><button type=\"submit\" class=\"btn btn--solid\">Post</button></form>\n</section>",
+    "css": ".thread{display:flex;flex-direction:column;gap:16px;padding:16px}\n.comment{display:flex;gap:12px}\n.comment__avatar{border-radius:9999px;width:32px;height:32px;flex:none}\n.comment__main{flex:1;min-width:0}\n.comment__head{display:flex;gap:8px;align-items:baseline;font-size:12px;color:#525252}\n.comment__author{font-weight:600;color:#111}\n.comment__body{margin:4px 0 8px;font-size:14px;line-height:1.5}\n.comment__actions{display:flex;gap:8px}\n.comment__actions button{min-height:44px;padding:0 12px;border:1px solid #737373;border-radius:8px;background:#fff;cursor:pointer;font-size:13px}\n.comment__actions button:hover{background:#f5f5f5}\n.thread__composer{display:flex;gap:8px;align-items:flex-end}\n.thread__composer textarea{flex:1;padding:12px;border:1px solid #737373;border-radius:8px;font:inherit;resize:vertical}\n.btn{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid #111;background:#111;color:#fff;cursor:pointer}\n.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}\n.comment__actions button:focus-visible,.thread__composer textarea:focus-visible,.btn:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}",
+    "frame": "<section class=\"thread\" aria-label=\"Comments\">\n  <article class=\"comment\">\n    <div class=\"comment__main\"><header class=\"comment__head\"><span class=\"comment__author\">Taylor</span><time>2 hours ago</time></header><p class=\"comment__body\">Contrast on the caption fails AA, can we bump it?</p><div class=\"comment__actions\"><button type=\"button\">Reply</button><button type=\"button\">Like (2)</button></div></div>\n  </article>\n</section>"
+  },
+  "industries": ["all"],
+  "interactive": true
+}

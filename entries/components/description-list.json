@@ -1,0 +1,98 @@
+{
+  "id": "description-list",
+  "type": "component",
+  "name": "Description list",
+  "category": "data-display",
+  "level": "molecule",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet",
+    "mobile-web"
+  ],
+  "summary": "A key-value list for read-only structured data such as account details, order summaries or metadata. Uses native dl/dt/dd semantics.",
+  "anatomy": [
+    {
+      "part": "list",
+      "required": true,
+      "purpose": "The <dl> container that groups each term with its description."
+    },
+    {
+      "part": "term",
+      "required": true,
+      "purpose": "The <dt> label; short, plain words, consistent order across the product."
+    },
+    {
+      "part": "description",
+      "required": true,
+      "purpose": "The <dd> value; may hold text, links or inline actions."
+    }
+  ],
+  "variants": [
+    {
+      "id": "horizontal",
+      "name": "Horizontal",
+      "use": "Terms in a fixed-width column beside values; best on wide screens.",
+      "contentLimits": {
+        "term": "max 40 characters",
+        "value": "max 200 characters per row"
+      },
+      "width": "fill"
+    },
+    {
+      "id": "stacked",
+      "name": "Stacked",
+      "use": "Term above value; the default on narrow screens.",
+      "contentLimits": {
+        "term": "max 40 characters",
+        "value": "max 200 characters per row"
+      },
+      "width": "fill"
+    }
+  ],
+  "whenToUse": [
+    "Showing read-only key-value pairs for one record (profile, order, invoice).",
+    "The data is sparse and irregular, so a table would waste columns."
+  ],
+  "whenNotToUse": [
+    "Comparing many records across the same attributes: use a table.",
+    "The values are editable: use a form."
+  ],
+  "alternatives": [
+    "table",
+    "list",
+    "card"
+  ],
+  "tokens": [
+    "color.text.primary",
+    "color.text.secondary",
+    "color.border.default",
+    "space.4",
+    "space.6",
+    "space.8"
+  ],
+  "accessibility": {
+    "role": "term/definition semantics via native dl, dt, dd elements",
+    "keyboard": [
+      "Not interactive by itself; links or buttons inside values are standard Tab stops."
+    ],
+    "focus": "Interactive elements inside values show the standard focus-visible ring.",
+    "notes": [
+      "Do not fake a description list with divs and ARIA; native dl/dt/dd conveys the relationship to screen readers.",
+      "Keep term and value contrast at 4.5:1; secondary term color must not drop below that.",
+      "Group related pairs under a heading for long lists."
+    ]
+  },
+  "related": [
+    "table",
+    "list"
+  ],
+  "code": {
+    "html": "<dl class=\"dl\">\n  <div class=\"dl__row\"><dt class=\"dl__term\">Account type</dt><dd class=\"dl__desc\">Team · 14 seats</dd></div>\n  <div class=\"dl__row\"><dt class=\"dl__term\">Renews</dt><dd class=\"dl__desc\">1 March 2027</dd></div>\n  <div class=\"dl__row\"><dt class=\"dl__term\">Owner</dt><dd class=\"dl__desc\"><a href=\"/team/eric\">Eric De La Paz</a></dd></div>\n</dl>",
+    "css": ".dl { margin: 0; display: flex; flex-direction: column; }\n.dl__row { display: grid; grid-template-columns: 160px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--color-border-default, #d4d4d4); }\n.dl__row:last-child { border-bottom: 0; }\n.dl__term { margin: 0; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--color-text-secondary, #404040); }\n.dl__desc { margin: 0; font-size: 14px; line-height: 20px; color: var(--color-text-primary, #0a0a0a); }\n.dl a { color: #1d4ed8; }\n.dl a:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; border-radius: 2px; }\n@media (max-width: 480px) { .dl__row { grid-template-columns: 1fr; gap: 4px; } }\n"
+  },
+  "industries": [
+    "all"
+  ],
+  "interactive": false
+}

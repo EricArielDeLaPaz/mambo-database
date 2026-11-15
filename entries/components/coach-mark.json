@@ -1,0 +1,55 @@
+{
+  "id": "coach-mark",
+  "type": "component",
+  "name": "Coach mark",
+  "category": "overlays",
+  "level": "molecule",
+  "platforms": ["desktop-web", "desktop-app", "tablet", "mobile-web", "ios", "android"],
+  "summary": "A small spotlight callout anchored to one UI element, used for first-run onboarding or feature discovery. Dismissed by the user; never shown twice for the same step.",
+  "anatomy": [
+    { "part": "anchor", "required": true, "purpose": "The element the coach mark points at. Receives a highlight ring while active." },
+    { "part": "bubble", "required": true, "purpose": "Short title + one-sentence body, max two lines each." },
+    { "part": "step-indicator", "required": false, "purpose": "'2 of 4' when part of a tour sequence." },
+    { "part": "actions", "required": true, "purpose": "Primary 'Got it' or 'Next', plus 'Skip tour' when in a sequence." },
+    { "part": "dismiss", "required": true, "purpose": "Explicit close control; Escape also dismisses." }
+  ],
+  "variants": [
+    { "id": "single", "name": "Single", "use": "One-off tip for a feature that is easy to miss.", "contentLimits": { "title": "max 40 characters", "body": "max 120 characters", "actions": "1 primary plus dismiss" } },
+    { "id": "tour-step", "name": "Tour step", "use": "One step in a multi-step onboarding sequence.", "contentLimits": { "title": "max 40 characters", "body": "max 120 characters", "actions": "Next/Back plus Skip tour" } }
+  ],
+  "whenToUse": [
+    "First-run onboarding pointing at one real control.",
+    "Announcing a new feature in context, once.",
+    "Empty states where the next step is a single button."
+  ],
+  "whenNotToUse": [
+    "Critical instructions the user must read to proceed: use a modal instead.",
+    "Passive hints that do not block or point: use inline text or a tooltip.",
+    "Showing repeatedly until clicked: one impression per step, ever."
+  ],
+  "alternatives": ["popover", "tooltip", "modal-dialog", "banner"],
+  "tokens": ["color.surface.raised", "color.text.primary", "color.accent", "color.border.default", "radius.md", "space.2", "space.4", "shadow.overlay"],
+  "accessibility": {
+    "role": "dialog (non-modal) with aria-labelledby and aria-describedby",
+    "keyboard": [
+      "Escape dismisses the coach mark.",
+      "Tab reaches the actions in order; focus is not trapped because the dialog is non-modal.",
+      "When a tour sequence advances, focus moves to the next coach mark's primary action."
+    ],
+    "focus": "Visible focus ring on all actions; the anchored element keeps a 2px focus/highlight ring at 3:1 contrast against adjacent colors.",
+    "notes": [
+      "Non-modal: the rest of the page stays interactive; do not add a scrim.",
+      "Position must not cover the anchored control or the only route to dismiss.",
+      "Announce its appearance with aria-live=polite rather than moving focus abruptly, unless it is a tour step.",
+      "Respect prefers-reduced-motion for the entrance animation."
+    ]
+  },
+  "related": ["popover", "tooltip", "banner"],
+  "code": {
+    "html": "<button type=\"button\" class=\"btn\" data-coach-anchor=\"export\">Export</button>\n<div class=\"coach\" role=\"dialog\" aria-labelledby=\"cm-t\" aria-describedby=\"cm-b\">\n  <p class=\"coach__step\">2 of 4</p>\n  <h2 id=\"cm-t\" class=\"coach__title\">Export anywhere</h2>\n  <p id=\"cm-b\" class=\"coach__body\">Download your report as PDF, CSV or JSON from this button.</p>\n  <div class=\"coach__actions\"><button type=\"button\" class=\"coach__skip\">Skip tour</button><button type=\"button\" class=\"coach__next\">Next</button></div>\n</div>",
+    "css": ".coach{position:absolute;max-width:280px;background:#111;color:#fff;border-radius:12px;padding:16px;box-shadow:0 12px 32px rgba(0,0,0,.3)}\n.coach__step{margin:0 0 4px;font-size:12px;color:#c8b6d6}\n.coach__title{margin:0 0 4px;font-size:16px;line-height:1.3}\n.coach__body{margin:0 0 12px;font-size:14px;line-height:1.5;color:#f5f5f5}\n.coach__actions{display:flex;justify-content:space-between;gap:8px}\n.coach__next,.coach__skip{min-height:44px;padding:0 16px;border-radius:999px;cursor:pointer;font-size:14px}\n.coach__next{border:0;background:#fff;color:#111;font-weight:600}\n.coach__skip{border:1px solid #525252;background:transparent;color:#f5f5f5}\n[data-coach-anchor]:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}\n.coach__next:focus-visible,.coach__skip:focus-visible{outline:2px solid #fff;outline-offset:2px}\n@media (prefers-reduced-motion:reduce){.coach{animation:none;transition:none}}",
+    "frame": "<div class=\"coach\" role=\"dialog\" aria-labelledby=\"cm-t\" aria-describedby=\"cm-b\">\n  <p class=\"coach__step\">2 of 4</p>\n  <h2 id=\"cm-t\" class=\"coach__title\">Export anywhere</h2>\n  <p id=\"cm-b\" class=\"coach__body\">Download your report as PDF, CSV or JSON from this button.</p>\n  <div class=\"coach__actions\"><button type=\"button\" class=\"coach__skip\">Skip tour</button><button type=\"button\" class=\"coach__next\">Next</button></div>\n</div>"
+  },
+  "industries": ["all"],
+  "interactive": true
+}

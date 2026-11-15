@@ -1,0 +1,104 @@
+{
+  "id": "image-gallery",
+  "type": "component",
+  "name": "Image gallery",
+  "category": "data-display",
+  "level": "organism",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet",
+    "mobile-web"
+  ],
+  "summary": "A thumbnail grid with a lightbox view for browsing a set of images. Supports keyboard navigation and a visible counter.",
+  "anatomy": [
+    {
+      "part": "grid",
+      "required": true,
+      "purpose": "Responsive set of thumbnails; each is a button that opens the lightbox."
+    },
+    {
+      "part": "lightbox",
+      "required": true,
+      "purpose": "Full-viewport dialog showing the selected image with a close control."
+    },
+    {
+      "part": "counter",
+      "required": true,
+      "purpose": "\"3 of 12\" text so sighted and screen-reader users know position in the set."
+    },
+    {
+      "part": "prev/next",
+      "required": true,
+      "purpose": "Buttons to step through the set while the lightbox is open."
+    }
+  ],
+  "variants": [
+    {
+      "id": "grid",
+      "name": "Grid with lightbox",
+      "use": "Default; thumbnails open a large view.",
+      "contentLimits": {
+        "images": "up to 60 per set",
+        "alt": "every image needs meaningful alt text or alt=\"\" if decorative"
+      },
+      "width": "fill"
+    },
+    {
+      "id": "strip",
+      "name": "Thumbnail strip",
+      "use": "Single-row strip under a hero image, for product pages.",
+      "contentLimits": {
+        "images": "up to 10",
+        "alt": "every image needs alt text"
+      },
+      "width": "fill"
+    }
+  ],
+  "whenToUse": [
+    "Showing multiple related images that belong together (project shots, product angles).",
+    "Users need to inspect images at full size."
+  ],
+  "whenNotToUse": [
+    "A single hero image is enough: use an img with caption.",
+    "The images carry long-form narrative: use figures with captions in a document layout."
+  ],
+  "alternatives": [
+    "carousel",
+    "card"
+  ],
+  "tokens": [
+    "color.surface.overlay",
+    "color.text.inverse",
+    "color.scrim",
+    "radius.md",
+    "space.4",
+    "space.8"
+  ],
+  "accessibility": {
+    "role": "dialog for the lightbox; buttons for thumbnails and controls",
+    "keyboard": [
+      "Tab moves through thumbnails; Enter or Space opens the lightbox.",
+      "Left/Right arrows step between images in the lightbox.",
+      "Escape closes the lightbox and returns focus to the thumbnail that opened it."
+    ],
+    "focus": "Trap focus inside the lightbox while open; restore focus to the invoking thumbnail on close. Thumbnails show a 2px focus-visible ring with 3:1 contrast.",
+    "notes": [
+      "Alt text is required for every meaningful image; never leave the lightbox image unlabeled.",
+      "The counter must be inside the dialog and exposed to screen readers via aria-live=polite or role=status.",
+      "Do not rely on swipe alone on touch devices; keep visible prev/next buttons."
+    ]
+  },
+  "related": [
+    "carousel",
+    "modal-dialog"
+  ],
+  "code": {
+    "html": "<ul class=\"gallery\">\n  <li><button class=\"gallery__thumb\" data-full=\"shot-1-full.jpg\" aria-label=\"Open image 1 of 2: lobby detail\"><img src=\"shot-1-thumb.jpg\" alt=\"Lobby detail\" width=\"160\" height=\"120\"></button></li>\n  <li><button class=\"gallery__thumb\" data-full=\"shot-2-full.jpg\" aria-label=\"Open image 2 of 2: reading nook\"><img src=\"shot-2-thumb.jpg\" alt=\"Reading nook\" width=\"160\" height=\"120\"></button></li>\n</ul>\n<dialog class=\"gallery__lightbox\" aria-label=\"Image viewer\">\n  <p class=\"gallery__counter\" role=\"status\">1 of 2</p>\n  <img class=\"gallery__full\" alt=\"\">\n  <div class=\"gallery__controls\"><button type=\"button\" data-prev aria-label=\"Previous image\">&#8592;</button><button type=\"button\" data-close aria-label=\"Close viewer\">&times;</button><button type=\"button\" data-next aria-label=\"Next image\">&#8594;</button></div>\n</dialog>",
+    "css": ".gallery { list-style:none;margin:0;padding:0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }\n.gallery__thumb { padding: 0; border: 0; border-radius: 8px; overflow: hidden; cursor: pointer; aspect-ratio: 4 / 3; }\n.gallery__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }\n.gallery__thumb:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }\n.gallery__lightbox { border: 0; border-radius: 12px; padding: 16px; max-width: 90vw; max-height: 90vh; background: #121212; color: #f5f5f5; }\n.gallery__lightbox::backdrop { background: rgba(0,0,0,.72); }\n.gallery__full { max-width: 80vw; max-height: 70vh; display: block; margin: 0 auto; }\n.gallery__counter { margin: 0 0 8px; font-size: 14px; line-height: 20px; text-align: center; }\n.gallery__controls { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }\n.gallery__controls button { min-width: 44px; min-height: 44px; border: 1px solid #f5f5f5; border-radius: 8px; background: transparent; color: #f5f5f5; font-size: 20px; cursor: pointer; }\n.gallery__controls button:focus-visible { outline: 2px solid #f5f5f5; outline-offset: 2px; }\n"
+  },
+  "industries": [
+    "all"
+  ],
+  "interactive": true
+}

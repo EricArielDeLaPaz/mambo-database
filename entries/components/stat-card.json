@@ -1,0 +1,107 @@
+{
+  "id": "stat-card",
+  "type": "component",
+  "name": "Stat card",
+  "category": "data-display",
+  "level": "molecule",
+  "platforms": [
+    "desktop-web",
+    "desktop-app",
+    "tablet",
+    "mobile-web"
+  ],
+  "summary": "A compact tile that pairs one key metric with its label, an optional trend delta and a short context line. Use for dashboards and summary rows.",
+  "anatomy": [
+    {
+      "part": "label",
+      "required": true,
+      "purpose": "Names the metric in plain words (e.g. \"Weekly active users\")."
+    },
+    {
+      "part": "value",
+      "required": true,
+      "purpose": "The single headline number, formatted with units or separators."
+    },
+    {
+      "part": "trend",
+      "required": false,
+      "purpose": "Direction and size of change vs. the comparison period, with an arrow or +/- sign, never color alone."
+    },
+    {
+      "part": "context",
+      "required": false,
+      "purpose": "One short line of qualifier text such as the comparison window."
+    }
+  ],
+  "variants": [
+    {
+      "id": "basic",
+      "name": "Basic",
+      "use": "Label and value only, for dense KPI rows.",
+      "contentLimits": {
+        "label": "max 40 characters",
+        "value": "max 12 characters",
+        "context": "none"
+      },
+      "width": "240px"
+    },
+    {
+      "id": "trend",
+      "name": "With trend",
+      "use": "Value plus trend delta and comparison window.",
+      "contentLimits": {
+        "label": "max 40 characters",
+        "value": "max 12 characters",
+        "trend": "sign, number, unit",
+        "context": "max 60 characters"
+      },
+      "width": "260px"
+    }
+  ],
+  "whenToUse": [
+    "A dashboard needs to surface a handful of headline metrics at a glance.",
+    "The value needs one line of context, not a full chart."
+  ],
+  "whenNotToUse": [
+    "The person needs to explore the data: use a table or chart instead.",
+    "There is more than one number competing for attention in the same tile: split into separate cards."
+  ],
+  "alternatives": [
+    "card",
+    "table",
+    "timeline"
+  ],
+  "tokens": [
+    "color.surface.default",
+    "color.text.primary",
+    "color.text.secondary",
+    "color.border.default",
+    "radius.md",
+    "space.4",
+    "space.6"
+  ],
+  "accessibility": {
+    "role": "group (or figure with figcaption when the trend needs a long explanation)",
+    "keyboard": [
+      "Not interactive by default; if the card links somewhere, the whole card is one Tab stop."
+    ],
+    "focus": "If clickable, the card shows a visible focus ring (2px solid, 2px offset) with at least 3:1 contrast against the surrounding surface.",
+    "notes": [
+      "Trend direction must be conveyed with text or an icon in addition to color.",
+      "Value text must meet 4.5:1 against the card surface; label text at least 4.5:1 as well.",
+      "Use a real number format (e.g. 1,240) and set aria-label on the trend if it uses an icon only."
+    ]
+  },
+  "related": [
+    "card",
+    "table"
+  ],
+  "code": {
+    "html": "<div class=\"stat-card\" role=\"group\" aria-labelledby=\"sc-label-1\">\n  <span class=\"stat-card__label\" id=\"sc-label-1\">Weekly active users</span>\n  <span class=\"stat-card__value\">12,480</span>\n  <span class=\"stat-card__trend stat-card__trend--up\"><svg aria-hidden=\"true\" width=\"12\" height=\"12\" viewBox=\"0 0 12 12\"><path d=\"M6 2l4 5H2z\" fill=\"currentColor\"/></svg> +8.2% vs last week</span>\n</div>",
+    "css": ".stat-card {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  padding: 16px;\n  border: 1px solid var(--color-border-default, #d4d4d4);\n  border-radius: var(--radius-md, 8px);\n  background: var(--color-surface-default, #fff);\n  color: var(--color-text-primary, #0a0a0a);\n  max-width: 260px;\n}\n.stat-card__label { font-size: 12px; line-height: 16px; color: var(--color-text-secondary, #404040); }\n.stat-card__value { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.01em; }\n.stat-card__trend { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; font-weight: 600; color: #166534; }\n.stat-card__trend--down { color: #991b1b; }\n.stat-card a:focus-visible, .stat-card:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }\n"
+  },
+  "industries": [
+    "all"
+  ],
+  "interactive": false
+}

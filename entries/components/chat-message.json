@@ -1,0 +1,58 @@
+{
+  "id": "chat-message",
+  "type": "component",
+  "name": "Chat message",
+  "category": "conversation",
+  "level": "molecule",
+  "platforms": ["desktop-web", "desktop-app", "tablet", "mobile-web", "ios", "android"],
+  "summary": "A single message bubble in a conversation: sender identity, body text, timestamp and delivery status. The building block of chat interfaces.",
+  "anatomy": [
+    { "part": "avatar", "required": false, "purpose": "Sender image or initials. Omitted for consecutive messages from the same sender." },
+    { "part": "bubble", "required": true, "purpose": "Holds the message body. Aligned to the trailing edge for the current user, leading edge for others." },
+    { "part": "sender-name", "required": false, "purpose": "Shown in group conversations to distinguish senders." },
+    { "part": "body", "required": true, "purpose": "The message text or attachment. Wraps; never truncated." },
+    { "part": "meta", "required": true, "purpose": "Timestamp and, for sent messages, delivery status (sent, delivered, read)." }
+  ],
+  "variants": [
+    { "id": "sent", "name": "Sent (current user)", "use": "Messages from the person using the app.", "contentLimits": { "body": "no hard limit; visually cap at about 60 characters per line", "meta": "time plus status icon" } },
+    { "id": "received", "name": "Received", "use": "Messages from others.", "contentLimits": { "body": "no hard limit", "sender-name": "max 40 characters" } },
+    { "id": "system", "name": "System", "use": "Join/leave notices, date dividers, encryption notices.", "contentLimits": { "body": "max 80 characters" } }
+  ],
+  "whenToUse": [
+    "Realtime or near-realtime exchange between two or more people.",
+    "Support conversations embedded in a product.",
+    "Any thread where authorship and order matter."
+  ],
+  "whenNotToUse": [
+    "One-way announcements: use a banner or toast instead.",
+    "Long-form async discussion with threading: use a comment thread instead.",
+    "Status updates about a task: use a timeline instead."
+  ],
+  "alternatives": ["comment-thread", "timeline", "toast"],
+  "tokens": ["color.surface.raised", "color.surface.accent", "color.text.primary", "color.text.secondary", "color.border.default", "radius.lg", "space.2", "space.4"],
+  "accessibility": {
+    "role": "log (the message list); each message is a listitem or article",
+    "keyboard": [
+      "Message list is scrollable with the keyboard; focus moves message by message.",
+      "Interactive elements inside a message (links, buttons, reactions) are in the tab order.",
+      "New messages are announced via aria-live=polite on the log region; do not use assertive."
+    ],
+    "focus": "Visible focus ring on every interactive element inside the message; the list container itself is focusable only if it scrolls.",
+    "notes": [
+      "Do not convey sent/received by color alone; align side and label status in text.",
+      "Status icons need accessible names ('Read at 14:02', not just a double check).",
+      "Body text must meet 4.5:1 on the bubble background in both themes."
+    ]
+  },
+  "related": ["comment-thread", "avatar", "timeline"],
+  "code": {
+    "html": "<ul class=\"chat-log\" aria-label=\"Conversation\">\n  <li class=\"chat-msg chat-msg--received\">\n    <img class=\"chat-msg__avatar\" src=\"/avatars/alex.png\" alt=\"\" width=\"32\" height=\"32\">\n    <div class=\"chat-msg__bubble\">\n      <span class=\"chat-msg__sender\">Alex</span>\n      <p class=\"chat-msg__body\">Did the build pass?</p>\n      <span class=\"chat-msg__meta\">14:02</span>\n    </div>\n  </li>\n  <li class=\"chat-msg chat-msg--sent\">\n    <div class=\"chat-msg__bubble\">\n      <p class=\"chat-msg__body\">Yes, all green.</p>\n      <span class=\"chat-msg__meta\">14:03 &middot; Read</span>\n    </div>\n  </li>\n</ul>",
+    "css": ".chat-log{list-style:none;margin:0;padding:16px;display:flex;flex-direction:column;gap:16px}\n.chat-msg{display:flex;gap:8px;max-width:75%}\n.chat-msg--received{align-self:flex-start}\n.chat-msg--sent{align-self:flex-end;flex-direction:row-reverse}\n.chat-msg__avatar{border-radius:9999px;width:32px;height:32px;flex:none}\n.chat-msg__bubble{background:#f5f5f5;border:1px solid #e0e0e0;border-radius:16px;padding:8px 12px}\n.chat-msg--sent .chat-msg__bubble{background:#111;color:#fff;border-color:#111}\n.chat-msg__sender{display:block;font-size:12px;line-height:16px;font-weight:600;color:#525252;margin-bottom:4px}\n.chat-msg__body{margin:0;font-size:14px;line-height:1.5}\n.chat-msg__meta{display:block;font-size:12px;line-height:1.3;color:#525252;margin-top:4px}\n.chat-msg--sent .chat-msg__meta{color:#d4d4d4}\n.chat-msg__bubble a:focus-visible,.chat-msg__bubble button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px;border-radius:4px}\n@media (prefers-contrast:more){.chat-msg__bubble{border-width:2px}}",
+    "frame": "<ul class=\"chat-log\" aria-label=\"Conversation\">\n  <li class=\"chat-msg chat-msg--received\">\n    <div class=\"chat-msg__bubble\"><span class=\"chat-msg__sender\">Alex</span><p class=\"chat-msg__body\">Did the build pass?</p><span class=\"chat-msg__meta\">14:02</span></div>\n  </li>\n  <li class=\"chat-msg chat-msg--sent\">\n    <div class=\"chat-msg__bubble\"><p class=\"chat-msg__body\">Yes, all green.</p><span class=\"chat-msg__meta\">14:03 &middot; Read</span></div>\n  </li>\n</ul>"
+  },
+  "industries": ["all"],
+  "interactive": true,
+  "states": [
+    { "id": "focus", "label": "Focus (keyboard)", "when": "all", "note": "", "css": ".chat-msg__bubble a:focus-visible,.chat-msg__bubble button:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}" }
+  ]
+}

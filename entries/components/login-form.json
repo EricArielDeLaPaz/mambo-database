@@ -1,0 +1,57 @@
+{
+  "id": "login-form",
+  "type": "component",
+  "name": "Login form",
+  "category": "forms",
+  "level": "organism",
+  "platforms": ["desktop-web", "desktop-app", "tablet", "mobile-web", "ios", "android"],
+  "summary": "Email + password sign-in with remember-me, forgot-password link and error handling. The default pattern for authenticating returning users.",
+  "anatomy": [
+    { "part": "heading", "required": true, "purpose": "Names the action, e.g. 'Sign in'. First element in the form's accessible name." },
+    { "part": "email-field", "required": true, "purpose": "type=email with autocomplete=email and a visible label." },
+    { "part": "password-field", "required": true, "purpose": "type=password with show/hide toggle and autocomplete=current-password." },
+    { "part": "remember-me", "required": false, "purpose": "Checkbox, default off on shared-device contexts." },
+    { "part": "submit", "required": true, "purpose": "Full-width primary button, disabled only while submitting." },
+    { "part": "error-summary", "required": false, "purpose": "One message for failed attempts; per-field errors inline. Never reveals whether the email exists." },
+    { "part": "secondary-links", "required": true, "purpose": "Forgot password and create-account links." }
+  ],
+  "variants": [
+    { "id": "email-password", "name": "Email + password", "use": "Default sign-in.", "contentLimits": { "heading": "max 30 characters", "error": "max 120 characters, generic wording" } },
+    { "id": "sso", "name": "With SSO options", "use": "Organizations with SAML/OIDC or social login.", "contentLimits": { "sso-buttons": "at most 3, with text labels, not logos alone" } }
+  ],
+  "whenToUse": [
+    "Authenticating returning users.",
+    "Gate for content that requires an account.",
+    "Session re-establishment after token expiry."
+  ],
+  "whenNotToUse": [
+    "First-time account creation: use a separate sign-up flow.",
+    "One-time or magic-link only products: use a single email field.",
+    "High-security re-auth for a single action: use a step-up prompt."
+  ],
+  "alternatives": ["otp-input", "password-input", "text-input"],
+  "tokens": ["color.surface.raised", "color.text.primary", "color.text.secondary", "color.border.default", "color.danger", "radius.md", "space.2", "space.4", "space.8"],
+  "accessibility": {
+    "role": "form with aria-labelledby pointing at the heading",
+    "keyboard": [
+      "Tab order: email, password, show/hide toggle, remember-me, submit, secondary links.",
+      "Enter submits from any field.",
+      "On failed login, focus moves to the error summary; it is a role=alert region."
+    ],
+    "focus": "Visible focus (2px outline, 3:1 contrast) on every field, toggle, checkbox and link. Autofocus to the email field only when the form is the page.",
+    "notes": [
+      "Never reveal whether the account exists: use 'Email or password is incorrect'.",
+      "Labels must be visible; placeholders are not labels.",
+      "Use autocomplete=current-password so password managers work.",
+      "Error text must meet 4.5:1 on the form background."
+    ]
+  },
+  "related": ["text-input", "password-input", "checkbox", "button"],
+  "code": {
+    "html": "<form class=\"login\" aria-labelledby=\"login-title\" novalidate>\n  <h1 id=\"login-title\" class=\"login__title\">Sign in</h1>\n  <p class=\"login__error\" role=\"alert\" hidden>Email or password is incorrect.</p>\n  <label class=\"login__label\" for=\"login-email\">Email</label>\n  <input class=\"login__input\" id=\"login-email\" name=\"email\" type=\"email\" autocomplete=\"email\" required>\n  <label class=\"login__label\" for=\"login-password\">Password</label>\n  <input class=\"login__input\" id=\"login-password\" name=\"password\" type=\"password\" autocomplete=\"current-password\" required>\n  <label class=\"login__remember\"><input type=\"checkbox\" name=\"remember\"> Remember me</label>\n  <button class=\"login__submit\" type=\"submit\">Sign in</button>\n  <div class=\"login__links\"><a href=\"/forgot\">Forgot password?</a><a href=\"/signup\">Create account</a></div>\n</form>",
+    "css": ".login{display:flex;flex-direction:column;gap:8px;max-width:400px;margin:0 auto;padding:32px;background:#fff;border:1px solid #e0e0e0;border-radius:12px}\n.login__title{margin:0 0 8px;font-size:24px;line-height:1.25}\n.login__error{margin:0 0 8px;padding:12px 16px;border:1px solid #b91c1c;border-radius:8px;background:#fef2f2;color:#7f1d1d;font-size:14px}\n.login__label{font-size:14px;font-weight:600}\n.login__input{min-height:44px;padding:12px;border:1px solid #737373;border-radius:8px;font:inherit}\n.login__remember{display:flex;gap:8px;align-items:center;min-height:44px;font-size:14px}\n.login__submit{min-height:44px;border:0;border-radius:999px;background:#111;color:#fff;font-size:16px;font-weight:600;cursor:pointer}\n.login__links{display:flex;justify-content:space-between;gap:16px;margin-top:8px;font-size:14px}\n.login__input:focus-visible,.login__submit:focus-visible,.login__remember input:focus-visible,.login__links a:focus-visible{outline:2px solid #1d4ed8;outline-offset:2px}\n.login__submit:disabled{opacity:.6;cursor:not-allowed}",
+    "frame": "<form class=\"login\" aria-labelledby=\"login-title\">\n  <h1 id=\"login-title\" class=\"login__title\">Sign in</h1>\n  <label class=\"login__label\" for=\"fe\">Email</label><input class=\"login__input\" id=\"fe\" type=\"email\" autocomplete=\"email\">\n  <label class=\"login__label\" for=\"fp\">Password</label><input class=\"login__input\" id=\"fp\" type=\"password\" autocomplete=\"current-password\">\n  <button class=\"login__submit\" type=\"submit\">Sign in</button>\n</form>"
+  },
+  "industries": ["all"],
+  "interactive": true
+}
