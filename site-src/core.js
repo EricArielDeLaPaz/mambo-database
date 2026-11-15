@@ -299,7 +299,7 @@ function applyForced(root, css) {
   });
   walk(sheet.cssRules);
 }
-const FRAME_FIX = ':host{display:block}.sheet{animation:none!important}.fr [role=menu],.fr [role=listbox],.fr [role=tooltip],.fr .pop{position:static!important;inset:auto!important;margin-top:6px!important}.fr .m-scrim{position:static!important;display:block!important;background:none!important}.fr [hidden]{display:revert}.fr .row,.fr .acts{flex-wrap:wrap}*{box-sizing:border-box}.fr{padding:20px 18px;font-family:system-ui,sans-serif}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}.sr{position:absolute;width:1px;height:1px;overflow:hidden}';
+const FRAME_FIX = ':host{display:block}.sheet{animation:none!important}.fr [role=menu],.fr [role=listbox],.fr [role=tooltip],.fr .pop{position:static!important;inset:auto!important;margin-top:8px!important}.fr .m-scrim{position:static!important;display:block!important;background:none!important}.fr [hidden]{display:revert}.fr .row,.fr .acts{flex-wrap:wrap}*{box-sizing:border-box}.fr{padding:20px;font:400 16px/1.6 system-ui,sans-serif;color:#0a0a0a;letter-spacing:normal}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}.sr{position:absolute;width:1px;height:1px;overflow:hidden}';
 function renderFrames(host, e, stateIds, osList) {
   host.innerHTML = ''; host.classList.add('frames');
   const rows = (osList && osList.length ? osList : ['']);
@@ -318,5 +318,23 @@ function renderFrames(host, e, stateIds, osList) {
     });
     row.appendChild(strip); host.appendChild(row);
   });
+}
+/* "Copy HTML + CSS for Figma": the same frames shown under Variants, as one pasteable page. Overlays are shown open, pointer states are forced on, and each device variant is scoped to its own wrapper, so what lands in Figma matches what the site shows. (The working, interactive code is in the HTML / CSS / JS blocks and the .html download.) */
+const FIGMA_FIX = '.fr{display:block;padding:20px;font:400 16px/1.6 system-ui,sans-serif;color:#0a0a0a;letter-spacing:normal}.fr,.fr *{box-sizing:border-box}.fr .sheet{animation:none!important;position:static!important;width:min(100%,380px);border-radius:20px!important}.fr [role=menu],.fr [role=listbox],.fr [role=tooltip],.fr .pop{position:static!important;inset:auto!important;margin-top:8px!important}.fr .m-scrim{position:static!important;display:block!important;background:none!important}.fr [hidden]{display:revert}.fr .row,.fr .acts{flex-wrap:wrap}.fr dialog{position:static!important;margin:0!important;display:block}.fr .sheet-scrim{display:none}.fr .sr{position:absolute;width:1px;height:1px;overflow:hidden}.fs{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}';
+function figmaDoc(e, ids, os) {
+  const rows = [''].concat(os || []), host = document.createElement('div');
+  host.style.cssText = 'position:absolute;left:-9999px;top:0;width:1200px'; host.setAttribute('aria-hidden', 'true'); document.body.appendChild(host);
+  try {
+    renderFrames(host, e, ids, rows);
+    const forced = [{ css: '' }].concat(compStates(e, ids).filter(s => s.id !== 'default')).map(s => forceCss(s.css)).join('\n');
+    let css = '', body = '';
+    $$('.frow', host).forEach((row, ri) => {
+      const o = rows[ri], base = e.code.css + '\n' + (o ? (osBase(e, o).css || '') : '') + '\n' + forced;
+      css += (o ? scopeCss(base, '.os-' + o) : stripComments(base)) + '\n';
+      const frames = $$('.fcell', row).map(c => { const f = $('.fr', $('.fbox', c).shadowRoot); return `<section class="fr" data-frame="${esc(e.name + (o ? ' / ' + OS_LABEL[o] : '') + ' / ' + $('figcaption', c).textContent.trim())}" style="width:${Math.ceil(f.getBoundingClientRect().width)}px">${f.innerHTML}</section>` }).join('\n');
+      body += `<div class="fs${o ? ' os-' + o : ''}">\n${frames}\n</div>\n`;
+    });
+    return `<!-- ${e.name}: one frame per state, matching the Variants strip. Overlays are shown open. -->\n<style>\n${FIGMA_FIX}\n${css}</style>\n${body}`;
+  } finally { host.remove(); }
 }
 const compById = id => DATA.find(x => x.id === id && x.type === 'component');
