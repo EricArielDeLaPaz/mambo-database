@@ -1,6 +1,6 @@
 # Shared protocol
 
-Read this once at the start. It is the same in both Mambo skills.
+Read this once at the start. It is the same in every Mambo skill.
 
 ## 1. First run: check what you can use, then tell the person in 3 lines
 Look for these (silently, by trying, not by assuming): a question tool (AskUserQuestion or similar), web search and fetch, a way to start a subagent or use a smaller, faster model, file writing, running scripts (node), and for design systems a Figma connector.
