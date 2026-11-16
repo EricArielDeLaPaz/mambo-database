@@ -1,7 +1,7 @@
 ---
 id: setting-up-the-skills
 title: Setting up the AI skills
-summary: Download the three skills, add them to Claude, and use them to build a design system, plan a product or audit a design system step by step, while keeping token use low.
+summary: Download the four skills, add them to Claude, and use them to build a design system, plan a product, audit a design system or sync tokens step by step, while keeping token use low.
 topic: Setup
 level: Beginner
 order: 2
@@ -9,19 +9,21 @@ order: 2
 
 > **New.** These skills are new and have not been tested in every tool. If a step does not work as described, tell us which tool you used and what happened.
 
-A **skill** is a folder of instructions (and sometimes scripts and other files) that an AI assistant can load when a task matches.[^1] Mambo Database offers three.
+A **skill** is a folder of instructions (and sometimes scripts and other files) that an AI assistant can load when a task matches.[^1] Mambo Database offers four.
 
 | Skill | What it does |
 | --- | --- |
 | `create-design-system` | Takes you from nothing to a documented, accessible design system. It first asks whether you already have one in Figma, want to start from the Mambo Database, or want to start from scratch, then asks different questions for each. Run it with `/create-design-system`. |
 | `product` | Takes you from an idea to a plan for a new product. It asks the product type, proposes the steps that fit (research, definition, design, build and launch) for you to tick or untick, then works through them one at a time. Run it with `/product`. |
 | `design-system-audit` | Checks an existing design system for problems. It audits a code folder, a tokens file or a Figma file, runs scripts to measure contrast, hardcoded colors, off-scale spacing and missing focus styles, then writes a short prioritized report and, if you approve, fixes. Run it with `/design-system-audit`. |
+| `token-sync` | Compares the variables in a Figma file with the tokens in your code (CSS custom properties or tokens JSON), shows every value that drifted or is missing on either side, asks which side wins, then applies only the changes you approve. Run it with `/token-sync`. |
 
 ## Get the files
 
 - [create-design-system-skill.zip](https://ericarieldelapaz.github.io/mambo-database/create-design-system-skill.zip)
 - [product-skill.zip](https://ericarieldelapaz.github.io/mambo-database/product-skill.zip)
 - [design-system-audit-skill.zip](https://ericarieldelapaz.github.io/mambo-database/design-system-audit-skill.zip)
+- [token-sync-skill.zip](https://ericarieldelapaz.github.io/mambo-database/token-sync-skill.zip)
 
 Each zip contains one folder with a `SKILL.md` file inside. That file is the entry point. The assistant reads its short description to decide when to use the skill.[^4]
 
