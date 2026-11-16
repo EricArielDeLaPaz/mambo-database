@@ -125,11 +125,11 @@ const notices = `# Third-party notices\n\nMambo Database lists and links to open
 w(path.join(root, 'THIRD_PARTY_NOTICES.md'), notices); w(path.join(out, 'THIRD_PARTY_NOTICES.md'), notices);
 fs.mkdirSync(path.join(out, 'site/licenses'), { recursive: true }); fs.copyFileSync(path.join(root, 'licenses/OFL-1.1.txt'), path.join(out, 'site/licenses/OFL-1.1.txt'));
 
-// ---------- skills: create-design-system, product and design-system-audit ----------
+// ---------- skills: create-design-system, product, design-system-audit and token-sync ----------
 // Sources live in skills/. _shared/shared-protocol.md is copied into each so the protocol has one source.
 const skillsSrc = path.join(root, 'skills'), skillsOut = path.join(out, 'skill');
 const copyDir = (a, d) => fs.readdirSync(a, { withFileTypes: true }).forEach(f => f.isDirectory() ? copyDir(path.join(a, f.name), path.join(d, f.name)) : (fs.mkdirSync(d, { recursive: true }), fs.copyFileSync(path.join(a, f.name), path.join(d, f.name))));
-for (const name of ['create-design-system', 'product', 'design-system-audit']) {
+for (const name of ['create-design-system', 'product', 'design-system-audit', 'token-sync']) {
   copyDir(path.join(skillsSrc, name), path.join(skillsOut, name));
   w(path.join(skillsOut, name, 'references/shared-protocol.md'), fs.readFileSync(path.join(skillsSrc, '_shared/shared-protocol.md'), 'utf8'));
 }
