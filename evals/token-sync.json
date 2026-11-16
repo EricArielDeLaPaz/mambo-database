@@ -1,0 +1,8 @@
+[
+ {"skills":["token-sync"],"query":"Compare evals/fixtures/figma.json with evals/fixtures/code.css and tell me what drifted. Figma is the source of truth.","files":["evals/fixtures/figma.json","evals/fixtures/code.css"],
+  "expected_behavior":["Runs scripts/sync.js diff instead of comparing by eye","Reports color/primary mismatch (#1d4ed8 vs #2563eb) and does not report color/brand separately (alias to the same token)","Reports --legacy as missing in Figma and color/accent vs --brand-blue as a possible rename, asking which name wins","Does not change any file before the person approves"]},
+ {"skills":["token-sync"],"query":"Apply the Figma values to code.css for the mismatches, I approve the primary color and the missing dark accent.","files":["evals/fixtures/figma.json","evals/fixtures/code.css"],
+  "expected_behavior":["Sets approve true only for those two entries in changes.json","Runs apply --dry then apply and reports how many were applied","Leaves --legacy and the rename untouched","Re-runs diff and reports the remaining 2 differences as chosen to keep"]},
+ {"skills":["token-sync"],"query":"Sync my Tailwind config theme.extend colors with Figma.","files":[],
+  "expected_behavior":["Says Tailwind v3 JS theme objects are not supported by the script","Asks for an export to CSS custom properties or W3C JSON, or writes the values to a temporary JSON file in W3C shape","Does not invent token values it was not given"]}
+]

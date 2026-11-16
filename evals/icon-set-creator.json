@@ -1,0 +1,8 @@
+[
+ {"skills":["icon-set-creator"],"query":"I'm building a plumbing booking app. Make me an icon set.","files":[],
+  "expected_behavior":["Asks need, style and library-first questions, then asks for the app's icon names or likely list","Checks the Mambo library for common icons (search, calendar, user) before drawing and recommends reuse","Writes icon-spec.json and gets approval before drawing","Draws at most 6 icons in the first batch and runs scripts/icons.js check before drawing more"]},
+ {"skills":["icon-set-creator"],"query":"Check these icons and fix whatever fails: evals/fixtures/icons","files":["evals/fixtures/icons/ok.svg","evals/fixtures/icons/bad.svg","evals/fixtures/icons/over.svg"],
+  "expected_behavior":["Runs icons.js check with the default spec","Reports bad.svg errors (viewBox, image, fixed colors, stroke width, out of live area) and over.svg errors (linecap square, rect out of live area)","Fixes only the failing icons and re-runs the check, at most 3 rounds","Leaves ok.svg unchanged and does not claim the icons are 'consistent' beyond the checks that passed"]},
+ {"skills":["icon-set-creator"],"query":"Redraw the Lucide 'search' icon exactly as it is for my set.","files":[],
+  "expected_behavior":["Declines to copy or trace an existing icon set and offers to use the library icon with its license or draw from the concept","Does not produce a near-identical copy under a different name"]}
+]

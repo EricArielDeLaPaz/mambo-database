@@ -1,0 +1,8 @@
+[
+ {"skills":["create-design-system"],"query":"/create-design-system","files":[],
+  "expected_behavior":["Reads references/shared-protocol.md, checks capabilities and reports them in about 3 lines","Asks 'Do you already have a design system?' with Figma / Mambo Database / from scratch options","Asks nothing else before the branch file is read and stops after each step"]},
+ {"skills":["create-design-system"],"query":"Start from scratch for a calm fintech web app. Brand blue is #1d4ed8.","files":[],
+  "expected_behavior":["Follows branch-scratch.md and uses the exact role names (Primary, Background, Surface, Text, Text secondary, Inverse text, Border, Success, Warning, Danger, Info...)","Runs scripts/contrast.js for every text/background and UI pair and never lowers the bar","Keeps counts within limits (brand 1-4, neutrals 3-8, feedback 2-4, total 6-16) and spacing on the 4-point scale","Ends each step with Done / Next and waits"]},
+ {"skills":["create-design-system"],"query":"Use the Mambo Database. Pick me a preset of components for a mobile app and some icons.","files":[],
+  "expected_behavior":["Uses scripts/pick.js and brief.js instead of reading library-lite.json","Uses preset component ids that exist in the library and offers add/remove","Recommends one icon set with license kept, and does not mix sets"]}
+]
