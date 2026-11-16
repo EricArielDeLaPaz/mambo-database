@@ -1,0 +1,7 @@
+{"collections":[{"name":"Colors","modes":["Light","Dark"],"variables":[
+{"name":"color/background","type":"COLOR","values":{"Light":"#FFFFFF","Dark":{"r":0.04,"g":0.04,"b":0.04,"a":1}}},
+{"name":"color/text","type":"COLOR","values":{"Light":"#111111","Dark":"#f5f5f5"}},
+{"name":"color/primary","type":"COLOR","values":{"Light":"#1d4ed8","Dark":"#60a5fa"}},
+{"name":"color/accent","type":"COLOR","values":{"Light":"#7c3aed","Dark":"#a78bfa"}},
+{"name":"color/brand","type":"COLOR","values":{"Light":{"alias":"color/primary"},"Dark":"#60a5fa"}},
+{"name":"spacing/md","type":"FLOAT","values":{"Light":16,"Dark":16}}]}]}

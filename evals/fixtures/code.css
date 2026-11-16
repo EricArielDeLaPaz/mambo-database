@@ -1,0 +1,2 @@
+:root{--background:#ffffff;--text:#111111;--primary:#2563eb;--brand-blue:#7c3aed;--spacing-md:1rem;--legacy:#abcdef;--brand:var(--primary)}
+@media (prefers-color-scheme: dark){:root{--background:#0a0a0a;--text:#f5f5f5;--primary:#60a5fa;--brand:#60a5fa}}
