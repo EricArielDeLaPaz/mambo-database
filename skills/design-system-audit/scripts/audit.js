@@ -2,14 +2,17 @@
 // Mechanical design-system audit. Run it instead of reading the code yourself.
 //   node audit.js code <folder> [--tokens tokens.json|tokens.css] [--examples 5] [--out findings.json] [--baseline earlier-findings.json]
 //   node audit.js tokens <tokens.json|tokens.css>
+//   node audit.js code <folder> --tokens tokens.css --plan plan.json   (also writes the safe, mechanical fixes for approval)
+//   node audit.js apply <plan.json> --root <folder> [--dry]            (applies only entries with "approve": true)
 // Prints a short summary (counts by rule plus a few examples). Full findings go to --out.
 // Exit code 1 if any error-level finding exists.
 const fs = require('fs'), path = require('path');
 const [mode, target, ...rest] = process.argv.slice(2);
 const opt = (k, d) => { const i = rest.indexOf('--' + k); return i >= 0 && rest[i + 1] !== undefined ? rest[i + 1] : d };
-if (!['code', 'tokens'].includes(mode) || !target) { console.error('Usage: node audit.js code <folder> [--tokens file] [--examples 5] [--out file] [--baseline file]\n       node audit.js tokens <file>'); process.exit(2) }
-const EX = +opt('examples', 5), findings = [];
-const add = (sev, rule, file, line, msg) => findings.push({ sev, rule, file, line, msg });
+if (!['code', 'tokens', 'apply'].includes(mode) || !target) { console.error('Usage: node audit.js code <folder> [--tokens file] [--examples 5] [--out file] [--baseline file]\n       node audit.js tokens <file>'); process.exit(2) }
+const EX = +opt('examples', 5), findings = []; let cssTokens = false;
+const add = (sev, rule, file, line, msg, fix) => findings.push(fix ? { sev, rule, file, line, msg, fix } : { sev, rule, file, line, msg });
+const SCALE_STEP = px => px > 32 ? Math.round(px / 8) * 8 : Math.min(32, Math.round(px / 4) * 4); // nearest scale step; halves round up
 
 // ---- contrast (0.04045 cut-off like the other Mambo copies; ratios cut off, not rounded) ----
 const hex6 = h => { h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = [...h].map(c => c + c).join(''); return h.slice(0, 6) };
@@ -93,9 +96,9 @@ function scanCode(dir, tokenMap, tokensHaveDark) {
       for (const m of code.matchAll(/\b(?:[a-z]+:)*(-?[pm][trblxy]?|gap(?:-[xy])?|space-[xy]|inset(?:-[xy])?)-\[(-?\d*\.?\d+)px\]/g)) { const px = Math.abs(+m[2]); if (!(ON_SCALE.has(px) || LARGE_OK(px))) add('warn', 'off-scale-spacing', rel, n, `Tailwind ${m[0]}: ${m[2]}px is not on the 4-point scale`) }
       for (const m of code.matchAll(/\b(padding|margin|gap|rowGap|columnGap)(?:Top|Right|Bottom|Left|Horizontal|Vertical|Inline|Block)?\s*:\s*(-?\d+(?:\.\d+)?)\s*[,}]/g)) { const px = Math.abs(+m[2]); if (!(ON_SCALE.has(px) || LARGE_OK(px))) add('warn', 'off-scale-spacing', rel, n, `${m[0].replace(/\s*[,}]$/, '')}: ${m[2]}px is not on the 4-point scale (inline style)`) }
       if (!defn) for (const m of code.matchAll(/#[0-9a-fA-F]{3,8}\b/g)) { if (!isHex(m[0])) continue; usage.hard++; const t = valToToken[norm(m[0])];
-        add('warn', 'hardcoded-color', rel, n, t ? `${m[0]} matches token ${t}; use var(--${t})` : `${m[0]} is not a token` + (tokenMap ? ' (not in the tokens file)' : '')) }
+        add('warn', 'hardcoded-color', rel, n, t ? `${m[0]} matches token ${t}; use var(--${t})` : `${m[0]} is not a token` + (tokenMap ? ' (not in the tokens file)' : ''), t && cssTokens ? { kind: 'hex', from: m[0], to: `var(--${t})`, token: t, text: code.trim().slice(0, 100), note: 'value match only; check the token role fits this property' } : undefined) }
       for (const m of code.matchAll(/\b(padding|margin|gap|row-gap|column-gap)(-(?:top|right|bottom|left|inline|block)(?:-(?:start|end))?)?\s*:\s*([^;}{]+)/g)) {
-        for (const v of m[3].matchAll(/(-?\d*\.?\d+)px/g)) { const px = Math.abs(+v[1]); if (ON_SCALE.has(px) || LARGE_OK(px)) continue; add('warn', 'off-scale-spacing', rel, n, `${m[1]}${m[2] || ''}: ${v[1]}px is not on the 4-point scale (4, 8, 12, 16, 20, 24, 32, then multiples of 8)`) } }
+        for (const v of m[3].matchAll(/(-?\d*\.?\d+)px/g)) { const px = Math.abs(+v[1]); if (ON_SCALE.has(px) || LARGE_OK(px)) continue; add('warn', 'off-scale-spacing', rel, n, `${m[1]}${m[2] || ''}: ${v[1]}px is not on the 4-point scale (4, 8, 12, 16, 20, 24, 32, then multiples of 8)`, { kind: 'space', text: code.trim().slice(0, 100), ctx: m[0].replace(/\s+$/, ''), from: v[0], to: (+v[1] < 0 ? '-' : '') + (SCALE_STEP(px) || 0) + (SCALE_STEP(px) ? 'px' : '') }) } }
       if (/outline\s*:\s*(none|0)\b/.test(code) && !/:focus-visible/.test(ln)) add('warn', 'outline-removed', rel, n, 'outline removed; make sure a visible focus style replaces it');
       for (const m of code.matchAll(/border-radius\s*:\s*([^;}{]+)/g)) stats.radius.add(m[1].trim());
       for (const m of code.matchAll(/font-size\s*:\s*(\d*\.?\d+(?:px|rem))/g)) stats.size.add(m[1]);
@@ -110,8 +113,27 @@ function scanCode(dir, tokenMap, tokensHaveDark) {
   return fl.length;
 }
 
+
+// ---- apply: edit only what the person approved in plan.json ----
+if (mode === 'apply') {
+  const plan = JSON.parse(fs.readFileSync(target, 'utf8')), root = opt('root'), dry = rest.includes('--dry'); if (!root) { console.error('apply needs --root <folder>'); process.exit(2) }
+  const approved = plan.filter(i => i.approve === true), byFile = {}; approved.forEach(i => ((byFile[i.file] = byFile[i.file] || {})[i.line] = (byFile[i.file][i.line] || []).concat(i)));
+  let done = 0, skipped = 0;
+  for (const [file, lines] of Object.entries(byFile)) { const fp = path.join(root, file), src = fs.readFileSync(fp, 'utf8').split('\n');
+    for (const [ln, its] of Object.entries(lines)) { let line = src[ln - 1];
+      const groups = {}; its.forEach(i => (groups[i.kind === 'space' ? i.ctx : '*'] = groups[i.kind === 'space' ? i.ctx : '*'] || []).push(i));
+      for (const [ctx, g] of Object.entries(groups)) {
+        if (ctx === '*') { for (const i of g) { if (line.includes(i.from)) { line = line.split(i.from).join(i.to); done++ } else skipped++ } }
+        else if (line.includes(ctx)) { let c = ctx; for (const i of g) { const re = new RegExp('(?<![\\d.])' + i.from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?![\\d.])'); if (re.test(c)) { c = c.replace(re, i.to); done++ } else skipped++ } line = line.replace(ctx, c) }
+        else skipped += g.length } src[ln - 1] = line }
+    if (!dry) fs.writeFileSync(fp, src.join('\n')) }
+  console.log(`${dry ? 'Would apply' : 'Applied'} ${done} of ${approved.length} approved fix(es); ${skipped} skipped because the line had changed.`);
+  if (!approved.length) console.log('Nothing is approved. Set "approve": true on the entries the person agreed to.');
+  process.exit(0);
+}
+
 let scanned = 0, tokenMap = null, tokDark = false;
-const tfile = mode === 'tokens' ? target : opt('tokens');
+const tfile = mode === 'tokens' ? target : opt('tokens'); cssTokens = !!tfile && /\.css$/.test(tfile);
 if (tfile) { const t = readTokens(tfile); tokenMap = { ...t.light }; tokDark = Object.keys(t.dark).length > 0; checkTokens(path.basename(tfile), t) }
 if (mode === 'code') scanned = scanCode(target, tokenMap, tokDark);
 
@@ -125,5 +147,6 @@ if (mode === 'code' && usage.tok + usage.hard) console.log(`\nColor usage: ${usa
 if (!findings.length) console.log('No findings. Remember the script cannot judge component quality, naming or documentation; see references/checks.md for the manual checks.');
 if (opt('baseline')) { const prev = JSON.parse(fs.readFileSync(opt('baseline'), 'utf8')), c = a => a.reduce((m, f) => (m[f.rule] = (m[f.rule] || 0) + 1, m), {}), P = c(prev), C = c(findings);
   console.log('\nChange since baseline (rule: before -> after):'); for (const r of new Set([...Object.keys(P), ...Object.keys(C)])) console.log(`  ${r}: ${P[r] || 0} -> ${C[r] || 0}`) }
+if (opt('plan')) { const plan = findings.filter(f => f.fix).map((f, i) => ({ id: i + 1, rule: f.rule, file: f.file, line: f.line, ...f.fix, approve: false })); fs.writeFileSync(opt('plan'), JSON.stringify(plan, null, 1)); console.log(`\n${plan.length} mechanical fix(es) written to ${opt('plan')} (set "approve": true on the ones the person agreed to, then run apply).`) }
 if (opt('out')) { fs.writeFileSync(opt('out'), JSON.stringify(findings, null, 1)); console.log(`\nAll findings written to ${opt('out')}`) }
 process.exit(cnt('error') ? 1 : 0);

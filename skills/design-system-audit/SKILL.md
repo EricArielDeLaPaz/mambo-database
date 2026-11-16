@@ -25,7 +25,13 @@ Measure with scripts, judge with the checklist, report briefly, and fix only wha
   Never read the whole codebase to find these things; the scripts do it. Open a file only to confirm one finding.
 - **Judge** (Full audit and Compare only): read `references/checks.md` and work through the checks the scripts cannot do (naming, component states, documentation, a11y behavior). Sample at most 5 components. Say what you did not check.
 - **Report**: read `references/report-format.md` and write `audit-report.md`. In chat show at most 10 lines: counts, the top 3 problems, and the path.
-- **Fix**: change the smallest thing that fixes each finding (swap hex for the matching `var(--token)`, move spacing to the nearest scale step, restore a focus style). Never lower a contrast bar; change the color. Re-run the script and report before and after counts. Do not touch anything the person did not approve.
+- **Fix** (plan, approve, apply, verify):
+  1. Plan: add `--plan plan.json` to the code run. It lists only mechanical fixes: a hex that equals a token in a CSS tokens file becomes `var(--token)`; off-scale spacing moves to the nearest scale step (halves round up, so 10px becomes 12px). Each entry has `file`, `line`, `from`, `to`, `text`, `approve: false`.
+  2. Review before showing: a hex matches a token by value only. Drop any entry whose token role does not fit the property (for example `color: #fff` must not become `var(--background)`; use an Inverse text or Text token, or leave it for the person). Spacing changes alter the look; say that.
+  3. Ask in batches (one question call per rule) and set `"approve": true` only for what the person agreed to.
+  4. Apply: `node scripts/audit.js apply plan.json --root <folder> --dry`, then without `--dry`. Entries whose line changed are skipped and reported.
+  5. Verify: re-run with `--baseline audit-findings.json` and report before and after. Accessibility errors (contrast, focus) and anything unmatched are fixed by hand: change the color, never lower the bar, restore a visible focus style.
+  Figma findings are not applied by this script; hand them to the person with the node names, or use the `token-sync` skill for variable drift.
 
 ## Rules
 - Report only what a script or a file you opened shows. Every finding has a file and line, or a token name.
