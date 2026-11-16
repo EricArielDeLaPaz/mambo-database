@@ -19,7 +19,7 @@ Measure with scripts, judge with the checklist, report briefly, and fix only wha
 ## Steps (do one, write its output, close with the shared shape, wait)
 1 Scope -> 2 Measure -> 3 Judge -> 4 Report -> 5 Fix (only if chosen).
 - **Measure**
-  - Code folder: `node scripts/audit.js code <folder> [--tokens <tokens file>] --out audit-findings.json`
+  - Code folder: `node scripts/audit.js code <folder> [--tokens <tokens file>] --out audit-findings.json` (on a re-run add `--baseline <earlier audit-findings.json>` to see before and after)
   - Tokens file or Mambo export: `node scripts/audit.js tokens <file>`
   - Figma: read `references/figma-audit.md`, then run the pairs it produces through `node scripts/contrast.js`.
   Never read the whole codebase to find these things; the scripts do it. Open a file only to confirm one finding.

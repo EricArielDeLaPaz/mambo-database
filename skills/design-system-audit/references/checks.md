@@ -28,6 +28,7 @@ Scripts cover rows marked [script]. Judge the rest by opening at most 5 represen
 ## Consistency
 - The same job looks the same everywhere (one primary button style, one card radius).
 - Duplicates: two components doing one job; detached or overridden instances (Figma).
+- Interface inventory (Brad Frost): list the distinct treatments of each component (every kind of button, field, card) side by side; more than a few for one job is duplication to merge.
 - Unused tokens and components (count with a search, do not guess).
 
 Severity: error = fails a stated minimum or blocks use (contrast, no focus, keyboard trap). warn = drift or inconsistency. info = missing nice-to-have.
