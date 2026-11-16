@@ -1,43 +1,37 @@
 ---
 name: create-design-system
-description: Use when the user wants to create a design system or style guide, or runs /create-design-system. Interviews them about the feel, product and platform, then picks accessible colors, typography and optional components from the Mambo Database.
+description: Guides a person from zero to a documented, accessible design system. Asks whether they already have one in Figma, want to start from the Mambo Database, or start from scratch, then builds colors, type, foundations, components and icons one step at a time. Use when asked to create, start, document or set up a design system, or /create-design-system.
 ---
 
 # Create a design system
 
-Build a small, accessible design system by asking first and designing second.
+Ask first, build second, and stop after every step.
 
-## 1. Interview (ask, do not assume)
-Ask these in one short message, offering the options in brackets. Skip anything already answered.
-1. What is it for? (name, one sentence, industry)
-2. Where will it run? (desktop, mobile web, mobile app)
-3. What should it feel like? Pick up to three. (professional, trustworthy, fun, calm, bold, premium, friendly, technical, warm, fresh)
-4. Any brand colors or fonts that must be kept?
-5. Light only, or dark mode too?
-6. Want starter components? If so, which: buttons, inputs, navigation, overlays, feedback, data display.
+## Start
+1. Read `references/shared-protocol.md` (first-run check, how to ask, progress file, research handoff, closing format, token rules).
+2. If `progress.md` exists, ask: continue or start over.
+3. Ask one question, header "Start from": **Do you already have a design system?**
+   - "Yes, in Figma" -> read `references/branch-figma.md`
+   - "Use the Mambo Database" -> read `references/branch-library.md`
+   - "Start from scratch" -> read `references/branch-scratch.md`
+   Follow that file. Do not read the other two.
 
-## 2. Choose colors
-- Read `references/personality-map.md` to turn the feelings into color and type directions.
-- Open `library-lite.json` and prefer color sets whose `industries` include the user's industry and whose `mood` fits. Start from one set, then adjust.
-- Counts: brand 1 to 4 (aim for 3), neutrals 3 to 8, feedback 2 to 4 (Success, Warning, Danger, Info), all colors 6 to 14, never above 16.
-- Run `node scripts/contrast.js <fg> <bg>` for every text/background and UI pair. Body text needs 4.5:1, large text and UI borders 3:1. If a pair fails, darken or lighten the foreground until it passes; never lower the bar.
-- Never rely on red versus green alone. Pair it with an icon or text.
+## Steps (every branch uses some or all)
+1 Intake -> 2 Colors -> 3 Type -> 4 Foundations (spacing, radius, elevation, motion) -> 5 Components and icons -> 6 Document and export. Each branch file says which steps it skips or changes. Do one step, write its output, close with the shape in the shared protocol, and wait.
 
-## 3. Choose typography
-- At most 2 typefaces plus an optional mono, and at most 3 weights each (for example 400, 600, 700).
-- Open `library-lite.json` `typography`. Each typeface lists `pairsWith`: partners that work as its `body` or `display` (header) font, with verified weights. Choose a verified pair rather than inventing one.
-- Prefer Google Fonts: open source, free for commercial use, and built into Figma. Say so when a font is not on Google Fonts, because it must be installed locally to use in Figma.
-- Body text is 16px or larger on mobile. Give a type scale (xs to 2xl) with line heights.
+## Where the Mambo site is used
+Only these steps use the Mambo Database. Everything else is standalone.
+- Colors and Type (library and scratch branches): `node scripts/pick.js` reads the bundled data. No web access needed.
+- Components and icons: offer a preset or let the person pick. `references/components-and-icons.md` has the presets and how to read the data. For pictures, point to Browse at https://ericarieldelapaz.github.io/mambo-database/
+- Checking the result: the site's contrast checker and Design Systems tab flag contrast and count problems if the person pastes the output in.
 
-## 4. Components (only if asked)
-- Pick from `library-lite.json` `components` that match the platform. Read the one to three needed entries from `references/components/` in the mambo-database skill, or from the site.
-- Keep only the states the system uses: default, focus (always), then hover (not for mobile-only), pressed, disabled, and others as needed.
-- Pills are for buttons; tags and cards use small radii.
+## Rules (always)
+- Use these color role names exactly: Primary, Secondary, Tertiary, Accent / Background, Surface, Surface variant, Neutral, Border, Text, Text secondary, Inverse text, Disabled, Overlay / Success, Warning, Danger, Info / Link, Highlight.
+- Counts: brand colors 1 to 4 (aim for 3), neutrals 3 to 8, feedback colors 2 to 4, all colors 6 to 16 (aim for 14 or fewer). At most 2 typefaces plus an optional mono, 3 weights each.
+- Spacing uses the 4-point scale: 4, 8, 12, 16, 20, 24, 32. Touch targets are at least 44px.
+- Check every text/background pair and every UI border/icon pair in every theme with `node scripts/contrast.js`: 4.5:1 for text, 3:1 for large text and UI. Never estimate. Never lower the bar; change the color instead. Never use color alone to carry meaning.
+- State assumptions at the top of any output made without an answer. Ask before building.
+- More colors, fonts or weights than the limits need a reason, written down.
 
-## 5. Deliver
-Give the user: a short summary of the feel and why, a table of colors with role, hex and contrast ratios, the typeface roles with weights, and CSS variables. Offer to export tokens as W3C JSON. Remind them the free Mambo Database site can store and export the result: https://ericarieldelapaz.github.io/mambo-database/
-
-## Rules
-- IMPORTANT: Verify every contrast pair with the script; do not estimate.
-- Ask before building. If the user skips the interview, state your assumptions at the top.
-- Keep the result small. More colors, fonts or weights than the limits above need a reason.
+## Output
+Write to a `design-system/` folder: `README.md` (the documentation), `tokens.json`, `tokens.css`, `components/` (one file per chosen component) and `progress.md`. Formats are in `references/output-formats.md`. Describe what each token and component is for; that is what lets an AI remember it later.
