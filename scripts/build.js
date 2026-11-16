@@ -125,14 +125,16 @@ const notices = `# Third-party notices\n\nMambo Database lists and links to open
 w(path.join(root, 'THIRD_PARTY_NOTICES.md'), notices); w(path.join(out, 'THIRD_PARTY_NOTICES.md'), notices);
 fs.mkdirSync(path.join(out, 'site/licenses'), { recursive: true }); fs.copyFileSync(path.join(root, 'licenses/OFL-1.1.txt'), path.join(out, 'site/licenses/OFL-1.1.txt'));
 
-// ---------- skills: create-design-system and product ----------
-// Sources live in skills/. _shared/shared-protocol.md is copied into both so the protocol has one source.
+// ---------- skills: create-design-system, product and design-system-audit ----------
+// Sources live in skills/. _shared/shared-protocol.md is copied into each so the protocol has one source.
 const skillsSrc = path.join(root, 'skills'), skillsOut = path.join(out, 'skill');
 const copyDir = (a, d) => fs.readdirSync(a, { withFileTypes: true }).forEach(f => f.isDirectory() ? copyDir(path.join(a, f.name), path.join(d, f.name)) : (fs.mkdirSync(d, { recursive: true }), fs.copyFileSync(path.join(a, f.name), path.join(d, f.name))));
-for (const name of ['create-design-system', 'product']) {
+for (const name of ['create-design-system', 'product', 'design-system-audit']) {
   copyDir(path.join(skillsSrc, name), path.join(skillsOut, name));
   w(path.join(skillsOut, name, 'references/shared-protocol.md'), fs.readFileSync(path.join(skillsSrc, '_shared/shared-protocol.md'), 'utf8'));
 }
+// One source for the contrast script: the audit skill gets a copy.
+fs.copyFileSync(path.join(skillsSrc, 'create-design-system/scripts/contrast.js'), path.join(skillsOut, 'design-system-audit/scripts/contrast.js'));
 // Data for the skill's scripts (pick.js, brief.js). The skill reads it through the scripts, never directly.
 const dsOut = path.join(skillsOut, 'create-design-system');
 w(path.join(dsOut, 'data/library-lite.json'), JSON.stringify({
