@@ -11,7 +11,7 @@ Measure with scripts, judge with the checklist, report briefly, and fix only wha
 1. Read `references/shared-protocol.md` (first-run check, how to ask, progress file, research handoff, closing format, token rules).
 2. If `progress.md` exists, ask: continue or start over.
 3. Ask one call, up to 3 questions:
-   - **What are we auditing?** (header "Source"): "A code folder" / "A tokens file (JSON or CSS)" / "A Figma file" / "A Mambo Database export".
+   - **What are we auditing?** (header "Source"): "A Figma file (Recommended)" / "A code folder" (for example the CSS of a vibe-coded project) / "A tokens file (JSON or CSS)" / "A Mambo Database export".
    - **How deep?** (header "Depth"): "Quick scan (Recommended)" = scripts only; "Full audit" = scripts plus the manual checklist; "Compare to a reference system" = also research how Material, Carbon, Polaris or similar handle the same thing (use the research handoff).
    - **What should I do with the findings?** (header "Output"): "Report only (Recommended)" / "Report and a fix list" / "Report and apply fixes after I approve".
 4. Ask for the path, tokens file or Figma link in plain chat. Do not guess paths.
