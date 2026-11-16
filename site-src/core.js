@@ -57,6 +57,22 @@ function parseColor(str) {
   return null;
 }
 const COLOR_HINT = 'a hex code like #1d4ed8, or rgb(29, 78, 216), hsl(224, 76%, 48%), hsb(224, 87%, 85%) or cmyk(87%, 64%, 0%, 15%)';
+/* Smart fill, like Figma: when a hex field holds only 1 or 2 characters, Enter (or leaving the field) fills in the rest. "0" becomes 000000, "a" becomes aaaaaa, "12" becomes 121212. Three characters ("abc" -> aabbcc) are already handled by normHex. Bare numbers in RGB/HSL/HSB/CMYK mode are left alone because they belong to that format. */
+function smartHex(str) {
+  const raw = String(str).trim(), h = raw.replace(/^#/, '');
+  if (!/^[0-9a-f]{1,2}$/i.test(h)) return null;
+  if (colorFmt !== 'HEX' && !raw.startsWith('#')) return null;
+  return '#' + h.repeat(h.length === 1 ? 6 : 3).toLowerCase();
+}
+const HEX_FIELDS = '#ct-fg, #ct-bg, .cv-in, [data-cf=hex]';
+const applySmartFill = inp => {
+  if (!inp || !inp.matches || !inp.matches(HEX_FIELDS)) return;
+  const hx = smartHex(inp.value); if (!hx) return;
+  inp.value = fmtColor(hx);
+  inp.dispatchEvent(new Event('input', { bubbles: true })); /* runs each field's own update code */
+};
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) applySmartFill(e.target) });
+document.addEventListener('focusout', e => applySmartFill(e.target));
 const cfmtSelect = () => `<label class="f cfmt"><span class="f-t">Color format</span><select data-cfmt aria-label="Color format">${CFMT.map(f => `<option ${f === colorFmt ? 'selected' : ''}>${f}</option>`).join('')}</select></label>`;
 const wireCfmt = (root, onChange) => $$('select[data-cfmt]', root).forEach(sel => sel.addEventListener('change', () => { setColorFmt(sel.value); $$('select[data-cfmt]').forEach(o => { if (o !== sel) { o.value = sel.value; o.dispatchEvent(new Event('sync')) } }); onChange && onChange() }));
 function lum(h) { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2] } /* WCAG 2.2 cut-off is .04045 (.03928 was the pre-2021 value; for 8-bit sRGB both give identical results) */
@@ -283,7 +299,7 @@ function applyForced(root, css) {
   });
   walk(sheet.cssRules);
 }
-const FRAME_FIX = ':host{display:block}.sheet{animation:none!important}.fr [role=menu],.fr [role=listbox],.fr [role=tooltip],.fr .pop{position:static!important;inset:auto!important;margin-top:6px!important}.fr .m-scrim{position:static!important;display:block!important;background:none!important}.fr [hidden]{display:revert}.fr .row,.fr .acts{flex-wrap:wrap}*{box-sizing:border-box}.fr{padding:20px 18px;font-family:system-ui,sans-serif}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}.sr{position:absolute;width:1px;height:1px;overflow:hidden}';
+const FRAME_FIX = ':host{display:block}.sheet{animation:none!important}.fr [role=menu],.fr [role=listbox],.fr [role=tooltip],.fr .pop{position:static!important;inset:auto!important;margin-top:8px!important}.fr .m-scrim{position:static!important;display:block!important;background:none!important}.fr [hidden]{display:revert}.fr .row,.fr .acts{flex-wrap:wrap}*{box-sizing:border-box}.fr{padding:20px;font:400 16px/1.6 system-ui,sans-serif;color:#0a0a0a;letter-spacing:normal}dialog{position:static!important;margin:0!important;display:block}.sheet-scrim{display:none}.sheet{position:static!important;width:min(100%,380px);border-radius:20px!important}.sr{position:absolute;width:1px;height:1px;overflow:hidden}';
 function renderFrames(host, e, stateIds, osList) {
   host.innerHTML = ''; host.classList.add('frames');
   const rows = (osList && osList.length ? osList : ['']);
@@ -302,5 +318,23 @@ function renderFrames(host, e, stateIds, osList) {
     });
     row.appendChild(strip); host.appendChild(row);
   });
+}
+/* "Copy HTML + CSS for Figma": the same frames shown under Variants, as one pasteable page. Overlays are shown open, pointer states are forced on, and each device variant is scoped to its own wrapper, so what lands in Figma matches what the site shows. (The working, interactive code is in the HTML / CSS / JS blocks and the .html download.) */
+const FIGMA_FIX = '.fr{display:block;padding:20px;font:400 16px/1.6 system-ui,sans-serif;color:#0a0a0a;letter-spacing:normal}.fr,.fr *{box-sizing:border-box}.fr .sheet{animation:none!important;position:static!important;width:min(100%,380px);border-radius:20px!important}.fr [role=menu],.fr [role=listbox],.fr [role=tooltip],.fr .pop{position:static!important;inset:auto!important;margin-top:8px!important}.fr .m-scrim{position:static!important;display:block!important;background:none!important}.fr [hidden]{display:revert}.fr .row,.fr .acts{flex-wrap:wrap}.fr dialog{position:static!important;margin:0!important;display:block}.fr .sheet-scrim{display:none}.fr .sr{position:absolute;width:1px;height:1px;overflow:hidden}.fs{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}';
+function figmaDoc(e, ids, os) {
+  const rows = [''].concat(os || []), host = document.createElement('div');
+  host.style.cssText = 'position:absolute;left:-9999px;top:0;width:1200px'; host.setAttribute('aria-hidden', 'true'); document.body.appendChild(host);
+  try {
+    renderFrames(host, e, ids, rows);
+    const forced = [{ css: '' }].concat(compStates(e, ids).filter(s => s.id !== 'default')).map(s => forceCss(s.css)).join('\n');
+    let css = '', body = '';
+    $$('.frow', host).forEach((row, ri) => {
+      const o = rows[ri], base = e.code.css + '\n' + (o ? (osBase(e, o).css || '') : '') + '\n' + forced;
+      css += (o ? scopeCss(base, '.os-' + o) : stripComments(base)) + '\n';
+      const frames = $$('.fcell', row).map(c => { const f = $('.fr', $('.fbox', c).shadowRoot); return `<section class="fr" data-frame="${esc(e.name + (o ? ' / ' + OS_LABEL[o] : '') + ' / ' + $('figcaption', c).textContent.trim())}" style="width:${Math.ceil(f.getBoundingClientRect().width)}px">${f.innerHTML}</section>` }).join('\n');
+      body += `<div class="fs${o ? ' os-' + o : ''}">\n${frames}\n</div>\n`;
+    });
+    return `<!-- ${e.name}: one frame per state, matching the Variants strip. Overlays are shown open. -->\n<style>\n${FIGMA_FIX}\n${css}</style>\n${body}`;
+  } finally { host.remove(); }
 }
 const compById = id => DATA.find(x => x.id === id && x.type === 'component');

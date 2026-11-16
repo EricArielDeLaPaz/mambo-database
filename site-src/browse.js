@@ -307,7 +307,7 @@ function renderEntry(e) {
     return `${back}<p class="eyebrow">${esc(e.category)} · ${esc(e.level || '')}</p><h1>${esc(e.name)}</h1><p>${esc(e.summary)}</p>${meta(e)}
   <div class="row"><button class="btn solid" id="figma-copy">Copy HTML + CSS for Figma</button><button class="btn" id="dl-html">Download .html (all variants)</button><button class="btn" data-copy="md">Copy as Markdown (for AI)</button><button class="btn" data-copy="json">Copy JSON</button></div>
   ${addToSystemRow('Add component')}
-  <h2>Variants</h2><p class="note">Every state side by side, left to right, like variant frames in Figma. Pointer states (hover, pressed) are shown forced on.</p>
+  <h2>Variants</h2><p class="note">Every state side by side, left to right, like variant frames in Figma. Pointer states (hover, pressed) are shown forced on. Copy HTML + CSS for Figma pastes these same frames; the HTML, CSS and JS blocks further down are the working code.</p>
   ${(e.os && (e.os.ios || e.os.android)) ? `<div class="states" id="osbox" role="group" aria-label="Show device variants"><span class="f-t">Also show</span>${['ios', 'android'].filter(o => e.os[o]).map(o => `<label class="chk"><input type="checkbox" data-os="${o}" ${curOS.includes(o) ? 'checked' : ''}>${OS_LABEL[o]} variant</label>`).join('')}</div>` : ''}
   <div id="frames" class="frames" role="group" aria-label="All states of ${esc(e.name)}"></div>
   <div class="dbhead" style="margin:0"><h2>Coded version</h2><button type="button" class="btn sm" id="pv-reset">Reset demo</button></div><p class="note">The full component as it ships, running as real HTML, CSS and JavaScript. Try it with the keyboard.</p><iframe class="preview" id="pv" title="Coded version of ${esc(e.name)}" sandbox="allow-same-origin allow-scripts" srcdoc="${esc(previewDoc(e, curStates, curOS))}"></iframe>
@@ -380,7 +380,7 @@ function wireEntry(e, root) {
     $$('[data-os]').forEach(i => i.onchange = () => { const o = i.dataset.os; PREF.os = i.checked ? [...new Set([...PREF.os, o])] : PREF.os.filter(x => x !== o); savePref(); curOS = PREF.os.filter(x => e.os && e.os[x]); refreshComponent(e) });
     $$('[data-st]').forEach(i => i.onchange = () => { const a = new Set(curStates), id = i.dataset.st; i.checked ? a.add(id) : a.delete(id); curStates = [...a]; PREF.on = PREF.on.filter(x => x !== id); PREF.off = PREF.off.filter(x => x !== id); (i.checked ? PREF.on : PREF.off).push(id); savePref(); refreshComponent(e) });
     $('#pv-reset').onclick = () => { const pv = $('#pv'); pv.srcdoc = previewDoc(e, curStates, curOS) + '<!-- ' + Date.now() + ' -->' };
-    $('#figma-copy').onclick = async () => { await copy(clipStore.both, 'HTML + CSS'); showFigma('html') };
+    $('#figma-copy').onclick = async () => { await copy(figmaDoc(e, curStates, curOS), 'HTML + CSS'); showFigma('html') };
     $('#dl-html').onclick = () => download(e.id + '.html', compDoc(e, curStates, curOS), 'text/html');
     wireCopy(root); return
   }

@@ -31,6 +31,37 @@ for (const e of entries) if (e.type === 'color') e.contrast = e.pairs.map(([fg, 
   return { fg, bg, ratio: Math.floor(r * 100 + 1e-9) / 100, normalText: r >= 4.5, largeTextAndUI: r >= 3 };
 });
 
+// ---------- extra component documentation: states, device variants, Figma frame, values used ----------
+// Groups the colors, radii and sizes a component's CSS really uses, so an AI can bind each one to a variable.
+function valuesUsed(e) {
+  const css = [e.code.css, ...(e.states || []).map(s => s.css || '')].join('\n').replace(/\/\*[\s\S]*?\*\//g, '');
+  const COLOR = /^(color|background|background-color|border|border-color|border-top|border-bottom|border-left|border-right|outline|fill|stroke|box-shadow|text-decoration-color)$/;
+  const SIZE = /^(border-radius|min-height|height|min-width|width|padding|gap|margin)$/;
+  const colors = new Map(), sizes = new Map(); const re = /([^{}@]+)\{([^{}]*)\}/g; let m;
+  while ((m = re.exec(css))) {
+    const sel = m[1].trim().split(',')[0].trim();
+    for (const d of m[2].split(';')) {
+      const i = d.indexOf(':'); if (i < 0) continue; const prop = d.slice(0, i).trim(), val = d.slice(i + 1).trim();
+      if (COLOR.test(prop)) for (const h of new Set((val.match(/#[0-9a-fA-F]{3,8}\b/g) || []).map(x => x.toLowerCase()))) { if (!colors.has(h)) colors.set(h, new Set()); colors.get(h).add(`${sel} ${prop}`) }
+      else if (SIZE.test(prop) && /\d/.test(val)) { const k = `${prop}: ${val}`; if (!sizes.has(k)) sizes.set(k, new Set()); sizes.get(k).add(sel) }
+    }
+  }
+  const cap = (set, n) => { const a = [...set]; return a.slice(0, n).join('; ') + (a.length > n ? `; +${a.length - n} more` : '') };
+  const c = [...colors].map(([h, u]) => `- \`${h}\`: ${cap(u, 4)}`).join('\n'), z = [...sizes].slice(0, 20).map(([k, u]) => `- \`${k}\`: ${cap(u, 3)}`).join('\n');
+  return (c ? `### Colors\n${c}\n` : '') + (z ? `### Sizes\n${z}\n` : '');
+}
+function compExtras(e) {
+  const out = [], tick = '```';
+  const st = e.states || [];
+  if (st.length) out.push(`## States\nEach state's CSS is real code. On the site, pointer states are shown forced on.\n${st.map(s => `### ${s.label} (\`${s.id}\`, applies on: ${s.when || 'all'})\n${s.note ? s.note + '\n' : ''}${tick}css\n${s.css}\n${tick}`).join('\n')}`);
+  const os = Object.entries(e.os || {});
+  if (os.length) out.push(`## Device variants\nThese override the default code for one platform. Wrap the markup in a container with the class shown and scope the CSS to it.\n${os.map(([k, v]) => `### ${k === 'ios' ? 'iOS' : k === 'android' ? 'Android' : k} (wrapper class \`os-${k}\`)\n${v.html ? tick + 'html\n' + v.html + '\n' + tick + '\n' : 'Markup: same as the default.\n'}${v.css ? tick + 'css\n' + v.css + '\n' + tick : ''}`).join('\n')}`);
+  if (e.code.frame) out.push(`## Static frame (for Figma)\nThe default markup hides or positions parts of this component (an overlay, menu or panel). This frame shows it open and in the page flow, which is how to draw it in Figma.\n${tick}html\n${e.code.frame}\n${tick}`);
+  const vu = valuesUsed(e); if (vu) out.push(`## Values used\nThe CSS above uses raw values. Match each to a variable (the token names are listed under Tokens) when building in Figma.\n${vu}`);
+  const stLabels = ['Default', ...st.filter(s => s.id !== 'default').map(s => s.label.replace(/\s*\(.*\)/, ''))];
+  out.push(`## Figma handoff\n- Component set name: \`${e.name}\`\n- Variant property \`State\`: ${stLabels.join(', ')}\n- Variant property \`Style\`: ${e.variants.map(v => v.name).join(', ')}\n- Layer names (from anatomy): ${e.anatomy.map(a => a.part).join(', ')}\n- On the site, "Copy HTML + CSS for Figma" gives one frame per state with overlays shown open.`);
+  return out.join('\n\n');
+}
 // ---------- markdown per entry ----------
 const list = a => (a || []).map(x => '- ' + x).join('\n');
 function md(e) {
@@ -70,6 +101,7 @@ ${e.code.html}
 ${e.code.css}
 \`\`\`
 ${e.code.js ? '```js\n' + e.code.js + '\n```' : ''}
+${compExtras(e)}
 Related: ${(e.related || []).join(', ')}
 `;
   if (e.type === 'document') return `# ${e.name} (documentation link)\n\n${e.summary}\n\nCategory: ${e.category} | Publisher: ${e.publisher} | For: ${e.audience.join(', ')}\n\nOfficial documentation: ${e.url}\n\nThis entry links to the official documentation; the content belongs to its publisher and keeps its own license.\n`;
