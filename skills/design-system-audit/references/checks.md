@@ -32,3 +32,16 @@ Scripts cover rows marked [script]. Judge the rest by opening at most 5 represen
 - Unused tokens and components (count with a search, do not guess).
 
 Severity: error = fails a stated minimum or blocks use (contrast, no focus, keyboard trap). warn = drift or inconsistency. info = missing nice-to-have.
+
+## What not to flag
+- A raw value that is intentional: a brand color used once in a logo, an illustration, a third-party embed, or a value inside the tokens file that defines it.
+- A one-off spacing value with a comment explaining it (optical alignment), or a value inside a vendored or generated file.
+- Naming style you would have chosen differently when the system is internally consistent.
+- Anything you only suspect from a name. "This looks custom" is not evidence.
+
+## Evidence standard
+- Good: file and line, the raw value beside a token that exists, the same pattern tokenized elsewhere in the project, a computed contrast ratio.
+- Weak: a guess about intent, a rule from another system, a count with no examples. Do not report these; list them under "Not verified".
+- Consolidate systemic findings: if 40 lines break one rule, report one finding with the count and 3 examples, not 40 findings.
+- Rank by user impact (accessibility, then drift, then consistency). Prefer the cheaper fix when two fixes solve the same problem.
+- Review without mutating: do not edit files until the person approves the plan.

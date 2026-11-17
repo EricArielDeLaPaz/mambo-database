@@ -1,5 +1,8 @@
 # Taste skill (Leonxlnx), verified notes (Claude, 2026-11-16)
 
+> CORRECTION (same day, from a shallow clone of `main`): the explainer-based facts below (13 variants, ~900-line core file) describe an older layout. Current `main` has ONE skill, `skills/taste-skill` (name `design-taste-frontend`, 2.5.1): SKILL.md 382 lines, `references/` (sections.md 634 lines, system.md 230), `scripts/` (about 24,000 lines: gate.mjs, consistency.mjs, copy-lint.mjs, icons.mjs, photos.mjs, shoot.mjs, perf.mjs and others), `library/`, `assets/`, `tests/` (frontmatter, kit-clean, text-encoding), plus `.claude-plugin/marketplace.json` and `.codex-plugin/plugin.json`. LICENSE first line: MIT License. See `research/designer-skills-verified.md`.
+
+
 Written after reviewing Hermes's `designer-skills.md`, which had unreliable parts (see end). Only facts from pages that were opened are listed.
 
 ## Repo facts
