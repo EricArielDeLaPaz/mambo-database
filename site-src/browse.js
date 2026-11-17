@@ -12,8 +12,11 @@ function matches(e) {
   if (B.styles.size && styleShown() && !B.styles.has(e.style)) return false;
   if (B.inds.size && (e.type === 'color' || e.type === 'typeface')) { const i = e.industries || ['all']; if (!(i.includes('all') || [...B.inds].some(x => i.includes(x)))) return false }
   const q = B.q.trim().toLowerCase(); if (!q) return true;
-  return (B.scope === 'name' ? e.name + ' ' + (e.keywords || '') : e.summary).toLowerCase().includes(q);
+  return hay(e).includes(q);
 }
+/* Lowercased search text is built once per entry and scope, not on every keystroke. */
+const HAY = { name: new WeakMap(), description: new WeakMap() };
+const hay = e => { const m = HAY[B.scope] || HAY.name; let h = m.get(e); if (h === undefined) { h = (B.scope === 'name' ? e.name + ' ' + (e.keywords || '') : e.summary).toLowerCase(); m.set(e, h) } return h };
 /* Platform only narrows components; colors and typography always show. */
 /* Industry only applies to colors and typography. Style only applies to icons (and profiles). */
 const indShown = () => !B.types.size || [...B.types].some(t => t === 'color' || t === 'typeface');
@@ -99,20 +102,42 @@ function renderFilters() {
 }
 function afterFilter(refresh) { if (refresh) renderFilters(); renderResults() }
 const sortVal = (e, k) => k === 'name' ? e.name : k === 'type' ? TYPE[e.type] : k === 'category' ? e.category : k === 'style' ? (e.style || '') : k === 'platforms' ? (e.platforms || []).join() : (e.industries || ['all']).join();
+/* Sort keys are computed once per row (not once per comparison) and compared with one shared Collator, which is far faster than localeCompare on thousands of rows. */
+const COLL = new Intl.Collator();
+const sortItems = arr => arr.map(e => [sortVal(e, B.sort), e]).sort((a, b) => COLL.compare(a[0], b[0]) * B.dir).map(x => x[1]);
+/* Rows are drawn in batches so a large result list never builds thousands of rows at once. When the reader scrolls to the middle of the rows shown, the next batch is added, and so on. */
+const PAGE = 60;
 function renderResults() {
-  const items = DATA.filter(matches).sort((a, b) => sortVal(a, B.sort).localeCompare(sortVal(b, B.sort)) * B.dir), xt = expType();
+  const items = sortItems(DATA.filter(matches)), xt = expType();
+  let selSet = xt ? new Set(SEL[xt]) : null;
   const th = (k, l) => `<th scope="col" aria-sort="${B.sort === k ? (B.dir > 0 ? 'ascending' : 'descending') : 'none'}"><button data-sort="${k}">${l}${B.sort === k ? `<span class="sortc ${B.dir > 0 ? '' : 'flip'}">${CHEV}</span>` : ''}</button></th>`;
   const sample = e => e.type === 'typeface' ? `<span class="tsample" data-font="${esc(e.name)}" style="font-family:'${esc(e.name)}',${fontFallback(e.name)}">The quick brown fox jumps over the lazy dog. 0123456789</span>` : '';
-  $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries</p></div>
-  ${xt ? `<div class="expbar" id="expbar"><label class="chk"><input type="checkbox" id="selall"><span>Select all</span></label><span class="expn" id="expn" role="status"></span><div class="expw" id="expw"></div></div>` : ''}
-  ${items.length ? `<table class="db"><thead><tr>${xt ? '<th scope="col" class="selc"><span class="sr">Select</span></th>' : ''}${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', B.types.has('profile') ? 'Style' : 'Category') : ''}${styleShown() ? th('style', 'Style') : ''}${platShown() ? th('platforms', 'Platforms') : ''}${indShown() ? th('industries', 'Industries') : ''}</tr></thead><tbody>${items.map(e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
-   ${xt ? `<td class="selc"><input type="checkbox" data-sel="${esc(e.id)}" ${SEL[xt].includes(e.id) ? 'checked' : ''} aria-label="Select ${esc(e.name)}${e.type === 'icon' ? ' (' + esc(e.category) + ')' : ''}"></td>` : ''}
+  const rowHtml = e => `<tr data-eid="${esc(e.id)}" class="${route().id === e.id ? 'sel' : ''}">
+   ${xt ? `<td class="selc"><input type="checkbox" data-sel="${esc(e.id)}" ${selSet.has(e.id) ? 'checked' : ''} aria-label="Select ${esc(e.name)}${e.type === 'icon' ? ' (' + esc(e.category) + ')' : ''}"></td>` : ''}
    <td data-l="Name"><button class="name-btn" data-open="${esc(e.id)}">${B.scope === 'name' ? hl(e.name) : esc(e.name)}</button><span class="sum">${B.scope === 'description' ? hl(e.summary) : esc(e.summary)}</span>${sample(e)}${e.type === 'profile' ? `<span class="iconprev pfprev" aria-hidden="true"><img src="${svgUri(e.svg)}" alt="" width="48" height="48" loading="lazy" decoding="async"></span>` : ''}${e.type === 'color' ? (cvdOf(e).length ? `<span class="docmeta cvdnote">Colorblind note: ${cvdOf(e).length} pair${cvdOf(e).length > 1 ? 's' : ''} may look alike to some people. <a href="${CVD_GUIDE}">Read more</a></span>` : e.category === 'accessible' ? '<span class="docmeta">Color-blind accessible</span>' : '') : ''}${e.type === 'document' ? `<span class="docmeta">${esc(e.publisher)} · For ${esc((e.audience || []).join(' and '))}</span>` : ''}${e.type === 'extension' ? `<span class="docmeta">${esc(e.price)} · ${esc(e.browsers.join(', '))}</span>` : ''}${e.type === 'icon' ? `<span class="iconprev" aria-hidden="true" data-ico="${esc(e.id)}"></span>` : ''}${e.type === 'color' ? `<span class="swatchrow" aria-hidden="true">${Object.entries(e.roles).slice(0, 8).map(([k, c]) => `<i style="background:${esc(c)}"></i>`).join('')}</span>` : ''}</td>
    <td data-l="Type">${TYPE[e.type]}</td>${B.types.size === 1 ? `<td data-l="Category">${esc(e.category)}</td>` : ''}${styleShown() ? `<td data-l="Style">${esc(e.style || '')}</td>` : ''}
    ${platShown() ? `<td data-l="Platforms">${(e.platforms || []).map(p => `<span class="tag">${esc(PLAT[p] || p)}</span>`).join('') || '<span class="empty">Any</span>'}</td>` : ''}
-   ${indShown() ? `<td data-l="Industries">${e.type === 'color' || e.type === 'typeface' ? (e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('') : '<span class="empty">Not used</span>'}</td>` : ''}</tr>`).join('')}</tbody></table>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
-  watchIcons();
-  watchFonts(); wireExport(items, xt);
+   ${indShown() ? `<td data-l="Industries">${e.type === 'color' || e.type === 'typeface' ? (e.industries || ['all']).map(i => `<span class="tag">${esc(indLabel(i))}</span>`).join('') : '<span class="empty">Not used</span>'}</td>` : ''}</tr>`;
+  $('#main').innerHTML = `<div class="dbhead"><div><p class="eyebrow">Database</p><h1>Browse everything</h1></div><p class="empty" role="status">${items.length} of ${DATA.length} entries</p></div>
+  ${xt ? `<div class="expbar" id="expbar"><label class="chk"><input type="checkbox" id="selall"><span>Select all</span></label><span class="expn" id="expn" role="status"></span><div class="expw" id="expw"></div></div>` : ''}
+  ${items.length ? `<table class="db"><thead><tr>${xt ? '<th scope="col" class="selc"><span class="sr">Select</span></th>' : ''}${th('name', 'Name')}${th('type', 'Type')}${B.types.size === 1 ? th('category', B.types.has('profile') ? 'Style' : 'Category') : ''}${styleShown() ? th('style', 'Style') : ''}${platShown() ? th('platforms', 'Platforms') : ''}${indShown() ? th('industries', 'Industries') : ''}</tr></thead><tbody></tbody></table><div class="more" id="more"><p class="empty" id="morenote"></p><button type="button" class="btn" id="morebtn"></button></div>` : '<p class="empty">No entries match these filters. Try clearing some.</p>'}`;
+  const tbody = $('#main tbody'); let shown = 0, rowIO = null;
+  const note = () => { const nt = $('#morenote'), bt = $('#morebtn'); if (!nt) return; nt.textContent = shown < items.length ? `Showing ${shown} of ${items.length}. More load as you scroll.` : ''; bt.hidden = shown >= items.length; bt.textContent = `Show ${Math.min(PAGE, items.length - shown)} more` };
+  /* Watch the row in the middle of what is shown; once it is on screen or already scrolled past, add the next batch. */
+  const watch = () => {
+    if (rowIO) { rowIO.disconnect(); rowIO = null } if (shown >= items.length || !('IntersectionObserver' in window)) return;
+    const mid = tbody.rows[Math.floor(shown / 2)]; if (!mid) return;
+    /* The huge top margin makes "already scrolled past" count as intersecting too, so dragging the scrollbar far down still loads the next batch. */
+    rowIO = new IntersectionObserver(es => { if (es.some(en => en.isIntersecting)) more() }, { rootMargin: '10000000px 0px 300px 0px' }); rowIO.observe(mid);
+  };
+  const more = (to) => {
+    if (!tbody.isConnected || shown >= items.length) return; if (xt) selSet = new Set(SEL[xt]);
+    const next = Math.min(to || shown + PAGE, items.length); tbody.insertAdjacentHTML('beforeend', items.slice(shown, next).map(rowHtml).join('')); shown = next;
+    note(); watchIcons(); watchFonts(); watch();
+  };
+  const sel = route().id, at = sel ? items.findIndex(e => e.id === sel) : -1; /* a linked entry is always drawn, even if it sorts far down */
+  if (items.length) { more(at >= PAGE ? Math.ceil((at + 1) / PAGE) * PAGE : PAGE); const mb = $('#morebtn'); if (mb) mb.onclick = () => more() }
+  wireExport(items, xt);
 }
 /* Icon previews render only when a row is near the viewport, like the font samples above. The SVG strings are the bulk of the table. */
 let iconIO = null;

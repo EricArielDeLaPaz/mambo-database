@@ -1,5 +1,5 @@
 /* ===== Guides: short, plain-language lessons written in markdown (guides/*.md) ===== */
-const GUIDES = /*__GUIDES__*/[];
+const GUIDES = MAMBO.guides;
 const G = { q: '', scope: 'name', topics: new Set(), levels: new Set() };
 const gById = id => GUIDES.find(g => g.id === id);
 /* Which guides have been opened (saved in this browser). */

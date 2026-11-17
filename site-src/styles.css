@@ -528,3 +528,5 @@ td.selc,th.selc{width:36px;padding-right:0}td.selc input{width:18px;height:18px;
 .ic-list li{font-size:14px}
 .ic-file{display:block;margin-top:4px;font:500 13px var(--font-mono);color:var(--text-2)}
 .cv-cell{display:flex;flex-direction:column;min-width:0}.cv-cell .ct-err{margin:4px 0 0;max-width:160px}
+.more{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0 24px}
+.more .empty{margin:0}

@@ -1,6 +1,8 @@
 /* ===== core: helpers, color maths, dropdown, dialogs, context menu, tooltips, zip ===== */
-const DATA = /*__DATA__*/[];
-const FONTS = /*__FONTS__*/[];
+/* All data arrives as one JSON block (see template.html). JSON.parse is much cheaper than compiling the same data as JavaScript source, which matters on slow computers. */
+const MAMBO = JSON.parse(document.getElementById('mambo-data').textContent);
+const DATA = MAMBO.data;
+const FONTS = MAMBO.fonts;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 /* Delay a repeated action (search-as-you-type) so fast typing does not queue full re-renders. */
@@ -92,7 +94,7 @@ function fixFg(fg, bg, target) {
 /* ---------- constants ---------- */
 const TYPE = { component: 'Component', color: 'Color', typeface: 'Typography', icon: 'Icon', profile: 'Profile', document: 'Document', extension: 'Website extension' };
 const TYPE_PLURAL = { component: 'Components', color: 'Colors', typeface: 'Typography', icon: 'Icons', profile: 'Profiles', document: 'Documents', extension: 'Website extensions' };
-const ICON_SETS = /*__ICONSETS__*/[];
+const ICON_SETS = MAMBO.iconSets;
 const PLAT = { 'desktop-web': 'Desktop website', 'desktop-app': 'Desktop app', tablet: 'Tablet', 'mobile-web': 'Mobile website', ios: 'iOS app', android: 'Android app' };
 const POINTER = ['desktop-web', 'desktop-app'];
 const INDUSTRIES = [['all', 'All'], ['finance', 'Finance & fintech'], ['insurance', 'Insurance'], ['legal', 'Legal'], ['healthcare', 'Healthcare'], ['wellness', 'Wellness & fitness'], ['education', 'Education'], ['retail', 'Retail & e-commerce'], ['food-beverage', 'Food & beverage'], ['hospitality', 'Travel & hospitality'], ['technology', 'Technology & SaaS'], ['data', 'Data & analytics'], ['entertainment', 'Entertainment'], ['gaming', 'Gaming'], ['creative', 'Creative & media'], ['media', 'Publishing & media'], ['nonprofit', 'Nonprofit'], ['sustainability', 'Sustainability'], ['agriculture', 'Agriculture']];
