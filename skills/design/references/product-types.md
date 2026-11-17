@@ -19,8 +19,8 @@ R = recommended, O = optional (not recommended by default), S = skip by default.
 | design-system | R | R | R | O | O | O |
 | ui-prototype | R | R | R | R | O | R |
 | usability-testing | R | R | R | O | O | R |
-| Build and launch |  |  |  |  |  |  |
-| handoff-specs | R | R | R | R | R | R |
+| handoff | R | R | R | R | R | R |
+| Launch |  |  |  |  |  |  |
 | qa-accessibility | R | R | R | R | R | R |
 | analytics-plan | R | R | R | R | O | R |
 | launch-plan | R | R | R | R | S | R |
@@ -37,8 +37,8 @@ Cards are in `steps-extras.md`.
 ## Where are you now
 - **Just an idea:** start at problem-framing.
 - **Problem is validated:** mark problem-framing and interviews as done only if the person confirms they have the notes; ask them to attach or paste a summary, and use it as the input to the next step.
-- **I have designs or a prototype:** leave Discovery and Definition unticked unless the person ticks them; recommend usability-testing and handoff-specs.
-- **Already built, improving it:** recommend problem-framing, users-jtbd, analytics-plan, usability-testing and qa-accessibility only; the rest stay optional.
+- **I have designs or a prototype:** leave Discovery and Definition unticked unless the person ticks them; recommend usability-testing and handoff.
+- **Already built, improving it:** recommend problem-framing, users-jtbd, analytics-plan, usability-testing and qa-accessibility only (add handoff if they want the code skill to rebuild or extend it); the rest stay optional.
 
 ## Audience and team
 - Internal staff only: drop competitive-audit and launch-plan; point to roles-rollout instead.

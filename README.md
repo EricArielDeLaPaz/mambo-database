@@ -19,7 +19,8 @@ Every entry is one JSON file in `entries/`. Run the build and everything else is
 | `dist/llms.txt` | Index for AI tools that read `llms.txt` |
 | `dist/data/library.json` | All data in one file |
 | `dist/skill/create-design-system/` | The `/create-design-system` skill: asks whether you have a design system in Figma, want one from the database, or start from scratch, then builds and documents colors, type, foundations, components and icons step by step |
-| `dist/skill/product/` | The `/product` skill: asks the product type, proposes the steps to tick or untick, then guides research, definition, design and launch one step at a time |
+| `dist/skill/design/` | The `/design` skill: asks the product type, proposes the steps to tick or untick, guides research, definition and design one step at a time, and ends with a checked build-ready handoff |
+| `dist/skill/code/` | The `/code` skill: builds the front end from that handoff one vertical slice at a time and verifies each slice with the audit and contrast scripts |
 | `dist/skill/design-system-audit/` | The `/design-system-audit` skill: audits a code folder, tokens file or Figma file with scripts (contrast, hardcoded colors, off-scale spacing, focus styles), then writes a prioritized report and optional fixes |
 | `dist/skill/token-sync/` | The `/token-sync` skill: compares Figma variables with code tokens (CSS or JSON), shows drift per mode, applies approved changes |
 | `dist/skill/icon-set-creator/` | The `/icon-set-creator` skill: reuses library icons first, then drafts custom SVG icons from one style spec, checking each batch with a script |
@@ -35,7 +36,7 @@ Copy `entries/components/modal-dialog.json`, edit it, run the build. Required fi
 - Only 4 sample entries exist. Preview rendering assumes simple HTML and CSS.
 
 ## Live site
-Pushing to `main` rebuilds and deploys the site with GitHub Pages (`.github/workflows/pages.yml`). The deployed site also serves `llms.txt`, `entries/`, `data/library.json`, `skill/`, `create-design-system-skill.zip`, `product-skill.zip`, `design-system-audit-skill.zip`, `token-sync-skill.zip` and `icon-set-creator-skill.zip`.
+Pushing to `main` rebuilds and deploys the site with GitHub Pages (`.github/workflows/pages.yml`). The deployed site also serves `llms.txt`, `entries/`, `data/library.json`, `skill/`, `create-design-system-skill.zip`, `design-skill.zip`, `code-skill.zip`, `design-system-audit-skill.zip`, `token-sync-skill.zip` and `icon-set-creator-skill.zip`.
 
 ## Licenses: what the MIT license covers
 The root `LICENSE` (MIT, © 2026 Eric Ariel De La Paz) covers this project's own code, guides and original entries. It does **not** replace the licenses of third-party material, which keeps its own terms:

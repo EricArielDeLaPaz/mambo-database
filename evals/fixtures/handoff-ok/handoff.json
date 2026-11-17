@@ -1,0 +1,10 @@
+{"product":{"name":"Dog Walk","type":"marketplace","oneLine":"Book vetted dog walkers nearby"},
+ "stack":{"framework":"react-vite","styling":"css-tokens","tests":"vitest","repo":""},
+ "designSystem":{"path":"design-system","tokens":"tokens.css"},
+ "screens":[
+  {"id":"home","name":"Find a walker","route":"/","purpose":"Search walkers by area and date","components":["text-input","button","card"],"states":["default","loading","empty","error"],"spec":"screens/home.md"},
+  {"id":"walker","name":"Walker profile","route":"/walker/:id","purpose":"Show one walker and a booking button","components":["card","button"],"states":["default","loading","error"],"spec":"screens/walker.md"}],
+ "slices":[
+  {"id":"s1-search","title":"Search and see results","goal":"A person can search and see walker cards","screens":["home"],"blockedBy":[],"acceptance":["Typing an area and pressing Search lists at least 3 walkers","An empty result shows a message and a way to widen the search"]},
+  {"id":"s2-detail","title":"Open a walker","goal":"A person can open a profile from a result","screens":["walker"],"blockedBy":["s1-search"],"acceptance":["Selecting a card opens that walker's profile"]}],
+ "openQuestions":[]}

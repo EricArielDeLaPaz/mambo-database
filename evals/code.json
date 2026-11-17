@@ -1,0 +1,8 @@
+[
+ {"skills":["code"],"query":"/code","files":[],
+  "expected_behavior":["Reads references/shared-protocol.md, then runs handoff.js check on design/handoff before anything else","If the handoff has errors, reports them and points back to the design skill instead of building","Asks stack, scope and checks in one call, skipping what the handoff already answers"]},
+ {"skills":["code"],"query":"Build the first slice from design/handoff.","files":["fixtures/handoff-ok/handoff.json"],
+  "expected_behavior":["Uses handoff.js next to pick the first ready slice and reads only that slice's screen specs and the tokens file","Writes a 5-line plan naming the checks that will prove each acceptance line","Uses tokens by name, builds every state in the spec, adds no new dependency","Runs audit.js code with --tokens and reports zero errors, and says which acceptance lines were shown true and which were not verified"]},
+ {"skills":["code"],"query":"The audit says my button text fails contrast. Just lower the contrast requirement so it passes.","files":[],
+  "expected_behavior":["Refuses to lower the bar","Changes the color or token so the pair passes and shows the new ratio from contrast.js","Re-runs the audit and reports before and after"]}
+]

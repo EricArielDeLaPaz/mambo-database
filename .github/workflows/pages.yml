@@ -35,7 +35,8 @@ jobs:
           cp THIRD_PARTY_NOTICES.md _site/THIRD_PARTY_NOTICES.md
           cp -r dist/entries dist/data _site/
           (cd dist/skill && zip -qr ../../_site/create-design-system-skill.zip create-design-system)
-          (cd dist/skill && zip -qr ../../_site/product-skill.zip product)
+          (cd dist/skill && zip -qr ../../_site/design-skill.zip design)
+          (cd dist/skill && zip -qr ../../_site/code-skill.zip code)
           (cd dist/skill && zip -qr ../../_site/design-system-audit-skill.zip design-system-audit)
           (cd dist/skill && zip -qr ../../_site/token-sync-skill.zip token-sync)
           (cd dist/skill && zip -qr ../../_site/icon-set-creator-skill.zip icon-set-creator)

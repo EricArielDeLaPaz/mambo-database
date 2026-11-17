@@ -32,3 +32,14 @@ These are the steps that can use the Mambo site. Each card says how.
 - **Research:** none.
 - **Write:** 3 to 5 tasks with success criteria, a script (intro, tasks, follow-ups, wrap-up), a note template, how findings will be rated (severity), and a one-page report template. Solo: a light version with 3 tasks and 3 to 5 people.
 - **Done when:** a person unfamiliar with the product could run the test from the plan.
+
+## handoff: Build-ready handoff
+- **Purpose:** give the `code` skill (or a developer) everything needed to build without guessing, in a form a script can check.
+- **Ask:** the stack if known (framework, styling, test runner) or the path of an existing repo; whether a design system folder exists.
+- **Research:** none.
+- **Read first:** `references/handoff-format.md` (the exact shape).
+- **Write:** `design/handoff/handoff.json`, one `screens/<id>.md` per screen, and the slices. Per screen: purpose, route, components (Mambo ids when one fits), states (default, hover on pointer devices, focus, pressed, disabled, error, empty, loading; list only those that apply), realistic content with length limits, tokens by name, behavior, accessibility (role, keyboard, focus, labels). Spacing stays on the 4-point scale (4, 8, 12, 16, 20, 24, 32); touch targets 44px or more.
+- **Slices:** cut the MVP stories into vertical slices (one thin path through every layer that a person can use), each with `blockedBy`, the screens it touches and 2 to 5 acceptance lines a person can check by looking or by running something. The first slice is the thinnest end-to-end path; foundation work (tokens, layout shell) is its own first slice only when nothing can be shown without it.
+- **Check:** `node scripts/handoff.js check design/handoff` and fix every error.
+- **Site:** component entries (Browse) list anatomy, states and accessibility for reuse. Optional.
+- **Done when:** the check prints no errors and a developer could build each MVP story from the handoff and the design system alone.
