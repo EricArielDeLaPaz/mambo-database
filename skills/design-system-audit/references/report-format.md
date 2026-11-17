@@ -10,3 +10,4 @@ Keep it under 120 lines. Order:
 6. **Next**: the next audit step or fix batch, in one line.
 
 Never list a finding without a location. Never pad with advice that is not tied to a finding. Full detail stays in `audit-findings.json`.
+- Output for a person is markdown (`audit-report.md`); output for another tool or a later re-run is the JSON from `--out`. Write both only when asked.
