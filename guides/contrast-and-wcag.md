@@ -36,7 +36,7 @@ Green counts most because the eye is most sensitive to it.
 
 ## How this site checks
 
-The contrast badges in the Design Systems tab use the WCAG 2.2 formula and pass marks[^1]. For an independent check, use the "Check on WebAIM" links beside each pair: they open the [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/), a well-known tool from the nonprofit WebAIM at Utah State University[^3][^4], with both colors filled in.
+The contrast badges in the Design Systems tab use the WCAG 2.2 formula and pass marks[^1]. For an independent check, use the "Check on WebAIM" links beside each pair. They open the [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) with both colors filled in. WebAIM is a nonprofit at Utah State University[^3][^4].
 
 ## Fixing a failing pair
 

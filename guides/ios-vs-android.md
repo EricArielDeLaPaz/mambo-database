@@ -221,7 +221,7 @@ A menu shows a list of commands. The platforms have similar ideas with different
 | Menu look | Rounded floating panel with icons beside labels | Rounded surface with a list of items, sometimes with icons |
 | Choosing from a short list | **Pop-up button** or pull-down menu | **Exposed dropdown menu** inside a text field, or a menu |
 
-Apple says to use an action sheet, not a menu, to give choices that relate to an action someone just started,[^26] because people expect a menu only when they open one on purpose.
+Apple says to use an action sheet, not a menu, for choices that relate to an action someone just started.[^26] People expect a menu only when they open one on purpose.
 
 **Design tip:** Do not hide the only way to do something inside a long press. Long press is a shortcut that many people never discover.
 

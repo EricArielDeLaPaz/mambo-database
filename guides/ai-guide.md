@@ -39,7 +39,7 @@ cost per request ≈ (input_tokens × price_in + output_tokens × price_out) / 1
 
 Worked example with Sonnet 5.5 prices ($2 input / $10 output per MTok, [official][^1]): 2,000 input tokens + 500 output tokens ≈ (2000 × 2 + 500 × 10) / 1e6 ≈ **$0.009 for one request, about $9 per 1,000 requests** [computed, not a vendor quote].
 
-**Prompt caching** discounts repeated input dramatically. Anthropic cache-read prices are **0.1× base input for most models, 0.05× for Opus 5.5 and Sonnet 5.5, and 0.025× for the Fable and Mythos 5.x lines**; new cache writes cost **1.25× base input** (5-minute lifetime) or **2×** (1-hour). OpenAI cached input is 5% to 10% of fresh input on the GPT-6 family (gpt-6.1-sol caches at $0.10 against $2.00; gpt-6-astra at $1.00 against $10.00). To use this: put stable material (system prompt, documentation, codebase) first and dynamic content last — cached prefixes are what get discounted. [Official: Anthropic prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)[^2] · [Official: OpenAI pricing](https://developers.openai.com/api/docs/pricing)[^3]
+**Prompt caching** discounts repeated input dramatically. Anthropic charges **0.1× the normal input price** to read cached text for most models. It is **0.05×** for Opus 5.5 and Sonnet 5.5, and **0.025×** for the Fable and Mythos 5.x lines. Writing to the cache costs **1.25×** (kept 5 minutes) or **2×** (kept 1 hour). OpenAI cached input is 5% to 10% of fresh input on the GPT-6 family (gpt-6.1-sol caches at $0.10 against $2.00; gpt-6-astra at $1.00 against $10.00). To use this, put stable material (system prompt, documentation, codebase) first and changing content last. Only the repeated start of a prompt gets the discount. [Official: Anthropic prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)[^2] · [Official: OpenAI pricing](https://developers.openai.com/api/docs/pricing)[^3]
 
 **Don't estimate by eye for large jobs.** Use the provider's token-count tool or a tokenizer endpoint. The 1-token ≈ 4 English characters heuristic is fine for planning, never for billing questions.
 
@@ -73,7 +73,7 @@ The pattern from Anthropic's "Building effective agents" essay is the shape behi
 - **Human in the loop** — the person approves gates: money, publishing, irreversible deletions, brand decisions.
 - [Official: Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)[^5]
 
-The pattern in action on this very guide: Claude writes the plan as unchecked items into `DESIGN.md`; Hermes (the worker) pulls the repo with `git pull` and does the unchecked items in order; Claude reviews the result; anything that needs the web is handed to Hermes as a `- [ ] Research:` item and saved to a `research/<topic>.md` file for Claude to read; the human decides between steps. That loop — plan → worker executes → delegator reviews — is the practical form of the pattern. Use the cheap models as workers and the expensive one as the judge, or skip the split entirely for one-shot questions where the overhead costs more than it saves.
+Here is the pattern on this very guide. Claude writes the plan as unchecked items in `DESIGN.md`. Hermes (the worker) pulls the repo with `git pull` and does the unchecked items in order. Claude reviews the result. Anything that needs the web goes to Hermes as a `- [ ] Research:` item, and the answer is saved to a `research/<topic>.md` file for Claude to read. The human decides between steps. That loop — plan → worker executes → delegator reviews — is the practical form of the pattern. Use the cheap models as workers and the expensive one as the judge, or skip the split entirely for one-shot questions where the overhead costs more than it saves.
 
 **When a single assistant is enough.** One chat for: one-shot questions, anything where every step needs your taste, anything irreversible. **When the pattern pays off.** Tasks spanning many files or sources, anything needing independent verification, or anything with a checkable end state (passing tests, clean build, all contrast ratios green).
 
@@ -125,15 +125,15 @@ As of 2026-11-13. Prices and limits change; check the vendor page.
 | Google AI Ultra | $100/mo new developer tier · $200/mo top tier (was $250) | Max Gemini capacity + storage | [Google I/O 2026](https://blog.google/products-and-platforms/products/google-one/google-ai-subscriptions/)[^21] |
 | Copilot Pro+ / Max | $39/mo (7,000 credits) · $100/mo (20,000 credits) | Premium models + agents | [Copilot plans](https://docs.github.com/en/copilot/get-started/plans)[^20] |
 
-**Free-tier workflow that works.** Free open-weight models from an aggregator such as [OpenRouter](https://openrouter.ai/docs)[^24] or the AI Studio free tier[^17] for reasoning and big-context research, ChatGPT or Claude free tiers for brainstorming. Accept the caps, batch prompts, and never put client-confidential material in free endpoints — free-tier content across vendors may be used to improve their models, and who trains on free-route prompts changes per provider, so check before routing sensitive work.
+**Free-tier workflow that works.** Free open-weight models from an aggregator such as [OpenRouter](https://openrouter.ai/docs)[^24] or the AI Studio free tier[^17] for reasoning and big-context research, ChatGPT or Claude free tiers for brainstorming. Accept the caps and batch your prompts. Never put client-confidential material into a free service. Many vendors may use free-tier content to improve their models, and the rules differ by provider, so check before sending anything sensitive.
 
 **Budget workflow that works (≈ $20/month).** Claude Pro as the daily driver, the AI Studio free tier for anything that needs a large context, and the free tiers for throwaways.
 
-**High-end workflow that works.** A top-tier model for client work and architecture, Sonnet-class for the rest, Haiku/Flash-class workers for bulk, a terminal agent for the repo, human review at publish and deploy gates.
+**High-end workflow that works.** Use a top-tier model for client work and architecture, a mid-tier model for the rest, and small, fast models for bulk jobs. Add a terminal agent for the repo and a human review before you publish or deploy.
 
 ## Limits, privacy and good habits
 
-**Nothing a model says is automatically true.** All large models produce fluent falsehoods; OpenAI's own research on hallucination attributes this to training that rewards confident guessing over abstaining ([OpenAI research, 2025-09-05](https://openai.com/index/why-language-models-hallucinate/)[^11]). Keep these habits:
+**Nothing a model says is automatically true.** Large models sometimes state false things in a confident, fluent way. OpenAI's own research says this happens because training rewards confident guessing over saying "I don't know" ([OpenAI research, 2025-09-05](https://openai.com/index/why-language-models-hallucinate/)[^11]). Keep these habits:
 
 1. Verify before trusting; never ship unreviewed client-facing output.
 2. Know which surface you are on — free, paid or API — and what it does with your data.
@@ -156,7 +156,7 @@ As of 2026-11-13. Prices and limits change; check the vendor page.
 
 A paid personal plan does not always change data use. Google's Gemini app notice describes no exception for paid personal plans, so do not assume Plus, Pro or Ultra keeps your chats out of training; check the Keep Activity setting. Claude's consumer plans are opt-in for training; ChatGPT's consumer plans are on by default until you turn the setting off.
 
-**Rate limits and quotas** differ per vendor and plan: free tiers cap requests per minute and per day, Claude's paid plans cap usage on rolling five-hour windows plus weekly allowances, and a failed request can still count against a cap. If a call fails, don't immediately conclude it was rejected — check quota before retrying in a loop.
+**Rate limits and quotas** differ by vendor and plan. Free tiers cap requests per minute and per day. Claude's paid plans cap usage in rolling five-hour windows plus a weekly allowance. A failed request can still count against a cap. If a call fails, check your quota before you retry in a loop.
 
 ## Where to read more
 

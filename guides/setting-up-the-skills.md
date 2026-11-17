@@ -1,7 +1,7 @@
 ---
 id: setting-up-the-skills
 title: Setting up the AI skills
-summary: Download the six skills, add them to Claude, and use them to build a design system, design a product, build it from the handoff, audit a design system, sync tokens or draw a custom icon set step by step, while keeping token use low.
+summary: Download the six skills, add them to Claude, and use them step by step to build a design system, design a product, build it, audit it, sync tokens or draw icons. Includes tips to keep token use low.
 topic: Setup
 level: Beginner
 order: 2
@@ -37,28 +37,28 @@ Each zip contains one folder with a `SKILL.md` file inside. That file is the ent
 
 Where you add a skill depends on the tool. The steps below describe the common cases. Menus change, so check your tool's own help if something looks different.
 
-1. **Claude on the web.** Enable Code execution under Settings > Capabilities if it is not already on, then go to Customize > Skills, click "+" and choose "Upload a skill" to add the zip files (one at a time). The steps for a desktop app are not confirmed; check your tool's own help if it differs.[^2]
+1. **Claude on the web.** First turn on Code execution under Settings > Capabilities if it is off. Then go to Customize > Skills, click "+", and choose "Upload a skill". Add the zip files one at a time. The steps for a desktop app are not confirmed; check your tool's own help if it differs.[^2]
 2. **Claude Code and other coding agents.** Unzip the folder into your skills directory. For Claude Code that is `~/.claude/skills/` for all projects, or `.claude/skills/` inside one project.[^3]
 3. **Anything else.** A `SKILL.md` is markdown with a YAML header; the folder may also include supporting files and scripts. You can paste the contents of `SKILL.md` into the start of a chat, or point the tool at the folder.[^4]
 
 ## What happens when you start one
 
-1. **A quick check.** The skill looks at what your assistant can do (ask questions with tappable options, search the web, start a cheaper helper, write files, run scripts) and tells you in three lines what mode it will use and how it will save tokens.
+1. **A quick check.** The skill checks what your assistant can do: ask tappable questions, search the web, start a cheaper helper, write files and run scripts. Then it tells you in three lines which mode it will use and how it will save tokens.
 2. **Questions in batches.** If your assistant has a question tool, you get tappable options. If not, you get a numbered list and reply with numbers. You can always type your own answer.
 3. **One step at a time.** After each step it tells you exactly what it made, then the next step. Nothing runs ahead of you. Say "next" when you are ready, or ask for a change.
 4. **A progress file.** It keeps a short `progress.md` with your answers, decisions and finished steps. If you come back later or start a new chat, it offers to continue.
 
 ### The design system skill
 
-- **Already in Figma:** it reads your variables, styles and component names (not the whole file), reports gaps against a checklist, then documents what each token and component is for, fixes what you choose, and exports.
-- **From the Mambo Database:** it asks about industry, platforms, feel and themes, proposes color sets and type pairings from the database with contrast already checked, then sets foundations, components and icons.
+- **Already in Figma:** it reads your variables, styles and component names (not the whole file) and reports gaps against a checklist. Then it documents what each token and component is for, fixes what you choose, and exports.
+- **From the Mambo Database:** it asks about industry, platforms, feel and themes. It proposes color sets and type pairings with contrast already checked. Then it sets up foundations, components and icons.
 - **From scratch:** the same questions plus brand colors, brand fonts, accessibility target and density. It builds the palette, type scale, spacing, radius, elevation and motion, and verifies every contrast pair with a script instead of estimating.
 - **Components and icons** is the step that points back to this site. You can take a preset for your product type or pick your own.
 
 ### The design skill
 
 - It proposes steps for your product type and where you are now. A solo founder with a validated problem gets a different plan than a team starting from an idea.
-- When a step needs outside facts (for example a competitive audit), it asks first whether to search the web, hand the work to a cheaper helper, use research notes you paste or attach, or skip it.
+- When a step needs outside facts (for example a competitive audit), it asks you first. You can have it search the web, hand the work to a cheaper helper, use notes you paste or attach, or skip it.
 - The design system step hands off to the design system skill.
 - The last step writes a handoff folder (one file per screen plus a `handoff.json` with the build slices). A script checks it, so the next skill does not have to guess.
 
