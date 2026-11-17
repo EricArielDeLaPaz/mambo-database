@@ -463,7 +463,7 @@ function renderBgRemove(el) {
 /* ---------- Icon creator: draw a pixel icon on a grid ---------- */
 const IC_SIZES = [16, 20, 24, 32, 48, 64];
 const IC_CELL = { 16: 32, 20: 24, 24: 20, 32: 16, 48: 8, 64: 8 };
-const ICO = { size: 24, filled: new Set(), undo: [], eraser: false, guide: true, name: '' };
+const ICO = { size: 24, filled: new Set(), undo: [], tool: 'draw', sym: false, symMode: 'lr', guide: true, name: '' };
 const icKey = (r, c) => r + ',' + c;
 const icName = () => (ICO.name || '').trim();
 const icStem = () => icName().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -477,19 +477,56 @@ const icSvg = (withId) => {
   }
   return out.length ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${n}" fill="currentColor" shape-rendering="crispEdges"${withId ? ` id="${icStem()}-icon"` : ''}>${out.join('')}</svg>` : '';
 };
+/* Drawing helpers. A drawing is a Set of "row,col" keys. */
+const icBox = set => { let r0 = 1e9, r1 = -1, c0 = 1e9, c1 = -1; for (const k of set) { const [r, c] = k.split(',').map(Number); if (r < r0) r0 = r; if (r > r1) r1 = r; if (c < c0) c0 = c; if (c > c1) c1 = c } return r1 < 0 ? null : { r0, r1, c0, c1 } };
+/* Stretch the cells inside box sb into a w by h block at (r0, c0). A target cell is filled when at least half of the source area behind it is filled; if that would erase everything (a big shrink of thin lines), any filled area counts. */
+const icResample = (cells, sb, r0, c0, w, h) => {
+  const sw = sb.c1 - sb.c0 + 1, sh = sb.r1 - sb.r0 + 1, cov = [];
+  for (let r = 0; r < h; r++) for (let c = 0; c < w; c++) {
+    const y0 = sb.r0 + r * sh / h, y1 = sb.r0 + (r + 1) * sh / h, x0 = sb.c0 + c * sw / w, x1 = sb.c0 + (c + 1) * sw / w; let on = 0, tot = 0;
+    for (let y = Math.floor(y0); y < Math.ceil(y1); y++) for (let x = Math.floor(x0); x < Math.ceil(x1); x++) { const a = (Math.min(y + 1, y1) - Math.max(y, y0)) * (Math.min(x + 1, x1) - Math.max(x, x0)); tot += a; if (cells.has(icKey(y, x))) on += a }
+    cov.push([r, c, tot ? on / tot : 0]);
+  }
+  let out = cov.filter(x => x[2] >= 0.5); if (!out.length && cells.size) out = cov.filter(x => x[2] > 0);
+  return new Set(out.map(x => icKey(r0 + x[0], c0 + x[1])));
+};
+const IC_ICO = (d) => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const IC_ICONS = {
+  draw: IC_ICO('<path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/>'),
+  erase: IC_ICO('<path d="M20 20H9L4 15a2 2 0 010-3l8-8a2 2 0 013 0l5 5a2 2 0 010 3l-7 8"/><path d="M8 8l8 8"/>'),
+  move: IC_ICO('<path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/>'),
+  sym: IC_ICO('<path d="M12 3v18" stroke-dasharray="2 3"/><path d="M9 7L4 12l5 5z"/><path d="M15 7l5 5-5 5z"/>'),
+  guide: IC_ICO('<rect x="4" y="4" width="16" height="16" rx="1" stroke-dasharray="3 2"/><path d="M12 4v16M4 12h16"/>'),
+  resize: IC_ICO('<path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/>')
+};
 function renderIconCreator(el) {
-  el.innerHTML = `<p class="lede">Draw an icon on a grid, name it, then export it as SVG or add it to a design system. Click or drag to fill cells; the eraser mode and right-click clear them. The exported SVG uses one merged <code>&lt;rect&gt;</code> per row run and <code>currentColor</code>, like the icons in Browse.</p>
+  const tbtn = (id, label) => `<button type="button" class="btn ic-tool" data-tool="${id}" aria-pressed="${ICO.tool === id}">${IC_ICONS[id]}<span>${label}</span></button>`;
+  el.innerHTML = `<p class="lede">Draw an icon on a grid, name it, then export it as SVG or add it to a design system. Pick a tool, then click or drag on the grid. Right-click also erases. The exported SVG uses one merged <code>&lt;rect&gt;</code> per row run and <code>currentColor</code>, like the icons in Browse.</p>
+  <div class="ic-tools" role="toolbar" aria-label="Drawing tools">
+    <div class="ic-toolgrp" role="group" aria-label="Tool">${tbtn('draw', 'Draw')}${tbtn('erase', 'Eraser')}${tbtn('move', 'Move')}</div>
+    <div class="ic-toolgrp">
+      <button type="button" class="btn ic-tool" id="ic-sym" aria-pressed="${ICO.sym}">${IC_ICONS.sym}<span>Symmetry</span></button>
+      <span class="ic-symmode" id="ic-symmode" role="group" aria-label="Mirror direction" ${ICO.sym ? '' : 'hidden'}>${[['lr', 'Left and right'], ['ud', 'Up and down'], ['both', 'Both']].map(([k, l]) => `<button type="button" class="btn ic-tool sm" data-sym="${k}" aria-pressed="${ICO.symMode === k}">${l}</button>`).join('')}</span>
+    </div>
+    <div class="ic-toolgrp"><button type="button" class="btn ic-tool" id="ic-guide" aria-pressed="${ICO.guide}">${IC_ICONS.guide}<span>Show guide</span></button></div>
+  </div>
+  <p class="note ic-hint" id="ic-hint"></p>
   <div class="row ic-bar">
     <label class="f"><span class="f-t">Grid size</span><select id="ic-size" aria-label="Grid size">${IC_SIZES.map(n => `<option value="${n}" ${n === ICO.size ? 'selected' : ''}>${n} × ${n}</option>`).join('')}</select></label>
-    <label class="chk ic-chk"><input type="checkbox" id="ic-eraser" ${ICO.eraser ? 'checked' : ''}> Eraser (right-click also erases)</label>
-    <label class="chk ic-chk"><input type="checkbox" id="ic-guide" ${ICO.guide ? 'checked' : ''}> Show live-area guide</label>
+    <button class="btn" id="ic-resize-btn" type="button">${IC_ICONS.resize}<span>Resize drawing</span></button>
     <button class="btn" id="ic-clear" type="button">Clear</button>
     <button class="btn" id="ic-undo" type="button" disabled>Undo</button>
   </div>
-  <div class="ic-gridwrap"><div class="ic-grid" id="ic-grid" role="group" aria-label="Icon grid. Use the arrow keys to move between cells, Space or Enter to toggle a cell."></div>
+  <div class="panel ic-resize" id="ic-resize" hidden>
+    <h2 style="font-size:16px;margin:0 0 4px">Resize drawing</h2>
+    <p class="note" id="ic-rs-now" style="margin:0 0 8px"></p>
+    <div class="row" style="align-items:end"><label class="f"><span class="f-t">Width: <output id="ic-rw-v"></output> cells</span><input type="range" id="ic-rw" min="1" step="1"></label><label class="f"><span class="f-t">Height: <output id="ic-rh-v"></output> cells</span><input type="range" id="ic-rh" min="1" step="1"></label><label class="chk ic-chk"><input type="checkbox" id="ic-rk" checked> Keep proportions</label></div>
+    <div class="row" style="margin:8px 0 0"><button class="btn solid" id="ic-rs-ok" type="button">Apply</button><button class="btn" id="ic-rs-cancel" type="button">Cancel</button></div>
+  </div>
+  <div class="ic-gridwrap"><div class="ic-grid" id="ic-grid" role="group" aria-label="Icon grid. Use the arrow keys to move between cells, Space or Enter to toggle a cell. With the Move tool, the arrow keys move the drawing."></div>
     <div class="ic-guide" id="ic-guide-lines" aria-hidden="true" ${ICO.guide ? '' : 'hidden'}><span class="ic-live"></span><span class="ic-ch"></span><span class="ic-cv"></span></div></div>
   <ul class="ic-list panel" aria-label="Icon drawing guidelines">
-    <li>Keep a live-area margin of about 1/12 of the grid (2px on a 24px grid). The toggle above shows the boundary and center lines.</li>
+    <li>Keep a live-area margin of about 1/12 of the grid (2px on a 24px grid). The Show guide button shows the boundary and center lines.</li>
     <li>One idea per icon.</li>
     <li>Keep the stroke or fill weight consistent.</li>
     <li>Simple shapes and little detail, especially at small sizes.</li>
@@ -500,11 +537,12 @@ function renderIconCreator(el) {
   <div class="f ic-name"><label class="f-t" for="ic-name">Icon name</label><input type="text" id="ic-name" maxlength="40" autocomplete="off" spellcheck="false" value="${esc(ICO.name)}" aria-describedby="ic-name-err"><code id="ic-file" class="ic-file"></code><p class="ct-err" id="ic-name-err" role="alert"></p></div>
   <div class="row ic-bar"><button class="btn solid" id="ic-copy" type="button">Copy SVG</button><button class="btn" id="ic-dl" type="button">Download .svg</button></div>
   <div class="panel addrow"><h2 style="font-size:16px;margin:0 0 8px">Add to a design system</h2><div class="row" style="margin:0;align-items:end"><label class="f" style="min-width:220px"><span class="f-t">Design system</span><select id="ic-sys" aria-label="Design system to add the icon to">${sysOptions()}</select></label><button class="btn solid" id="ic-add" type="button">Add to design system</button><span class="empty" id="ic-sys-msg" role="status"></span></div><p class="note" style="margin:8px 0 0">Custom icons are added with the name, a <code>Custom</code> set and <code>Pixel</code> style. They are written into the exported zip under <code>icons/</code> like any other icon.</p></div>`;
-  const grid = $('#ic-grid', el), guide = $('#ic-guide-lines', el), nameIn = $('#ic-name', el), err = $('#ic-name-err', el), fileOut = $('#ic-file', el), undoBtn = $('#ic-undo', el);
+  const grid = $('#ic-grid', el), guide = $('#ic-guide-lines', el), nameIn = $('#ic-name', el), err = $('#ic-name-err', el), fileOut = $('#ic-file', el), undoBtn = $('#ic-undo', el), sizeSel = $('#ic-size', el), panel = $('#ic-resize', el);
   const cellPx = () => IC_CELL[ICO.size];
   const buildGrid = () => {
     const n = ICO.size, s = cellPx();
     grid.style.gridTemplateColumns = `repeat(${n}, ${s}px)`;
+    guide.style.setProperty('--m', Math.max(2, Math.round(n / 12)) * s + 'px');
     grid.innerHTML = '';
     for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
       const b = document.createElement('button');
@@ -520,44 +558,87 @@ function renderIconCreator(el) {
   const cellBtn = (r, c) => grid.children[r * ICO.size + c];
   const setCell = (b, on) => { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.setAttribute('aria-label', `Row ${+b.dataset.r + 1}, column ${+b.dataset.c + 1}, ${on ? 'filled' : 'empty'}`) };
   const paintAll = () => { for (let r = 0; r < ICO.size; r++) for (let c = 0; c < ICO.size; c++) setCell(cellBtn(r, c), ICO.filled.has(icKey(r, c))) };
-  const commit = () => { ICO.undo.push(Array.from(ICO.filled)); if (ICO.undo.length > 30) ICO.undo.shift(); undoBtn.disabled = false };
-  const cellFrom = ev => { const t = ev.target.closest('.ic-cell'); return t ? [+t.dataset.r, +t.dataset.c] : null };
+  /* Undo keeps the grid size with each step, so undoing a size change or resize brings the old drawing back. */
+  const commit = () => { ICO.undo.push({ n: ICO.size, cells: Array.from(ICO.filled) }); if (ICO.undo.length > 30) ICO.undo.shift(); undoBtn.disabled = false };
+  const setSize = (n) => { ICO.size = n; if (+sizeSel.value !== n) { sizeSel.value = String(n); sizeSel.dispatchEvent(new Event('change')) } buildGrid() };
+  const cellAt = ev => { const t = document.elementFromPoint(ev.clientX, ev.clientY), b = t && t.closest && t.closest('.ic-cell'); return b && grid.contains(b) ? [+b.dataset.r, +b.dataset.c] : null };
+  /* Symmetry: every change is also made at the mirrored cells. */
+  const mirrors = (r, c) => { const n = ICO.size, out = [[r, c]]; if (!ICO.sym) return out; const lr = ICO.symMode !== 'ud', ud = ICO.symMode !== 'lr'; if (lr) out.push([r, n - 1 - c]); if (ud) out.push([n - 1 - r, c]); if (lr && ud) out.push([n - 1 - r, n - 1 - c]); return out };
+  const put = (r, c, on) => mirrors(r, c).forEach(([y, x]) => { const k = icKey(y, x); if (on) ICO.filled.add(k); else ICO.filled.delete(k); setCell(cellBtn(y, x), on) });
+  const hints = { draw: 'Click or drag to fill cells. Click a filled cell to clear it.', erase: 'Click or drag to clear cells.', move: 'Drag the drawing to move it, or press the arrow keys. It stops at the edges so nothing is lost.' };
+  const syncTools = () => {
+    $$('[data-tool]', el).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tool === ICO.tool)));
+    $('#ic-sym', el).setAttribute('aria-pressed', String(ICO.sym)); $('#ic-symmode', el).hidden = !ICO.sym;
+    $$('[data-sym]', el).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sym === ICO.symMode)));
+    $('#ic-hint', el).textContent = hints[ICO.tool] + (ICO.sym && ICO.tool !== 'move' ? ' Symmetry is on: changes are mirrored.' : '');
+    grid.dataset.tool = ICO.tool;
+  };
+  const resizing = () => !panel.hidden;
   grid.addEventListener('contextmenu', e => e.preventDefault());
-  let scrub = null;
+  let scrub = null, mv = null;
+  const shift = (base, dr, dc) => new Set(Array.from(base, k => { const [r, c] = k.split(',').map(Number); return icKey(r + dr, c + dc) }));
+  const moveBy = (base, box, dr, dc) => { const n = ICO.size; dr = Math.max(-box.r0, Math.min(n - 1 - box.r1, dr)); dc = Math.max(-box.c0, Math.min(n - 1 - box.c1, dc)); return [dr, dc] };
   grid.addEventListener('pointerdown', e => {
-    const p = cellFrom(e); if (!p) return;
+    if (resizing()) return; const p = cellAt(e); if (!p) return;
+    if (ICO.tool === 'move' && e.button !== 2) { const box = icBox(ICO.filled); if (!box) return; mv = { start: p, base: new Set(ICO.filled), box, last: [0, 0], committed: false }; grid.setPointerCapture(e.pointerId); e.preventDefault(); return }
     commit();
-    scrub = (ICO.eraser || e.button === 2) ? 'erase' : (ICO.filled.has(icKey(p[0], p[1])) ? 'erase' : 'fill');
-    const k = icKey(p[0], p[1]); if (scrub === 'fill') ICO.filled.add(k); else ICO.filled.delete(k);
-    setCell(cellBtn(p[0], p[1]), scrub === 'fill');
+    scrub = (ICO.tool === 'erase' || e.button === 2) ? 'erase' : (ICO.filled.has(icKey(p[0], p[1])) ? 'erase' : 'fill');
+    put(p[0], p[1], scrub === 'fill');
     grid.setPointerCapture(e.pointerId); e.preventDefault();
   });
   grid.addEventListener('pointermove', e => {
+    if (mv) { const p = cellAt(e); if (!p) return; const [dr, dc] = moveBy(mv.base, mv.box, p[0] - mv.start[0], p[1] - mv.start[1]); if (dr === mv.last[0] && dc === mv.last[1]) return; if (!mv.committed) { ICO.undo.push({ n: ICO.size, cells: Array.from(mv.base) }); undoBtn.disabled = false; mv.committed = true } mv.last = [dr, dc]; ICO.filled = shift(mv.base, dr, dc); paintAll(); return }
     if (!scrub) return;
-    const p = cellFrom(e); if (!p) return;
-    const k = icKey(p[0], p[1]); const on = scrub === 'fill';
-    if (on === ICO.filled.has(k)) return;
-    if (on) ICO.filled.add(k); else ICO.filled.delete(k);
-    setCell(cellBtn(p[0], p[1]), on);
+    const p = cellAt(e); if (!p) return;
+    const on = scrub === 'fill'; if (on === ICO.filled.has(icKey(p[0], p[1])) && mirrors(p[0], p[1]).every(([y, x]) => on === ICO.filled.has(icKey(y, x)))) return;
+    put(p[0], p[1], on);
   });
-  const endScrub = () => { scrub = null };
+  const endScrub = () => { scrub = null; mv = null };
   grid.addEventListener('pointerup', endScrub); grid.addEventListener('pointercancel', endScrub);
   grid.addEventListener('keydown', e => {
-    const t = e.target.closest('.ic-cell'); if (!t) return;
+    if (resizing()) return; const t = e.target.closest('.ic-cell'); if (!t) return;
     let r = +t.dataset.r, c = +t.dataset.c;
     const moves = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
-    if (moves[e.key]) { e.preventDefault(); const mv = moves[e.key], n = ICO.size; r = Math.min(n - 1, Math.max(0, r + mv[0])); c = Math.min(n - 1, Math.max(0, c + mv[1])); t.tabIndex = -1; const nb = cellBtn(r, c); nb.tabIndex = 0; nb.focus(); return }
-    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); commit(); const k = icKey(r, c); if (ICO.filled.has(k)) ICO.filled.delete(k); else ICO.filled.add(k); setCell(t, ICO.filled.has(k)) }
+    if (moves[e.key] && ICO.tool === 'move') { e.preventDefault(); const box = icBox(ICO.filled); if (!box) return; const [dr, dc] = moveBy(ICO.filled, box, moves[e.key][0], moves[e.key][1]); if (!dr && !dc) return; commit(); ICO.filled = shift(ICO.filled, dr, dc); paintAll(); return }
+    if (moves[e.key]) { e.preventDefault(); const mvd = moves[e.key], n = ICO.size; r = Math.min(n - 1, Math.max(0, r + mvd[0])); c = Math.min(n - 1, Math.max(0, c + mvd[1])); t.tabIndex = -1; const nb = cellBtn(r, c); nb.tabIndex = 0; nb.focus(); return }
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (ICO.tool === 'move') return; commit(); const k = icKey(r, c); put(r, c, ICO.tool === 'erase' ? false : !ICO.filled.has(k)) }
   });
-  $('#ic-clear', el).onclick = () => { if (!ICO.filled.size) return toast('The grid is already empty.'); commit(); ICO.filled.clear(); paintAll() };
-  $('#ic-undo', el).onclick = () => { if (!ICO.undo.length) return; ICO.filled = new Set(ICO.undo.pop()); paintAll(); undoBtn.disabled = !ICO.undo.length };
-  $('#ic-size', el).addEventListener('change', async e => {
-    const n = +e.target.value;
-    if (ICO.filled.size && n !== ICO.size) { const ok = await ask({ title: 'Change grid size?', body: 'Changing the grid size clears the drawing.', confirm: 'Clear and change', danger: true }); if (!ok) { e.target.value = String(ICO.size); return } }
-    ICO.size = n; ICO.filled.clear(); ICO.undo = []; buildGrid(); guide.style.setProperty('--m', Math.max(2, Math.round(n / 12)) * IC_CELL[n] + 'px'); undoBtn.disabled = true;
+  $$('[data-tool]', el).forEach(b => b.onclick = () => { ICO.tool = b.dataset.tool; syncTools() });
+  $('#ic-sym', el).onclick = () => { ICO.sym = !ICO.sym; syncTools() };
+  $$('[data-sym]', el).forEach(b => b.onclick = () => { ICO.symMode = b.dataset.sym; syncTools() });
+  $('#ic-guide', el).onclick = e => { ICO.guide = !ICO.guide; e.currentTarget.setAttribute('aria-pressed', String(ICO.guide)); guide.hidden = !ICO.guide };
+  $('#ic-clear', el).onclick = () => { if (resizing()) return; if (!ICO.filled.size) return toast('The grid is already empty.'); commit(); ICO.filled.clear(); paintAll() };
+  $('#ic-undo', el).onclick = () => { if (resizing() || !ICO.undo.length) return; const u = ICO.undo.pop(); if (u.n !== ICO.size) setSize(u.n); ICO.filled = new Set(u.cells); paintAll(); undoBtn.disabled = !ICO.undo.length };
+  /* Changing the grid size keeps the drawing: it is scaled to the new grid (and Undo brings the old one back). */
+  sizeSel.addEventListener('change', e => {
+    const n = +e.target.value; if (n === ICO.size) return;
+    if (resizing()) { e.target.value = String(ICO.size); return }
+    if (ICO.filled.size) { commit(); const old = ICO.size; ICO.size = n; ICO.filled = icResample(ICO.filled, { r0: 0, c0: 0, r1: old - 1, c1: old - 1 }, 0, 0, n, n); toast(`Drawing scaled to ${n} × ${n}. Undo brings the old one back.`) }
+    else ICO.size = n;
+    buildGrid();
   });
-  $('#ic-eraser', el).addEventListener('change', e => ICO.eraser = e.target.checked);
-  $('#ic-guide', el).addEventListener('change', e => { ICO.guide = e.target.checked; guide.hidden = !ICO.guide });
+  /* Resize drawing: stretch what is drawn (its bounding box) and preview it live on the grid. */
+  let rs = null;
+  const rsApply = () => {
+    const w = +$('#ic-rw', el).value, h = +$('#ic-rh', el).value, n = ICO.size; $('#ic-rw-v', el).textContent = w; $('#ic-rh-v', el).textContent = h;
+    const r0 = Math.min(rs.box.r0, n - h), c0 = Math.min(rs.box.c0, n - w);
+    ICO.filled = icResample(rs.base, rs.box, r0, c0, w, h); paintAll();
+  };
+  const rsClose = (keep) => {
+    if (!rs) return; if (!keep) { ICO.filled = rs.base; paintAll() } else { ICO.undo.push({ n: ICO.size, cells: Array.from(rs.base) }); if (ICO.undo.length > 30) ICO.undo.shift() }
+    rs = null; panel.hidden = true; undoBtn.disabled = !ICO.undo.length; $('#ic-resize-btn', el).focus();
+  };
+  $('#ic-resize-btn', el).onclick = () => {
+    if (resizing()) return rsClose(false); const box = icBox(ICO.filled); if (!box) return toast('Draw something first, then resize it.');
+    const bw = box.c1 - box.c0 + 1, bh = box.r1 - box.r0 + 1; rs = { base: new Set(ICO.filled), box, ratio: bh / bw };
+    $('#ic-rs-now', el).textContent = `Your drawing is ${bw} × ${bh} cells on a ${ICO.size} × ${ICO.size} grid. Move the sliders to stretch it; the grid shows the result.`;
+    for (const id of ['#ic-rw', '#ic-rh']) { const i = $(id, el); i.max = ICO.size; i.value = id === '#ic-rw' ? bw : bh }
+    panel.hidden = false; rsApply(); $('#ic-rw', el).focus();
+  };
+  $('#ic-rw', el).oninput = () => { if (rs && $('#ic-rk', el).checked) { let w = +$('#ic-rw', el).value, h = Math.round(w * rs.ratio); if (h > ICO.size) { h = ICO.size; w = Math.max(1, Math.round(h / rs.ratio)); $('#ic-rw', el).value = w } $('#ic-rh', el).value = Math.max(1, h) } rsApply() };
+  $('#ic-rh', el).oninput = () => { if (rs && $('#ic-rk', el).checked) { let h = +$('#ic-rh', el).value, w = Math.round(h / rs.ratio); if (w > ICO.size) { w = ICO.size; h = Math.max(1, Math.round(w * rs.ratio)); $('#ic-rh', el).value = h } $('#ic-rw', el).value = Math.max(1, w) } rsApply() };
+  $('#ic-rs-ok', el).onclick = () => rsClose(true); $('#ic-rs-cancel', el).onclick = () => rsClose(false);
+  panel.addEventListener('keydown', e => { if (e.key === 'Escape') rsClose(false) });
   const nameState = () => {
     const n = icName(); fileOut.textContent = (icStem() || 'name') + '-icon.svg';
     let msg = '';
@@ -568,7 +649,7 @@ function renderIconCreator(el) {
     return !msg;
   };
   nameIn.addEventListener('input', () => { ICO.name = nameIn.value; nameState() });
-  const exportReady = () => { if (!nameState()) { nameIn.focus(); return false } if (!ICO.filled.size) { toast('Draw something on the grid first.'); return false } return true };
+  const exportReady = () => { if (resizing()) { toast('Apply or cancel the resize first.'); return false } if (!nameState()) { nameIn.focus(); return false } if (!ICO.filled.size) { toast('Draw something on the grid first.'); return false } return true };
   $('#ic-copy', el).onclick = async () => { if (!exportReady()) return; await copy(icSvg(true), (icStem() || 'icon') + '-icon.svg') };
   $('#ic-dl', el).onclick = () => { if (!exportReady()) return; download(icStem() + '-icon.svg', icSvg(true), 'image/svg+xml') };
   $('#ic-add', el).onclick = async () => {
@@ -585,7 +666,8 @@ function renderIconCreator(el) {
     $('#ic-sys-msg', el).innerHTML = `${CHECK} Added to ${esc(s.name)}. <a href="#/systems">Open it</a>`;
     toast('Added to ' + s.name);
   };
-  buildGrid(); upgradeSelects(el); nameState();
+  undoBtn.disabled = !ICO.undo.length;
+  buildGrid(); syncTools(); upgradeSelects(el); nameState();
 }
 
 const TOOL_RENDER = { contrast: renderContrast, randomizer: renderRandomizer, cvd: renderCvd, lorem: renderLorem, persona: renderPersona, convert: renderConvert, bgremove: renderBgRemove, units: renderUnits, iconcreator: renderIconCreator };
