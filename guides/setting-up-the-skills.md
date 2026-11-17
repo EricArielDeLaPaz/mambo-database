@@ -9,7 +9,7 @@ order: 2
 
 > **New.** These skills are new and have not been tested in every tool. If a step does not work as described, tell us which tool you used and what happened.
 
-A **skill** is a folder of instructions (and sometimes scripts and other files) that an AI assistant can load when a task matches.[^1] Mambo Database offers five.
+A **skill** is a folder of instructions (and sometimes scripts and other files) that an AI assistant can load when a task matches.[^1] Mambo Database offers six.
 
 | Skill | What it does |
 | --- | --- |
@@ -19,6 +19,8 @@ A **skill** is a folder of instructions (and sometimes scripts and other files) 
 | `design-system-audit` | Checks an existing design system for problems. It audits a code folder, a tokens file or a Figma file, runs scripts to measure contrast, hardcoded colors, off-scale spacing and missing focus styles, then writes a short prioritized report and, if you approve, fixes. Run it with `/design-system-audit`. |
 | `token-sync` | Compares the variables in a Figma file with the tokens in your code (CSS custom properties or tokens JSON), shows every value that drifted or is missing on either side, asks which side wins, then applies only the changes you approve. Run it with `/token-sync`. |
 | `icon-set-creator` | Designs a small, consistent set of custom SVG icons. It checks the Mambo icon library first and only draws the gaps, writes one style spec, draws in small batches, checks each batch with a script (grid, stroke, colors, live area) and fixes failures before moving on. Run it with `/icon-set-creator`. |
+
+The skills work on their own, but they chain: `design` ends with a handoff folder that `code` builds from, and `design-system-audit` checks what `code` produced.
 
 ## Get the files
 
