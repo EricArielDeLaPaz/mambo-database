@@ -530,3 +530,15 @@ td.selc,th.selc{width:36px;padding-right:0}td.selc input{width:18px;height:18px;
 .cv-cell{display:flex;flex-direction:column;min-width:0}.cv-cell .ct-err{margin:4px 0 0;max-width:160px}
 .more{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0 24px}
 .more .empty{margin:0}
+.ic-tools{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;margin:12px 0 4px}
+.ic-toolgrp{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ic-tool{min-height:44px}
+.ic-tool.sm{min-height:36px}
+.ic-tool[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.ic-tool[aria-pressed="true"]:hover:not(:disabled){background:var(--text)}
+.ic-symmode{display:inline-flex;flex-wrap:wrap;gap:4px}
+.ic-hint{margin:4px 0 8px}
+.ic-resize{margin:8px 0;max-width:512px}
+.ic-resize input[type=range]{min-width:160px}
+.ic-grid[data-tool="move"] .ic-cell{cursor:grab}
+.ic-grid[data-tool="erase"] .ic-cell{cursor:cell}
