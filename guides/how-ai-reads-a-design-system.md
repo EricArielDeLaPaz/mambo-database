@@ -57,7 +57,7 @@ Every component in Browse follows this shape.
 
 - Every entry exists as **Markdown** and **JSON**. Use "Copy as Markdown (for AI)" or "Copy JSON" to paste an entry into an assistant.
 - The site publishes an `llms.txt` file, a short index that AI tools can read to learn what is here.[^1]
-- The [AI skills](#/guide/setting-up-the-skills) walk an assistant through building a system step by step, and they write down what each token and component is for, so the next assistant (or person) can read it.
+- The [AI skills](#/guide/setting-up-the-skills) walk an assistant through building a system step by step. They also write down what each token and component is for, so the next assistant (or person) can read it.
 - Design Systems exports files your tools and engineers can both read, such as CSS variables and a README.
 
 ## Working with AI well
@@ -75,7 +75,7 @@ Every component in Browse follows this shape.
 
 ## Where to read more
 
-The other claims in this guide describe this site and its repository (dist/llms.txt, the AI skills, the export files, the entry shape); they were verified against the repo itself on 2026-11-14 and need no outside sources.
+The other claims in this guide describe this site and its repository (dist/llms.txt, the AI skills, the export files, the entry shape). We checked them against the repository on 2026-11-14, so they need no outside sources.
 
 [^1]: llms.txt — the site convention for a short, plain-text index of a site, written by its maintainers. https://llmstxt.org/ . Accessed 2026-11-14. (A community convention, not an official standard.)
 [^2]: Web Content Accessibility Guidelines (WCAG) 2.2, Success Criterion 1.4.3 Contrast (Minimum) — W3C. https://www.w3.org/TR/WCAG22/#contrast-minimum . Accessed 2026-11-14.

@@ -37,7 +37,7 @@ Pick **one style per product** and keep stroke weight consistent. Mixing outline
 | PNG | App icons, email, places SVG is not supported | Export at 1x, 2x and 3x.[^5] |
 | PDF | Some native iOS workflows | Vector. Engineers will say if they need it. |
 
-> **Share a format with engineers.** In Figma, mark the icon as a component, keep the frame at its size (such as 24 by 24), flatten strokes only if asked, and export as SVG.
+> **Share a format with engineers.** In Figma, make the icon a component and keep its frame at the real size (such as 24 by 24). Flatten strokes only if asked. Export as SVG.
 
 ## Accessible icons
 
