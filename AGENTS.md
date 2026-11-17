@@ -131,3 +131,12 @@ When building a design system for a new product:
 
 - `evals/lint-skills.js` checks every skill's frontmatter (name, description length, YAML colon hazard), SKILL.md length and reference depth. Run it with the script tests before a PR. Designer-skill facts are in `research/designer-skills-verified.md`.
 - `design` replaces the old `product` skill (2026-11-16): same steps, plus a `handoff` step that writes `design/handoff/handoff.json` and screen specs, validated by `skills/design/scripts/handoff.js` (copied into `code` at build). The `code` skill builds from it in slices and verifies with `audit.js` and `contrast.js` (copied at build). Research: `research/skill-stacks-verified.md`. Eval files: `evals/design.json`, `evals/code.json`.
+
+## Website performance (2026-11-16)
+Rules to keep Browse usable on slow computers as data grows:
+- Browse draws rows in batches of `PAGE` (60). A `IntersectionObserver` watches the row in the middle of what is drawn; when it is on screen or already passed, the next batch is added (so loads happen at 50% of the rows shown). A "Show N more" button is the fallback. A linked entry is always drawn. Select all works on the whole filtered list, not only drawn rows.
+- All data is one `<script type="application/json" id="mambo-data">` block read with `JSON.parse` (not JavaScript literals). New data goes into that object in `scripts/build.js`.
+- Sorting uses precomputed keys and one `Intl.Collator`; search text is cached per entry in a WeakMap. Do not go back to `localeCompare` inside a sort or `toLowerCase` inside `matches`.
+- Icon previews and font samples load only near the viewport (existing); keep new heavy content behind the same pattern.
+- Measured with Chromium at 6x CPU slowdown (file://, fonts blocked): page load 5.9 s to 1.4 s, filtering to icons 2.7 s to 0.12 s, DOM nodes after first draw 42,362 to 1,358. Check with `node evals/site-smoke.js [cpuSlowdown]` (needs Playwright).
+- Still true: `dist/site/index.html` is about 5.9 MB because icon and profile SVGs are inline (3.4 MB of the data). If it keeps growing, split icons and profiles into per-set files fetched on demand; this needs care for opening the page from a file and for the export and design-system code that reads `e.svg`.

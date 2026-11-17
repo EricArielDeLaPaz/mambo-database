@@ -199,6 +199,6 @@ fs.copyFileSync(path.join(root, 'site-src/mambo.png'), (fs.mkdirSync(path.join(o
 const src = f => fs.readFileSync(path.join(root, 'site-src', f), 'utf8');
 const fonts = JSON.parse(fs.readFileSync(path.join(root, 'data/google-fonts.json'), 'utf8'));
 let js = ['core.js', 'store.js', 'browse.js', 'systems.js', 'guides.js', 'tools.js', 'tools2.js', 'app.js'].map(src).join('\n');
-js = js.replace('/*__DATA__*/[]', () => JSON.stringify([...entries, ...iconEntries, ...profileEntries]).replace(/</g, '\\u003c')).replace('/*__ICONSETS__*/[]', () => JSON.stringify(iconSets)).replace('/*__FONTS__*/[]', () => JSON.stringify(fonts)).replace('/*__GUIDES__*/[]', () => JSON.stringify(guides).replace(/</g, '\\u003c'));
-w(path.join(out, 'site/index.html'), tpl.replace('/*__CSS__*/', () => src('styles.css')).replace('/*__JS__*/', () => js.replace(/<\/script/gi, '<\\/script')));
+const dataJson = JSON.stringify({ data: [...entries, ...iconEntries, ...profileEntries], iconSets, fonts, guides }).replace(/</g, '\\u003c');
+w(path.join(out, 'site/index.html'), tpl.replace('/*__CSS__*/', () => src('styles.css')).replace('/*__DATA__*/', () => dataJson).replace('/*__JS__*/', () => js.replace(/<\/script/gi, '<\\/script')));
 console.log(`Built ${entries.length} entries + ${iconEntries.length} icons + ${profileEntries.length} profiles + ${guides.length} guides -> dist/ (site, llms.txt, skill, markdown, json)`);
