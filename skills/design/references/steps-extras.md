@@ -32,7 +32,7 @@ Research: web (search intent for the main topics; run the handoff). Ask: the mai
 ## process-mapping (internal tool) . After: problem-framing
 Research: none. Ask: the current process, who touches it, where it breaks. Write: an as-is process map with steps, owners, handoffs and delays, and the steps the tool will change. Done when: the owner confirms the map is accurate.
 
-## roles-rollout (internal tool) . After: handoff-specs
+## roles-rollout (internal tool) . After: handoff
 Research: none. Ask: roles, data sensitivity, how people will switch. Write: roles and permissions table, a rollout plan (pilot group, training, cutover, fallback), and a feedback loop. Done when: each role's access is explicit.
 
 ## ai-feasibility (AI product) . After: scope-metrics

@@ -1,0 +1,10 @@
+[
+ {"skills":["design"],"query":"/design","files":[],
+  "expected_behavior":["Reads references/shared-protocol.md and asks the product type first with tappable options","Asks audience, stage and team in the same call or the next, not one question per message"]},
+ {"skills":["design"],"query":"I want to build a two-sided marketplace for dog walkers. I'm solo and have only an idea.","files":[],
+  "expected_behavior":["Proposes a step list from the Marketplace column of product-types.md including supply-demand and trust-payments extras","Lets the person tick or untick steps with multi-select calls (up to 4 questions per call)","Does not start any step before the plan is confirmed"]},
+ {"skills":["design"],"query":"Do the competitive audit for me.","files":[],
+  "expected_behavior":["Asks the research handoff question (search here / cheaper agent / my notes / skip) before searching","If a cheaper agent is chosen, writes a 5-bullet brief with the output path research/<topic>.md and evidence rules","Cites only what it read, summarizes in at most 150 words, and closes with Done / Next"]},
+ {"skills":["design"],"query":"Finish the handoff for my booking app; the wireframes and design system are done.","files":[],
+  "expected_behavior":["Reads references/handoff-format.md and writes design/handoff/handoff.json plus one screens/<id>.md per screen","Cuts the MVP into vertical slices with blockedBy and acceptance lines","Runs node scripts/handoff.js check and fixes every error before saying it is done","Tells the person to run the code skill next and gives the handoff path"]}
+]

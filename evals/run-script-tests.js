@@ -33,6 +33,13 @@ const icons = path.join(sk('icon-set-creator'), 'icons.js');
 r = run(icons, ['check', path.join(fx, 'icons/ok.svg')]); t('icons: clean icon passes', r.status === 0, r.stdout);
 r = run(icons, ['check', path.join(fx, 'icons/bad.svg')]); t('icons: bad icon fails with viewBox, image and color errors', r.status === 1 && /viewBox/.test(r.stdout) && /<image>/.test(r.stdout) && /fixed color/.test(r.stdout), r.stdout);
 r = run(icons, ['check', path.join(fx, 'icons/over.svg')]); t('icons: out-of-area rect and square cap fail', r.status === 1 && /live area/.test(r.stdout) && /linecap/.test(r.stdout), r.stdout);
+// handoff (design skill) and its copy in the code skill
+const ho = path.join(sk('design'), 'handoff.js'), hok = path.join(fx, 'handoff-ok'), hbad = path.join(fx, 'handoff-bad');
+r = run(ho, ['check', hok]); t('handoff: valid folder passes with order s1 -> s2', r.status === 0 && /s1-search -> s2-detail/.test(r.stdout), r.stdout);
+r = run(ho, ['check', hbad]); t('handoff: bad folder reports missing spec, unknown blocker, no acceptance, TBD, cycle-free', r.status === 1 && /spec file not found/.test(r.stdout) && /unknown blocker/.test(r.stdout) && /acceptance/.test(r.stdout) && /TBD/.test(r.stdout), r.stdout);
+r = run(ho, ['next', hok]); t('handoff next: only the unblocked slice is ready', /s1-search/.test(r.stdout) && !/s2-detail/.test(r.stdout), r.stdout);
+r = run(ho, ['next', hok, '--done', 's1-search']); t('handoff next: after s1 the second slice is ready', /s2-detail/.test(r.stdout) && !/^s1-search/m.test(r.stdout), r.stdout);
+const built = path.join(root, 'dist/skill/code/scripts/handoff.js'); if (fs.existsSync(built)) { r = run(built, ['check', hok]); t('code skill ships handoff.js, audit.js and contrast.js', r.status === 0 && fs.existsSync(path.join(root, 'dist/skill/code/scripts/audit.js')) && fs.existsSync(path.join(root, 'dist/skill/code/scripts/contrast.js'))) }
 // pick.js needs the built data
 const data = path.join(root, 'dist/skill/create-design-system/data/library-lite.json');
 if (fs.existsSync(data)) { r = run(path.join(root, 'dist/skill/create-design-system/scripts/pick.js'), ['colors', '--industry', 'finance', '--n', '1']); t('pick.js returns a color set', r.status === 0 && /\| primary #/.test(r.stdout), r.stdout) } else console.log('skip pick.js (run node scripts/build.js first)');

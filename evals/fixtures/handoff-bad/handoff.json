@@ -1,0 +1,3 @@
+{"product":{"name":"Bad"},"stack":{"framework":"react-vite"},
+ "screens":[{"id":"home","name":"Results list","purpose":"List results","components":["card"],"states":["default"],"spec":"screens/home.md"},{"id":"gone","name":"Gone","purpose":"x","components":["card"],"states":["default"],"spec":"screens/missing.md"}],
+ "slices":[{"id":"s1","title":"One","screens":["home"],"blockedBy":["s9"],"acceptance":[]}]}
