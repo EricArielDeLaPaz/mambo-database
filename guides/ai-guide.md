@@ -81,7 +81,7 @@ The pattern from Anthropic's "Building effective agents" essay is the shape behi
 - **Human in the loop** — the person approves gates: money, publishing, irreversible deletions, brand decisions.
 - [Official: Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)[^5]
 
-Here is the pattern on this very guide. Claude writes the plan as unchecked items in `DESIGN.md`. Hermes (the worker) pulls the repo with `git pull` and does the unchecked items in order. Claude reviews the result. Anything that needs the web goes to Hermes as a `- [ ] Research:` item, and the answer is saved to a `research/<topic>.md` file for Claude to read. The human decides between steps. That loop — plan → worker executes → delegator reviews — is the practical form of the pattern. Use the cheap models as workers and the expensive one as the judge, or skip the split entirely for one-shot questions where the overhead costs more than it saves.
+The practical form of the pattern is a loop: plan → worker executes → delegator reviews, with you deciding between steps. Use the cheaper models as workers and the strongest one as the judge, or skip the split entirely for one-shot questions where the overhead costs more than it saves.
 
 **When a single assistant is enough.** One chat for: one-shot questions, anything where every step needs your taste, anything irreversible. **When the pattern pays off.** Tasks spanning many files or sources, anything needing independent verification, or anything with a checkable end state (passing tests, clean build, all contrast ratios green).
 
@@ -116,28 +116,55 @@ Related guides: [Setting up the AI skills](#/guide/setting-up-the-skills) and [H
 
 ## Free, budget and high-end workflows
 
-As of 2026-11-13. Prices and limits change; check the vendor page.
+As of 2026-11-13. Prices and limits change; check the vendor page. Each workflow below says which tier of model does which job. A "top-tier" model is the strongest and most costly one a vendor sells, such as Claude Fable 5.2 or Claude Opus 5.5, GPT-6.2 Astra, or Gemini 4 Carbon. A "mid-tier" model is the everyday choice, such as Claude Sonnet 5.5, GPT-6.2 Sol, or Gemini 4 Hydrogen. A "small" model is the fast, cheap one, such as Claude Haiku 5.5, GPT-6 Luna, or Gemini Flash-Lite.
 
-| Plan | Price | Good for | Official page |
-| --- | --- | --- | --- |
-| ChatGPT Free | Free plan; see OpenAI's pricing page | Occasional brainstorming | [OpenAI pricing](https://chatgpt.com/pricing)[^18] |
-| Claude Free | $0 | Occasional Claude chats | [claude.com/pricing](https://claude.com/pricing)[^19] |
-| AI Studio free tier | $0 | Big-context research on Gemini | [Google AI Studio billing](https://aistudio.google.com/docs/billing)[^17] |
-| Claude Pro | $17/mo annual · $20 monthly | More usage than Free, plus Projects | [claude.com/pricing](https://claude.com/pricing)[^19] |
-| GitHub Copilot Pro | $10/mo · 1,500 AI credits | Completions, chat, agents in the editor | [Copilot plans](https://docs.github.com/en/copilot/get-started/plans)[^20] |
-| Google AI Pro | $19.99/mo | Everyday Gemini app use | [Google I/O 2026](https://blog.google/products-and-platforms/products/google-one/google-ai-subscriptions/)[^21] |
-| Google AI Plus | See Google's plans page | Entry Gemini app tier | [Google plans](https://one.google.com/about/google-ai-plans/)[^22] |
-| Claude Max | $100/mo (5× Pro usage, plus $100 API credits/mo) | 5× Pro usage every 5 hours and every week | [claude.com/pricing](https://claude.com/pricing)[^19] |
-| Claude Ultra | $200/mo (10× Pro usage, $200 API credits/mo) | 10× Pro usage every week | [claude.com/pricing](https://claude.com/pricing)[^19] |
-| ChatGPT Pro | Pro 200 · Pro 500 ($500, GPT-6 Astra Ultrafast) | See OpenAI's page for what each tier includes | [OpenAI help](https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers)[^23] |
-| Google AI Ultra | $100/mo new developer tier · $200/mo top tier (was $250) | Max Gemini capacity + storage | [Google I/O 2026](https://blog.google/products-and-platforms/products/google-one/google-ai-subscriptions/)[^21] |
-| Copilot Pro+ / Max | $39/mo (7,000 credits) · $100/mo (20,000 credits) | Premium models + agents | [Copilot plans](https://docs.github.com/en/copilot/get-started/plans)[^20] |
+### Free workflow
 
-**Free-tier workflow that works.** Free open-weight models from an aggregator such as [OpenRouter](https://openrouter.ai/docs)[^24] or the AI Studio free tier[^17] for reasoning and big-context research, ChatGPT or Claude free tiers for brainstorming. Accept the caps and batch your prompts. Never put client-confidential material into a free service. Many vendors may use free-tier content to improve their models, and the rules differ by provider, so check before sending anything sensitive.
+**What you get.** Claude Free[^19] gives limited chats with Claude Sonnet 5.5, a mid-tier model. ChatGPT Free[^18] gives limited use of a small model (GPT-5.6 Luna). Google's Gemini app and the AI Studio free tier[^17] give a small Gemini model (Flash-Lite) with a very large context window. Open-weight models such as DeepSeek are free through aggregators such as [OpenRouter](https://openrouter.ai/docs)[^24], with rate limits.
 
-**Budget workflow that works (≈ $20/month).** Claude Pro as the daily driver, the AI Studio free tier for anything that needs a large context, and the free tiers for throwaways.
+**How to work within the limits.**
 
-**High-end workflow that works.** Use a top-tier model for client work and architecture, a mid-tier model for the rest, and small, fast models for bulk jobs. Add a terminal agent for the repo and a human review before you publish or deploy.
+1. Plan in one place. Use Claude Free (mid-tier) for the hard thinking: the brief, the structure of a page, a tricky bug. Spend your few messages on the questions that need the best reasoning you can get for free.
+2. Hand the long reading to Gemini. Paste a long document, a long thread of feedback or a whole codebase into AI Studio and ask for a summary or a list of problems. Its large context is the reason to use it.
+3. Use ChatGPT Free (small-model) for quick jobs: rewording a button label, naming ideas, a first draft of alt text.
+4. Check the result somewhere else. Paste the answer to a second free assistant and ask it to find mistakes. Two small checks are cheaper than one wrong answer.
+5. Batch your prompts. Put five related questions in one message instead of sending five messages, so one cap does more work.
+
+**Example: a designer's free week.** Monday, summarise user interviews in Gemini. Tuesday, ask Claude Free for three layout options and the reasons for each. Wednesday, use ChatGPT Free to write microcopy for the chosen layout. Thursday, ask Claude Free to check the copy against your contrast and reading-level rules. Friday, ask a second assistant to review what you will send.
+
+**Watch for.** Free plans can change or run out mid-task. Many vendors may use free-tier content to improve their models, and the rules differ by provider, so check before you send anything private. Never put client-confidential material into a free service.
+
+### Budget workflow (about $20 a month)
+
+**What you get.** Claude Pro costs $17 a month billed yearly or $20 monthly[^19]. Google AI Pro is $19.99 a month[^21], and Google AI Plus is an entry tier[^22]. GitHub Copilot Pro is $10 a month with 1,500 AI credits for editor completions, chat and agents[^20]. ChatGPT also has paid plans[^23]. Pick one daily driver, not all four. At this price a mid-tier model does almost everything, and you get a few messages with a top-tier model for the hardest problems.
+
+**The split.**
+
+- **Mid-tier model as the daily driver.** Claude Sonnet 5.5, GPT-6.2 Sol or Gemini 4 Hydrogen. It writes code, reviews designs, drafts documents and plans.
+- **Small model for bulk.** Claude Haiku 5.5, GPT-6 Luna or Flash-Lite. Use it to tag a hundred icons, rename files, or clean up a spreadsheet of copy.
+- **Top-tier model for one hard moment.** If you have a few messages, spend them on an architecture choice, a confusing bug, or a final review of something that ships. Do not use them for drafts.
+- **Free tiers for throwaways.** Anything you do not mind losing goes to a free plan so your paid limit lasts.
+
+**Example: a developer's budget week.** Pay for one plan, such as Claude Pro. Monday, plan the feature with the mid-tier model and write the steps down. Tuesday and Wednesday, build with the mid-tier model in the editor, one small step at a time, running the tests after each. Thursday, use the small model for the boring bulk work, such as updating 60 strings. Friday, spend two top-tier messages on a review of the whole change, then read the review yourself before you merge.
+
+**Watch for.** Paid plans still have usage limits that reset every few hours or every week. If you hit the limit often, move the bulk jobs to a small model before you upgrade.
+
+### High-end workflow
+
+**What you get.** Higher plans raise the limits and open the top-tier models. Claude Max is $100 a month (5x Pro usage plus $100 in API credits) and Claude Ultra is $200 a month (10x Pro usage)[^19]. ChatGPT Pro has Pro 200 and Pro 500 tiers, and the $500 tier includes GPT-6 Astra Ultrafast[^23]. Google AI Ultra has a $100 developer tier and a $200 top tier[^21]. GitHub Copilot Pro+ is $39 a month and Max is $100 a month, with more credits for premium models[^20]. Teams that pay by the token use the API instead[^1].
+
+**The split.**
+
+- **Top-tier model as the planner and judge.** Claude Fable 5.2, Claude Opus 5.5, GPT-6.2 Astra or Gemini 4 Carbon. It writes the plan, makes the architecture calls, and reviews finished work against a clear bar (tests pass, contrast is at least 4.5:1).
+- **Mid-tier models as the builders.** Claude Sonnet 5.5, GPT-6.2 Sol or Gemini 4 Hydrogen do the bulk of the writing and coding, one planned step at a time. Several can work on separate steps at once.
+- **Small models for volume.** Claude Haiku 5.5, GPT-6 Luna or Flash-Lite sort, tag, translate and format.
+- **A terminal agent for the repo, and you for the gates.** The agent edits files and runs tests. You approve anything that ships, spends money, or deletes data.
+
+**Example: shipping a new feature.** The top-tier model reads the request and writes a plan of ten small steps with a test for each. Mid-tier models build the steps in order, and a small model writes the release notes and updates the docs. The top-tier model then reviews the full change and lists risks. You read the list, fix the two that matter, and press deploy yourself.
+
+**Example: a design-system refresh.** A small model lists every color and size used across the screens. A mid-tier model groups them into tokens. The top-tier model checks the result against your 4.5:1 text contrast and 3:1 interface contrast rules and flags what breaks in dark mode. You decide which fixes keep the brand.
+
+**Watch for.** Top-tier models cost the most per message and are slower. Use them where a mistake is costly and the work is hard to check, and use a cheaper tier everywhere else. See "Delegator and worker workflows" above for how to hand work between tiers.
 
 ## Limits, privacy and good habits
 
