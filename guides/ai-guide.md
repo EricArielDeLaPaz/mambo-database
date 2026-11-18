@@ -16,75 +16,24 @@ This is a working reference for designers and developers who use AI tools day to
 Start with what you need to do, not with a brand. This section lists good models for each job in three bands: **free**, **budget** and **costly**. It uses current rankings from independent sites, not just one company's models. Everything here is as of **2026-11-17**, and rankings move fast.
 
 **How to read it**
-- **Smartness score** is the Artificial Analysis Intelligence Index (higher is better).[^25] Coding uses its Coding Agent Index.[^26] Images use its image Arena rating.[^27]
-- **Prices** are in US dollars per million tokens (input / output), unless it says otherwise. **Cost per task** is what Artificial Analysis paid to run its own test set. It shows what a model really costs to use, because some models "think" for a long time and use many tokens.
-- **Free** means a free plan, a free API tier, or an open-weight model (the files are public). Open-weight models cost nothing to download, but you must run them on a computer or a host that may charge you.
-- **Budget** means up to about $2 input / $10 output per million tokens, or a plan of about $20 a month. **Costly** is everything above that.
+- **Smartness score** is the Artificial Analysis Intelligence Index (higher is better), out of the 111 models it ranks.[^25] Coding uses its Coding Agent Index.[^26] Images use its image Arena rating.[^27]
+- **Free** means you can use it in an app's free plan, with limited use. Limits change often, so expect to hit a cap now and then. Free plans may also use your chats to improve their models, so never paste client secrets into them.
+- **Budget** means a plan of about $20 a month, or a model that costs up to about $2 input / $10 output per million tokens through the API.
+- **Costly** is everything above that.
 
 ### Quick picks by need
 
-| Your need | Free | Budget | Costly |
+| Your need | Free (limited use) | Budget | Costly |
 | --- | --- | --- | --- |
-| Everyday chat and quick answers | The free plans of ChatGPT and Claude. Or Gemini 3.5 Flash in Google AI Studio. | Claude Haiku 5.5 or GPT-6 Luna for fast, cheap answers. A $20 plan (Claude Pro or Google AI Pro) for daily use. | Rarely worth it. A top model is more than chat needs. |
-| Research and long documents | Gemini 3.5 Flash in Google AI Studio (free API tier). Open-weight Kimi K3.1 Pro if you can host it. | Claude Sonnet 5.5 (1M-token window) or GPT-6.2 Sol. Gemini 4 Hydrogen also has a 1M window. | Gemini 4 Carbon, GPT-6.2 Astra or Claude Fable 5.2 for the hardest, highest-stakes questions. |
-| Coding (including front-end) | Gemini 3.5 Flash (free API tier). Open-weight DeepSeek V4.1 Flash or Kimi K3.1 Pro. | Claude Sonnet 5.5 or GPT-6.2 Sol. GPT-6.1 Terra for lower cost. | Claude Fable 5.2 or Claude Opus 5.5 in Claude Code. Gemini 4 Carbon in Antigravity. GPT-6 Astra in Codex. |
-| Designing (reading screenshots, UI feedback, design to code) | Gemini 3 Flash Preview or Gemini 2.5 Flash (free API tier; Google lists text, image and video input). | Gemini 4 Hydrogen, Claude Sonnet 5.5 or GPT-6.2 Sol. Test with your own screenshots. | Gemini 4 Carbon, Claude Opus 5.5 or GPT-6.2 Astra for deep visual reasoning across many screens. |
-| Writing and editing | Free plans of ChatGPT or Claude. | Claude Sonnet 5.5, GPT-6.2 Sol or Gemini 4 Hydrogen. | Claude Opus 5.5 or GPT-6.2 Astra for brand voice and long documents. |
-| Data and spreadsheets | Gemini 3.5 Flash (free API tier). | GPT-6.2 Sol or Claude Sonnet 5.5. Check results by hand. | GPT-6.2 Astra or Claude Opus 5.5 for messy data and multi-step analysis. |
-| Making images | No top image model has a confirmed free tier. The best open-weight one, H3-Image, ranks 27th. | MAI-Image-2.7-Flash (about $10 per 1,000 images). Nano Banana 2.1 or MAI-Image-2.7 (about $34 per 1,000). | GPT Image 2.6 (ranked first, about $211 per 1,000 images). |
+| Everyday chat and quick answers | **Claude Free** with Sonnet 5.5.[^31] **ChatGPT Free** with GPT-5.6 Luna: everyday text chats are unlimited, and images, files and voice have separate limits.[^30] **Gemini** free plan with Flash-Lite.[^32] | A $20-a-month plan (Claude Pro, Google AI Pro). Or Claude Haiku 5.5 or GPT-6 Luna for fast, cheap answers. | Rarely worth it. A top model is more than chat needs. |
+| Research and long documents | **ChatGPT Free** (it can search the web and read files you upload, with limits).[^30] **Claude Free** with Sonnet 5.5. **DeepSeek** (free chat with web search, per a June 2026 review).[^33] | Claude Sonnet 5.5 (1M-token window) or GPT-6.2 Sol. Gemini 4 Hydrogen also has a 1M window. | Claude Fable 5.2 (smartness 65, first place), GPT-6.2 Astra (62) or Gemini 4 Carbon (60).[^25] |
+| Coding, including front-end | **Claude Free** with Sonnet 5.5. **ChatGPT Free**. **DeepSeek**, which is open-weight.[^33] | Claude Sonnet 5.5 (56.3% in Claude Code on the coding index) or GPT-6.2 Sol (52.2% in Codex).[^26] | Claude Fable 5.2 (58.5%) or Claude Opus 5.5 (58.2%) in Claude Code. Gemini 4 Carbon in Antigravity (55.5%). GPT-6 Astra in Codex (53.1%).[^26] The top three are within 0.3 points, so treat them as tied. |
+| Designing: screenshots, UI feedback, design to code | **ChatGPT Free**, which lets you upload images and files.[^30] **Claude Free** and **Gemini** free: try one of your own screenshots and see how well it reads it. | Gemini 4 Hydrogen, Claude Sonnet 5.5 or GPT-6.2 Sol. | Gemini 4 Carbon, Claude Opus 5.5 or GPT-6.2 Astra for deep visual reasoning across many screens. |
+| Writing and editing | **Claude Free** with Sonnet 5.5. **ChatGPT Free**. **Gemini** free plan. | Claude Sonnet 5.5, GPT-6.2 Sol or Gemini 4 Hydrogen. | Claude Opus 5.5 or GPT-6.2 Astra for brand voice and long documents. |
+| Data and spreadsheets | **ChatGPT Free** has a data analysis tool, with limits.[^30] **Claude Free** with Sonnet 5.5. Check any numbers by hand. | GPT-6.2 Sol or Claude Sonnet 5.5. | GPT-6.2 Astra or Claude Opus 5.5 for messy data and multi-step analysis. |
+| Making images | **ChatGPT Free** can create images, with its own limit.[^30] Other assistants, such as the Gemini app, also make images; check their current free limits. | MAI-Image-2.7-Flash (about $10 per 1,000 images). Nano Banana 2.1 or MAI-Image-2.7 (about $34 per 1,000).[^27] | GPT Image 2.6 (first place on the image Arena, about $211 per 1,000 images).[^27] |
 
-Two honest limits. First, we could not find a live public ranking made specifically for design critique, writing or spreadsheets. For those rows we used the general Intelligence Index, so test the shortlist on your own work. Second, the order inside a band is close. A few points on a leaderboard rarely matter more than price and speed for you.
-
-### The numbers behind the picks
-
-| Model | Vendor | Smartness (Intelligence Index) | Cost per task | Price per 1M tokens (in / out) |
-| --- | --- | --- | --- | --- |
-| Claude Fable 5.2 | Anthropic | 65 | $26.54 | $8 / $40 (our 2026-11-13 check; the page we could read today lists Fable 5.1 at $10 / $50)[^1] |
-| GPT-6.2 Astra | OpenAI | 62 | $4.00 | $8 / $40 [third-party, confirm][^28] |
-| Gemini 4 Carbon | Google | 60 | $5.48 | not on the Google page we could read[^4] |
-| Claude Opus 5.5 | Anthropic | 59 | $10.04 | $4 / $20 [official][^1] |
-| GPT-6.2 Sol | OpenAI | 57 | $1.01 | $2 / $10 [third-party, confirm][^28] |
-| Claude Sonnet 5.5 | Anthropic | 55 | $10.02 | $2 / $10 [official][^1] |
-| Gemini 4 Hydrogen | Google | 54 | $3.16 | not on the Google page we could read[^4] |
-| GPT-6.1 Terra | OpenAI | 51 | $0.96 | $1 / $5 [third-party, confirm][^28] |
-| Kimi K3.1 Pro (open weights) | Moonshot | 46 | $3.68 | $2 / $10 [third-party; another site lists less, so check][^29] |
-| Claude Haiku 5.5 | Anthropic | 36 | $0.41 | $0.10 / $0.50 up to 100K tokens [official][^1] |
-| DeepSeek V4.1 Flash (open weights) | DeepSeek | 33 | $0.60 | $0.15 to $0.30 / $0.60 to $1.20, depending on the hour [third-party][^29] |
-| Gemini 3.5 Flash | Google | not ranked there | not listed | $1.50 / $9, with a free API tier [official][^4] |
-
-What this shows. **A cheap price per token is not always a cheap task.** Claude Sonnet 5.5 and GPT-6.2 Sol cost the same per token, but Sonnet's test run cost about ten times more because it used many more tokens. GPT-6.2 Astra scores 62 at $4.00 a task, while Claude Fable 5.2 scores 65 at $26.54. Open-weight Kimi K3.1 Pro (46) is the strongest downloadable model we could confirm on that leaderboard.
-
-### For coding specifically
-
-| Agent and model | Coding Agent Index |
-| --- | --- |
-| Claude Code with Claude Fable 5.2 | 58.5% |
-| Devin Fusion CLI with Claude Opus 5.5 and GPT-6 Luna | 58.4% |
-| Claude Code with Claude Opus 5.5 | 58.2% |
-| Claude Code with Claude Sonnet 5.5 | 56.3% |
-| Antigravity CLI with Gemini 4 Carbon | 55.5% |
-| Codex with GPT-6 Astra | 53.1% |
-| Codex with GPT-6.1 Sol | 52.2% |
-
-The top three are within 0.3 points, so treat them as tied. The score measures both the model and the coding tool together, so the same model can score differently in a different tool.[^26]
-
-### For making images
-
-| Model | Arena rating | Price per 1,000 images |
-| --- | --- | --- |
-| GPT Image 2.6 Sunburst | 1261 | $210.72 |
-| MAI-Image-2.7 (Microsoft) | 1214 | $34.82 |
-| Kling Image 4.0 | 1180 | $63.00 |
-| Nano Banana 2.1 (Google) | 1176 | $33.60 |
-| Grok Imagine Image 2.0 (xAI) | 1167 | $60.00 |
-| MAI-Image-2.7-Flash | 1158 | $10.24 |
-
-Prices are for 1024 × 1024 images with default settings.[^27] Google's own page lists Imagen 4 Fast at $0.02 per image and Gemini 2.5 Flash Image at $0.039 per image, with no free tier.[^4]
-
-### When to move up or down
-**Move up** when the same task needs two or more retries, the quality changes from run to run, the work spans many files or screens, or the work is for a client. **Move down** when the task is mechanical, you need speed, or your budget is capped. Start with the smallest model that passes a test on your own five hardest examples. This is practice, not a lab result, so check it on your own work.
-
-Anthropic puts it this way: "Choose Haiku for simple tasks, Sonnet for most production workloads, and Opus for the most complex reasoning." [Official: Claude platform pricing page](https://platform.claude.com/docs/en/about-claude/pricing)[^1]
+Two honest limits. First, we could not find a live public ranking made specifically for design feedback, writing or spreadsheets. For those rows we used the general Intelligence Index, so test the shortlist on your own work. Second, the order inside a band is close. A few points on a leaderboard rarely matter more than price and speed for you. Free plans change often: Google moved free Gemini users to Flash-Lite only on 9 October 2026, for example.[^32]
 
 ## Tokens and context
 
@@ -248,5 +197,7 @@ All sources below are the vendors' own pages. Figures were read from them on 202
 [^25]: Artificial Analysis LLM leaderboard (Intelligence Index, cost per task) — Artificial Analysis. https://artificialanalysis.ai/leaderboards/models. Accessed 2026-11-17. The page showed no update date.
 [^26]: Artificial Analysis Coding Agent Index, as shown by BenchLM (data captured 2026-11-16) — https://benchlm.ai/benchmarks/aaCodingAgents. Accessed 2026-11-17. Original: https://artificialanalysis.ai/agents/coding-agents.
 [^27]: Artificial Analysis Text to Image Arena — Artificial Analysis. https://artificialanalysis.ai/text-to-image/arena/leaderboard-text. Accessed 2026-11-17. It lists H3-Image as the leading open-weights model (rating 1066, rank 27).
-[^28]: OpenAI API pricing as tracked by BenchLM (synced 2026-11-17) — https://benchlm.ai/openai/api-pricing. Accessed 2026-11-17. A third-party table; OpenAI's own pricing page (https://developers.openai.com/api/docs/pricing) could not be opened that day, so confirm there.
-[^29]: China AI Pricing 2026 — Capital and Compute (updated 2026-10-24). https://capitalandcompute.net/md/china-ai-pricing.md. Accessed 2026-11-17. A third-party table. The tracking site ModelGrep (https://modelgrep.com/leaderboard) lists a lower input price for Kimi K3.1 Pro, so confirm with the vendor.
+[^30]: ChatGPT Free tier FAQ — OpenAI help. https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq. Accessed 2026-11-17. Free users get GPT-5.6 Luna, "unlimited everyday text chats", and web search, file uploads, data analysis and image generation with separate limits. The page says the default model and limits can change.
+[^31]: "Claude Opus 5.5 is included with Pro, and Free still misses out" — Notebookcheck, 2026-09-23. https://www.notebookcheck.net/Claude-Opus-5-5-is-included-with-Pro-and-Free-still-misses-out.1406452.0.html. Accessed 2026-11-17. Reports that free accounts get Sonnet and Haiku, and Opus 5.5 is paid-only. Anthropic's own free-usage page (https://support.claude.com/en/articles/8602283-about-free-claude-usage) says usage resets on a rolling five-hour session and varies with demand, but does not name the models.
+[^32]: "Google moves free Gemini to Flash-Lite and launches Nano Banana 2.1" — The Next Web, 2026-10-09. https://thenextweb.com/news/gemini-flash-lite-free-users-nano-banana-2-1. Accessed 2026-11-17. A news report, not a Google page.
+[^33]: "Best Free AI Chatbots You Can Actually Use in 2026" — fast.io, updated 2026-06-06. https://fast.io/resources/best-free-ai-chatbot-2026/. Accessed 2026-11-17. A third-party review that is five months old; check that DeepSeek's free chat still offers this.
