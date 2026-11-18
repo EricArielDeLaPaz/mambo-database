@@ -25,7 +25,7 @@ Start with what you need to do, not with a brand. This section lists good models
 
 | Your need | Free (limited use) | Budget | Costly |
 | --- | --- | --- | --- |
-| Everyday chat and quick answers | **Claude Free** with Sonnet 5.5.[^31] **ChatGPT Free** with GPT-5.6 Luna: everyday text chats are unlimited, and images, files and voice have separate limits.[^30] **Gemini** free plan with Flash-Lite.[^32] | A $20-a-month plan (Claude Pro, Google AI Pro). Or Claude Haiku 5.5 or GPT-6 Luna for fast, cheap answers. | Rarely worth it. A top model is more than chat needs. |
+| Everyday chat and quick answers | **Claude Free** with Sonnet 5.5.[^31] **ChatGPT Free** with Luna, its default model (you usually cannot choose another on Free): everyday text chats are unlimited, and images, files and voice have separate limits.[^30] **Gemini** free plan with Flash-Lite.[^32] | A $20-a-month plan (Claude Pro, Google AI Pro). Or Claude Haiku 5.5 or GPT-6 Luna for fast, cheap answers. | Rarely worth it. A top model is more than chat needs. |
 | Research and long documents | **ChatGPT Free** (it can search the web and read files you upload, with limits).[^30] **Claude Free** with Sonnet 5.5. **DeepSeek** (free chat with web search, per a June 2026 review).[^33] | Claude Sonnet 5.5 (1M-token window) or GPT-6.2 Sol. Gemini 4 Hydrogen also has a 1M window. | Claude Fable 5.2 (smartness 65, first place), GPT-6.2 Astra (62) or Gemini 4 Carbon (60).[^25] |
 | Coding, including front-end | **Claude Free** with Sonnet 5.5. **ChatGPT Free**. **DeepSeek**, which is open-weight.[^33] | Claude Sonnet 5.5 (56.3% in Claude Code on the coding index) or GPT-6.2 Sol (52.2% in Codex).[^26] | Claude Fable 5.2 (58.5%) or Claude Opus 5.5 (58.2%) in Claude Code. Gemini 4 Carbon in Antigravity (55.5%). GPT-6 Astra in Codex (53.1%).[^26] The top three are within 0.3 points, so treat them as tied. |
 | Designing: screenshots, UI feedback, design to code | **ChatGPT Free**, which lets you upload images and files.[^30] **Claude Free** and **Gemini** free: try one of your own screenshots and see how well it reads it. | Gemini 4 Hydrogen, Claude Sonnet 5.5 or GPT-6.2 Sol. | Gemini 4 Carbon, Claude Opus 5.5 or GPT-6.2 Astra for deep visual reasoning across many screens. |
@@ -86,7 +86,7 @@ Google's current frontier line is **Gemini 4 Carbon** (most capable reasoning), 
 
 | Setup | Delegator | Workers | Your part |
 | --- | --- | --- | --- |
-| Free | You, plus Claude Free (Claude Sonnet 5.5) for the plan | ChatGPT Free (GPT-5.6 Luna), Gemini free (Flash-Lite) | Copy plans and results between chats, and check each one |
+| Free | You, plus Claude Free (Claude Sonnet 5.5) for the plan | ChatGPT Free (Luna by default; you usually cannot change it), Gemini free (Flash-Lite) | Copy plans and results between chats, and check each one |
 | Budget | Your paid mid-tier model, such as Claude Sonnet 5.5 or GPT-6.2 Sol, with a few top-tier messages saved for the hardest plan or review | A small model, such as Claude Haiku 5.5 or GPT-6 Luna, for bulk jobs | Approve the plan, then run the checks |
 | High-end | A top-tier model, such as Claude Fable 5.2, Claude Opus 5.5, GPT-6.2 Astra or Gemini 4 Carbon | Mid-tier models such as Claude Sonnet 5.5, GPT-6.2 Sol or Gemini 4 Hydrogen, plus small models such as Claude Haiku 5.5 for volume | Approve anything that ships, spends or deletes |
 
@@ -154,7 +154,7 @@ As of 2026-11-13. Prices and limits change; check the vendor page. Each workflow
 
 ### Free workflow
 
-**What you get.** Claude Free[^19] gives limited chats with Claude Sonnet 5.5, a mid-tier model. ChatGPT Free[^18] gives limited use of a small model (GPT-5.6 Luna). Google's Gemini app and the AI Studio free tier[^17] give a small Gemini model (Flash-Lite) with a very large context window. Open-weight models such as DeepSeek are free through aggregators such as [OpenRouter](https://openrouter.ai/docs)[^24], with rate limits.
+**What you get.** Claude Free[^19] gives limited chats with Claude Sonnet 5.5, a mid-tier model. ChatGPT Free[^18] gives you OpenAI's small, fast Luna model by default. On the free plan you usually cannot switch to a bigger GPT model, because the model picker for larger models (such as Sol) comes with a paid plan. OpenAI changes its menus and model names often and rolls them out in stages, so what you see may differ from this guide. Open the model menu in your own account and use what it shows.[^34] Google's Gemini app and the AI Studio free tier[^17] give a small Gemini model (Flash-Lite) with a very large context window. Open-weight models such as DeepSeek are free through aggregators such as [OpenRouter](https://openrouter.ai/docs)[^24], with rate limits.
 
 **How to work within the limits.**
 
@@ -227,6 +227,37 @@ A paid personal plan does not always change data use. Google's Gemini app notice
 
 **Rate limits and quotas** differ by vendor and plan. Free tiers cap requests per minute and per day. Claude's paid plans cap usage in rolling five-hour windows plus a weekly allowance. A failed request can still count against a cap. If a call fails, check your quota before you retry in a loop.
 
+## Current offers and student deals
+
+As of 2026-11-18. Offers change often and many have deadlines. Always open the vendor's own page before you sign up, because these notes come from news and deal-tracking sites, not from the vendors.[^35][^36][^37] Most offers need a payment method, and many renew at full price after the free period, so set a reminder to cancel.
+
+### Offers for everyone
+
+| Offer | What it is | Deadline |
+| --- | --- | --- |
+| Annual billing on Claude Pro, Perplexity Pro, Google AI Pro and others | About 16 to 17% less than paying monthly. For example, Claude Pro is $200 a year versus $240 monthly.[^36] | None stated, but you commit for 12 months |
+| Google AI Plus | $4.99 a month (cut from $7.99 in June 2026) with 400 GB of storage. Google planned to remove its Pro model from this plan, leaving Flash-Lite and Flash.[^36] | None stated |
+| ChatGPT Go | OpenAI's lowest paid tier, $8 a month in the US. It may show ads.[^36] | None stated |
+| GitHub Copilot Pro | $10 a month, with 1,500 AI credits.[^20] | None stated |
+| Black Friday (November 27, 2026) | No chatbot deals were announced when we checked.[^36] | Check vendor pages that week |
+
+### Offers for students
+
+| Offer | Who can claim | Deadline |
+| --- | --- | --- |
+| Google AI Pro free for 12 months, then $19.99 a month | US college students, 18 and older[^35][^37] | **Redeem by December 31, 2026** |
+| Google AI Plus free for 12 months, then $4.99 a month | College students in 140+ markets outside the US (not Canada)[^37] | **Redeem by December 31, 2026** |
+| ChatGPT Plus free for 4 months, then $20 a month | US college and graduate students[^37] | **Ended October 31, 2026.** Check OpenAI's page in case it returns |
+| GitHub Copilot, free | Verified students 13 and older, including high school[^35][^37] | None published; GitHub checks your status again each month |
+| Perplexity Education Pro, $10 a month | Verified students and educators[^37] | None published |
+| Microsoft 365 Personal, $4.99 a month (half price), with Copilot in the apps | US college students[^37] | None published |
+| Free tools for students, such as JetBrains, v0 ($20 a month in credits for a year) and Zed Pro for 12 months[^35] | Current students with a school email | Mostly not stated |
+| ChatGPT for Teachers, free through June 2028 | US K-12 teachers and staff[^37] | June 2028 |
+
+Claude has no individual student discount that we could confirm. Some universities provide Claude through Claude for Education, so ask your school.[^37]
+
+**How to claim without getting stuck.** Use your school email if the offer asks for one. Be ready to upload a student ID or enrollment letter, because many offers verify through a service such as SheerID. Put the last day to redeem in your calendar now. Some offers also cannot be bought through the App Store or Google Play billing.
+
 ## Where to read more
 
 All sources below are the vendors' own pages. Figures were read from them on 2026-11-13, and prices change often, so re-check before you budget.
@@ -262,3 +293,7 @@ All sources below are the vendors' own pages. Figures were read from them on 202
 [^31]: "Claude Opus 5.5 is included with Pro, and Free still misses out" — Notebookcheck, 2026-09-23. https://www.notebookcheck.net/Claude-Opus-5-5-is-included-with-Pro-and-Free-still-misses-out.1406452.0.html. Accessed 2026-11-17. Reports that free accounts get Sonnet and Haiku, and Opus 5.5 is paid-only. Anthropic's own free-usage page (https://support.claude.com/en/articles/8602283-about-free-claude-usage) says usage resets on a rolling five-hour session and varies with demand, but does not name the models.
 [^32]: "Google moves free Gemini to Flash-Lite and launches Nano Banana 2.1" — The Next Web, 2026-10-09. https://thenextweb.com/news/gemini-flash-lite-free-users-nano-banana-2-1. Accessed 2026-11-17. A news report, not a Google page.
 [^33]: "Best Free AI Chatbots You Can Actually Use in 2026" — fast.io, updated 2026-06-06. https://fast.io/resources/best-free-ai-chatbot-2026/. Accessed 2026-11-17. A third-party review that is five months old; check that DeepSeek's free chat still offers this.
+[^34]: GPT-6 and other models in ChatGPT — OpenAI help (page could not be fetched on 2026-11-18); summarised by "The model picker, mastered" — LearningGPT. https://learninggpt.ai/lessons/chatgpt/model-picker-mastery. Accessed 2026-11-18. [third-party, confirm] Says Luna is the default for Free and Go, that picker contents vary by plan, and that rollouts are staged. Confirm in your own account.
+[^35]: "38 Student AI deals, verified Nov 2026" — aifree.dev. https://aifree.dev/student-ai-deals. Accessed 2026-11-18. [third-party, confirm]
+[^36]: "AI Deals 2026" — Fello AI. https://felloai.com/ai-deals/. Updated 2026-11-07; accessed 2026-11-18. [third-party, confirm] The page says prices were checked on 2026-10-05.
+[^37]: "ChatGPT Student Discount 2026" — howtoai.com. https://howtoai.com/chatgpt-student-discount/. Checked 2026-10-18; accessed 2026-11-18. [third-party, confirm]
