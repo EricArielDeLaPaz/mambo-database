@@ -30,6 +30,9 @@ let fails = 0; const t = (n, ok, x) => { if (!ok) fails++; console.log((ok ? 'ok
   await p.goto(file + '#/entry/' + id); await p.reload(); await p.waitForSelector('table.db tbody tr');
   t('a linked entry far down the list is drawn', await p.$(`tr[data-eid="${id}"]`) !== null);
   await p.click('th[aria-sort] button[data-sort="name"]'); await p.waitForTimeout(300); t('sorting resets to one batch', await rows() <= 120, await rows());
+  const bad = [];
+  for (const id of ['color-formats', 'html-basics', 'setting-up-the-skills']) { await p.evaluate(h => location.hash = h, '#/guide/' + id); await p.waitForTimeout(300); const r = await p.evaluate(() => ({ leak: /u0000|\u0000/.test(document.querySelector('#app').innerText), code: document.querySelectorAll('#app code').length })); if (r.leak || !r.code) bad.push(id + ' ' + JSON.stringify(r)) }
+  t('guides show inline code as code, with no leaked placeholders', !bad.length, bad);
   t('no page errors', !errs.length, errs.join(' | '));
   await b.close(); console.log(fails ? `\n${fails} failed` : '\nall passed'); process.exit(fails ? 1 : 0);
 })();

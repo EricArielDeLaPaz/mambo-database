@@ -19,11 +19,11 @@ const gMatch = g => {
 const gHl = (t, on) => { const q = G.q.trim(); if (!q || !on) return esc(t); const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); return String(t).split(re).map((x, i) => i % 2 ? '<mark>' + esc(x) + '</mark>' : esc(x)).join('') };
 /* A small markdown renderer: headings, paragraphs, lists, tables, code blocks, quotes, bold, code, links. */
 function inlineMd(t, fn) {
-  const codes = []; t = t.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return '\\u0000' + (codes.length - 1) + '\\u0000' });
+  const codes = []; t = t.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return '\u0000' + (codes.length - 1) + '\u0000' });
   t = esc(t).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/(^|[\s(])_([^_]+)_(?=[\s).,;:]|$)/g, '$1<em>$2</em>');
   if (fn) t = t.replace(/\[\^(\d+)\]/g, (m0, n0) => { const n = Number(n0); if (!fn.defs[n]) return m0; fn.seen[n] = (fn.seen[n] || 0) + 1; const id = fn.seen[n] === 1 ? 'fnref-' + n : 'fnref-' + n + '-' + fn.seen[n]; return '<sup class="fnref"><a class="fnlink" href="#src-' + n + '" id="' + id + '" data-fn="' + n + '" aria-label="Source ' + n + '">[' + n + ']</a></sup>' });
   t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)(\{\.btn\})?/g, (_, l, u, b) => /^(https?:|#|[\w./-]+\.(zip|md|txt))/.test(u) ? `<a ${b ? 'class="btn solid" ' : ''}href="${u}" ${/^https?:/.test(u) ? 'target="_blank" rel="noopener"' : ''}>${l}</a>` : l);
-  return t.replace(/\\u0000(\\d+)\\u0000/g, (_, i) => '<code>' + esc(codes[i]) + '</code>');
+  return t.replace(/\u0000(\d+)\u0000/g, (_, i) => '<code>' + esc(codes[i]) + '</code>');
 }
 function mdToHtml(md) {
   /* Collect footnote definitions ([^n]: body) first; they render as a numbered list under the `## Where to read more` heading. */
