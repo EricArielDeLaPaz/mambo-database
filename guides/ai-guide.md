@@ -71,21 +71,55 @@ Google's current frontier line is **Gemini 4 Carbon** (most capable reasoning), 
 
 ## Delegator and worker workflows
 
-The pattern from Anthropic's "Building effective agents" essay is the shape behind every serious AI setup:
+**The idea in one minute.** Think of a small studio. One person plans the work and checks it at the end. That person is the **delegator**. Others do the steps. They are the **workers**. With AI, the delegator is usually your strongest model, and the workers are cheaper, faster models. You are the person who owns the result, so you make the final calls.
 
-- **Prompt chaining** — fixed steps (outline → sections → edit) with a gate between them; stop early if a gate fails.
-- **Routing** — a classifier sends each request to the right specialist (code bug → coding prompt, copy question → writing prompt).
-- **Parallelization** — split independent pieces to workers at once and merge (three research questions in parallel), or run the same prompt several times and keep the best (voting/judge).
-- **Orchestrator–workers** — the plan isn't fixed; the orchestrator decides the decomposition as it goes. Most powerful, most expensive.
-- **Evaluator–optimizer** — a worker drafts, an evaluator critiques, iterate until it passes an explicit bar (tests pass, contrast ≥ 4.5).
-- **Human in the loop** — the person approves gates: money, publishing, irreversible deletions, brand decisions.
-- [Official: Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)[^5]
+**A simple example.** You want a new settings page.
 
-The practical form of the pattern is a loop: plan → worker executes → delegator reviews, with you deciding between steps. Use the cheaper models as workers and the strongest one as the judge, or skip the split entirely for one-shot questions where the overhead costs more than it saves.
+1. The delegator (a top-tier model) turns your request into a short list of small steps, each with a clear way to check it.
+2. A worker (a mid-tier or small model) does step 1 and reports back.
+3. The delegator, or you, checks the result against the list.
+4. Repeat for the next step. Stop and ask you before anything that ships, costs money or deletes data.
 
-**When a single assistant is enough.** One chat for: one-shot questions, anything where every step needs your taste, anything irreversible. **When the pattern pays off.** Tasks spanning many files or sources, anything needing independent verification, or anything with a checkable end state (passing tests, clean build, all contrast ratios green).
+**Why bother.** The strongest model costs the most and is slowest. The cheaper models are good at doing a clear step. Splitting the work lets you spend on judgment, where mistakes are costly, and save on routine work.
 
-**Brief workers like you'd brief a contractor.** Workers can't ask questions, so the brief must be self-contained: the files involved, the constraints, and the exact format of the answer. Check their output before you trust it — "I ran the tests" is a claim, not evidence; re-run or spot-check.
+### What this looks like in each setup
+
+| Setup | Delegator | Workers | Your part |
+| --- | --- | --- | --- |
+| Free | You, plus Claude Free (Claude Sonnet 5.5) for the plan | ChatGPT Free (GPT-5.6 Luna), Gemini free (Flash-Lite) | Copy plans and results between chats, and check each one |
+| Budget | Your paid mid-tier model, such as Claude Sonnet 5.5 or GPT-6.2 Sol, with a few top-tier messages saved for the hardest plan or review | A small model, such as Claude Haiku 5.5 or GPT-6 Luna, for bulk jobs | Approve the plan, then run the checks |
+| High-end | A top-tier model, such as Claude Fable 5.2, Claude Opus 5.5, GPT-6.2 Astra or Gemini 4 Carbon | Mid-tier models such as Claude Sonnet 5.5, GPT-6.2 Sol or Gemini 4 Hydrogen, plus small models such as Claude Haiku 5.5 for volume | Approve anything that ships, spends or deletes |
+
+- **Free.** You act as the delegator, because free tools cannot pass work to each other. Ask one assistant to write the plan as a numbered list. Paste each step into another assistant, then paste its answer back to the first one and ask, "Does this meet the step?" It is slower, and it works.
+- **Budget.** One paid assistant does most of the work, one step at a time. Ask it for the plan first and read it. Then say "do step 1 only." When you have a bulk job, such as renaming 60 files or writing 60 labels, send it to a small model.
+- **High-end.** A top-tier model writes the plan and reviews the result. Mid-tier models build the steps, and several can work at the same time on steps that do not depend on each other. A coding agent in your terminal edits files and runs tests.
+
+### Ways to split the work
+
+Anthropic's "Building effective agents" essay[^5] describes six shapes. In plain words:
+
+- **Prompt chaining.** Do the steps in a fixed order, and check each one before moving on. Example: outline, then write the sections, then edit. Stop early if a check fails.
+- **Routing.** Send each request to the right helper. Example: a bug goes to a coding prompt, and a wording question goes to a writing prompt.
+- **Parallelization.** Give independent pieces to several workers at once, then combine the answers. Example: three research questions at the same time. You can also run one prompt several times and keep the best answer.
+- **Orchestrator and workers.** The delegator decides the steps as it goes. It is the most powerful shape and the most costly.
+- **Evaluator and optimizer.** One model drafts, another checks against a clear bar, and they repeat until it passes. Example: until the tests pass or contrast reaches 4.5:1.
+- **Human in the loop.** You approve at key points, such as money, publishing, deleting, or brand decisions.
+
+The practical loop is: plan → worker does a step → delegator checks → you decide.
+
+### When one assistant is enough
+
+Use a single chat for one-shot questions, for anything where every step needs your taste, and for anything you cannot undo. The split pays off when a task spans many files or sources, needs a second opinion, or has an end you can test, such as passing tests, a clean build or green contrast ratios.
+
+### How to brief a worker
+
+Workers cannot ask questions, so write the brief like one for a contractor who is not in the room. Include:
+
+- the files or text involved,
+- the rules to follow (for example, "text contrast at least 4.5:1"),
+- the exact form you want the answer in.
+
+Then check the result yourself. "I ran the tests" is a claim, not proof. Run them again or spot-check.
 
 ## When to step in
 
