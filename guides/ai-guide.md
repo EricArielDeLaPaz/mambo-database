@@ -239,7 +239,6 @@ As of 2026-11-18. Offers change often and many have deadlines. Always open the v
 | Google AI Plus | $4.99 a month (cut from $7.99 in June 2026) with 400 GB of storage. Google planned to remove its Pro model from this plan, leaving Flash-Lite and Flash.[^36] | None stated |
 | ChatGPT Go | OpenAI's lowest paid tier, $8 a month in the US. It may show ads.[^36] | None stated |
 | GitHub Copilot Pro | $10 a month, with 1,500 AI credits.[^20] | None stated |
-| Black Friday (November 27, 2026) | No chatbot deals were announced when we checked.[^36] | Check vendor pages that week |
 
 ### Offers for students
 
@@ -247,14 +246,11 @@ As of 2026-11-18. Offers change often and many have deadlines. Always open the v
 | --- | --- | --- |
 | Google AI Pro free for 12 months, then $19.99 a month | US college students, 18 and older[^35][^37] | **Redeem by December 31, 2026** |
 | Google AI Plus free for 12 months, then $4.99 a month | College students in 140+ markets outside the US (not Canada)[^37] | **Redeem by December 31, 2026** |
-| ChatGPT Plus free for 4 months, then $20 a month | US college and graduate students[^37] | **Ended October 31, 2026.** Check OpenAI's page in case it returns |
 | GitHub Copilot, free | Verified students 13 and older, including high school[^35][^37] | None published; GitHub checks your status again each month |
 | Perplexity Education Pro, $10 a month | Verified students and educators[^37] | None published |
 | Microsoft 365 Personal, $4.99 a month (half price), with Copilot in the apps | US college students[^37] | None published |
 | Free tools for students, such as JetBrains, v0 ($20 a month in credits for a year) and Zed Pro for 12 months[^35] | Current students with a school email | Mostly not stated |
 | ChatGPT for Teachers, free through June 2028 | US K-12 teachers and staff[^37] | June 2028 |
-
-Claude has no individual student discount that we could confirm. Some universities provide Claude through Claude for Education, so ask your school.[^37]
 
 **How to claim without getting stuck.** Use your school email if the offer asks for one. Be ready to upload a student ID or enrollment letter, because many offers verify through a service such as SheerID. Put the last day to redeem in your calendar now. Some offers also cannot be bought through the App Store or Google Play billing.
 
