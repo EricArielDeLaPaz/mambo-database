@@ -368,24 +368,217 @@ function renderConvert(el) {
 }
 
 /* ---------- Background remover (color-based, in the browser) ---------- */
-const BGR = { tol: 30, feather: 1, global: false, brush: 'none', size: 24 };
+/* ---------- Optional on-device model through ONNX Runtime Web (WebGPU), inside a Web Worker ---------- */
+/* Each model is downloaded by the visitor's own browser only after they agree, and the browser caches it. Sizes come from the model's Hugging Face page. */
+const BGAI_ORT = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.27.0/dist/';
+/* Only models whose license allows this use are listed. To add one, read its license first, then add a row here. */
+const BGAI_MODELS = {
+  standard: { tier: 'Standard', name: 'BiRefNet Lite (WebGPU build)', repo: 'runes/birefnet-lite-webgpu', file: 'birefnet_lite_webgpu_fp16.onnx', bytes: 123000000, mib: 117.3, device: 'webgpu', inp: 'input_image', license: 'MIT', page: 'https://huggingface.co/runes/birefnet-lite-webgpu', about: 'Cuts out people, animals and objects, including on busy backgrounds. This is a copy of the MIT-licensed BiRefNet Lite that was rewritten to run on your graphics chip through WebGPU. It works at 1024 pixels.', specs: 'about 8 GB of memory and a recent graphics chip (built-in graphics, or a card with about 4 GB or more of its own memory)' }
+};
+const BGAI = { model: 'none', agreed: {}, got: {}, worker: null, url: '', inline: false, started: false, pend: null, idleT: 0, ready: false, loaded: '', onIdle: null };
+/* The last model the visitor used, and that they agreed to it, is remembered on this device only. */
+const BGAI_KEY = 'mambo-bgai-v1';
+const bgaiSave = () => { try { localStorage.setItem(BGAI_KEY, JSON.stringify({ model: BGAI.model, agreed: BGAI.agreed, got: BGAI.got })) } catch { } };
+(() => { try { const s = JSON.parse(localStorage.getItem(BGAI_KEY) || '{}'); for (const k of Object.keys(BGAI_MODELS)) if (s.agreed && s.agreed[k] === true) { BGAI.agreed[k] = true; if (s.got && s.got[k] === true) BGAI.got[k] = true } if (BGAI_MODELS[s.model] && BGAI.agreed[s.model]) BGAI.model = s.model } catch { } })();
+/* The worker body is a function that is sent to the browser as text, so the page stays one file. It must not use anything from outside itself. */
+function bgaiWorkerMain(host) {
+  host = host || self;
+  let ort = null, sess = null, key = '';
+  const S = 1024, mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225];
+  const say = (m, t) => host.postMessage(m, t || []);
+  say({ type: 'hello' });
+  /* The model file comes from the browser cache when it was downloaded before, otherwise from the network, and is then cached. */
+  const fetchModel = async (url, size) => {
+    let c = null; try { c = self.caches ? await self.caches.open('transformers-cache') : null } catch { }
+    const hit = c && await c.match(url);
+    if (hit) { const b = await hit.arrayBuffer(); say({ type: 'progress', p: { status: 'progress', file: 'model.onnx', loaded: b.byteLength, total: b.byteLength } }); return b }
+    const r = await fetch(url); if (!r.ok) throw new Error('The download failed with status ' + r.status);
+    const total = +r.headers.get('content-length') || size, rd = r.body.getReader(), chunks = []; let loaded = 0;
+    for (; ;) { const { done, value } = await rd.read(); if (done) break; chunks.push(value); loaded += value.length; say({ type: 'progress', p: { status: 'progress', file: 'model.onnx', loaded: Math.min(loaded, total), total } }) }
+    const buf = new Uint8Array(loaded); let o = 0; for (const ch of chunks) { buf.set(ch, o); o += ch.length }
+    if (c) { try { await c.put(url, new Response(buf, { headers: { 'content-length': String(loaded) } })) } catch { } }
+    return buf.buffer;
+  };
+  const prep = (px, w, h) => {
+    const out = new Float32Array(3 * S * S), plane = S * S, x0 = new Int32Array(S), x1 = new Int32Array(S), xw = new Float32Array(S);
+    for (let x = 0; x < S; x++) { const fx = Math.max(0, (x + 0.5) * w / S - 0.5), a = Math.min(w - 1, Math.floor(fx)); x0[x] = a; x1[x] = Math.min(w - 1, a + 1); xw[x] = fx - a }
+    for (let y = 0; y < S; y++) {
+      const fy = Math.max(0, (y + 0.5) * h / S - 0.5), y0 = Math.min(h - 1, Math.floor(fy)), y1 = Math.min(h - 1, y0 + 1), wy = fy - y0;
+      for (let x = 0; x < S; x++) {
+        const a = (y0 * w + x0[x]) * 4, b = (y0 * w + x1[x]) * 4, c = (y1 * w + x0[x]) * 4, e = (y1 * w + x1[x]) * 4, wx = xw[x];
+        for (let k = 0; k < 3; k++) out[k * plane + y * S + x] = (((px[a + k] * (1 - wx) + px[b + k] * wx) * (1 - wy) + (px[c + k] * (1 - wx) + px[e + k] * wx) * wy) / 255 - mean[k]) / std[k];
+      }
+    }
+    return out;
+  };
+  const post = (lg, w, h) => {
+    const sg = new Float32Array(S * S), out = new Uint8Array(w * h);
+    for (let i = 0; i < sg.length; i++) sg[i] = 1 / (1 + Math.exp(-lg[i]));
+    for (let y = 0; y < h; y++) {
+      const fy = Math.min(S - 1, Math.max(0, (y + 0.5) * S / h - 0.5)), y0 = Math.floor(fy), y1 = Math.min(S - 1, y0 + 1), wy = fy - y0;
+      for (let x = 0; x < w; x++) {
+        const fx = Math.min(S - 1, Math.max(0, (x + 0.5) * S / w - 0.5)), x0 = Math.floor(fx), x1 = Math.min(S - 1, x0 + 1), wx = fx - x0;
+        out[y * w + x] = Math.round(255 * ((sg[y0 * S + x0] * (1 - wx) + sg[y0 * S + x1] * wx) * (1 - wy) + (sg[y1 * S + x0] * (1 - wx) + sg[y1 * S + x1] * wx) * wy));
+      }
+    }
+    return out;
+  };
+  host.onmessage = async e => {
+    const d = e.data;
+    try {
+      if (d.type === 'load') {
+        if (!ort) { const mod = await import(d.ortUrl + 'ort.webgpu.min.mjs'); ort = mod.default || mod; ort.env.wasm.wasmPaths = d.ortUrl }
+        if (!sess || key !== d.url) {
+          sess = null;
+          const buf = await fetchModel(d.url, d.size);
+          sess = await ort.InferenceSession.create(buf, { executionProviders: ['webgpu'] });
+          key = d.url;
+        }
+        say({ type: 'ready' });
+      } else if (d.type === 'free') {
+        try { sess && sess.release && await sess.release() } catch { }
+        sess = null; key = '';
+      } else if (d.type === 'run') {
+        const input = prep(new Uint8ClampedArray(d.buffer), d.width, d.height);
+        const res = await sess.run({ [d.inp]: new ort.Tensor('float32', input, [1, 3, S, S]) });
+        const t = Object.values(res)[0], out = post(t.data, d.width, d.height);
+        try { t.dispose && t.dispose() } catch { }
+        say({ type: 'mask', buffer: out.buffer }, [out.buffer]);
+      }
+    } catch (err) { say({ type: 'error', message: typeof err === 'number' ? 'The model runtime stopped with an internal error (code ' + err + ')' : String((err && err.message) || err) }) }
+  };
+}
+function bgaiCaps() {
+  const n = navigator, c = n.connection || {};
+  let why = '';
+  if (typeof WebAssembly === 'undefined') why = 'This browser cannot run these models because it needs WebAssembly.';
+  else if (window.isSecureContext === false) why = 'These models need a secure (https) page.';
+  return { ok: !why, why, webgpu: !!n.gpu, mobile: n.userAgentData ? !!n.userAgentData.mobile : /Android|iPhone|iPad|Mobi/.test(n.userAgent || ''), mem: n.deviceMemory || 0, cores: n.hardwareConcurrency || 0, saveData: !!c.saveData };
+}
+/* Only a suggestion. These browser hints are rounded and some browsers hide them, so the visitor can always choose. */
+const bgaiSuggest = c => !c.webgpu || c.mobile || (c.mem && c.mem < 4) ? 'none' : 'standard';
+const bgaiDescribe = c => `Your browser reports: ${c.webgpu ? 'WebGPU available' : c.gpuOff ? 'WebGPU present but no graphics adapter found (hardware acceleration may be off)' : 'no WebGPU'}${c.mobile ? ', a phone or tablet' : ''}${c.mem ? ', about ' + c.mem + ' GB of memory (a rounded hint)' : ', no memory hint'}${c.cores ? ', ' + c.cores + ' processor threads' : ''}${c.saveData ? ', Data Saver on (the download may use your mobile data)' : ''}. We suggest ${(BGAI_MODELS[bgaiSuggest(c)] || { tier: 'No model' }).tier}.`;
+/* Plain-language help for each problem, with steps for the visitor's own browser. A web page cannot open a browser's settings pages, so the card offers the address to copy. */
+const BGAI_BROWSERS = { chrome: 'Chrome', edge: 'Edge', brave: 'Brave', firefox: 'Firefox', safari: 'Safari', other: 'Another browser' };
+const BGAI_SYS = { chrome: ['chrome://settings/system', 'chrome://gpu', 'the menu (three dots) > Settings > System'], edge: ['edge://settings/system', 'edge://gpu', 'the menu (three dots) > Settings > System and performance'], brave: ['brave://settings/system', 'brave://gpu', 'the menu (three lines) > Settings > System'] };
+function bgaiBrowser() {
+  const u = navigator.userAgent || '';
+  if (navigator.brave) return 'brave';
+  if (/Edg\//.test(u)) return 'edge';
+  if (/Firefox\//.test(u)) return 'firefox';
+  if (/Chrome\/|Chromium\//.test(u) && !/OPR\//.test(u)) return 'chrome';
+  if (/Safari\//.test(u) && !/Chrome|Chromium/.test(u)) return 'safari';
+  return 'other';
+}
+const bgaiClassify = m => /no usable WebGPU|graphics adapter/i.test(m) ? 'gpu' : /kernel|zero-sized|not supported|unsupported/i.test(m) ? 'kernel' : /internal error/i.test(m) ? 'crash' : /backend|wasm|worker/i.test(m) ? 'worker' : /fetch|network|import|404|offline|download/i.test(m) ? 'net' : /memory|alloc|out of|oom/i.test(m) ? 'mem' : 'other';
+function bgaiFix(kind, br) {
+  if (kind === 'gpu') {
+    const s = BGAI_SYS[br], t = 'Graphics acceleration is off or unavailable', x = 'Your browser offers WebGPU but could not find a graphics chip to use, so the models are turned off and No model still works. A remote desktop, a virtual machine or an app\'s built-in browser can also have no graphics chip, so try a regular browser window.';
+    if (s) return { title: t, text: x, steps: ['Open ' + s[2] + '.', 'Turn on "Use graphics acceleration when available".', 'Click Relaunch (or Restart) so the change applies.', 'To check, type ' + s[1] + ' in the address bar. WebGPU should say "Hardware accelerated".', 'If it still says disabled, update your graphics driver and restart the computer.'], copy: { label: 'Copy settings address', value: s[0] }, note: 'Browsers do not let a web page open their settings, so copy the address and paste it into a new tab.' };
+    if (br === 'firefox') return { title: t, text: x, steps: ['Open the menu (three lines) > Settings > General > Performance.', 'Untick "Use recommended performance settings".', 'Tick "Use hardware acceleration when available", then restart Firefox.', 'WebGPU support in Firefox depends on your system. If it stays off, use No model, or try Chrome or Edge to use a model.'] };
+    if (br === 'safari') return { title: t, text: x, steps: ['WebGPU needs a recent Safari. Open the Apple menu > System Settings > General > Software Update and install any update.', 'If it stays off, use No model, or try Chrome or Edge to use a model.'] };
+    return { title: t, text: x, steps: ['Look for a "hardware acceleration" or "graphics acceleration" option in your browser settings, usually under System or Performance, and turn it on.', 'Or try Chrome or Edge to use a model.'] };
+  }
+  if (kind === 'worker') {
+    const file = location.protocol === 'file:';
+    return file ? { title: 'This page is running from a file', text: 'The page was opened straight from a file on your computer. Browsers block background workers there, so the model runs on the page itself and the page can freeze for a moment while it works. It still works, and it is not a problem on the live website.', steps: ['Open the site from its web address, or run a small local server.', 'To run one, open a terminal in the site folder and run npx serve.', 'Open the address it prints, usually http://localhost:3000.'], copy: { label: 'Copy the command', value: 'npx serve' } }
+      : { title: 'The browser blocked a background worker', text: 'Your browser or an extension stopped this page from starting a background worker. The model still runs on the page itself, but the page can freeze for a moment while it works.', steps: ['Turn off extensions that block scripts or workers for this site, then reload the page.', 'Or try another browser, such as Chrome or Edge.'] };
+  }
+  if (kind === 'kernel') return { title: 'Your graphics chip or browser cannot run this model', text: 'WebGPU stopped on an operation it could not run. This depends on your browser version and graphics driver, not on your picture, so trying the same image again will not help.', steps: ['Update your browser to the newest version and restart it.', 'Update your graphics driver, then restart the computer.', 'If it still fails, use No model, or try another browser or device.', 'Press Copy details and send it along if you report the problem.'] };
+  if (kind === 'crash') return { title: 'The model stopped unexpectedly', text: 'The model runtime hit an internal error. This usually means the device ran out of memory (graphics or system) or does not support something this model needs. The larger the model, the more likely it is.', steps: ['Pick No model, or try a device with more memory.', 'Close other tabs and apps, then reload this page.', 'Update your browser and your graphics driver.'] };
+  if (kind === 'net') return { title: 'The model could not be downloaded', text: 'The page could not reach the place where the model is stored (Hugging Face, through the jsDelivr network). Your connection, a work or school network, or a blocker may be stopping it.', steps: ['Check that you are online, then press Try again.', 'Turn off ad blockers and privacy extensions for this site, or allow huggingface.co and cdn.jsdelivr.net.', 'If you are on a work or school network or a VPN, try another network.'] };
+  if (kind === 'mem') return { title: 'Not enough memory', text: 'The device ran out of memory while running this model.', steps: ['Close other tabs and apps, then reload this page.', 'Pick No model, or try a device with more memory.'] };
+  return { title: 'The model could not finish', text: 'Something unexpected stopped the model. The message above is the browser\'s own wording.', steps: ['Press Try again.', 'If it keeps happening, pick No model.', 'If you report it, include the message above and which browser you use.'] };
+}
+/* Some browsers only hand out a graphics adapter for a particular request, so try the usual ones before deciding there is none. */
+async function bgaiAdapter() {
+  if (!navigator.gpu) return null;
+  for (const o of [undefined, { powerPreference: 'high-performance' }, { powerPreference: 'low-power' }]) { try { const a = await navigator.gpu.requestAdapter(o); if (a) return a } catch { } }
+  return null;
+}
+function bgaiFree(why) {
+  clearTimeout(BGAI.idleT);
+  const p = BGAI.pend; BGAI.pend = null;
+  if (BGAI.worker) { BGAI.worker.terminate(); BGAI.worker = null }
+  if (BGAI.url) { URL.revokeObjectURL(BGAI.url); BGAI.url = '' }
+  BGAI.ready = false; BGAI.loaded = '';
+  if (p) p.reject(new Error(why || 'cancelled'));
+}
+/* Runs the worker body. If the browser cannot start a Web Worker from this page, the same code runs on the page itself and the model's own helper thread keeps it responsive. */
+function bgaiSpawn() {
+  if (!BGAI.inline) {
+    try {
+      BGAI.url = URL.createObjectURL(new Blob(['(' + bgaiWorkerMain.toString() + ')()'], { type: 'text/javascript' }));
+      return new Worker(BGAI.url, { type: 'module' });
+    } catch (err) { BGAI.inline = true }
+  }
+  const w = { onmessage: null }, host = { onmessage: null, postMessage: m => setTimeout(() => w.onmessage && w.onmessage({ data: m }), 0) };
+  bgaiWorkerMain(host);
+  w.postMessage = m => setTimeout(() => host.onmessage({ data: m }), 0);
+  w.terminate = () => { w.onmessage = null; host.onmessage({ data: { type: 'free' } }) };
+  return w;
+}
+function bgaiCall(msg, transfer, onProgress) {
+  return new Promise((resolve, reject) => {
+    if (!BGAI.worker) {
+      BGAI.started = false;
+      const w = BGAI.worker = bgaiSpawn();
+      w.onmessage = e => { const d = e.data, p = BGAI.pend; if (d.type === 'hello') { BGAI.started = true; return } if (!p) return; if (d.type === 'progress') { p.onProgress && p.onProgress(d.p); return } BGAI.pend = null; if (d.type === 'error') p.reject(new Error(d.message)); else p.resolve(d) };
+      w.onerror = e => { if (e.preventDefault) e.preventDefault(); const p = BGAI.pend, er = new Error((e.message || 'The browser could not start the background worker') + (e.filename ? ' (' + e.filename.slice(0, 60) + ')' : '')); er.nostart = !BGAI.started; BGAI.pend = null; bgaiFree(); if (p) p.reject(er) };
+    }
+    BGAI.pend = { resolve, reject, onProgress };
+    BGAI.worker.postMessage(msg, transfer || []);
+  });
+}
+/* If the worker cannot start, the model is loaded on the page itself instead. */
+async function bgaiLoad(m, onProgress) {
+  const go = () => bgaiCall({ type: 'load', ortUrl: BGAI_ORT, url: 'https://huggingface.co/' + m.repo + '/resolve/main/' + m.file, size: m.bytes }, null, onProgress);
+  if (!(await bgaiAdapter())) throw new Error('This device has no usable WebGPU graphics adapter');
+  try { await go() }
+  catch (err) {
+    if (!(err && err.nostart) || BGAI.inline) throw err;
+    BGAI.inline = true; bgaiFree(); await go();
+  }
+  BGAI.ready = true; BGAI.loaded = m.id;
+}
+/* One picture at a time. After a minute without use the worker is closed, which frees the model's memory. */
+async function bgaiEnsure(id, stage) {
+  clearTimeout(BGAI.idleT);
+  if (!BGAI.ready || !BGAI.worker || BGAI.loaded !== id) {
+    stage({ stage: 'prepare' });
+    await bgaiLoad({ id, ...BGAI_MODELS[id] }, p => { if (p && p.status === 'progress' && /\.onnx$/.test(p.file || '') && p.total) stage({ stage: 'download', loaded: p.loaded, total: p.total }) });
+  }
+  BGAI.idleT = setTimeout(() => { bgaiFree(); if (BGAI.onIdle) BGAI.onIdle() }, 60000);
+}
+async function bgaiRun(id, img, stage) {
+  await bgaiEnsure(id, stage);
+  clearTimeout(BGAI.idleT);
+  stage({ stage: 'infer' });
+  const buf = img.data.slice().buffer;
+  const r = await bgaiCall({ type: 'run', buffer: buf, width: img.width, height: img.height, inp: BGAI_MODELS[id].inp }, [buf]);
+  BGAI.idleT = setTimeout(() => { bgaiFree(); if (BGAI.onIdle) BGAI.onIdle() }, 60000);
+  return new Uint8Array(r.buffer);
+}
+const BGR = { tol: 30, feather: 1, global: false, brush: 'none', size: 24, mode: 'color' };
 const MODK = /Mac|iPhone|iPad/.test(navigator.platform || '') ? '⌘' : 'Ctrl';
 let BG_KEYS = null;
 function renderBgRemove(el) {
-  el.innerHTML = `<p class="lede">Remove a plain background and download the result as a transparent PNG. It works by finding the background color at the edges of your picture and clearing it, so it does best on solid or evenly colored backgrounds. It cannot recognize a person or object the way AI tools like remove.bg do, so for busy photos use the brush to clean up, or try a dedicated AI tool. Your image never leaves your device.</p>
-  <div class="cx-drop" id="bg-drop" role="group" aria-label="Drop an image here or press Enter to choose one"><b>Drop an image here</b><span>or</span><button class="btn solid" type="button" id="bg-up">Choose an image from your device</button><input type="file" id="bg-file" accept="image/*" hidden></div><p class="ct-err" id="bg-err" role="alert"></p>
+  el.innerHTML = `<p class="lede">Remove the background from a picture and download it as a transparent PNG. Pick a model below to cut out people from busy photos, or use no model for plain backgrounds, then touch up with the brush. Your image never leaves your device.</p>
+  <section class="panel bg-ai" id="bg-ai" aria-labelledby="bg-ai-h"></section>
+  <div class="cx-drop" id="bg-drop" role="group" aria-label="Drop an image here or press Enter to choose one"><b>Drop an image here</b><span>or</span><button class="btn solid" type="button" id="bg-up">Choose an image from your device</button><input type="file" id="bg-file" accept="image/*" hidden></div><p class="ct-err" id="bg-err" role="alert"></p><p class="note" id="bg-gate" hidden>Download the selected model first, or pick No model. You can add a picture as soon as the model is ready.</p>
   <div id="bg-work" hidden><div class="bg-ctl"><label class="f"><span class="f-t">Tolerance: <output id="bg-tv"></output></span><input type="range" id="bg-tol" min="1" max="100" value="${BGR.tol}"></label><label class="f"><span class="f-t">Edge softness: <output id="bg-fv"></output> px</span><input type="range" id="bg-f" min="0" max="6" value="${BGR.feather}"></label>
   <label class="chk"><input type="checkbox" id="bg-glob" ${BGR.global ? 'checked' : ''}> Remove this color everywhere, not only around the edges</label></div>
   <div class="row bg-tools" id="bg-tools" style="align-items:end"><div class="seg" role="radiogroup" aria-label="Tool">${[['none', 'Pick background color'], ['erase', 'Erase brush'], ['restore', 'Restore brush']].map(([k, l]) => `<button type="button" role="radio" aria-checked="${BGR.brush === k}" data-br="${k}">${l}</button>`).join('')}</div><label class="f"><span class="f-t">Brush size: <output id="bg-sv"></output></span><input type="range" id="bg-size" min="4" max="120" value="${BGR.size}"></label><button class="btn" id="bg-rbrush" type="button">Reset brush settings</button>
   <span class="bg-hist"><button class="btn" id="bg-undo" type="button" aria-keyshortcuts="Control+Z Meta+Z" title="Undo (${MODK}+Z)" disabled>Undo</button><button class="btn" id="bg-redo" type="button" aria-keyshortcuts="Control+Shift+Z Control+Y Meta+Shift+Z" title="Redo (${MODK}+Shift+Z)" disabled>Redo</button></span></div>
   <p class="note" id="bg-help"></p><div class="bg-stage" id="bg-stage"><button class="btn sm bg-zoom-btn" id="bg-zoom" type="button" aria-label="Open zoomed editor">Zoom in</button><canvas id="bg-cv" aria-label="Image with the background removed. Click to pick the background color, or paint with the brush."></canvas></div>
   <div class="row"><button class="btn solid" id="bg-dl" type="button">Download PNG</button><button class="btn" id="bg-new" type="button">Choose another image</button><span class="empty" id="bg-info" role="status"></span></div></div>`;
-  let W = 0, H = 0, orig = null, mask = null, manual = null, bgc = null, raf = 0;
+  let W = 0, H = 0, orig = null, mask = null, manual = null, bgc = null, raf = 0, aiMask = null, aiFor = '';
   const cv = $('#bg-cv', el), cx = cv.getContext('2d');
   const sampleBg = () => { const d = orig.data, pts = [], m = 3; for (let x = 0; x < W; x += Math.max(1, W >> 5)) { pts.push((x) * 4, ((H - 1) * W + x) * 4) } for (let y = 0; y < H; y += Math.max(1, H >> 5)) { pts.push((y * W) * 4, (y * W + W - 1) * 4) } const q = c => { const a = pts.map(i => d[i + c]).sort((u, v) => u - v); return a[a.length >> 1] }; return [q(0), q(1), q(2)] };
   const compute = () => {
     const d = orig.data, tol = BGR.tol * 4.4, t2 = tol * tol, N = W * H, keep = new Uint8Array(N).fill(255), near = i => { const k = i * 4, dr = d[k] - bgc[0], dg = d[k + 1] - bgc[1], db = d[k + 2] - bgc[2]; return d[k + 3] < 10 || dr * dr + dg * dg + db * db <= t2 };
-    if (BGR.global) { for (let i = 0; i < N; i++) if (near(i)) keep[i] = 0 }
+    if (BGR.mode === 'ai' && aiMask && aiMask.length === N) { for (let i = 0; i < N; i++) keep[i] = aiMask[i] }
+    else if (BGR.global) { for (let i = 0; i < N; i++) if (near(i)) keep[i] = 0 }
     else { const st = [], seen = new Uint8Array(N), push = i => { if (!seen[i] && near(i)) { seen[i] = 1; st.push(i) } }; for (let x = 0; x < W; x++) { push(x); push((H - 1) * W + x) } for (let y = 0; y < H; y++) { push(y * W); push(y * W + W - 1) } while (st.length) { const i = st.pop(); keep[i] = 0; const x = i % W; if (x > 0) push(i - 1); if (x < W - 1) push(i + 1); if (i >= W) push(i - W); if (i < N - W) push(i + W) } }
     const f = BGR.feather; let a = Float32Array.from(keep);
     if (f > 0) { const blur = (src, horiz) => { const o = new Float32Array(N), r = f; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { let s = 0, c = 0; for (let k = -r; k <= r; k++) { const xx = horiz ? x + k : x, yy = horiz ? y : y + k; if (xx < 0 || yy < 0 || xx >= W || yy >= H) continue; s += src[yy * W + xx]; c++ } o[y * W + x] = s / c } return o }; a = blur(blur(a, true), false) }
@@ -395,7 +588,7 @@ function renderBgRemove(el) {
     const out = cx.createImageData(W, H), d = orig.data;
     for (let i = 0; i < W * H; i++) { const k = i * 4; let al = mask[i]; if (manual[i] === 1) al = 0; else if (manual[i] === 2) al = 255; out.data[k] = d[k]; out.data[k + 1] = d[k + 1]; out.data[k + 2] = d[k + 2]; out.data[k + 3] = Math.round(al * d[k + 3] / 255) }
     cx.putImageData(out, 0, 0);
-    $('#bg-info', el).textContent = `Background color found: ${fmtColor(rgbHex(...bgc))}`;
+    $('#bg-info', el).textContent = BGR.mode === 'ai' && aiMask ? 'Cut out with ' + BGAI_MODELS[aiFor].name + '.' : `Background color found: ${fmtColor(rgbHex(...bgc))}`;
   };
   const redo = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { compute(); paint() }) };
   /* undo / redo: a list of snapshots of everything that shapes the result */
@@ -405,11 +598,143 @@ function renderBgRemove(el) {
   const commit = () => { if (!manual) return; hist = hist.slice(0, hi + 1); hist.push(snap()); if (hist.length > 30) hist.shift(); hi = hist.length - 1; syncHist() };
   const applySnap = h => { manual = h.m.slice(); bgc = h.bgc.slice(); BGR.tol = h.tol; BGR.feather = h.f; BGR.global = h.g; $('#bg-tol', el).value = h.tol; $('#bg-f', el).value = h.f; $('#bg-glob', el).checked = h.g; labels(); redo(); syncHist() };
   const undo = () => { if (hi > 0) { hi--; applySnap(hist[hi]) } }, redoStep = () => { if (hi < hist.length - 1) { hi++; applySnap(hist[hi]) } };
-  const labels = () => { $('#bg-tv', el).textContent = BGR.tol; $('#bg-fv', el).textContent = BGR.feather; $('#bg-sv', document).textContent = BGR.size + ' px'; $('#bg-help', el).textContent = BGR.brush === 'none' ? 'Click the picture to choose which color counts as the background.' : BGR.brush === 'erase' ? 'Paint over parts you want removed.' : 'Paint over parts you want to bring back.' };
+  const labels = () => { $('#bg-tv', el).textContent = BGR.tol; $('#bg-fv', el).textContent = BGR.feather; $('#bg-sv', document).textContent = BGR.size + ' px'; $('#bg-help', el).textContent = BGR.mode === 'ai' && BGR.brush === 'none' ? 'The model cut-out is applied. Use the brushes to fix details, or pick No model above to go back.' : BGR.brush === 'none' ? 'Click the picture to choose which color counts as the background.' : BGR.brush === 'erase' ? 'Paint over parts you want removed.' : 'Paint over parts you want to bring back.'; syncMode() };
+  /* ----- optional on-device models: a model runs in a Web Worker on this device, only after the visitor agrees ----- */
+  const aiBox = $('#bg-ai', el), caps = bgaiCaps();
+  if (BGAI.model !== 'none' && BGAI_MODELS[BGAI.model].device === 'webgpu' && !caps.webgpu) BGAI.model = 'none';
+  const ui = { sel: BGAI.model, phase: 'idle', msg: '', busy: false, cancelled: false, again: false, br: bgaiBrowser(), open: {}, gen: 0, where: '', pct: 0 };
+  /* A browser can offer WebGPU yet have no usable graphics adapter (for example with hardware acceleration off), so check before offering the WebGPU models. */
+  if (caps.webgpu) (async () => {
+    if (await bgaiAdapter()) return;
+    caps.webgpu = false; caps.gpuOff = true;
+    if (BGAI.model !== 'none' && BGAI_MODELS[BGAI.model].device === 'webgpu') { BGAI.model = 'none'; ui.sel = 'none'; bgaiSave() }
+    if (ui.sel !== 'none' && BGAI_MODELS[ui.sel].device === 'webgpu') ui.sel = 'none';
+    if (ui.phase !== 'work') drawAi();
+  })();
+  const syncMode = () => {
+    const ai = BGR.mode === 'ai' && !!aiMask, pick = $('[data-br="none"]', document);
+    $('#bg-tol', el).disabled = ai; $('#bg-glob', el).disabled = ai; if (pick) pick.disabled = ai;
+  };
+  const applyAi = () => { BGR.mode = 'ai'; if (BGR.brush === 'none') { const eb = $('[data-br="erase"]', document); if (eb) eb.click() } labels(); redo(); commit() };
+  /* Changing the model, or choosing another picture, always starts from an empty drop zone, so a result is never mixed between models. */
+  const resetImage = () => { cancelAnimationFrame(raf); orig = null; mask = null; manual = null; bgc = null; aiMask = null; aiFor = ''; hist = []; hi = -1; BGR.mode = 'color'; $('#bg-work', el).hidden = true; $('#bg-drop', el).hidden = false; $('#bg-file', el).value = ''; $('#bg-err', el).textContent = ''; labels(); syncHist() };
+  const rmModel = async k => {
+    const m = BGAI_MODELS[k];
+    if (ui.busy && BGAI.model === k) { ui.gen++; ui.busy = false }
+    if (BGAI.loaded === k || (BGAI.model === k && !BGAI.got[k])) bgaiFree('cancelled');
+    BGAI.agreed[k] = false; BGAI.got[k] = false;
+    if (ui.sel === k) { BGAI.model = 'none'; ui.sel = 'none'; resetImage() }
+    let gone = false; try { if (window.caches && await caches.has('transformers-cache')) { const c = await caches.open('transformers-cache'); for (const q of await c.keys()) if (q.url.includes('/' + m.repo + '/') && await c.delete(q)) gone = true } } catch { }
+    setPhase('idle', gone ? `Removed ${m.name}. The downloaded files were deleted from this browser.` : `Removed ${m.name}. No downloaded files were found in this browser.`, '#bg-ai-sel');
+  };
+  /* A real percentage while downloading. The later steps have no exact progress, so they show a fixed step mark, never a bouncing bar. */
+  const prog = (pct, txt) => { const p = $('#bg-ai-pr', aiBox), t = $('#bg-ai-pt', aiBox), o = $('#bg-ai-pc', aiBox); ui.pct = Math.max(0, Math.min(100, Math.round(pct))); if (p) p.value = ui.pct; if (o) o.textContent = ui.pct + '%'; if (t) t.textContent = txt };
+  const setPhase = (phase, msg, focus) => { ui.phase = phase; ui.msg = msg || ''; bgaiSave(); drawAi(focus) };
+  const selectModel = id => {
+    if (ui.busy) { ui.gen++; ui.busy = false; bgaiFree('cancelled') }
+    ui.sel = id; ui.msg = ''; ui.where = '';
+    resetImage();
+    if (id === 'none') { bgaiFree(); BGAI.model = 'none'; return setPhase('idle', '', '#bg-ai-sel') }
+    if (!BGAI.agreed[id]) return setPhase('idle', '', '#bg-ai-sel');
+    BGAI.model = id;
+    if (BGAI.got[id]) return setPhase('idle', '', '#bg-ai-sel');
+    runAi();
+  };
+  const drawAi = focus => {
+    if (!aiBox.isConnected) return;
+    const M = BGAI_MODELS, id = ui.sel, m = M[id], busy = ui.phase === 'work';
+    let activeShown = false;
+    let h = `<h2 class="h3" id="bg-ai-h" tabindex="-1">Cut-out model <span class="tag">${busy ? 'Working' : ui.phase === 'err' ? 'Problem' : BGAI.model !== 'none' && BGAI.got[BGAI.model] ? 'On' : 'Off'}</span></h2>`;
+    if (!caps.ok) { aiBox.innerHTML = h + `<p>${esc(caps.why)}</p>`; return }
+    h += `<label class="f"><span class="f-t">Model</span><select id="bg-ai-sel"><option value="none" ${id === 'none' ? 'selected' : ''}>No model</option>${Object.keys(M).map(k => `<option value="${k}" ${k === id ? 'selected' : ''} ${M[k].device === 'webgpu' && !caps.webgpu ? 'disabled' : ''}>${esc(M[k].tier)}: ${esc(M[k].name)}, ${M[k].mib} MiB${M[k].device === 'webgpu' && !caps.webgpu ? ', needs WebGPU' : BGAI.got[k] ? ', downloaded' : ' download'}</option>`).join('')}</select></label>`;
+    if (id !== 'none' && m) h += `<div class="bg-specs"><h3>Your device</h3><p id="bg-ai-dev">${esc(bgaiDescribe(caps))}</p><h3>This model needs</h3><p>${esc(m.specs)}</p><p class="note">Recommended specs are our estimate and have not been measured.</p></div>`;
+    if (busy) h += `<p class="sr" role="status">The model started. Use the Cancel button to stop it.</p><p id="bg-ai-pt">${esc(ui.msg)}</p><div class="bg-prog"><progress id="bg-ai-pr" max="100" value="${ui.pct || 0}" aria-labelledby="bg-ai-pt"></progress><output id="bg-ai-pc">${ui.pct || 0}%</output></div><div class="row"><button class="btn" type="button" id="bg-ai-cancel">Cancel</button></div>`;
+    else if (ui.phase === 'err') {
+      const dl = ui.where === 'download', det = ['Model: ' + m.tier + ' ' + m.name + ' (' + m.repo + ')', 'Runs on ' + m.device + ' (' + m.file + ')', 'Failed at: ' + (dl ? 'downloading the model' : 'processing the image'), 'Message: ' + ui.msg, 'Memory: ' + (caps.mem || 'unknown') + ' GB, cores: ' + (caps.cores || 'unknown') + ', WebGPU: ' + (caps.webgpu ? 'yes' : 'no'), 'Worker: ' + (BGAI.inline ? 'inline' : 'separate'), 'Browser: ' + navigator.userAgent].join('\n');
+      h += `<p role="alert">${esc(ui.msg)}</p><div class="row">${dl ? '<button class="btn solid" type="button" id="bg-ai-retry">Try the download again</button>' : '<button class="btn solid" type="button" id="bg-ai-retry">Try this image again</button><button class="btn" type="button" id="bg-ai-newimg">Choose a different image</button>'}<button class="btn" type="button" data-copy="${esc(det)}">Copy details</button></div>`;
+    }
+    else if (id === 'none') h += `<p class="note">No model is used. The color found at the edges of the picture is cleared, which suits plain backgrounds. Nothing is downloaded. Pick a model to cut out people or objects from busier photos.</p><p class="note" id="bg-ai-dev">${esc(bgaiDescribe(caps))}</p>${ui.msg ? `<p role="status">${esc(ui.msg)}</p>` : ''}`;
+    else if (!BGAI.agreed[id]) h += `<p>${esc(m.about)}</p>
+      <h3>What it uses on your device</h3>
+      <ul class="bg-ai-list"><li>A one-time download of ${m.mib} MiB, kept in your browser cache so it does not download again.</li><li>Your processor and memory while it works. It frees that memory after a minute without use, and you can cancel at any time.</li></ul>
+      <label class="chk"><input type="checkbox" id="bg-ai-ok"> I agree to download this model and let this page use my device to run it. My choice is remembered on this device.</label>
+      <div class="row"><button class="btn solid" type="button" id="bg-ai-on" disabled>Download and use ${esc(m.name)}</button></div>
+      <p class="note">Model: <a href="${m.page}" target="_blank" rel="noopener">${esc(m.name)}</a>, ${esc(m.license)} license. It runs with ONNX Runtime Web and downloads from Hugging Face. Your picture is not uploaded anywhere.</p>`;
+    else if (!BGAI.got[id]) h += `<p>${esc(ui.msg || 'This model is not downloaded yet.')}</p><div class="row"><button class="btn solid" type="button" id="bg-ai-dl">Download ${esc(m.name)}, ${m.mib} MiB</button></div>`;
+    else { activeShown = true; h += `<p id="bg-ai-st" role="status">${esc(ui.msg || (orig ? 'Ready.' : 'Ready. Choose an image and the model runs on it automatically.'))}</p><div class="row"><button class="btn" type="button" id="bg-ai-free">Free memory now</button><button class="btn" type="button" id="bg-ai-rm">Remove model</button></div><p class="note">Using ${esc(m.name)}, ${m.mib} MiB. Pick No model above to stop using it. Remove model also deletes the downloaded files from this browser.</p>` }
+    const have = Object.keys(M).filter(k => BGAI.got[k] && !(activeShown && k === id));
+    if (!busy && have.length) h += `<h3>Downloaded on this device</h3><ul class="bg-ai-list">${have.map(k => `<li>${esc(M[k].name)}, ${M[k].mib} MiB <button class="btn sm" type="button" data-rm="${k}" aria-label="Remove ${esc(M[k].name)} from this device">Remove</button></li>`).join('')}</ul>`;
+    const issue = kind => {
+      const f = bgaiFix(kind, ui.br), open = !!ui.open[kind];
+      return `<div class="bg-issue" role="group" aria-labelledby="bg-is-${kind}"><h3 id="bg-is-${kind}">${esc(f.title)}</h3><p>${esc(f.text)}</p><div class="row"><button class="btn" type="button" data-help="${kind}" aria-expanded="${open}" aria-controls="bg-fix-${kind}">${open ? 'Hide the steps' : 'Show me how to fix this'}</button>${f.copy ? `<button class="btn" type="button" data-copy="${esc(f.copy.value)}">${esc(f.copy.label)}</button>` : ''}</div>
+      <div id="bg-fix-${kind}" ${open ? '' : 'hidden'}>${kind === 'gpu' ? `<label class="f"><span class="f-t">Your browser</span><select id="bg-ai-br" data-browser="${kind}">${Object.keys(BGAI_BROWSERS).map(k => `<option value="${k}" ${k === ui.br ? 'selected' : ''}>${BGAI_BROWSERS[k]}</option>`).join('')}</select></label>` : ''}<ol class="bg-ai-list">${f.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol>${f.note ? `<p class="note">${esc(f.note)}${f.copy ? ' Address: <code>' + esc(f.copy.value) + '</code>' : ''}</p>` : ''}</div></div>`;
+    };
+    if (!busy) {
+      const kinds = []; if (caps.gpuOff) kinds.push('gpu'); if (BGAI.inline) kinds.push('worker');
+      if (ui.phase === 'err') { const k = bgaiClassify(ui.msg); if (!kinds.includes(k)) kinds.push(k) }
+      h += kinds.map(issue).join('');
+    }
+    aiBox.innerHTML = h;
+    const on = (q, fn) => { const b = $(q, aiBox); if (b) b.onclick = fn };
+    const pk = $('#bg-ai-sel', aiBox); if (pk) pk.onchange = () => selectModel(pk.value);
+    $$('[data-help]', aiBox).forEach(b => b.onclick = () => { const k = b.dataset.help; ui.open[k] = !ui.open[k]; $('#bg-fix-' + k, aiBox).hidden = !ui.open[k]; b.setAttribute('aria-expanded', String(ui.open[k])); b.textContent = ui.open[k] ? 'Hide the steps' : 'Show me how to fix this' });
+    $$('[data-copy]', aiBox).forEach(b => b.onclick = async () => { let done = false; try { await navigator.clipboard.writeText(b.dataset.copy); done = true } catch { } if (typeof toast === 'function') toast(done ? 'Copied.' : 'Could not copy. Select the text in the steps and copy it.') });
+    const bs = $('#bg-ai-br', aiBox); if (bs) bs.onchange = () => { ui.br = bs.value; drawAi('#bg-ai-br') };
+    const ok = $('#bg-ai-ok', aiBox); if (ok) ok.onchange = () => { $('#bg-ai-on', aiBox).disabled = !ok.checked };
+    on('#bg-ai-on', () => { BGAI.agreed[id] = true; BGAI.model = id; runAi() });
+    on('#bg-ai-dl', () => { BGAI.model = id; runAi() });
+    on('#bg-ai-free', () => { bgaiFree(); setPhase('idle', 'Memory freed. The next cut-out reloads the model from your browser cache.', '#bg-ai-h') });
+    on('#bg-ai-rm', () => rmModel(id));
+    $$('[data-rm]', aiBox).forEach(b => b.onclick = () => rmModel(b.dataset.rm));
+    on('#bg-ai-newimg', () => { resetImage(); setPhase('idle', '', '#bg-up') });
+    on('#bg-ai-cancel', () => { ui.cancelled = true; bgaiFree('cancelled') });
+    on('#bg-ai-retry', () => runAi());
+    gate();
+    if (focus) { const t = $(focus, aiBox); if (t) t.focus() }
+  };
+  const runAi = async () => {
+    const id = BGAI.model;
+    if (ui.busy || id === 'none') return;
+    let mine = orig, where = BGAI.got[id] ? 'image' : 'download'; const t0 = Date.now(), gen = ++ui.gen; ui.busy = true; ui.cancelled = false; ui.sel = id; ui.where = '';
+    ui.pct = 0; setPhase('work', where === 'download' ? 'Starting the download...' : 'Preparing the model on your device...');
+    const stage = s => {
+      if (!aiBox.isConnected) return;
+      if (s.stage === 'download') { const f = s.total ? s.loaded / s.total : 0; prog(85 * f, `Downloading the model: ${(s.loaded / 1048576).toFixed(1)} of ${(s.total / 1048576).toFixed(1)} MiB`) }
+      else if (s.stage === 'prepare') prog(ui.pct > 0 ? 90 : 50, 'Preparing the model on your device...');
+      else prog(95, 'Removing the background from your picture. You can edit it as soon as it is done...');
+    };
+    try {
+      await bgaiEnsure(id, stage);
+      if (gen !== ui.gen) return;
+      BGAI.got[id] = true; where = 'image'; mine = orig;
+      if (!mine) return setPhase('idle', 'Downloaded. Choose an image and the model runs on it before you can edit.');
+      const m = await bgaiRun(id, mine, stage);
+      if (gen !== ui.gen || orig !== mine) return;
+      if (m.length !== W * H) throw new Error('The result did not match the picture.');
+      aiMask = m; aiFor = id; $('#bg-work', el).hidden = false; applyAi();
+      setPhase('idle', `Done in ${((Date.now() - t0) / 1000).toFixed(1)} s with ${BGAI_MODELS[id].name}.${BGAI.inline ? ' Your browser could not start a background worker, so the page may pause while the model works.' : ''}`);
+    } catch (err) {
+      if (gen !== ui.gen) return;
+      bgaiFree();
+      if (aiBox.isConnected) {
+        const raw = (err && err.message) || 'unknown error';
+        if (ui.cancelled || raw === 'cancelled') { if (orig && !aiMask) resetImage(); setPhase('idle', where === 'download' ? 'Download cancelled. Nothing was kept.' : 'Cancelled. Choose the image again when you are ready.', '#bg-ai-sel') }
+        else { ui.where = where; setPhase('err', where === 'download' ? 'The model could not be downloaded: ' + raw + '. Check your connection, then try the download again.' : 'The model could not process this image: ' + raw + '. You can try this image again or choose a different one.', '#bg-ai-h') }
+      }
+    } finally { if (gen !== ui.gen) return; ui.busy = false; if (ui.again) { ui.again = false; runAi() } }
+  };
+  const aiAfterLoad = () => {
+    if (!(BGAI.model !== 'none' && caps.ok)) return drawAi();
+    if (ui.busy) { ui.again = true; bgaiFree('cancelled'); return }
+    runAi();
+  };
+  const gated = () => ui.sel !== 'none' && (!BGAI.got[ui.sel] || ui.phase === 'work' || ui.phase === 'err');
+  const gate = () => { const g = gated(); $('#bg-up', el).disabled = g; $('#bg-file', el).disabled = g; $('#bg-gate', el).hidden = !g; if (!g && /^(Download the selected|Wait until)/.test($('#bg-err', el).textContent)) $('#bg-err', el).textContent = '' };
   const load = f => {
+    if (gated()) return $('#bg-err', el).textContent = ui.phase === 'work' ? 'Wait until the model has finished.' : 'Download the selected model first, or pick No model.';
     if (!f || !/^image\//.test(f.type)) return $('#bg-err', el).textContent = 'That file is not an image.';
     const u = URL.createObjectURL(f), im = new Image();
-    im.onload = () => { const s = Math.min(1, 1600 / Math.max(im.naturalWidth, im.naturalHeight)); W = Math.max(1, Math.round(im.naturalWidth * s)); H = Math.max(1, Math.round(im.naturalHeight * s)); cv.width = W; cv.height = H; cx.clearRect(0, 0, W, H); cx.drawImage(im, 0, 0, W, H); URL.revokeObjectURL(u); orig = cx.getImageData(0, 0, W, H); manual = new Uint8Array(W * H); bgc = sampleBg(); hist = []; hi = -1; commit(); $('#bg-err', el).textContent = ''; $('#bg-drop', el).hidden = true; $('#bg-work', el).hidden = false; labels(); redo() };
+    im.onload = () => { const s = Math.min(1, 1600 / Math.max(im.naturalWidth, im.naturalHeight)); W = Math.max(1, Math.round(im.naturalWidth * s)); H = Math.max(1, Math.round(im.naturalHeight * s)); cv.width = W; cv.height = H; cx.clearRect(0, 0, W, H); cx.drawImage(im, 0, 0, W, H); URL.revokeObjectURL(u); orig = cx.getImageData(0, 0, W, H); manual = new Uint8Array(W * H); bgc = sampleBg(); hist = []; hi = -1; commit(); $('#bg-err', el).textContent = ''; $('#bg-drop', el).hidden = true; $('#bg-work', el).hidden = ui.sel !== 'none'; aiMask = null; BGR.mode = 'color'; labels(); redo(); aiAfterLoad() };
     im.onerror = () => $('#bg-err', el).textContent = 'That image could not be opened.'; im.src = u;
   };
   $('#bg-up', el).onclick = () => $('#bg-file', el).click(); $('#bg-file', el).onchange = e => load(e.target.files[0]); $('#bg-new', el).onclick = () => { $('#bg-work', el).hidden = true; $('#bg-drop', el).hidden = false; $('#bg-file', el).value = '' };
@@ -424,7 +749,7 @@ function renderBgRemove(el) {
   $('#bg-dl', el).onclick = () => cv.toBlob(b => download('background-removed.png', b, 'image/png'), 'image/png');
   const pos = e => { const r = cv.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) * W / r.width), Math.floor((e.clientY - r.top) * H / r.height), W / r.width] };
   const stamp = e => { const [x, y, sc] = pos(e), rad = BGR.size / 2 * sc, v = BGR.brush === 'erase' ? 1 : 2; for (let yy = Math.max(0, Math.floor(y - rad)); yy <= Math.min(H - 1, y + rad); yy++) for (let xx = Math.max(0, Math.floor(x - rad)); xx <= Math.min(W - 1, x + rad); xx++) if ((xx - x) ** 2 + (yy - y) ** 2 <= rad * rad) manual[yy * W + xx] = v; paint() };
-  let down = false; cv.onpointerdown = e => { if (!orig) return; if (BGR.brush === 'none') { const [x, y] = pos(e), k = (Math.min(H - 1, y) * W + Math.min(W - 1, x)) * 4; bgc = [orig.data[k], orig.data[k + 1], orig.data[k + 2]]; redo(); commit(); return } down = true; cv.setPointerCapture(e.pointerId); stamp(e) };
+  let down = false; cv.onpointerdown = e => { if (!orig) return; if (BGR.brush === 'none') { if (BGR.mode === 'ai') return; const [x, y] = pos(e), k = (Math.min(H - 1, y) * W + Math.min(W - 1, x)) * 4; bgc = [orig.data[k], orig.data[k + 1], orig.data[k + 2]]; redo(); commit(); return } down = true; cv.setPointerCapture(e.pointerId); stamp(e) };
   /* a circle that follows the pointer and matches the brush size */
   $$('.bg-ring').forEach(r => r.remove()); const ring = document.createElement('div'); ring.className = 'bg-ring'; ring.hidden = true; ring.setAttribute('aria-hidden', 'true'); document.body.appendChild(ring);
   let lastEv = null; const moveRing = () => { if (!lastEv || BGR.brush === 'none') { ring.hidden = true; return } ring.hidden = false; ring.dataset.mode = BGR.brush; ring.style.width = ring.style.height = BGR.size + 'px'; ring.style.transform = `translate(${lastEv.clientX - BGR.size / 2}px,${lastEv.clientY - BGR.size / 2}px)` };
@@ -458,6 +783,8 @@ function renderBgRemove(el) {
     if (k === 'z' && !e.shiftKey) { e.preventDefault(); undo() } else if ((k === 'z' && e.shiftKey) || k === 'y') { e.preventDefault(); redoStep() }
   };
   document.addEventListener('keydown', BG_KEYS);
+  BGAI.onIdle = () => { if (aiBox.isConnected) setPhase('idle', 'Memory freed after a minute without use. The next cut-out reloads the model from your browser cache.') };
+  drawAi();
 }
 
 /* ---------- Icon creator: draw a pixel icon on a grid ---------- */

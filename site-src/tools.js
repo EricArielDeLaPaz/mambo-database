@@ -6,7 +6,7 @@ const TOOLS = [
   ['lorem', 'Lorem ipsum generator', 'Placeholder text by paragraphs, sentences, words or characters.', 'Content'],
   ['persona', 'Persona generator', 'Random names with profile pictures from Browse, by style.', 'Content'],
   ['convert', 'Image Converter', 'Convert images between formats, many at once.', 'Images'],
-  ['bgremove', 'Background remover', 'Remove a plain background from an image.', 'Images'],
+  ['bgremove', 'Background remover', 'Remove a background from an image, with an optional on-device AI cut-out for busy photos.', 'Images'],
   ['units', 'Unit converter', 'px, rem, em, pt, vw and more for CSS and handoff.', 'Measure'],
   ['iconcreator', 'Icon creator', 'Draw an icon on a grid, name it, then export it or add it to a design system.', 'Icons']
 ];
