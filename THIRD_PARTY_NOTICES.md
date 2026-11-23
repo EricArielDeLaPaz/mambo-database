@@ -1004,3 +1004,14 @@ Copyright notices are taken from each font's OFL.txt in https://github.com/googl
 - Version: 1.1 (Google Fonts file version v12)
 - License: SIL OFL 1.1
 - Source: https://fonts.google.com/specimen/Zilla+Slab
+
+# On-device background remover (optional)
+
+The Background remover can optionally run an AI model in the visitor's own browser. Nothing is uploaded: the model file is downloaded by the visitor's browser directly from its host and cached on their device. We do not host or redistribute the model.
+
+- **BiRefNet Lite, WebGPU build** (`runes/birefnet-lite-webgpu` on Hugging Face), MIT License. Derived from BiRefNet_lite by Peng Zheng, Dehong Gao, Deng-Ping Fan, Li Liu, Jorma Laaksonen, Wanli Ouyang and Nicu Sebe ("Bilateral Reference for High-Resolution Dichotomous Image Segmentation", CAAI AI Research, 2024). See the upstream repositories for the full copyright notice and license text.
+- **ONNX Runtime Web 1.27.0**, MIT License, Copyright (c) Microsoft Corporation. Loaded from the jsDelivr CDN when the visitor chooses the AI cut-out.
+
+Models with licenses that do not allow this use (for example RMBG-1.4 and ISNet-ONNX) are deliberately not included.
+
+These components are provided "as is", without warranty of any kind. Results may vary by image and device.
