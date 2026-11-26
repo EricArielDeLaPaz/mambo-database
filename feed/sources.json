@@ -172,18 +172,6 @@
    "label": "New books",
    "parent": "design",
    "kind": "topic"
-  },
-  {
-   "id": "mine-group",
-   "label": "My blogs",
-   "group": true
-  },
-  {
-   "id": "mine",
-   "label": "Blogs I follow",
-   "parent": "mine-group",
-   "kind": "topic",
-   "soon": "Needs a small proxy server"
   }
  ],
  "rules": [

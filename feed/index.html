@@ -5,43 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>Daily feed | Mambo Database</title>
-<meta name="description" content="A short daily post of what is new in tech and design. Pick your filters and each one adds a section.">
+<meta name="description" content="A short daily post of what is new in tech and design. Pick your filters, then open a day to read it.">
+<link rel="icon" type="image/png" href="../mambo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="feed.css">
 </head>
 <body>
-<a class="skip" href="#post">Skip to the feed</a>
-<div class="shell">
-  <header class="top">
+<a class="skip" href="#main">Skip to the days</a>
+<div class="nav-wrap"><nav class="nav" aria-label="Sections">
+  <a class="tab" href="../">Browse</a>
+  <a class="tab" href="../#/systems">Design Systems</a>
+  <a class="tab" href="../#/guides">Guides</a>
+  <a class="tab" href="../#/tools">Tools</a>
+  <a class="tab" href="./" aria-current="page">Feed</a>
+</nav></div>
+
+<div class="layout3" id="lay">
+  <aside id="side" aria-label="Feed filters"></aside>
+  <div class="rz" data-rz="left" role="separator" aria-orientation="vertical" aria-label="Resize filters panel. Use left and right arrow keys." tabindex="0"></div>
+  <main id="main" tabindex="-1">
     <h1>Daily feed</h1>
-    <p class="lede">What is new in tech and design, one short post per day. Each filter you turn on adds a section.</p>
-  </header>
-
-  <div id="banner" class="banner" hidden></div>
-
-  <div class="layout">
-    <details id="filters" class="filters">
-      <summary id="filters-summary">Filters</summary>
-      <div class="filters-body">
-        <div class="filters-actions">
-          <button type="button" class="btn sm" id="reset">Reset to suggested</button>
-          <button type="button" class="btn sm" id="clear">Clear all</button>
-        </div>
-        <div id="filter-groups"></div>
-        <p class="note">Your choices are saved in this browser only.</p>
-      </div>
-    </details>
-
-    <main id="post" class="main" tabindex="-1">
-      <div class="daynav" id="daynav" hidden>
-        <label class="dayselect"><span class="vh">Day</span><select id="day"></select></label>
-        <button type="button" class="btn sm" id="older" aria-label="Older day">&larr; Older</button>
-        <button type="button" class="btn sm" id="newer" aria-label="Newer day">Newer &rarr;</button>
-      </div>
-      <p id="status" class="vh" role="status" aria-live="polite"></p>
-      <div id="out"><p class="msg">Loading the feed&hellip;</p></div>
-    </main>
-  </div>
+    <p class="lede">What is new in tech and design, one short post per day. Turn on a filter to add its section to your posts, then open a day to read it.</p>
+    <div id="banner" class="banner" hidden></div>
+    <p id="status" class="sr" role="status" aria-live="polite"></p>
+    <div id="out"><p class="msg">Loading the feed&hellip;</p></div>
+  </main>
+  <div class="rz rz-r" data-rz="right" role="separator" aria-orientation="vertical" aria-label="Resize post panel. Use left and right arrow keys." tabindex="0" hidden></div>
+  <aside id="detail" class="dpanel" aria-label="Post" hidden></aside>
 </div>
+<div class="sheet-bd" id="dbd" hidden></div>
 <noscript><p class="msg">This page needs JavaScript to show the feed.</p></noscript>
 <script type="module" src="feed.js"></script>
 </body>

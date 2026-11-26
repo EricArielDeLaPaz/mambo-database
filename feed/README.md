@@ -5,7 +5,7 @@ A short daily post of what is new in tech and design. Each filter a visitor turn
 ## How it works
 
 1. `scripts/feed.mjs` reads every enabled source in `feed/sources.json`, keeps recent items, tags them with filters, groups them by day and writes `feed/data/latest.json`.
-2. `feed/index.html` loads that one shared file and builds the visitor's post in the browser from their filters. If `latest.json` is missing it shows `sample.json` with a "Sample data" banner.
+2. `feed/index.html` loads that one shared file. Like Browse, it has three resizable panes: filters on the left, one card per day in the middle ("Nothing new" when the day has nothing for the chosen filters), and the day's post on the right when a card is opened. A day can be linked as `/feed/#2026-11-24`. If `latest.json` is missing it shows `sample.json` with a "Sample data" banner.
 3. Post title = the newest new-model release in the post (else the newest item), plus a count of the other updates.
 
 ## Commands (Node 18+, no dependencies)
@@ -40,7 +40,7 @@ Run `node scripts/feed.mjs` and read each source line. These were NOT confirmed 
 - Hugging Face models `sort=createdAt`: untested. Hugging Face daily papers: item count unknown.
 - Apple Developer news and Android Developers: only parsed from fixtures or audit text. Apple's feed is mostly App Store business news, so `excludeTitle` may need tuning.
 - Added 2026-11-25 from the watcher text: Microsoft blog RSS (newest 2026-11-17), Mistral and DeepSeek model lists from Hugging Face (newest 2026-10-15 and 2026-10-17), DeepSeek API change log (by hand, `feed/manual/deepseek-updates.json`). Mistral's news page has no feed link or dates, so only its Hugging Face releases are covered.
-- Not ready, so shown disabled: Meta (no feed; newest dated page item is 2026-07-27), xAI (x.ai/news returned 403) and "Blogs I follow" (needs a small proxy because most blogs block browser requests).
+- Not ready, so shown disabled: Meta (no feed; newest dated page item is 2026-07-27), xAI (x.ai/news returned 403).
 
 ## Going live (in `.github/workflows/pages.yml`)
 
