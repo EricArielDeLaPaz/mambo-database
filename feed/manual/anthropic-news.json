@@ -1,0 +1,8 @@
+{
+  "checked": "2026-11-24",
+  "note": "Read by hand from https://www.anthropic.com/news. The page has no feed link, so add new posts here.",
+  "items": [
+    { "title": "Introducing Claude Fable 5.2 and Claude Mythos 5.2", "link": "https://www.anthropic.com/news", "published": "2026-11-24T00:00:00Z", "summary": "Anthropic's most capable models for hard technical work, aimed at coding, finance and the sciences." },
+    { "title": "Anthropic announces closing of its initial public offering", "link": "https://www.anthropic.com/news", "published": "2026-11-20T00:00:00Z", "summary": "Anthropic closed its IPO, including the full exercise of the underwriters' option." }
+  ]
+}

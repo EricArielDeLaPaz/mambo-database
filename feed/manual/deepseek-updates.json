@@ -1,0 +1,9 @@
+{
+  "checked": "2026-11-25",
+  "note": "Read by hand from https://api-docs.deepseek.com/updates (dated change log, no feed). Add new entries here.",
+  "items": [
+    { "title": "Releasing the full suite of application APIs", "link": "https://api-docs.deepseek.com/updates", "published": "2026-11-13T00:00:00Z", "summary": "Web search, file input, URL reading, voice and a safety check are now available to developers through the existing APIs, plus standalone Search and Fetch, OCR, ASR and TTS APIs." },
+    { "title": "Opening up the in-house search API", "link": "https://api-docs.deepseek.com/updates", "published": "2026-10-17T00:00:00Z", "summary": "DeepSeek's own web search engine is now available through an API." },
+    { "title": "DeepSeek-V4.1-Flash-1017 update", "link": "https://api-docs.deepseek.com/updates", "published": "2026-10-17T00:00:00Z", "summary": "DeepSeek V4.1 Flash is upgraded with better benchmark scores. The API name deepseek-flash and the pricing stay the same." }
+  ]
+}

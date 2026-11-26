@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: "0 11 * * *"
 
 permissions:
   contents: read
@@ -27,6 +29,9 @@ jobs:
           node-version: 22
       - name: Build
         run: node scripts/build.js
+      - name: Daily feed (the page falls back to sample data if every source fails)
+        continue-on-error: true
+        run: node scripts/feed.mjs
       - name: Assemble site
         run: |
           mkdir _site
@@ -41,6 +46,9 @@ jobs:
           (cd dist/skill && zip -qr ../../_site/token-sync-skill.zip token-sync)
           (cd dist/skill && zip -qr ../../_site/icon-set-creator-skill.zip icon-set-creator)
           cp -r dist/skill _site/skill
+          mkdir -p _site/feed
+          cp feed/index.html feed/feed.js feed/feed.css _site/feed/
+          cp -r feed/lib feed/data _site/feed/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

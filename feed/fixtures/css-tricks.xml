@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>CSS-Tricks</title><link>https://css-tricks.com</link>
+<item><title>Using Fallbacks for a Robust Front-End</title><link>https://css-tricks.com/using-frontend-fallbacks/</link><pubDate>Mon, 23 Nov 2026 14:21:44 +0000</pubDate><description><![CDATA[Fallbacks quietly avoid an error or tell users about it. Using Fallbacks for a Robust Front-End originally handwritten and published with love on CSS-Tricks. You should really get the newsletter as well.]]></description></item>
+<item><title>Dev Material Archive</title><link>https://css-tricks.com/dev-material-archive/</link><pubDate>Mon, 23 Nov 2026 14:18:50 +0000</pubDate><description>A new resource that brings back lost web development, design and accessibility articles.</description></item>
+<item><title>Andy Clarke answers six questions about Standout Designs for the Web</title><link>https://css-tricks.com/andy-clarke-standout-designs-for-the-web-interview/</link><pubDate>Fri, 20 Nov 2026 15:03:47 +0000</pubDate><description>Andy Clarke released Standout Designs for the Web, a new e-book that pushes designers past familiar templates toward more personality-driven sites.</description></item>
+<item><title>scroll-state()</title><link>https://css-tricks.com/almanac/functions/s/scroll-state/</link><pubDate>Thu, 19 Nov 2026 14:57:54 +0000</pubDate><description>Almanac entry.</description></item>
+</channel></rss>
