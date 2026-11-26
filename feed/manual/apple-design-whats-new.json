@@ -1,0 +1,10 @@
+{
+  "checked": "2026-11-24",
+  "note": "Read by hand from https://developer.apple.com/design/whats-new/. The page has dated items and no feed, so add new items here.",
+  "items": [
+    { "title": "New product bezels", "link": "https://developer.apple.com/design/whats-new/", "published": "2026-11-06T00:00:00Z", "summary": "New bezel resources for MacBook Pro, iPad mini and Apple Watch Ultra 4." },
+    { "title": "Updated Live Activities UI kits", "link": "https://developer.apple.com/design/whats-new/", "published": "2026-11-06T00:00:00Z", "summary": "The Figma and Sketch kits are updated for iOS 27 and now include macOS components." },
+    { "title": "Designing for macOS", "link": "https://developer.apple.com/design/whats-new/", "published": "2026-10-28T00:00:00Z", "summary": "Added guidance for touch input on the Mac, plus gestures and pointing devices." },
+    { "title": "App icons", "link": "https://developer.apple.com/design/whats-new/", "published": "2026-10-28T00:00:00Z", "summary": "Added guidance for app icon format options." }
+  ]
+}

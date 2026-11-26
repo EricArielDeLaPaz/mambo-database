@@ -1,0 +1,537 @@
+{
+ "version": 1,
+ "checked": "2026-11-25",
+ "filters": [
+  {
+   "id": "tech",
+   "label": "Tech",
+   "group": true
+  },
+  {
+   "id": "anthropic",
+   "label": "Anthropic",
+   "product": "Claude",
+   "parent": "tech",
+   "kind": "company",
+   "default": true
+  },
+  {
+   "id": "openai",
+   "label": "OpenAI",
+   "product": "ChatGPT",
+   "parent": "tech",
+   "kind": "company",
+   "default": true
+  },
+  {
+   "id": "google",
+   "label": "Google",
+   "product": "Gemini",
+   "parent": "tech",
+   "kind": "company",
+   "default": true
+  },
+  {
+   "id": "apple",
+   "label": "Apple",
+   "parent": "tech",
+   "kind": "company"
+  },
+  {
+   "id": "qwen",
+   "label": "Qwen",
+   "parent": "tech",
+   "kind": "company"
+  },
+  {
+   "id": "microsoft",
+   "label": "Microsoft",
+   "product": "Copilot",
+   "parent": "tech",
+   "kind": "company"
+  },
+  {
+   "id": "meta",
+   "label": "Meta",
+   "product": "Llama",
+   "parent": "tech",
+   "kind": "company"
+  },
+  {
+   "id": "mistral",
+   "label": "Mistral",
+   "parent": "tech",
+   "kind": "company"
+  },
+  {
+   "id": "xai",
+   "label": "xAI",
+   "product": "Grok",
+   "parent": "tech",
+   "kind": "company"
+  },
+  {
+   "id": "deepseek",
+   "label": "DeepSeek",
+   "parent": "tech",
+   "kind": "company"
+  },
+  {
+   "id": "models",
+   "label": "New models",
+   "parent": "tech",
+   "kind": "topic",
+   "default": true
+  },
+  {
+   "id": "optimization",
+   "label": "Optimization",
+   "product": "compression, speed",
+   "parent": "tech",
+   "kind": "topic"
+  },
+  {
+   "id": "research",
+   "label": "Research papers",
+   "parent": "tech",
+   "kind": "topic"
+  },
+  {
+   "id": "design",
+   "label": "Design",
+   "group": true
+  },
+  {
+   "id": "trends",
+   "label": "Trends & ideas",
+   "parent": "design",
+   "kind": "topic",
+   "default": true
+  },
+  {
+   "id": "ux-research",
+   "label": "UX research",
+   "parent": "design",
+   "kind": "topic"
+  },
+  {
+   "id": "design-systems",
+   "label": "Design systems",
+   "parent": "design",
+   "kind": "topic"
+  },
+  {
+   "id": "accessibility",
+   "label": "Accessibility",
+   "product": "new guidelines",
+   "parent": "design",
+   "kind": "topic"
+  },
+  {
+   "id": "motion",
+   "label": "Motion",
+   "parent": "design",
+   "kind": "topic"
+  },
+  {
+   "id": "google-design",
+   "label": "Google design",
+   "product": "Material 3",
+   "parent": "design",
+   "kind": "topic"
+  },
+  {
+   "id": "apple-design",
+   "label": "Apple design",
+   "product": "HIG",
+   "parent": "design",
+   "kind": "topic"
+  },
+  {
+   "id": "typography",
+   "label": "Typography",
+   "parent": "design",
+   "kind": "topic"
+  },
+  {
+   "id": "color",
+   "label": "Color",
+   "parent": "design",
+   "kind": "topic"
+  },
+  {
+   "id": "web-platform",
+   "label": "Web platform",
+   "product": "new CSS and browser features",
+   "parent": "design",
+   "kind": "topic",
+   "default": true
+  },
+  {
+   "id": "books",
+   "label": "New books",
+   "parent": "design",
+   "kind": "topic"
+  },
+  {
+   "id": "mine-group",
+   "label": "My blogs",
+   "group": true
+  },
+  {
+   "id": "mine",
+   "label": "Blogs I follow",
+   "parent": "mine-group",
+   "kind": "topic",
+   "soon": "Needs a small proxy server"
+  }
+ ],
+ "rules": [
+  {
+   "filter": "models",
+   "field": "title",
+   "match": "(claude|gemini|gpt|qwen|llama|grok|deepseek|mistral|genie)\\b[\\w .-]{0,24}\\d"
+  },
+  {
+   "filter": "google-design",
+   "field": "all",
+   "match": "\\bmaterial (3|expressive|design|you)\\b"
+  },
+  {
+   "filter": "apple-design",
+   "field": "all",
+   "match": "\\b(human interface guidelines|liquid glass|HIG)\\b"
+  },
+  {
+   "filter": "optimization",
+   "field": "all",
+   "match": "\\b(quantiz\\w*|distill\\w*|compress\\w*|pruning|low-bit|sparsity|speedup)\\b"
+  },
+  {
+   "filter": "books",
+   "field": "all",
+   "match": "\\b(e-?books?|new books?)\\b"
+  },
+  {
+   "filter": "design-systems",
+   "field": "all",
+   "match": "\\b(design systems?|design tokens?|component librar\\w+)\\b"
+  },
+  {
+   "filter": "accessibility",
+   "field": "title",
+   "match": "\\b(accessib\\w*|wcag|a11y|aria)\\b"
+  },
+  {
+   "filter": "motion",
+   "field": "title",
+   "match": "\\b(animations?|motion|view transitions?|scroll-driven)\\b"
+  },
+  {
+   "filter": "typography",
+   "field": "title",
+   "match": "\\b(typefaces?|typography|fonts?)\\b"
+  },
+  {
+   "filter": "color",
+   "field": "title",
+   "match": "\\b(colou?rs?|palettes?|contrast)\\b"
+  }
+ ],
+ "sources": [
+  {
+   "id": "openai-news",
+   "name": "OpenAI",
+   "type": "rss",
+   "url": "https://openai.com/news/rss.xml",
+   "filters": [
+    "openai"
+   ],
+   "enabled": true,
+   "excludeLink": "openai\\.com/business/",
+   "status": "feed read again 2026-11-25: newest item 2026-11-24, items carry link and pubDate; <title> text was still not visible (watcher strips it), confirm on first live run",
+   "note": "/index/ links are announcements; /business/ links are customer stories and demos, so they are skipped"
+  },
+  {
+   "id": "microsoft-blog",
+   "name": "Microsoft",
+   "type": "rss",
+   "url": "https://blogs.microsoft.com/feed/",
+   "filters": [
+    "microsoft"
+   ],
+   "enabled": true,
+   "status": "feed read 2026-11-25; newest item 2026-11-17 (Ignite keynote, Copilot). It is the whole Microsoft blog, not only AI; the AI category feed failed to connect"
+  },
+  {
+   "id": "mistral-hf",
+   "name": "Mistral (Hugging Face)",
+   "type": "hf-models",
+   "url": "https://huggingface.co/api/models?author=mistralai&sort=createdAt&direction=-1&limit=10",
+   "filters": [
+    "mistral",
+    "models"
+   ],
+   "enabled": true,
+   "windowDays": 60,
+   "maxPerDay": 3,
+   "status": "JSON read 2026-11-25; newest createdAt 2026-10-15 (Mistral-Large-4 NVFP4). mistral.ai/news has no visible feed link and no dates, so Hugging Face is the only machine-readable source"
+  },
+  {
+   "id": "deepseek-hf",
+   "name": "DeepSeek (Hugging Face)",
+   "type": "hf-models",
+   "url": "https://huggingface.co/api/models?author=deepseek-ai&sort=createdAt&direction=-1&limit=10",
+   "filters": [
+    "deepseek",
+    "models"
+   ],
+   "enabled": true,
+   "windowDays": 60,
+   "maxPerDay": 3,
+   "status": "JSON read 2026-11-25; newest createdAt 2026-10-17 (DeepSeek-V4.1-Flash-1017)"
+  },
+  {
+   "id": "deepseek-updates",
+   "name": "DeepSeek API updates",
+   "type": "manual",
+   "filters": [
+    "deepseek"
+   ],
+   "enabled": true,
+   "windowDays": 60,
+   "status": "api-docs.deepseek.com/updates is dated HTML with no feed; items are added by hand in feed/manual/deepseek-updates.json"
+  },
+  {
+   "id": "meta-ai-blog",
+   "name": "Meta AI blog",
+   "type": "manual",
+   "filters": [
+    "meta"
+   ],
+   "enabled": false,
+   "status": "NOT READY: no feed link visible; the page's newest dated item is 2026-07-27 and Llama's newest model on Hugging Face is from 2025-04. Needs a fresher source"
+  },
+  {
+   "id": "xai-news",
+   "name": "xAI",
+   "type": "manual",
+   "filters": [
+    "xai"
+   ],
+   "enabled": false,
+   "status": "NOT READY: x.ai/news returned 403 Forbidden to the watcher"
+  },
+  {
+   "id": "google-blog",
+   "name": "Google",
+   "type": "rss",
+   "url": "https://blog.google/rss/",
+   "filters": [
+    "google"
+   ],
+   "enabled": true,
+   "status": "feed read 2026-11-24; has summaries and categories"
+  },
+  {
+   "id": "deepmind-blog",
+   "name": "Google DeepMind",
+   "type": "rss",
+   "url": "https://deepmind.google/blog/rss.xml",
+   "filters": [
+    "google"
+   ],
+   "enabled": true,
+   "status": "feed read 2026-11-24; some items have no summary"
+  },
+  {
+   "id": "anthropic-news",
+   "name": "Anthropic",
+   "type": "manual",
+   "filters": [
+    "anthropic"
+   ],
+   "enabled": true,
+   "windowDays": 30,
+   "status": "no feed link visible on the news page; items are added by hand in feed/manual/anthropic-news.json"
+  },
+  {
+   "id": "qwen-hf",
+   "name": "Qwen (Hugging Face)",
+   "type": "hf-models",
+   "url": "https://huggingface.co/api/models?author=Qwen&sort=createdAt&direction=-1&limit=10",
+   "filters": [
+    "qwen",
+    "models"
+   ],
+   "enabled": true,
+   "windowDays": 30,
+   "status": "UNTESTED sort=createdAt; use createdAt, never lastModified (a bulk update touched 2024 models on 2026-11-20)"
+  },
+  {
+   "id": "qwen-blog",
+   "name": "Qwen blog",
+   "type": "rss",
+   "url": "https://qwenlm.github.io/blog/index.xml",
+   "filters": [
+    "qwen"
+   ],
+   "enabled": false,
+   "status": "STALE: newest item is 2025-09-23"
+  },
+  {
+   "id": "apple-dev-news",
+   "name": "Apple Developer",
+   "type": "rss",
+   "url": "https://developer.apple.com/news/rss/news.rss",
+   "filters": [
+    "apple"
+   ],
+   "enabled": true,
+   "excludeTitle": "\\b(tax|price|prices|proceeds|agreement|award|finalists)\\b",
+   "status": "feed read 2026-11-24; mostly App Store business news, so the title filter needs tuning after a live run"
+  },
+  {
+   "id": "apple-design-whats-new",
+   "name": "Apple design guidance",
+   "type": "manual",
+   "filters": [
+    "apple-design",
+    "apple"
+   ],
+   "enabled": true,
+   "windowDays": 30,
+   "status": "HTML page with dated items and no feed; items are added by hand in feed/manual/apple-design-whats-new.json"
+  },
+  {
+   "id": "android-dev-blog",
+   "name": "Android Developers",
+   "type": "atom",
+   "url": "https://android-developers.googleblog.com/feeds/posts/default",
+   "filters": [
+    "google"
+   ],
+   "enabled": true,
+   "status": "feed read 2026-11-24; titles were not visible in the audit"
+  },
+  {
+   "id": "material-android",
+   "name": "Material Components Android",
+   "type": "atom",
+   "url": "https://github.com/material-components/material-components-android/releases.atom",
+   "filters": [
+    "google-design"
+   ],
+   "enabled": true,
+   "windowDays": 90,
+   "status": "feed read 2026-11-24; updates only on releases (newest 1.14.0, 2026-05-13)"
+  },
+  {
+   "id": "material-web",
+   "name": "Material Web",
+   "type": "atom",
+   "url": "https://github.com/material-components/material-web/releases.atom",
+   "filters": [
+    "google-design"
+   ],
+   "enabled": true,
+   "windowDays": 90,
+   "status": "feed read 2026-11-24; updates only on releases (newest v2.5.0, 2026-07-14)"
+  },
+  {
+   "id": "hf-daily-papers",
+   "name": "Hugging Face Papers",
+   "type": "hf-papers",
+   "url": "https://huggingface.co/api/daily_papers",
+   "filters": [
+    "research"
+   ],
+   "enabled": true,
+   "maxPerDay": 8,
+   "status": "JSON read 2026-11-24; total item count was not visible"
+  },
+  {
+   "id": "arxiv-optimization",
+   "name": "arXiv",
+   "type": "rss",
+   "url": "https://rss.arxiv.org/rss/cs.LG+cs.CL",
+   "filters": [
+    "optimization",
+    "research"
+   ],
+   "enabled": true,
+   "windowDays": 7,
+   "maxPerDay": 8,
+   "include": "quantiz|compress|distill|low-bit|pruning|sparsity",
+   "status": "URL pattern is from arXiv's help page; the feed itself has not been fetched yet"
+  },
+  {
+   "id": "alistapart",
+   "name": "A List Apart",
+   "type": "rss",
+   "url": "https://alistapart.com/main/feed/",
+   "filters": [
+    "trends"
+   ],
+   "enabled": true,
+   "status": "feed read 2026-11-24; full article text in items"
+  },
+  {
+   "id": "nngroup",
+   "name": "Nielsen Norman Group",
+   "type": "rss",
+   "url": "https://www.nngroup.com/feed/rss/",
+   "filters": [
+    "ux-research"
+   ],
+   "enabled": true,
+   "excludeTitle": "\\b(conference|training|course|workshop)\\b",
+   "status": "feed read 2026-11-24; some items are training promos"
+  },
+  {
+   "id": "smashing",
+   "name": "Smashing Magazine",
+   "type": "rss",
+   "url": "https://www.smashingmagazine.com/feed/",
+   "filters": [
+    "trends"
+   ],
+   "enabled": true,
+   "excludeTitle": "\\b(smashingconf|conference|ticket|workshop)\\b",
+   "status": "feed read 2026-11-24; first item was a paid-conference promo"
+  },
+  {
+   "id": "css-tricks",
+   "name": "CSS-Tricks",
+   "type": "rss",
+   "url": "https://css-tricks.com/feed/",
+   "filters": [
+    "web-platform"
+   ],
+   "enabled": true,
+   "excludeLink": "/almanac/",
+   "status": "feed read 2026-11-24; almanac pages are skipped"
+  },
+  {
+   "id": "webkit-blog",
+   "name": "WebKit",
+   "type": "rss",
+   "url": "https://webkit.org/blog/feed/",
+   "filters": [
+    "web-platform"
+   ],
+   "enabled": true,
+   "status": "feed read 2026-11-24"
+  },
+  {
+   "id": "w3c-wai-news",
+   "name": "W3C WAI news",
+   "type": "manual",
+   "filters": [
+    "accessibility"
+   ],
+   "enabled": false,
+   "status": "HTML page, item dates not visible in the audit; not used yet"
+  }
+ ]
+}
