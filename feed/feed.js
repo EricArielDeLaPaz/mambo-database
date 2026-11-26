@@ -1,11 +1,16 @@
-import { assignSections, daysFor, postTitle, filterLabel, filterOrder } from './lib/compose.mjs';
+import { calendar, filterOrder } from './lib/compose.mjs';
 
 const STORE = 'mambo-feed-filters-v1';
-const $ = (s) => document.querySelector(s);
+const PANES = 'mambo-feed.panes';
+const $ = (s, r = document) => r.querySelector(s);
+const STEP = 14;      // days added each time "Show earlier days" is used
+const MAX_DAYS = 90;
 
 let data = null;
 let selected = new Set();
-let currentDate = null;
+let openDate = null;
+let shown = STEP;
+let lastDate = null;
 
 /* Feed text comes from third parties: build everything with textContent, and only link to http(s) URLs. */
 function el(tag, props = {}, ...kids) {
@@ -24,6 +29,8 @@ function safeUrl(u) {
 const fmtDate = (iso, opts) => new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', ...opts }).format(new Date(iso.length === 10 ? iso + 'T00:00:00Z' : iso));
 const longDate = (d) => fmtDate(d, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 const shortDate = (d) => fmtDate(d, { weekday: 'short', month: 'short', day: 'numeric' });
+const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 function readSaved() {
   try { const v = JSON.parse(localStorage.getItem(STORE)); return Array.isArray(v) ? v : null; } catch { return null; }
@@ -44,111 +51,216 @@ async function getData() {
 
 const readyIds = () => new Set(data.filters.filter((f) => !f.group && f.ready).map((f) => f.id));
 const suggested = () => new Set(data.filters.filter((f) => !f.group && f.ready && f.default).map((f) => f.id));
+const byId = () => Object.fromEntries(data.filters.map((f) => [f.id, f]));
 
-function buildFilters() {
-  const host = $('#filter-groups');
-  host.replaceChildren();
+/* ---------- resizable panes, same behavior as Browse: drag a line, arrow keys, double-click to reset ---------- */
+function initPanes(lay) {
+  const w = { l: 340, r: 520 };
+  try { Object.assign(w, JSON.parse(localStorage.getItem(PANES)) || {}); } catch { /* keep defaults */ }
+  w.l = clamp(Number(w.l) || 340, 240, 560); w.r = clamp(Number(w.r) || 520, 320, 980);
+  const apply = () => {
+    lay.style.setProperty('--wl', w.l + 'px'); lay.style.setProperty('--wr', w.r + 'px');
+    for (const h of lay.querySelectorAll('.rz[data-rz]')) {
+      const l = h.dataset.rz === 'left';
+      h.setAttribute('aria-valuemin', l ? 240 : 320); h.setAttribute('aria-valuemax', l ? 560 : 980); h.setAttribute('aria-valuenow', Math.round(l ? w.l : w.r));
+    }
+  };
+  const persist = () => { try { localStorage.setItem(PANES, JSON.stringify(w)); } catch { /* ignore */ } };
+  apply();
+  for (const h of lay.querySelectorAll('.rz')) {
+    const side = h.dataset.rz;
+    h.addEventListener('pointerdown', (e) => {
+      e.preventDefault(); h.setPointerCapture(e.pointerId); h.classList.add('drag'); document.body.classList.add('resizing');
+      const move = (ev) => {
+        const r = lay.getBoundingClientRect();
+        if (side === 'left') w.l = clamp(ev.clientX - r.left, 240, Math.max(280, Math.min(560, r.width - 440)));
+        else w.r = clamp(r.right - ev.clientX, 320, Math.max(340, Math.min(980, r.width - w.l - 320)));
+        apply();
+      };
+      const up = () => { h.removeEventListener('pointermove', move); h.removeEventListener('pointerup', up); h.classList.remove('drag'); document.body.classList.remove('resizing'); persist(); };
+      h.addEventListener('pointermove', move); h.addEventListener('pointerup', up);
+    });
+    h.addEventListener('keydown', (e) => {
+      const d = e.key === 'ArrowLeft' ? -16 : e.key === 'ArrowRight' ? 16 : 0;
+      if (!d) return;
+      e.preventDefault();
+      if (side === 'left') w.l = clamp(w.l + d, 240, 560); else w.r = clamp(w.r - d, 320, 980);
+      apply(); persist();
+    });
+    h.addEventListener('dblclick', () => { if (side === 'left') w.l = 340; else w.r = 520; apply(); persist(); });
+  }
+}
+
+/* ---------- filters panel ---------- */
+function buildSide() {
+  const side = $('#side');
+  side.replaceChildren();
+  const logo = el('img', { src: '../mambo.png', alt: '', decoding: 'async' });
+  logo.addEventListener('error', () => logo.remove());
+  side.append(el('p', { class: 'wordmark' }, logo, 'Daily feed'));
+  const reset = el('button', { type: 'button', class: 'btn', id: 'reset', text: 'Suggested' });
+  const clear = el('button', { type: 'button', class: 'btn', id: 'clear', text: 'Clear all' });
+  reset.addEventListener('click', () => { selected = suggested(); changed(); });
+  clear.addEventListener('click', () => { selected = new Set(); changed(); });
+  side.append(el('div', { class: 'row' }, reset, clear));
   for (const g of data.filters.filter((f) => f.group)) {
-    const fs = el('fieldset', {}, el('legend', { text: g.label }));
+    const fs = el('fieldset', {}, el('legend', { class: 'eyebrow', text: g.label }));
     for (const f of data.filters.filter((x) => x.parent === g.id)) {
       const input = el('input', { type: 'checkbox', value: f.id, id: 'f-' + f.id });
       input.checked = selected.has(f.id);
       input.disabled = !f.ready;
       input.addEventListener('change', () => {
         if (input.checked) selected.add(f.id); else selected.delete(f.id);
-        save(); render();
+        changed();
       });
-      const text = el('span', { class: 't', text: filterLabel(f) });
+      const text = el('span', { class: 't' }, f.product ? `${f.label} ` : f.label);
+      if (f.product) text.append(el('span', { class: 'p', text: `(${f.product})` }));
       if (!f.ready) text.append(el('small', { text: f.soon || 'No source yet' }));
-      fs.append(el('label', { class: 'fl' + (f.ready ? '' : ' off'), for: input.id }, input, text));
+      fs.append(el('label', { class: 'chk' + (f.ready ? '' : ' off'), for: input.id }, input, text));
     }
-    host.append(fs);
+    side.append(fs);
   }
+  side.append(el('p', { class: 'note', text: 'Your choices are saved in this browser only.' }));
 }
 
 function syncChecks() {
-  for (const i of document.querySelectorAll('#filter-groups input')) i.checked = selected.has(i.value);
+  for (const i of document.querySelectorAll('#side input[type=checkbox]')) i.checked = selected.has(i.value);
 }
 
 function setBanner() {
   const b = $('#banner');
   b.hidden = false;
   if (data.sample || data.fellBack) {
-    b.textContent = 'Sample data. These are real items from 18 to 24 November 2026 gathered while building the feed, not today’s digest. Run "node scripts/feed.mjs" to make a live one.';
+    b.textContent = 'Sample data. These are real items from 18 to 24 November 2026 gathered while building the feed, not today’s digest. The live feed rebuilds every day.';
     return;
   }
   const failed = (data.sources || []).filter((s) => s.ok === false).map((s) => s.name || s.id);
-  b.textContent = 'Updated ' + longDate(data.generated) + (failed.length ? '. Could not read: ' + failed.join(', ') + '. Items from those sources may be missing today.' : '');
+  if (!failed.length) { b.hidden = true; return; }
+  b.textContent = 'Could not read: ' + failed.join(', ') + '. Items from those sources may be missing today.';
 }
 
-function render() {
+/* ---------- day cards ---------- */
+function cal() {
+  const end = (data.generated || new Date().toISOString()).slice(0, 10);
+  return calendar(data.days, [...selected], filterOrder(data.filters), end, shown);
+}
+
+function renderDays() {
   const out = $('#out');
   const sel = [...selected];
-  $('#filters-summary').textContent = `Filters (${sel.length} on)`;
-
   if (!sel.length) {
-    $('#daynav').hidden = true;
-    out.replaceChildren(el('p', { class: 'msg' }, el('strong', { text: 'No filters are on. ' }), 'Turn on at least one filter to build your post.'));
+    out.replaceChildren(el('p', { class: 'msg' }, el('strong', { text: 'No filters are on. ' }), 'Turn on at least one filter to see your days.'));
     $('#status').textContent = 'No filters are on.';
     return;
   }
-  const days = daysFor(data.days, sel);
-  if (!days.length) {
-    $('#daynav').hidden = true;
-    out.replaceChildren(el('p', { class: 'msg' }, el('strong', { text: 'Nothing new for these filters yet. ' }), 'Try turning on more filters.'));
-    $('#status').textContent = 'Nothing new for these filters.';
-    return;
+  const days = cal();
+  const labels = byId();
+  const list = el('ul', { class: 'days', 'aria-label': 'Days' });
+  for (const d of days) {
+    let card;
+    if (d.count) {
+      const sources = new Set(d.sections.flatMap((s) => s.items.map((i) => i.source)));
+      const tags = el('span', { class: 'tags' }, ...d.sections.map((s) => el('span', { class: 'tag', text: labels[s.filter].label })));
+      card = el('button', { type: 'button', class: 'daycard', 'data-date': d.date, 'aria-pressed': String(d.date === openDate) },
+        el('span', { class: 'date', text: shortDate(d.date) }),
+        el('span', { class: 'title', text: d.title }),
+        el('span', { class: 'meta', text: `${plural(d.count, 'update')} from ${plural(sources.size, 'source')}` }),
+        tags);
+      card.addEventListener('click', () => { lastDate = d.date; openDay(d.date); });
+    } else {
+      card = el('div', { class: 'daycard none' },
+        el('span', { class: 'date', text: shortDate(d.date) }),
+        el('span', { class: 'title', text: 'Nothing new' }));
+    }
+    list.append(el('li', {}, card));
   }
-  let idx = days.findIndex((d) => d.date === currentDate);
-  if (idx < 0) idx = 0;
-  const day = days[idx];
-  currentDate = day.date;
+  const nodes = [list];
+  const oldestData = data.days.length ? data.days[data.days.length - 1].date : null;
+  const oldestShown = days[days.length - 1].date;
+  if (shown < MAX_DAYS && oldestData && oldestData < oldestShown) {
+    const more = el('button', { type: 'button', class: 'btn', text: 'Show earlier days' });
+    more.addEventListener('click', () => { shown = Math.min(MAX_DAYS, shown + STEP); renderDays(); });
+    nodes.push(more);
+  }
+  out.replaceChildren(...nodes);
+  const withNews = days.filter((d) => d.count).length;
+  $('#status').textContent = `${plural(withNews, 'day')} with updates out of the last ${days.length}.`;
+}
 
-  const nav = $('#daynav');
-  nav.hidden = false;
-  const select = $('#day');
-  select.replaceChildren(...days.map((d) => el('option', { value: d.date, text: `${shortDate(d.date)} (${d.items.length})` })));
-  select.value = day.date;
-  $('#older').disabled = idx === days.length - 1;
-  $('#newer').disabled = idx === 0;
+/* ---------- post panel ---------- */
+const X_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
-  const sections = assignSections(day.items, sel, filterOrder(data.filters));
-  const byId = Object.fromEntries(data.filters.map((f) => [f.id, f]));
-  const sources = new Set(day.items.map((i) => i.source));
+function showPost() {
+  const lay = $('#lay'), d = $('#detail');
+  const day = openDate ? cal().find((x) => x.date === openDate) : null;
+  const open = !!(day && day.count);
+  lay.classList.toggle('has-detail', open);
+  d.hidden = !open; $('.rz-r', lay).hidden = !open; $('#dbd').hidden = !open;
+  document.body.classList.toggle('sheet-open', open);
+  for (const c of document.querySelectorAll('button.daycard')) c.setAttribute('aria-pressed', String(open && c.dataset.date === openDate));
+  if (!open) { d.replaceChildren(); return; }
 
-  const head = el('header', { class: 'post-head' },
-    el('h2', { text: postTitle(sections) }),
-    el('p', { class: 'post-meta', text: `${longDate(day.date)} · ${day.items.length} update${day.items.length === 1 ? '' : 's'} from ${sources.size} source${sources.size === 1 ? '' : 's'}` })
-  );
-  const nodes = [head];
-  sections.forEach((s, n) => {
-    const f = byId[s.filter];
+  const labels = byId();
+  const close = el('button', { type: 'button', class: 'x', 'aria-label': 'Close post' });
+  close.innerHTML = X_ICON;
+  close.addEventListener('click', closeDay);
+  const head = el('div', { class: 'd-head' }, el('span', { class: 'grab', 'aria-hidden': 'true' }), el('span', { class: 'eyebrow', text: longDate(day.date) }), close);
+  const sources = new Set(day.sections.flatMap((s) => s.items.map((i) => i.source)));
+  const title = el('h1', { id: 'post-title', text: day.title });
+  const body = el('div', { class: 'd-body', id: 'dbody', tabindex: '-1' }, title,
+    el('p', { class: 'post-meta', text: `${plural(day.count, 'update')} from ${plural(sources.size, 'source')} in ${plural(day.sections.length, 'section')}` }));
+  for (const s of day.sections) {
+    const f = labels[s.filter];
     const hid = 'sec-' + s.filter;
-    const h3 = el('h3', { id: hid, text: f.label });
-    if (f.product) h3.append(el('span', { class: 'p', text: f.product }));
+    const h2 = el('h2', { id: hid, text: f.label });
+    if (f.product) h2.append(el('span', { class: 'p', text: f.product }));
     const list = el('ul', { class: 'items' });
     for (const it of s.items) {
       const url = safeUrl(it.link);
-      const li = el('li', { class: 'item' }, el('h4', { text: it.title }), el('p', { class: 'src', text: it.sourceName }));
+      const li = el('li', { class: 'item' }, el('h3', { text: it.title }), el('p', { class: 'src', text: it.sourceName }));
       if (it.summary) li.append(el('p', { class: 'sum', text: it.summary }));
-      if (url) {
-        const a = el('a', { class: 'more', href: url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `Read more at ${it.sourceName}: ${it.title} (opens in a new tab)` }, `Read more at ${it.sourceName} ↗`);
-        li.append(a);
-      }
+      if (url) li.append(el('a', { class: 'more', href: url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `Read more at ${it.sourceName}: ${it.title} (opens in a new tab)` }, `Read more at ${it.sourceName} ↗`));
       list.append(li);
     }
-    nodes.push(el('section', { class: 'sec', 'aria-labelledby': hid }, h3, list));
-    void n;
-  });
-  out.replaceChildren(...nodes);
-  $('#status').textContent = `Showing ${day.items.length} updates in ${sections.length} section${sections.length === 1 ? '' : 's'} for ${longDate(day.date)}.`;
+    body.append(el('section', { class: 'sec', 'aria-labelledby': hid }, h2, list));
+  }
+  d.setAttribute('aria-label', `Post for ${longDate(day.date)}`);
+  d.replaceChildren(head, body);
+
+  // swipe down on the handle closes the sheet on phones
+  let y0 = null;
+  head.addEventListener('touchstart', (ev) => { y0 = ev.touches[0].clientY; }, { passive: true });
+  head.addEventListener('touchmove', (ev) => { if (y0 !== null && ev.touches[0].clientY - y0 > 90) { y0 = null; closeDay(); } }, { passive: true });
+  head.addEventListener('touchend', () => { y0 = null; });
 }
 
-function step(delta) {
-  const days = daysFor(data.days, [...selected]);
-  const idx = days.findIndex((d) => d.date === currentDate);
-  const next = days[idx + delta];
-  if (next) { currentDate = next.date; render(); }
+function openDay(date) {
+  openDate = date;
+  showPost();
+  if (location.hash !== '#' + date) history.replaceState(null, '', '#' + date);
+  const body = $('#dbody');
+  if (body) { body.scrollTop = 0; body.focus({ preventScroll: true }); }
+  $('#status').textContent = `Opened the post for ${longDate(date)}.`;
+}
+
+function closeDay() {
+  openDate = null;
+  showPost();
+  history.replaceState(null, '', location.pathname + location.search);
+  const card = lastDate ? document.querySelector(`button.daycard[data-date="${lastDate}"]`) : null;
+  (card || $('#main')).focus({ preventScroll: true });
+}
+
+function changed() {
+  save(); syncChecks(); renderDays(); showPost();
+}
+
+function fromHash() {
+  const m = /^#(\d{4}-\d{2}-\d{2})$/.exec(location.hash);
+  if (!m) return;
+  const d = cal().find((x) => x.date === m[1]);
+  if (d && d.count) { openDate = m[1]; showPost(); }
+  else if (openDate) { openDate = null; showPost(); }
 }
 
 async function init() {
@@ -160,18 +272,18 @@ async function init() {
   }
   const ready = readyIds();
   const saved = readSaved();
-  selected = new Set((saved || [...suggested()]).filter((id) => ready.has(id)));
-  if (saved === null) selected = suggested();
+  selected = saved === null ? suggested() : new Set(saved.filter((id) => ready.has(id)));
 
-  buildFilters();
+  initPanes($('#lay'));
+  const here = $('.nav .tab[aria-current]');
+  if (here) here.scrollIntoView({ inline: 'center', block: 'nearest' });
+  buildSide();
   setBanner();
-  $('#reset').addEventListener('click', () => { selected = suggested(); save(); syncChecks(); render(); });
-  $('#clear').addEventListener('click', () => { selected = new Set(); save(); syncChecks(); render(); });
-  $('#day').addEventListener('change', (e) => { currentDate = e.target.value; render(); });
-  $('#older').addEventListener('click', () => step(1));
-  $('#newer').addEventListener('click', () => step(-1));
-  $('#filters').open = window.matchMedia('(min-width: 821px)').matches;
-  render();
+  renderDays();
+  fromHash();
+  $('#dbd').addEventListener('click', closeDay);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && openDate) closeDay(); });
+  window.addEventListener('hashchange', () => { if (!location.hash) { openDate = null; showPost(); } else fromHash(); });
 }
 
 init();

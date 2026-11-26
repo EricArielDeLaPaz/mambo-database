@@ -196,19 +196,6 @@
       "parent": "design",
       "kind": "topic",
       "ready": true
-    },
-    {
-      "id": "mine-group",
-      "label": "My blogs",
-      "group": true
-    },
-    {
-      "id": "mine",
-      "label": "Blogs I follow",
-      "parent": "mine-group",
-      "kind": "topic",
-      "soon": "Needs a small proxy server",
-      "ready": false
     }
   ],
   "sources": [

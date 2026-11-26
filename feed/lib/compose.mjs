@@ -43,3 +43,24 @@ export function postTitle(sections) {
 export function filterLabel(f) {
   return f.product ? `${f.label} (${f.product})` : f.label;
 }
+
+// Add whole days to a YYYY-MM-DD date (UTC).
+export function addDays(date, n) {
+  const d = new Date(date + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+// One entry per calendar day, newest first, ending at endDate. A day with nothing for the selected filters has count 0.
+export function calendar(days, selected, order, endDate, count) {
+  const byDate = new Map(days.map((d) => [d.date, d]));
+  const out = [];
+  for (let i = 0; i < count; i++) {
+    const date = addDays(endDate, -i);
+    const day = byDate.get(date);
+    const sections = day ? assignSections(day.items, selected, order) : [];
+    const n = sections.reduce((a, s) => a + s.items.length, 0);
+    out.push({ date, sections, count: n, title: n ? postTitle(sections) : '' });
+  }
+  return out;
+}

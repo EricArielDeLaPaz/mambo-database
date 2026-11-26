@@ -8,7 +8,7 @@ import {
   decode, stripHtml, summarize, cleanSummary, canonicalUrl,
   parseFeed, parseHfModels, parseHfPapers, tagItem, processSource, buildDays, run
 } from './feed.mjs';
-import { assignSections, daysFor, postTitle, shorten, filterOrder } from '../feed/lib/compose.mjs';
+import { assignSections, daysFor, postTitle, shorten, filterOrder, calendar, addDays } from '../feed/lib/compose.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cfg = JSON.parse(await readFile(path.join(ROOT, 'feed', 'sources.json'), 'utf8'));
@@ -222,8 +222,8 @@ test('fixtures run: stale and not-ready sources are reported, sample has real se
   assert.equal(f.deepseek.ready, true);
   assert.equal(f.meta.ready, false);
   assert.equal(f.xai.ready, false);
-  assert.equal(f.mine.ready, false);
-  assert.ok(filterOrder(result.filters).includes('mine'));
+  assert.equal(f.mine, undefined, 'the My blogs filter was removed');
+  assert.ok(!filterOrder(result.filters).includes('mine'));
 });
 
 test('design rules: Material phrases and Apple design terms are tagged, chip names are not', () => {
@@ -275,4 +275,19 @@ test('compose: a new-model release is the headline even when a newer non-model i
   ];
   assert.equal(postTitle(sections), 'Introducing Claude Fable 5.2 and 1 more update');
   assert.equal(postTitle([sections[1]]), 'Designed for a Dead Language');
+});
+
+test('calendar: one entry per day, empty days say count 0, newest first', () => {
+  const days = [
+    { date: '2026-11-24', items: [{ id: '1', title: 'Introducing Claude Fable 5.2', published: '2026-11-24T00:00:00.000Z', filters: ['anthropic', 'models'] }] },
+    { date: '2026-11-22', items: [{ id: '2', title: 'Other', published: '2026-11-22T10:00:00.000Z', filters: ['trends'] }] }
+  ];
+  const order = ['anthropic', 'models', 'trends'];
+  const cal = calendar(days, ['anthropic', 'models'], order, '2026-11-24', 4);
+  assert.deepEqual(cal.map((d) => d.date), ['2026-11-24', '2026-11-23', '2026-11-22', '2026-11-21']);
+  assert.deepEqual(cal.map((d) => d.count), [1, 0, 0, 0], 'a day with items that do not match the filters counts as nothing new');
+  assert.equal(cal[0].title, 'Introducing Claude Fable 5.2');
+  assert.equal(cal[1].title, '');
+  assert.equal(calendar(days, ['trends'], order, '2026-11-24', 3)[2].count, 1);
+  assert.equal(addDays('2026-03-01', -1), '2026-02-28');
 });
