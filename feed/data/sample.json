@@ -391,6 +391,13 @@
       "type": "rss"
     }
   ],
+  "briefs": {
+    "items": 24,
+    "fromFeedText": 0,
+    "fromPage": 0,
+    "pageTried": 12,
+    "pageFailed": 12
+  },
   "days": [
     {
       "date": "2026-11-24",
@@ -406,7 +413,8 @@
           "filters": [
             "trends"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://www.anthropic.com/news#introducing-claude-fable-5-2-and-claude-mythos-5-2",
@@ -420,7 +428,13 @@
             "anthropic",
             "models"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "model",
+          "headline": "New Claude models: Claude Fable 5.2 and Claude Mythos 5.2",
+          "models": [
+            "Claude Fable 5.2",
+            "Claude Mythos 5.2"
+          ]
         }
       ]
     },
@@ -439,7 +453,11 @@
             "google",
             "models"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news",
+          "models": [
+            "Gemini 4 Hydrogen"
+          ]
         },
         {
           "id": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-canvas-tasks",
@@ -452,7 +470,8 @@
           "filters": [
             "google"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://blog.google/products-and-platforms/products/search/google-search-personal-intelligence-apps",
@@ -465,7 +484,8 @@
           "filters": [
             "google"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification",
@@ -478,7 +498,8 @@
           "filters": [
             "google"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://css-tricks.com/using-frontend-fallbacks",
@@ -491,7 +512,8 @@
           "filters": [
             "web-platform"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://css-tricks.com/dev-material-archive",
@@ -504,7 +526,8 @@
           "filters": [
             "web-platform"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://huggingface.co/papers/2611.27490",
@@ -517,7 +540,8 @@
           "filters": [
             "research"
           ],
-          "score": 2
+          "score": 2,
+          "kind": "research"
         }
       ]
     },
@@ -535,7 +559,8 @@
           "filters": [
             "ux-research"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://www.nngroup.com/articles/raw-data-vs-synthesized-data",
@@ -548,7 +573,8 @@
           "filters": [
             "ux-research"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://css-tricks.com/andy-clarke-standout-designs-for-the-web-interview",
@@ -562,7 +588,8 @@
             "web-platform",
             "books"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "book"
         },
         {
           "id": "https://www.anthropic.com/news#anthropic-announces-closing-of-its-initial-public-offering",
@@ -575,7 +602,8 @@
           "filters": [
             "anthropic"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         }
       ]
     },
@@ -593,7 +621,8 @@
           "filters": [
             "web-platform"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://webkit.org/blog/18652/release-notes-for-safari-technology-preview-257",
@@ -606,7 +635,8 @@
           "filters": [
             "web-platform"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "release"
         },
         {
           "id": "https://deepmind.google/blog/introducing-gemini-4-neon",
@@ -620,7 +650,12 @@
             "google",
             "models"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "model",
+          "headline": "New Gemini model: Gemini 4 Neon",
+          "models": [
+            "Gemini 4 Neon"
+          ]
         },
         {
           "id": "https://deepmind.google/blog/genie-4-is-now-available",
@@ -634,7 +669,12 @@
             "google",
             "models"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "model",
+          "headline": "New Genie model: Genie 4",
+          "models": [
+            "Genie 4"
+          ]
         }
       ]
     },
@@ -652,7 +692,8 @@
           "filters": [
             "deepseek"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         }
       ]
     },
@@ -671,7 +712,8 @@
             "apple-design",
             "apple"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "guidance"
         },
         {
           "id": "https://developer.apple.com/design/whats-new#updated-live-activities-ui-kits",
@@ -685,7 +727,8 @@
             "apple-design",
             "apple"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "guidance"
         }
       ]
     },
@@ -704,7 +747,8 @@
             "apple-design",
             "apple"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "guidance"
         },
         {
           "id": "https://developer.apple.com/design/whats-new#app-icons",
@@ -718,7 +762,8 @@
             "apple-design",
             "apple"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "guidance"
         }
       ]
     },
@@ -736,7 +781,8 @@
           "filters": [
             "deepseek"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news"
         },
         {
           "id": "https://api-docs.deepseek.com/updates#deepseek-v4-1-flash-1017-update",
@@ -750,7 +796,11 @@
             "deepseek",
             "models"
           ],
-          "score": 0
+          "score": 0,
+          "kind": "news",
+          "models": [
+            "DeepSeek-V4.1-Flash-1017"
+          ]
         }
       ]
     }
