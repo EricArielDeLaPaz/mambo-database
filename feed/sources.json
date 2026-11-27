@@ -617,6 +617,132 @@
    "enabled": true,
    "windowDays": 400,
    "status": "Hand-kept, checked 2026-11-26: standout Claude and AI experiments (games, side-by-sides). Old entries stay in the data but only show on their own date."
+  },
+  {
+   "id": "gh-claude-code",
+   "name": "Claude Code releases",
+   "type": "atom",
+   "url": "https://github.com/anthropics/claude-code/releases.atom",
+   "filters": [
+    "anthropic"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 14,
+   "maxPerDay": 2
+  },
+  {
+   "id": "gh-anthropic-sdk",
+   "name": "Anthropic SDK releases",
+   "type": "atom",
+   "url": "https://github.com/anthropics/anthropic-sdk-python/releases.atom",
+   "filters": [
+    "anthropic"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 14,
+   "maxPerDay": 1
+  },
+  {
+   "id": "gh-codex",
+   "name": "OpenAI Codex releases",
+   "type": "atom",
+   "url": "https://github.com/openai/codex/releases.atom",
+   "filters": [
+    "openai"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 14,
+   "maxPerDay": 2
+  },
+  {
+   "id": "gh-gemini-cli",
+   "name": "Gemini CLI releases",
+   "type": "atom",
+   "url": "https://github.com/google-gemini/gemini-cli/releases.atom",
+   "filters": [
+    "google"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 14,
+   "maxPerDay": 2
+  },
+  {
+   "id": "figma-blog",
+   "name": "Figma",
+   "type": "rss",
+   "url": "https://www.figma.com/blog/feed/atom.xml",
+   "filters": [
+    "design"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 30
+  },
+  {
+   "id": "web-dev",
+   "name": "web.dev",
+   "type": "rss",
+   "url": "https://web.dev/feed.xml",
+   "filters": [
+    "web-platform"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 30
+  },
+  {
+   "id": "chrome-dev",
+   "name": "Chrome for Developers",
+   "type": "rss",
+   "url": "https://developer.chrome.com/static/blog/feed.xml",
+   "filters": [
+    "web-platform"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 30
+  },
+  {
+   "id": "mozilla-hacks",
+   "name": "Mozilla Hacks",
+   "type": "rss",
+   "url": "https://hacks.mozilla.org/feed/",
+   "filters": [
+    "web-platform"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 30
+  },
+  {
+   "id": "bsky-anthropic",
+   "name": "Anthropic on Bluesky",
+   "type": "rss",
+   "url": "https://bsky.app/profile/anthropic.com/rss",
+   "filters": [
+    "anthropic"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 7,
+   "maxPerDay": 3
+  },
+  {
+   "id": "bsky-figma",
+   "name": "Figma on Bluesky",
+   "type": "rss",
+   "url": "https://bsky.app/profile/figma.com/rss",
+   "filters": [
+    "design"
+   ],
+   "enabled": true,
+   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "windowDays": 7,
+   "maxPerDay": 3
   }
  ],
  "digest": {
