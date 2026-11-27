@@ -627,7 +627,7 @@
     "anthropic"
    ],
    "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "status": "read 2026-11-27: working, release notes only",
    "windowDays": 14,
    "maxPerDay": 2
   },
@@ -640,7 +640,7 @@
     "anthropic"
    ],
    "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "status": "read 2026-11-27: working, release notes only",
    "windowDays": 14,
    "maxPerDay": 1
   },
@@ -653,7 +653,7 @@
     "openai"
    ],
    "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "status": "read 2026-11-27: working, release notes only",
    "windowDays": 14,
    "maxPerDay": 2
   },
@@ -666,7 +666,7 @@
     "google"
    ],
    "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "status": "read 2026-11-27: working, release notes only",
    "windowDays": 14,
    "maxPerDay": 2
   },
@@ -678,8 +678,8 @@
    "filters": [
     "design"
    ],
-   "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "enabled": false,
+   "status": "read 2026-11-27: 781 items but none kept in the 30 day window, so it adds nothing; check its dates before enabling",
    "windowDays": 30
   },
   {
@@ -690,8 +690,8 @@
    "filters": [
     "web-platform"
    ],
-   "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "enabled": false,
+   "status": "read 2026-11-27: newest item 2026-10-02 (stale)",
    "windowDays": 30
   },
   {
@@ -702,8 +702,8 @@
    "filters": [
     "web-platform"
    ],
-   "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "enabled": false,
+   "status": "read 2026-11-27: newest item 2026-10-07 (stale)",
    "windowDays": 30
   },
   {
@@ -714,8 +714,8 @@
    "filters": [
     "web-platform"
    ],
-   "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "enabled": false,
+   "status": "read 2026-11-27: newest item 2026-08-24 (stale)",
    "windowDays": 30
   },
   {
@@ -726,8 +726,8 @@
    "filters": [
     "anthropic"
    ],
-   "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "enabled": false,
+   "status": "read 2026-11-27: feed empty (handle probably wrong)",
    "windowDays": 7,
    "maxPerDay": 3
   },
@@ -739,8 +739,8 @@
    "filters": [
     "design"
    ],
-   "enabled": true,
-   "status": "NEW 2026-11-27, not yet read live: check the first deploy log",
+   "enabled": false,
+   "status": "read 2026-11-27: newest item 2025-11-21 (stale)",
    "windowDays": 7,
    "maxPerDay": 3
   }
