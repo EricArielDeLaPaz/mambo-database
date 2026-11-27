@@ -29,7 +29,7 @@ export function modelNames(title = '') {
   return found.slice(0, 2);
 }
 
-const TECH = new Set(['anthropic', 'openai', 'google', 'apple', 'qwen', 'microsoft', 'meta', 'mistral', 'xai', 'deepseek', 'models', 'research', 'optimization']);
+const TECH = new Set(['anthropic', 'openai', 'google', 'apple', 'qwen', 'microsoft', 'meta', 'mistral', 'xai', 'deepseek', 'models', 'research', 'optimization', 'experiments']);
 
 export function classify(item, source = {}) {
   const f = new Set(item.filters || []);

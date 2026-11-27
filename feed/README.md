@@ -44,7 +44,7 @@ Run `node scripts/feed.mjs` and read each source line. These were NOT confirmed 
 
 ## Going live (in `.github/workflows/pages.yml`)
 
-The workflow runs `node scripts/feed.mjs` (a failure does not block the deploy; the page then shows the sample with its notice), copies the feed page into `_site/feed/`, and runs daily at 11:00 UTC (about 5 a.m. Central). The added lines, for reference:
+The workflow runs `node scripts/feed.mjs` (a failure does not block the deploy; the page then shows the sample with its notice), copies the feed page into `_site/feed/`, and runs daily at 10:05 and 11:05 UTC (5:05 a.m. Central in summer and winter). The added lines, for reference:
 
 ```yaml
           mkdir -p _site/feed
@@ -59,8 +59,16 @@ and a fresh `latest.json` before that step so the site is never stuck on sample 
         run: node scripts/feed.mjs
 ```
 
-plus a daily trigger under `on:`: `schedule: [{ cron: "0 11 * * *" }]` (about 5 a.m. Central). Commits made by a workflow's own token do not start other workflows, so generating the feed inside this workflow is simpler than committing `latest.json`. Trade-off: history older than each feed's own window is not kept.
+plus a daily trigger under `on:`: `schedule: [{ cron: "5 10,11 * * *" }]` (5:05 a.m. Central in summer and winter; the run that is too early just republishes the same day). Commits made by a workflow's own token do not start other workflows, so generating the feed inside this workflow is simpler than committing `latest.json`. Trade-off: history older than each feed's own window is not kept.
 
 ## Checked in a browser (Chromium, 2026-11-24)
 
 No console errors apart from the expected `latest.json` 404 before a live run. Light text minimum 7.49:1, dark minimum 8.13:1, unchecked box border 3.31:1 light and 4.94:1 dark. No spacing values off the 4-point scale. No horizontal scroll at 320px. All buttons, links and filter rows at least 44px high. Checkbox toggles with Space and shows a 2px focus ring. A feed with script tags, `javascript:` and `data:` links rendered as plain text with no script run. Not checked: a real screen reader, Safari, Firefox.
+
+## When a day is posted
+
+The post for a date comes out at 5:00 a.m. Central (America/Chicago, daylight saving handled) on that date and holds what was published since 5:00 a.m. the day before. Nothing newer is shown until the next 5:00 a.m. Items that only carry a date count as that date. The rule lives in `digest` in `sources.json`; the generator writes `latestDigest` and the page ends its calendar there.
+
+## Experiments & demos
+
+The `Experiments & demos` filter picks up titles that name an AI product and an experiment word (plays, tested, beats, speedrun, versus, simulation). Sources: TechCrunch AI, Ars Technica AI and Simon Willison (new 2026-11-26, not yet read live: check the first deploy log). Standout past stories, such as Claude finishing Pokémon FireRed from screenshots, live in `manual/experiments-showcase.json` with a brief taken from the source.

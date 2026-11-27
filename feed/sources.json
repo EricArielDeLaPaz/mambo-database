@@ -1,6 +1,6 @@
 {
  "version": 1,
- "checked": "2026-11-25",
+ "checked": "2026-11-26",
  "filters": [
   {
    "id": "tech",
@@ -79,6 +79,14 @@
   {
    "id": "models",
    "label": "New models",
+   "parent": "tech",
+   "kind": "topic",
+   "default": true
+  },
+  {
+   "id": "experiments",
+   "label": "Experiments & demos",
+   "product": "AI playing games, tests, side-by-sides",
    "parent": "tech",
    "kind": "topic",
    "default": true
@@ -175,6 +183,56 @@
   }
  ],
  "rules": [
+  {
+   "filter": "anthropic",
+   "field": "title",
+   "match": "\\b(anthropic|claude)\\b"
+  },
+  {
+   "filter": "openai",
+   "field": "title",
+   "match": "\\b(openai|chatgpt|gpt-?\\d[\\w.]*|sora|codex)\\b"
+  },
+  {
+   "filter": "google",
+   "field": "title",
+   "match": "\\b(gemini|deepmind|gemma|veo|imagen|genie)\\b"
+  },
+  {
+   "filter": "qwen",
+   "field": "title",
+   "match": "\\bqwen\\d*\\b"
+  },
+  {
+   "filter": "microsoft",
+   "field": "title",
+   "match": "\\b(copilot|microsoft ai)\\b"
+  },
+  {
+   "filter": "meta",
+   "field": "title",
+   "match": "\\b(llama|meta ai)\\b"
+  },
+  {
+   "filter": "mistral",
+   "field": "title",
+   "match": "\\bmistral\\b"
+  },
+  {
+   "filter": "xai",
+   "field": "title",
+   "match": "\\b(xai|grok)\\b"
+  },
+  {
+   "filter": "deepseek",
+   "field": "title",
+   "match": "\\bdeepseek\\b"
+  },
+  {
+   "filter": "experiments",
+   "field": "title",
+   "match": "^(?=.*\\b(claude|gemini|gpt|chatgpt|openai|anthropic|qwen|llama|grok|deepseek|mistral|ai|llm|agents?)\\b)(?=.*\\b(plays?|played|playing|tested|testing|beats?|beating|beaten|speed ?run\\w*|head-to-head|versus|vs\\.?|challenge[ds]?|experiment\\w*|pits?|pitted|simulat\\w+)\\b)"
+  },
   {
    "filter": "models",
    "field": "title",
@@ -309,6 +367,36 @@
    ],
    "enabled": false,
    "status": "NOT READY: x.ai/news returned 403 Forbidden to the watcher"
+  },
+  {
+   "id": "techcrunch-ai",
+   "name": "TechCrunch",
+   "type": "rss",
+   "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+   "filters": [],
+   "enabled": true,
+   "windowDays": 7,
+   "status": "NEW 2026-11-26, not yet read live: covers AI stories such as Claude playing Pokémon; items are kept only when the title names a company or an experiment"
+  },
+  {
+   "id": "arstechnica-ai",
+   "name": "Ars Technica",
+   "type": "rss",
+   "url": "https://arstechnica.com/ai/feed/",
+   "filters": [],
+   "enabled": true,
+   "windowDays": 7,
+   "status": "NEW 2026-11-26, not yet read live; same title rules as TechCrunch"
+  },
+  {
+   "id": "simonwillison",
+   "name": "Simon Willison",
+   "type": "atom",
+   "url": "https://simonwillison.net/atom/everything/",
+   "filters": [],
+   "enabled": true,
+   "windowDays": 7,
+   "status": "NEW 2026-11-26, not yet read live: a daily blog that covers new models and AI experiments"
   },
   {
    "id": "google-blog",
@@ -520,6 +608,20 @@
    ],
    "enabled": false,
    "status": "HTML page, item dates not visible in the audit; not used yet"
+  },
+  {
+   "id": "experiments-showcase",
+   "name": "Experiments showcase",
+   "type": "manual",
+   "filters": [],
+   "enabled": true,
+   "windowDays": 400,
+   "status": "Hand-kept, checked 2026-11-26: standout Claude and AI experiments (games, side-by-sides). Old entries stay in the data but only show on their own date."
   }
- ]
+ ],
+ "digest": {
+  "timeZone": "America/Chicago",
+  "hour": 5,
+  "note": "A day's post is published at 5:00 a.m. Central and holds what came out since 5:00 a.m. the day before. Nothing newer is shown until the next 5:00 a.m."
+ }
 }

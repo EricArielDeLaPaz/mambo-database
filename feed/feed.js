@@ -141,7 +141,7 @@ function setBanner() {
 
 /* ---------- day cards ---------- */
 function cal() {
-  const end = (data.generated || new Date().toISOString()).slice(0, 10);
+  const end = data.latestDigest || (data.generated || new Date().toISOString()).slice(0, 10);
   return calendar(data.days, [...selected], filterOrder(data.filters), end, shown);
 }
 
