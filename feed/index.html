@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
 <title>Daily feed | Mambo Database</title>
 <meta name="description" content="A short daily post of what is new in tech and design. Pick your filters, then open a day to read it.">
 <link rel="icon" type="image/png" href="../mambo.png">
@@ -25,9 +24,9 @@
   <aside id="side" aria-label="Feed filters"></aside>
   <div class="rz" data-rz="left" role="separator" aria-orientation="vertical" aria-label="Resize filters panel. Use left and right arrow keys." tabindex="0"></div>
   <main id="main" tabindex="-1">
-    <h1>Daily feed</h1>
+    <div class="dbhead"><div><p class="eyebrow">Feed</p><h1>Daily feed</h1></div><p class="empty" id="count" role="status"></p></div>
     <p class="lede">What is new in tech and design, one short post per day. Turn on a filter to add its section to your posts, then open a day to read it.</p>
-    <div id="banner" class="banner" hidden></div>
+    <div id="banner" class="advice" hidden></div>
     <p id="status" class="sr" role="status" aria-live="polite"></p>
     <div id="out"><p class="msg">Loading the feed&hellip;</p></div>
   </main>

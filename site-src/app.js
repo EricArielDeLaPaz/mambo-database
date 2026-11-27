@@ -9,7 +9,7 @@ function render() {
   else if ($('#lay')) showDetail(); /* same Browse page: only the right panel changes */
   else renderBrowse();
 }
-$$('.tab').forEach(t => t.onclick = () => go({ systems: '#/systems', guides: '#/guides', tools: '#/tools' }[t.dataset.view] || '#/'));
+$$('.tab').forEach(t => t.onclick = () => { if (t.dataset.view === 'feed') { location.href = 'feed/'; return } go({ systems: '#/systems', guides: '#/guides', tools: '#/tools' }[t.dataset.view] || '#/') });
 window.addEventListener('hashchange', render);
 function renderFooter() {
   const fonts = DATA.filter(e => e.type === 'typeface').sort((a, b) => a.name.localeCompare(b.name));
