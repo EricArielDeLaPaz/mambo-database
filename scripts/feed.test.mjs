@@ -291,3 +291,89 @@ test('calendar: one entry per day, empty days say count 0, newest first', () => 
   assert.equal(calendar(days, ['trends'], order, '2026-11-24', 3)[2].count, 1);
   assert.equal(addDays('2026-03-01', -1), '2026-02-28');
 });
+
+/* ---------- briefs: kind, model names, what / setup / result ---------- */
+import { modelNames, classify, headline, pickBrief, pageParagraphs, enrich } from './feed-brief.mjs';
+
+test('modelNames finds one or two model names in a title', () => {
+  assert.deepEqual(modelNames('Introducing Claude Fable 5.2 and Claude Mythos 5.2'), ['Claude Fable 5.2', 'Claude Mythos 5.2']);
+  assert.deepEqual(modelNames('Introducing Gemini 4 Neon'), ['Gemini 4 Neon']);
+  assert.deepEqual(modelNames('See what 6 builders are making with Gemini 4 Hydrogen'), ['Gemini 4 Hydrogen']);
+  assert.deepEqual(modelNames('Genie 4 is now available'), ['Genie 4']);
+  assert.deepEqual(modelNames('Qwen3.6-27B'), ['Qwen3.6-27B']);
+  assert.deepEqual(modelNames('Here are 4 things you did not know you could do with Gemini Canvas.'), [], 'a product name without a version is not a model name');
+});
+
+test('classify and headline: a release gets "New Gemini model: ..." and a showcase does not', () => {
+  const g = (title, filters = ['google']) => ({ title, filters });
+  assert.equal(classify(g('Introducing Gemini 4 Neon', ['google', 'models'])), 'model');
+  assert.equal(headline(g('Introducing Gemini 4 Neon'), 'model', {}), 'New Gemini model: Gemini 4 Neon');
+  assert.equal(headline(g('Introducing Claude Fable 5.2 and Claude Mythos 5.2'), 'model', {}), 'New Claude models: Claude Fable 5.2 and Claude Mythos 5.2');
+  assert.equal(classify(g('See what 6 builders are making with Gemini 4 Hydrogen', ['google', 'models'])), 'news', 'a showcase of an old model is not a new model');
+  assert.equal(headline(g('See what 6 builders are making with Gemini 4 Hydrogen'), 'news', {}), '');
+  const hf = { type: 'hf-models', name: 'Mistral (Hugging Face)' };
+  assert.equal(classify({ title: 'Timestral-209M', filters: ['mistral', 'models'] }, hf), 'model');
+  assert.equal(headline({ title: 'Timestral-209M' }, 'model', hf), 'New Mistral model: Timestral-209M');
+});
+
+test('classify: tech experiments are recognised, design challenges are not', () => {
+  assert.equal(classify({ title: 'Claude plays Pokémon: which model beats the game faster?', filters: ['anthropic'] }), 'experiment');
+  assert.equal(classify({ title: 'We tested six agents on a month of real support tickets', filters: ['research'] }), 'experiment');
+  assert.equal(classify({ title: 'A design challenge for your team', filters: ['trends'] }), 'news');
+  assert.equal(classify({ title: 'Andy Clarke released a new e-book', filters: ['web-platform', 'books'] }), 'book');
+  assert.equal(classify({ title: 'Which Dwarf Is This?', filters: ['research'] }, { type: 'hf-papers' }), 'research');
+});
+
+const ARTICLE = `<html><head><meta property="og:description" content="Researchers let three AI agents play the same game and timed how long each took to finish."></head>
+<body><nav><p>Subscribe to our newsletter for the latest updates every week please.</p></nav><article>
+<p>Researchers let three AI agents play the same game and timed how long each took to finish, from the first screen to the credits.</p>
+<p>We gave each agent the same screenshot feed, a short notes file and a small set of button presses to work with during the run.</p>
+<p>The fastest agent finished in 61 hours, which was 40% faster than the slowest one, and it needed far fewer resets along the way.</p>
+<p>Short.</p></article><footer><p>All rights reserved by the publisher of this very long footer line here.</p></footer></body></html>`;
+
+test('pickBrief picks what, setup and result from the publisher text and nothing else', () => {
+  const { lead, paras } = pageParagraphs(ARTICLE);
+  assert.match(lead, /^Researchers let three AI agents/);
+  assert.equal(paras.length, 3, 'nav, footer and short lines are skipped');
+  const b = pickBrief([lead, ...paras], { summary: '', title: 'Agents race through a game' });
+  assert.match(b.what, /three AI agents play the same game/);
+  assert.match(b.setup, /^We gave each agent the same screenshot feed/);
+  assert.match(b.result, /61 hours, which was 40% faster/);
+  assert.deepEqual(pickBrief([], {}), {}, 'no text means no brief');
+});
+
+test('enrich: adds kind, headline and a brief from the article page, and survives a failed page', async () => {
+  const items = [
+    { id: 'a', title: 'Introducing Gemini 4 Neon', link: 'https://x.com/a', published: '2026-11-23T10:00:00.000Z', source: 's', sourceName: 'S', summary: '', filters: ['google', 'models'], text: '' },
+    { id: 'b', title: 'Claude plays Pokémon: which model beats the game faster?', link: 'https://x.com/b', published: '2026-11-22T10:00:00.000Z', source: 's', sourceName: 'S', summary: '', filters: ['anthropic'] },
+    { id: 'c', title: 'Broken page', link: 'https://x.com/c', published: '2026-11-21T10:00:00.000Z', source: 's', sourceName: 'S', summary: 'Keeps its summary.', filters: ['trends'] }
+  ];
+  const doFetch = async (url) => {
+    if (url.endsWith('/c')) throw new Error('down');
+    return { ok: true, headers: new Map([['content-type', 'text/html']]), text: async () => ARTICLE };
+  };
+  const stats = await enrich(items, new Map([['s', { id: 's', type: 'rss', name: 'S' }]]), { doFetch });
+  assert.equal(items[0].kind, 'model');
+  assert.equal(items[0].headline, 'New Gemini model: Gemini 4 Neon');
+  assert.deepEqual(items[0].models, ['Gemini 4 Neon']);
+  assert.match(items[0].brief.result, /61 hours/);
+  assert.equal(items[1].kind, 'experiment');
+  assert.equal(items[2].brief, undefined);
+  assert.equal(items[2].summary, 'Keeps its summary.');
+  assert.equal(stats.pageFailed, 1);
+  assert.ok(items.every((i) => !('text' in i)), 'the long feed text is not written to the data file');
+});
+
+test('hand-kept items can carry their own brief and it is not overwritten', async () => {
+  const src = { id: 'm', name: 'M', type: 'manual', filters: ['anthropic'], windowDays: 30 };
+  const { items } = processSource(src, [{ title: 'Claude plays Pokémon', link: 'https://x.com/p', published: '2026-11-23T00:00:00.000Z', summary: 'S', what: 'An agent plays the game.', setup: 'It got screenshots and a notes file.', result: 'It finished in 61 hours.' }], cfg.rules, NOW, known);
+  assert.equal(items[0].brief.result, 'It finished in 61 hours.');
+  await enrich(items, new Map([['m', src]]), { doFetch: async () => { throw new Error('must not fetch manual items'); } });
+  assert.equal(items[0].brief.setup, 'It got screenshots and a notes file.');
+  assert.equal(items[0].kind, 'experiment');
+});
+
+test('postTitle uses the model headline', () => {
+  const sections = [{ filter: 'google', items: [{ title: 'Introducing Gemini 4 Neon', headline: 'New Gemini model: Gemini 4 Neon', published: '2026-11-23T10:00:00.000Z', filters: ['google', 'models'] }] }];
+  assert.equal(postTitle(sections), 'New Gemini model: Gemini 4 Neon');
+});

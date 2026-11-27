@@ -189,6 +189,28 @@ function renderDays() {
   $('#status').textContent = `${plural(withNews, 'day')} with updates out of the last ${days.length}.`;
 }
 
+/* ---------- one item in a post ---------- */
+const KIND = { model: 'New model', experiment: 'Experiment', research: 'Research', release: 'Release', guidance: 'Guidance', book: 'Book', news: 'News' };
+
+function itemCard(it) {
+  const url = safeUrl(it.link);
+  const brief = it.brief || {};
+  const tags = el('span', { class: 'tags' }, el('span', { class: 'tag kind-' + (it.kind || 'news'), text: KIND[it.kind] || KIND.news }));
+  for (const m of it.models || []) tags.append(el('span', { class: 'tag', text: m }));
+  const li = el('li', { class: 'item' }, tags, el('h3', { text: it.headline || it.title }), el('p', { class: 'src', text: it.sourceName }));
+  // "what" is the plain description; setup and result only appear when the publisher's own text says them
+  const what = brief.what || it.summary;
+  if (what) li.append(el('p', { class: 'sum', text: what }));
+  if (brief.setup || brief.result) {
+    const dl = el('dl', { class: 'brief' });
+    if (brief.setup) dl.append(el('dt', { text: 'Setup' }), el('dd', { text: brief.setup }));
+    if (brief.result) dl.append(el('dt', { text: 'Result' }), el('dd', { text: brief.result }));
+    li.append(dl);
+  }
+  if (url) li.append(el('a', { class: 'more', href: url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `Read more at ${it.sourceName}: ${it.title} (opens in a new tab)` }, `Read more at ${it.sourceName} ↗`));
+  return li;
+}
+
 /* ---------- post panel ---------- */
 const X_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
@@ -217,13 +239,7 @@ function showPost() {
     const h2 = el('h2', { id: hid, text: f.label });
     if (f.product) h2.append(el('span', { class: 'p', text: f.product }));
     const list = el('ul', { class: 'items' });
-    for (const it of s.items) {
-      const url = safeUrl(it.link);
-      const li = el('li', { class: 'item' }, el('h3', { text: it.title }), el('p', { class: 'src', text: it.sourceName }));
-      if (it.summary) li.append(el('p', { class: 'sum', text: it.summary }));
-      if (url) li.append(el('a', { class: 'more', href: url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `Read more at ${it.sourceName}: ${it.title} (opens in a new tab)` }, `Read more at ${it.sourceName} ↗`));
-      list.append(li);
-    }
+    for (const it of s.items) list.append(itemCard(it));
     body.append(el('section', { class: 'sec', 'aria-labelledby': hid }, h2, list));
   }
   d.setAttribute('aria-label', `Post for ${longDate(day.date)}`);

@@ -6,6 +6,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { enrich } from './feed-brief.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FEED = path.join(ROOT, 'feed');
@@ -107,7 +108,9 @@ export function parseFeed(xml) {
       ? [...e.matchAll(/<category\b[^>]*term=["']([^"']+)["']/gi)].map((m) => decode(m[1]))
       : blocks(e, 'category').map((c) => stripHtml(val(inner(c, 'category') || c.replace(/<\/?category[^>]*>/gi, ''))));
     const title = stripHtml(val(inner(e, 'title')));
+    const full = atom ? inner(e, 'content') : inner(e, 'content:encoded');
     out.push({
+      text: full ? stripHtml(val(full)).slice(0, 6000) : '',
       title,
       link,
       id: stripHtml(val(inner(e, atom ? 'id' : 'guid'))) || link,
@@ -143,6 +146,7 @@ export function parseHfPapers(json) {
       id: p.id,
       published: toIso(p.submittedOnDailyAt || x.publishedAt || p.publishedAt),
       summary: stripHtml(p.summary || x.summary || ''),
+      text: stripHtml(p.summary || x.summary || ''),
       score: p.upvotes || 0,
       categories: []
     };
@@ -177,10 +181,15 @@ export function processSource(source, rawItems, rules, now, known) {
     if (!filters.length) { report.dropped++; continue; }
     // Hand-kept sources often point many items at one page, so the title is part of their id.
     const id = source.type === 'manual' ? `${canonicalUrl(r.link)}#${slug(r.title)}` : canonicalUrl(r.link);
-    items.push({
+    const item = {
       id, title: r.title, link: r.link, published: r.published,
       source: source.id, sourceName: source.name, summary: base.summary, filters, score: r.score || 0
-    });
+    };
+    if (r.text) item.text = r.text;
+    // hand-kept items may carry their own brief: what / setup / result
+    const mb = Object.fromEntries(['what', 'setup', 'result'].filter((k) => r[k]).map((k) => [k, String(r[k])]));
+    if (Object.keys(mb).length) { item.brief = mb; item.manualBrief = true; }
+    items.push(item);
   }
   if (source.maxPerDay) {
     const byDay = new Map();
@@ -263,12 +272,17 @@ export async function run({ fixtures = false, out, now = new Date() } = {}) {
     throw new Error(`every network source failed (${net.length}); kept the previous file. First error: ${net[0].error}`);
   }
 
+  const sourcesById = new Map(cfg.sources.map((x) => [x.id, x]));
+  const offline = async () => { throw new Error('offline'); };
+  const briefStats = await enrich(all, sourcesById, { doFetch: fixtures ? offline : globalThis.fetch });
+  for (const it of all) delete it.manualBrief;
+
   const days = buildDays(all, prev.days, now);
   const readyBySource = new Set(cfg.sources.filter((s) => s.enabled).flatMap((s) => s.filters));
   const readyByRule = new Set(cfg.rules.map((r) => r.filter));
   const filters = cfg.filters.map((f) => (f.group ? f : { ...f, ready: !f.soon && (readyBySource.has(f.id) || readyByRule.has(f.id)) }));
 
-  const result = { generated: now.toISOString(), sample: fixtures, filters, sources: reports, days };
+  const result = { generated: now.toISOString(), sample: fixtures, filters, sources: reports, briefs: briefStats, days };
   await mkdir(path.dirname(outFile), { recursive: true });
   await writeFile(outFile, JSON.stringify(result, null, 2) + '\n');
   return { outFile, result };
@@ -285,6 +299,12 @@ if (isMain) {
   const { outFile, result } = done;
   const items = result.days.reduce((n, d) => n + d.items.length, 0);
   console.log(`Wrote ${outFile}: ${result.days.length} days, ${items} items`);
+  const b = result.briefs;
+  console.log(`  briefs: ${b.fromFeedText} from feed text, ${b.fromPage} from article pages (${b.pageTried} tried, ${b.pageFailed} failed)`);
+  const kinds = {}; for (const d of result.days) for (const i of d.items) kinds[i.kind] = (kinds[i.kind] || 0) + 1;
+  console.log('  kinds: ' + Object.entries(kinds).map(([k, n]) => `${k} ${n}`).join(', '));
+  const sample = result.days.flatMap((d) => d.items).filter((i) => i.brief).slice(0, 4);
+  for (const i of sample) console.log(`  sample brief [${i.kind}] ${i.headline || i.title}: ${JSON.stringify(i.brief)}`);
   for (const r of result.sources) {
     const note = r.skipped ? `skipped (${r.skipped})` : r.ok ? `${r.kept} kept of ${r.fetched}${r.stale ? ', STALE (newest ' + r.newest + ')' : ''}` : `FAILED: ${r.error}`;
     console.log(`  ${r.id}: ${note}`);

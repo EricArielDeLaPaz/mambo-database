@@ -37,7 +37,7 @@ export function postTitle(sections) {
   const pool = models.length ? models : all;
   const top = [...pool].sort((a, b) => b.published.localeCompare(a.published))[0];
   const rest = all.length - 1;
-  return shorten(top.title.replace(/\.$/, '')) + (rest ? ` and ${rest} more update${rest > 1 ? 's' : ''}` : '');
+  return shorten((top.headline || top.title).replace(/\.$/, ''), 72) + (rest ? ` and ${rest} more update${rest > 1 ? 's' : ''}` : '');
 }
 
 export function filterLabel(f) {
