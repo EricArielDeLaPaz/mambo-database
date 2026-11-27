@@ -1,5 +1,6 @@
 {
-  "generated": "2026-11-24T08:00:00.000Z",
+  "generated": "2026-11-24T12:00:00.000Z",
+  "latestDigest": "2026-11-24",
   "sample": true,
   "filters": [
     {
@@ -62,7 +63,7 @@
       "product": "Llama",
       "parent": "tech",
       "kind": "company",
-      "ready": false
+      "ready": true
     },
     {
       "id": "mistral",
@@ -77,7 +78,7 @@
       "product": "Grok",
       "parent": "tech",
       "kind": "company",
-      "ready": false
+      "ready": true
     },
     {
       "id": "deepseek",
@@ -89,6 +90,15 @@
     {
       "id": "models",
       "label": "New models",
+      "parent": "tech",
+      "kind": "topic",
+      "default": true,
+      "ready": true
+    },
+    {
+      "id": "experiments",
+      "label": "Experiments & demos",
+      "product": "AI playing games, tests, side-by-sides",
       "parent": "tech",
       "kind": "topic",
       "default": true,
@@ -237,6 +247,27 @@
       "dropped": 0,
       "name": "DeepSeek API updates",
       "type": "manual"
+    },
+    {
+      "id": "techcrunch-ai",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "TechCrunch",
+      "type": "rss"
+    },
+    {
+      "id": "arstechnica-ai",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Ars Technica",
+      "type": "rss"
+    },
+    {
+      "id": "simonwillison",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Simon Willison",
+      "type": "atom"
     },
     {
       "id": "google-blog",
@@ -389,10 +420,21 @@
       "dropped": 0,
       "name": "WebKit",
       "type": "rss"
+    },
+    {
+      "id": "experiments-showcase",
+      "ok": true,
+      "fetched": 1,
+      "newest": "2026-06-09T00:00:00.000Z",
+      "stale": true,
+      "kept": 1,
+      "dropped": 0,
+      "name": "Experiments showcase",
+      "type": "manual"
     }
   ],
   "briefs": {
-    "items": 24,
+    "items": 25,
     "fromFeedText": 0,
     "fromPage": 0,
     "pageTried": 12,
@@ -435,12 +477,7 @@
             "Claude Fable 5.2",
             "Claude Mythos 5.2"
           ]
-        }
-      ]
-    },
-    {
-      "date": "2026-11-23",
-      "items": [
+        },
         {
           "id": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-hydrogen-builders",
           "title": "See what 6 builders are making with Gemini 4 Hydrogen",
@@ -528,7 +565,12 @@
           ],
           "score": 0,
           "kind": "news"
-        },
+        }
+      ]
+    },
+    {
+      "date": "2026-11-23",
+      "items": [
         {
           "id": "https://huggingface.co/papers/2611.27490",
           "title": "Which Dwarf Is This? Doppeldwarf-306 and Near-Identical Instance Retrieval",
@@ -546,7 +588,7 @@
       ]
     },
     {
-      "date": "2026-11-20",
+      "date": "2026-11-21",
       "items": [
         {
           "id": "https://www.nngroup.com/articles/qual-research-methods",
@@ -590,7 +632,12 @@
           ],
           "score": 0,
           "kind": "book"
-        },
+        }
+      ]
+    },
+    {
+      "date": "2026-11-20",
+      "items": [
         {
           "id": "https://www.anthropic.com/news#anthropic-announces-closing-of-its-initial-public-offering",
           "title": "Anthropic announces closing of its initial public offering",
@@ -608,7 +655,7 @@
       ]
     },
     {
-      "date": "2026-11-18",
+      "date": "2026-11-19",
       "items": [
         {
           "id": "https://webkit.org/blog/18646/global-privacy-control-gpc-webkit-api",
@@ -800,6 +847,35 @@
           "kind": "news",
           "models": [
             "DeepSeek-V4.1-Flash-1017"
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2026-06-09",
+      "items": [
+        {
+          "id": "https://www.anthropic.com/news/claude-fable-5-mythos-5#claude-fable-5-plays-pok-mon-firered-using-only-screenshots",
+          "title": "Claude Fable 5 plays Pokémon FireRed using only screenshots",
+          "link": "https://www.anthropic.com/news/claude-fable-5-mythos-5",
+          "published": "2026-06-09T00:00:00.000Z",
+          "source": "experiments-showcase",
+          "sourceName": "Experiments showcase",
+          "summary": "Claude Fable 5 finished Pokémon FireRed by looking at the game screen alone, with no extra game data.",
+          "filters": [
+            "anthropic",
+            "experiments",
+            "models"
+          ],
+          "score": 0,
+          "brief": {
+            "what": "Claude Fable 5 finished Pokémon FireRed by looking at the game screen alone.",
+            "setup": "It got only raw screenshots and a minimal harness, with no game-state help. Earlier models struggled even with helper harnesses.",
+            "result": "It completed the game with vision alone, a clear step up from earlier Claude models."
+          },
+          "kind": "experiment",
+          "models": [
+            "Claude Fable 5 plays Pok"
           ]
         }
       ]

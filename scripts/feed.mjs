@@ -200,13 +200,31 @@ export function processSource(source, rawItems, rules, now, known) {
   return { items, report };
 }
 
-export function buildDays(items, previousDays = [], now, keepDays = 30) {
+/* ---------- the 5:00 a.m. digest ----------
+   The post for date D comes out at 5:00 a.m. Central on D and holds what was published since 5:00 a.m. the day before.
+   Anything newer waits for the next morning. Items that only carry a date (midnight UTC) belong to that date. */
+export const DIGEST = { timeZone: 'America/Chicago', hour: 5 };
+function wallClock(date, timeZone) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).formatToParts(date).map((x) => [x.type, x.value]));
+  return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
+}
+const ymd = (ms) => new Date(ms).toISOString().slice(0, 10);
+export function digestDate(iso, cfg = DIGEST) {
+  if (/T00:00:00(?:\.000)?Z$/.test(iso)) return iso.slice(0, 10);
+  return ymd(wallClock(new Date(iso), cfg.timeZone) - cfg.hour * 3600e3 + DAY);
+}
+export function latestDigest(now, cfg = DIGEST) {
+  return ymd(wallClock(now, cfg.timeZone) - cfg.hour * 3600e3);
+}
+
+export function buildDays(items, previousDays = [], now, keepDays = 30, cfg = DIGEST) {
+  const latest = latestDigest(now, cfg);
   const seen = new Map();
   const add = (i) => { if (!seen.has(i.id)) seen.set(i.id, i); };
   items.forEach(add);
   for (const d of previousDays) for (const i of d.items) if (now - new Date(i.published) <= keepDays * DAY) add(i);
   const byDate = new Map();
-  for (const i of seen.values()) { const d = i.published.slice(0, 10); (byDate.get(d) || byDate.set(d, []).get(d)).push(i); }
+  for (const i of seen.values()) { const d = digestDate(i.published, cfg); if (d > latest) continue; (byDate.get(d) || byDate.set(d, []).get(d)).push(i); }
   return [...byDate.keys()].sort().reverse().map((date) => ({
     date,
     items: byDate.get(date).sort((a, b) => b.published.localeCompare(a.published))
@@ -277,12 +295,13 @@ export async function run({ fixtures = false, out, now = new Date() } = {}) {
   const briefStats = await enrich(all, sourcesById, { doFetch: fixtures ? offline : globalThis.fetch });
   for (const it of all) delete it.manualBrief;
 
-  const days = buildDays(all, prev.days, now);
+  const digest = { ...DIGEST, ...(cfg.digest || {}) };
+  const days = buildDays(all, prev.days, now, 30, digest);
   const readyBySource = new Set(cfg.sources.filter((s) => s.enabled).flatMap((s) => s.filters));
   const readyByRule = new Set(cfg.rules.map((r) => r.filter));
   const filters = cfg.filters.map((f) => (f.group ? f : { ...f, ready: !f.soon && (readyBySource.has(f.id) || readyByRule.has(f.id)) }));
 
-  const result = { generated: now.toISOString(), sample: fixtures, filters, sources: reports, briefs: briefStats, days };
+  const result = { generated: now.toISOString(), latestDigest: latestDigest(now, digest), sample: fixtures, filters, sources: reports, briefs: briefStats, days };
   await mkdir(path.dirname(outFile), { recursive: true });
   await writeFile(outFile, JSON.stringify(result, null, 2) + '\n');
   return { outFile, result };
@@ -293,7 +312,7 @@ if (isMain) {
   const a = process.argv.slice(2);
   const arg = (n) => (a.includes(n) ? a[a.indexOf(n) + 1] : undefined);
   const fixtures = a.includes('--fixtures');
-  const now = arg('--now') ? new Date(arg('--now')) : fixtures ? new Date('2026-11-24T08:00:00Z') : new Date();
+  const now = arg('--now') ? new Date(arg('--now')) : fixtures ? new Date('2026-11-24T12:00:00Z') : new Date();
   let done;
   try { done = await run({ fixtures, out: arg('--out'), now }); } catch (e) { console.error('feed.mjs: ' + e.message); process.exit(1); }
   const { outFile, result } = done;

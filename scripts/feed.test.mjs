@@ -6,14 +6,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   decode, stripHtml, summarize, cleanSummary, canonicalUrl,
-  parseFeed, parseHfModels, parseHfPapers, tagItem, processSource, buildDays, run
+  parseFeed, parseHfModels, parseHfPapers, tagItem, processSource, buildDays, run, digestDate, latestDigest
 } from './feed.mjs';
 import { assignSections, daysFor, postTitle, shorten, filterOrder, calendar, addDays } from '../feed/lib/compose.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cfg = JSON.parse(await readFile(path.join(ROOT, 'feed', 'sources.json'), 'utf8'));
 const known = new Set(cfg.filters.filter((f) => !f.group).map((f) => f.id));
-const NOW = new Date('2026-11-24T08:00:00Z');
+const NOW = new Date('2026-11-24T12:00:00Z');
 
 test('decode handles named, decimal and hex entities', () => {
   assert.equal(decode('Tom &amp; Jerry &#8217;s &#x2014; &nbsp;ok &bogus;'), 'Tom & Jerry ’s —  ok &bogus;');
@@ -147,8 +147,9 @@ test('buildDays groups by UTC date, sorts newest first, dedupes and keeps recent
   const mk = (id, published) => ({ id, title: id, published, filters: ['google'] });
   const prev = [{ date: '2026-11-10', items: [mk('keep', '2026-11-10T09:00:00.000Z'), mk('ancient', '2026-09-01T09:00:00.000Z')] }];
   const days = buildDays([mk('a', '2026-11-23T10:00:00.000Z'), mk('b', '2026-11-23T12:00:00.000Z'), mk('a', '2026-11-23T10:00:00.000Z'), mk('c', '2026-11-20T01:00:00.000Z')], prev, NOW);
-  assert.deepEqual(days.map((d) => d.date), ['2026-11-23', '2026-11-20', '2026-11-10']);
-  assert.deepEqual(days[0].items.map((i) => i.id), ['b', 'a']);
+  // 10:00Z is 4 a.m. Central, so it belongs to the post of the same date; 12:00Z is after 5 a.m. so it joins the 24th
+  assert.deepEqual(days.map((d) => d.date), ['2026-11-24', '2026-11-23', '2026-11-20', '2026-11-10']);
+  assert.deepEqual(days[0].items.map((i) => i.id), ['b']);
   assert.ok(!JSON.stringify(days).includes('ancient'));
 });
 
@@ -220,8 +221,9 @@ test('fixtures run: stale and not-ready sources are reported, sample has real se
   assert.equal(f.anthropic.ready, true);
   assert.equal(f.microsoft.ready, true);
   assert.equal(f.deepseek.ready, true);
-  assert.equal(f.meta.ready, false);
-  assert.equal(f.xai.ready, false);
+  assert.equal(f.meta.ready, true, 'Meta is covered by the news sources through title rules');
+  assert.equal(f.xai.ready, true);
+  assert.equal(f.experiments.ready, true);
   assert.equal(f.mine, undefined, 'the My blogs filter was removed');
   assert.ok(!filterOrder(result.filters).includes('mine'));
 });
@@ -376,4 +378,35 @@ test('hand-kept items can carry their own brief and it is not overwritten', asyn
 test('postTitle uses the model headline', () => {
   const sections = [{ filter: 'google', items: [{ title: 'Introducing Gemini 4 Neon', headline: 'New Gemini model: Gemini 4 Neon', published: '2026-11-23T10:00:00.000Z', filters: ['google', 'models'] }] }];
   assert.equal(postTitle(sections), 'New Gemini model: Gemini 4 Neon');
+});
+
+test('digest: a day opens at 5 a.m. Central and holds the 24 hours before it', () => {
+  // winter (CST, UTC-6): 5 a.m. is 11:00Z
+  assert.equal(digestDate('2026-11-24T10:59:00.000Z'), '2026-11-24');
+  assert.equal(digestDate('2026-11-24T11:00:00.000Z'), '2026-11-25');
+  assert.equal(digestDate('2026-11-23T11:00:00.000Z'), '2026-11-24');
+  // summer (CDT, UTC-5): 5 a.m. is 10:00Z
+  assert.equal(digestDate('2026-07-10T09:59:00.000Z'), '2026-07-10');
+  assert.equal(digestDate('2026-07-10T10:00:00.000Z'), '2026-07-11');
+  // date-only items belong to their own date
+  assert.equal(digestDate('2026-11-24T00:00:00.000Z'), '2026-11-24');
+  assert.equal(latestDigest(new Date('2026-11-24T10:59:00Z')), '2026-11-23');
+  assert.equal(latestDigest(new Date('2026-11-24T11:00:00Z')), '2026-11-24');
+});
+
+test('digest: nothing newer than the latest 5 a.m. is shown until the next morning', () => {
+  const mk = (id, published) => ({ id, title: id, published, filters: ['google'] });
+  const items = [mk('before', '2026-11-24T10:00:00.000Z'), mk('after', '2026-11-24T11:30:00.000Z'), mk('dateonly', '2026-11-25T00:00:00.000Z')];
+  const early = buildDays(items, [], new Date('2026-11-24T11:05:00Z'));
+  assert.deepEqual(early.map((d) => [d.date, d.items.map((i) => i.id)]), [['2026-11-24', ['before']]]);
+  const next = buildDays(items, [], new Date('2026-11-25T11:05:00Z'));
+  assert.deepEqual(next.map((d) => [d.date, d.items.map((i) => i.id)]), [['2026-11-25', ['dateonly', 'after']], ['2026-11-24', ['before']]]);
+});
+
+test('experiments: AI plays a game is tagged, a plain release is not', () => {
+  const t = (title) => tagItem({ title, summary: '' }, { filters: [] }, cfg.rules, known);
+  assert.ok(t('Claude plays Pokémon FireRed and beats the game faster than Gemini').includes('experiments'));
+  assert.ok(t('We tested GPT against Claude on a speedrun').includes('experiments'));
+  assert.ok(!t('Introducing Gemini 4 Neon').includes('experiments'));
+  assert.ok(!t('Designers play with color this week').includes('experiments'));
 });
