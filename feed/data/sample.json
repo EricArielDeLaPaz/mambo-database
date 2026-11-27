@@ -431,6 +431,76 @@
       "dropped": 0,
       "name": "Experiments showcase",
       "type": "manual"
+    },
+    {
+      "id": "gh-claude-code",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Claude Code releases",
+      "type": "atom"
+    },
+    {
+      "id": "gh-anthropic-sdk",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Anthropic SDK releases",
+      "type": "atom"
+    },
+    {
+      "id": "gh-codex",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "OpenAI Codex releases",
+      "type": "atom"
+    },
+    {
+      "id": "gh-gemini-cli",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Gemini CLI releases",
+      "type": "atom"
+    },
+    {
+      "id": "figma-blog",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Figma",
+      "type": "rss"
+    },
+    {
+      "id": "web-dev",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "web.dev",
+      "type": "rss"
+    },
+    {
+      "id": "chrome-dev",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Chrome for Developers",
+      "type": "rss"
+    },
+    {
+      "id": "mozilla-hacks",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Mozilla Hacks",
+      "type": "rss"
+    },
+    {
+      "id": "bsky-anthropic",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Anthropic on Bluesky",
+      "type": "rss"
+    },
+    {
+      "id": "bsky-figma",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Figma on Bluesky",
+      "type": "rss"
     }
   ],
   "briefs": {
