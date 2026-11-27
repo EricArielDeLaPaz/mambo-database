@@ -98,8 +98,8 @@ function buildSide() {
   const logo = el('img', { src: '../mambo.png', alt: '', decoding: 'async' });
   logo.addEventListener('error', () => logo.remove());
   side.append(el('p', { class: 'wordmark' }, logo, 'Daily feed'));
-  const reset = el('button', { type: 'button', class: 'btn', id: 'reset', text: 'Suggested' });
-  const clear = el('button', { type: 'button', class: 'btn', id: 'clear', text: 'Clear all' });
+  const reset = el('button', { type: 'button', class: 'btn sm', id: 'reset', text: 'Suggested filters' });
+  const clear = el('button', { type: 'button', class: 'btn sm', id: 'clear', text: 'Clear filters' });
   reset.addEventListener('click', () => { selected = suggested(); changed(); });
   clear.addEventListener('click', () => { selected = new Set(); changed(); });
   side.append(el('div', { class: 'row' }, reset, clear));
@@ -151,6 +151,7 @@ function renderDays() {
   if (!sel.length) {
     out.replaceChildren(el('p', { class: 'msg' }, el('strong', { text: 'No filters are on. ' }), 'Turn on at least one filter to see your days.'));
     $('#status').textContent = 'No filters are on.';
+    $('#count').textContent = '';
     return;
   }
   const days = cal();
@@ -178,12 +179,13 @@ function renderDays() {
   const oldestData = data.days.length ? data.days[data.days.length - 1].date : null;
   const oldestShown = days[days.length - 1].date;
   if (shown < MAX_DAYS && oldestData && oldestData < oldestShown) {
-    const more = el('button', { type: 'button', class: 'btn', text: 'Show earlier days' });
+    const more = el('button', { type: 'button', class: 'btn sm', text: 'Show earlier days' });
     more.addEventListener('click', () => { shown = Math.min(MAX_DAYS, shown + STEP); renderDays(); });
     nodes.push(more);
   }
   out.replaceChildren(...nodes);
   const withNews = days.filter((d) => d.count).length;
+  $('#count').textContent = `${withNews} of the last ${days.length} days have updates`;
   $('#status').textContent = `${plural(withNews, 'day')} with updates out of the last ${days.length}.`;
 }
 
