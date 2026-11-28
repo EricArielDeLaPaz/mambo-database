@@ -751,6 +751,171 @@
    "status": "read 2026-11-27: newest item 2025-11-21 (stale)",
    "windowDays": 7,
    "maxPerDay": 3
+  },
+  {
+   "id": "tldr-design",
+   "name": "TLDR Design",
+   "type": "rss",
+   "url": "https://tldr.tech/api/rss/design",
+   "filters": [
+    "design"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "maxPerDay": 2
+  },
+  {
+   "id": "tldr-ai",
+   "name": "TLDR AI",
+   "type": "rss",
+   "url": "https://tldr.tech/api/rss/ai",
+   "filters": [
+    "research"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "maxPerDay": 1
+  },
+  {
+   "id": "sidebar",
+   "name": "Sidebar",
+   "type": "rss",
+   "url": "https://sidebar.io/feed.xml",
+   "filters": [
+    "design"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "maxPerDay": 5
+  },
+  {
+   "id": "codrops",
+   "name": "Codrops",
+   "type": "rss",
+   "url": "https://tympanus.net/codrops/feed/",
+   "filters": [
+    "motion"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "maxPerDay": 3
+  },
+  {
+   "id": "uxdesign-cc",
+   "name": "UX Collective",
+   "type": "rss",
+   "url": "https://uxdesign.cc/feed",
+   "filters": [
+    "ux-research"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "maxPerDay": 3
+  },
+  {
+   "id": "designer-news",
+   "name": "Designer News",
+   "type": "rss",
+   "url": "https://www.designernews.co/?format=rss",
+   "filters": [
+    "design"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "maxPerDay": 3
+  },
+  {
+   "id": "dezeen-design",
+   "name": "Dezeen design",
+   "type": "rss",
+   "url": "https://www.dezeen.com/design/feed/",
+   "filters": [
+    "trends"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "maxPerDay": 3
+  },
+  {
+   "id": "lobsters-design",
+   "name": "Lobsters design",
+   "type": "rss",
+   "url": "https://lobste.rs/t/design.rss",
+   "filters": [
+    "design"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "maxPerDay": 3
+  },
+  {
+   "id": "joshwcomeau",
+   "name": "Josh Comeau",
+   "type": "rss",
+   "url": "https://www.joshwcomeau.com/rss.xml",
+   "filters": [
+    "web-platform"
+   ],
+   "enabled": true,
+   "windowDays": 45,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log"
+  },
+  {
+   "id": "bradfrost",
+   "name": "Brad Frost",
+   "type": "rss",
+   "url": "https://bradfrost.com/feed/",
+   "filters": [
+    "design-systems"
+   ],
+   "enabled": true,
+   "windowDays": 45,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log"
+  },
+  {
+   "id": "adrianroselli",
+   "name": "Adrian Roselli",
+   "type": "rss",
+   "url": "https://adrianroselli.com/feed",
+   "filters": [
+    "accessibility"
+   ],
+   "enabled": true,
+   "windowDays": 30,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log"
+  },
+  {
+   "id": "storybook-blog",
+   "name": "Storybook",
+   "type": "rss",
+   "url": "https://storybook.js.org/blog/rss.xml",
+   "filters": [
+    "design-systems"
+   ],
+   "enabled": true,
+   "windowDays": 45,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log"
+  },
+  {
+   "id": "hn-design",
+   "name": "Hacker News (design, AI demos)",
+   "type": "rss",
+   "url": "https://hnrss.org/newest?points=150&q=design+OR+typography+OR+accessibility+OR+Figma",
+   "filters": [
+    "design"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "maxPerDay": 3
   }
  ],
  "digest": {

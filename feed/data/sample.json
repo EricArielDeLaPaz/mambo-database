@@ -459,6 +459,97 @@
       "skipped": "no fixture or manual file",
       "name": "Gemini CLI releases",
       "type": "atom"
+    },
+    {
+      "id": "tldr-design",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "TLDR Design",
+      "type": "rss"
+    },
+    {
+      "id": "tldr-ai",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "TLDR AI",
+      "type": "rss"
+    },
+    {
+      "id": "sidebar",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Sidebar",
+      "type": "rss"
+    },
+    {
+      "id": "codrops",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Codrops",
+      "type": "rss"
+    },
+    {
+      "id": "uxdesign-cc",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "UX Collective",
+      "type": "rss"
+    },
+    {
+      "id": "designer-news",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Designer News",
+      "type": "rss"
+    },
+    {
+      "id": "dezeen-design",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Dezeen design",
+      "type": "rss"
+    },
+    {
+      "id": "lobsters-design",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Lobsters design",
+      "type": "rss"
+    },
+    {
+      "id": "joshwcomeau",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Josh Comeau",
+      "type": "rss"
+    },
+    {
+      "id": "bradfrost",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Brad Frost",
+      "type": "rss"
+    },
+    {
+      "id": "adrianroselli",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Adrian Roselli",
+      "type": "rss"
+    },
+    {
+      "id": "storybook-blog",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Storybook",
+      "type": "rss"
+    },
+    {
+      "id": "hn-design",
+      "ok": true,
+      "skipped": "no fixture or manual file",
+      "name": "Hacker News (design, AI demos)",
+      "type": "rss"
     }
   ],
   "briefs": {
