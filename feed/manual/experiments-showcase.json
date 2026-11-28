@@ -6,10 +6,11 @@
    "title": "Claude Fable 5 plays Pokémon FireRed using only screenshots",
    "link": "https://www.anthropic.com/news/claude-fable-5-mythos-5",
    "published": "2026-06-09T00:00:00Z",
-   "summary": "Claude Fable 5 finished Pokémon FireRed by looking at the game screen alone, with no extra game data.",
-   "what": "Claude Fable 5 finished Pokémon FireRed by looking at the game screen alone.",
-   "setup": "It got only raw screenshots and a minimal harness, with no game-state help. Earlier models struggled even with helper harnesses.",
-   "result": "It completed the game with vision alone, a clear step up from earlier Claude models."
+   "summary": "Anthropic's Fable 5 launch announcement shows Claude finishing Pokémon FireRed from game screenshots alone.",
+   "what": "In the Fable 5 launch announcement, Anthropic says Claude Fable 5 beat Pokémon FireRed with a minimal, vision-only harness.",
+   "setup": "It received only raw game screenshots, with no game-state data. Press coverage says earlier models struggled even with helper harnesses.",
+   "result": "It completed the game with vision alone. Anthropic's announcement also carries a time-lapse video of the run.",
+   "important": true
   },
   {
    "title": "Project Vend: Claude runs a small shop in an experiment",

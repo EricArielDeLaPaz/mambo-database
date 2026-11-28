@@ -64,3 +64,21 @@ export function calendar(days, selected, order, endDate, count) {
   }
   return out;
 }
+
+// "Highlights": the biggest items of the last `span` days for the selected filters. Ranked by kind, with a hand flag to pin an item.
+const KIND_WEIGHT = { model: 5, experiment: 5, research: 3, release: 2, guidance: 2, news: 2, book: 1 };
+export function highlights(days, selected, endDate, { span = 7, max = 5 } = {}) {
+  const sel = new Set(selected);
+  const start = addDays(endDate, -(span - 1));
+  const seen = new Set();
+  const pool = [];
+  for (const d of days) {
+    if (d.date < start || d.date > endDate) continue;
+    for (const it of d.items) {
+      if (seen.has(it.id) || !it.filters.some((f) => sel.has(f))) continue;
+      seen.add(it.id);
+      pool.push({ it, rank: (it.important ? 10 : 0) + (KIND_WEIGHT[it.kind] || 1) + (it.brief && (it.brief.setup || it.brief.result) ? 1 : 0) + (it.score > 0 ? 1 : 0) });
+    }
+  }
+  return pool.sort((a, b) => b.rank - a.rank || b.it.published.localeCompare(a.it.published)).slice(0, max).map((x) => x.it);
+}
