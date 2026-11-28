@@ -423,3 +423,10 @@ test('access: items from members-style sources are marked, others stay free', ()
   assert.equal(mk('members').access, 'members');
   assert.equal(mk().access, undefined);
 });
+
+test('showcase items are listed apart from the days', async () => {
+  const { result } = await run({ fixtures: true, out: path.join(ROOT, 'feed', 'data', 'sample.json'), now: NOW });
+  assert.ok(result.showcase.length >= 5, 'Pokemon, Vend (2) , Deal and Swap are kept');
+  assert.ok(result.showcase.every((i) => i.source === 'experiments-showcase' && i.brief && i.brief.result));
+  assert.ok(!result.days.flatMap((d) => d.items).some((i) => i.source === 'experiments-showcase'));
+});
