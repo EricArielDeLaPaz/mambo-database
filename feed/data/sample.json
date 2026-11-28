@@ -415,7 +415,7 @@
       "stale": true,
       "kept": 5,
       "dropped": 0,
-      "name": "Experiments showcase",
+      "name": "Experiments (hand-kept)",
       "type": "manual"
     },
     {
@@ -510,112 +510,6 @@
     "pageTried": 12,
     "pageFailed": 12
   },
-  "showcase": [
-    {
-      "id": "https://www.anthropic.com/news/project-swap#project-swap-claude-agents-trade-books-for-201-people-in-an-",
-      "title": "Project Swap: Claude agents trade books for 201 people in an experiment",
-      "link": "https://www.anthropic.com/news/project-swap",
-      "published": "2026-09-24T00:00:00.000Z",
-      "source": "experiments-showcase",
-      "sourceName": "Experiments showcase",
-      "summary": "Anthropic's Economics team had Claude agents swap books on behalf of 201 employees across six offices to see what works when agents trade for people.",
-      "filters": [
-        "anthropic",
-        "experiments",
-        "models"
-      ],
-      "score": 0,
-      "brief": {
-        "what": "201 employees each brought a book; Claude learned their taste in a short chat, then their agents proposed and accepted swaps on an open trading floor.",
-        "setup": "The team reran the floors dozens of times with different Claude models and with 'ruthless' or 'prosocial' instructions.",
-        "result": "Claude matched people's own book rankings on 61% of pairs (50% is chance). All-Opus floors scored 0.88 on a 0 to 1 satisfaction scale against 0.75 for all-Haiku; the instructions mattered little."
-      },
-      "kind": "experiment"
-    },
-    {
-      "id": "https://www.anthropic.com/news/claude-fable-5-mythos-5#claude-fable-5-plays-pok-mon-firered-using-only-screenshots",
-      "title": "Claude Fable 5 plays Pokémon FireRed using only screenshots",
-      "link": "https://www.anthropic.com/news/claude-fable-5-mythos-5",
-      "published": "2026-06-09T00:00:00.000Z",
-      "source": "experiments-showcase",
-      "sourceName": "Experiments showcase",
-      "summary": "Claude Fable 5 finished Pokémon FireRed by looking at the game screen alone, with no extra game data.",
-      "filters": [
-        "anthropic",
-        "experiments",
-        "models"
-      ],
-      "score": 0,
-      "brief": {
-        "what": "Claude Fable 5 finished Pokémon FireRed by looking at the game screen alone.",
-        "setup": "It got only raw screenshots and a minimal harness, with no game-state help. Earlier models struggled even with helper harnesses.",
-        "result": "It completed the game with vision alone, a clear step up from earlier Claude models."
-      },
-      "kind": "experiment",
-      "models": [
-        "Claude Fable 5 plays Pok"
-      ]
-    },
-    {
-      "id": "https://www.anthropic.com/features/project-deal#project-deal-claude-agents-negotiate-secondhand-sales-in-an-",
-      "title": "Project Deal: Claude agents negotiate secondhand sales in an experiment",
-      "link": "https://www.anthropic.com/features/project-deal",
-      "published": "2026-04-24T00:00:00.000Z",
-      "source": "experiments-showcase",
-      "sourceName": "Experiments showcase",
-      "summary": "For one week, Claude agents bought, sold and negotiated used items for 69 Anthropic employees in Slack.",
-      "filters": [
-        "anthropic",
-        "experiments"
-      ],
-      "score": 0,
-      "brief": {
-        "what": "69 Anthropic employees each gave an agent a $100 budget to buy and sell secondhand items, negotiating in Slack with no human sign-off.",
-        "setup": "Four parallel markets ran. In the real one every agent was Claude Opus 4.5; in two others each person was randomly given Opus 4.5 or the smaller Haiku 4.5.",
-        "result": "The real market made 186 deals worth just over $4,000. Opus agents closed about 2.1 more deals per person than Haiku agents, but people rated both about the same on fairness."
-      },
-      "kind": "experiment"
-    },
-    {
-      "id": "https://www.anthropic.com/research/project-vend-2#project-vend-phase-two-an-experiment-adding-a-ceo-agent-to-t",
-      "title": "Project Vend phase two: an experiment adding a CEO agent to the shop",
-      "link": "https://www.anthropic.com/research/project-vend-2",
-      "published": "2025-12-18T00:00:00.000Z",
-      "source": "experiments-showcase",
-      "sourceName": "Experiments showcase",
-      "summary": "The second phase of Anthropic's AI shop experiment added a CEO agent and a merch agent and grew the business to three cities.",
-      "filters": [
-        "experiments"
-      ],
-      "score": 0,
-      "brief": {
-        "what": "Phase two moved the shopkeeper to newer Claude models, added a CEO agent (Seymour Cash) and a merch-making agent (Clothius), and grew from one San Francisco machine to San Francisco, New York and London.",
-        "setup": "New tools: a customer system, better inventory data, web research for suppliers, payment links and reminders. Purchases still needed human approval.",
-        "result": "Weeks with negative margins were largely eliminated and the merch sold well. The CEO cut discounts by about 80%, but the shop was still easy to manipulate, for example with a fake contract."
-      },
-      "kind": "experiment"
-    },
-    {
-      "id": "https://www.anthropic.com/research/project-vend-1#project-vend-claude-runs-a-small-shop-in-an-experiment",
-      "title": "Project Vend: Claude runs a small shop in an experiment",
-      "link": "https://www.anthropic.com/research/project-vend-1",
-      "published": "2025-06-27T00:00:00.000Z",
-      "source": "experiments-showcase",
-      "sourceName": "Experiments showcase",
-      "summary": "Anthropic and Andon Labs let a Claude instance, nicknamed Claudius, run an automated shop in Anthropic's San Francisco office for about a month.",
-      "filters": [
-        "anthropic",
-        "experiments"
-      ],
-      "score": 0,
-      "brief": {
-        "what": "A Claude Sonnet 3.7 agent, Claudius, ran a small office shop for about a month, in a test with Andon Labs.",
-        "setup": "Told to make a profit, it could search the web, email wholesalers, keep notes, chat with staff on Slack and change prices. Andon Labs staff did the physical restocking.",
-        "result": "The shop did not make money. Claudius sold items below cost, gave discounts when pressed and once took payment through a made-up Venmo account, but it also found niche suppliers and launched a pre-order service."
-      },
-      "kind": "experiment"
-    }
-  ],
   "days": [
     {
       "date": "2026-11-24",
@@ -859,7 +753,8 @@
             "web-platform"
           ],
           "score": 0,
-          "kind": "release"
+          "kind": "release",
+          "headline": "WebKit Release Notes for Safari Technology Preview 257: Safari Technology Preview 257 fixes animation, view transition and rendering bugs"
         },
         {
           "id": "https://deepmind.google/blog/introducing-gemini-4-neon",
@@ -1024,6 +919,136 @@
           "models": [
             "DeepSeek-V4.1-Flash-1017"
           ]
+        }
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "items": [
+        {
+          "id": "https://www.anthropic.com/news/project-swap#project-swap-claude-agents-trade-books-for-201-people-in-an-",
+          "title": "Project Swap: Claude agents trade books for 201 people in an experiment",
+          "link": "https://www.anthropic.com/news/project-swap",
+          "published": "2026-09-24T00:00:00.000Z",
+          "source": "experiments-showcase",
+          "sourceName": "Experiments (hand-kept)",
+          "summary": "Anthropic's Economics team had Claude agents swap books on behalf of 201 employees across six offices to see what works when agents trade for people.",
+          "filters": [
+            "anthropic",
+            "experiments",
+            "models"
+          ],
+          "score": 0,
+          "brief": {
+            "what": "201 employees each brought a book; Claude learned their taste in a short chat, then their agents proposed and accepted swaps on an open trading floor.",
+            "setup": "The team reran the floors dozens of times with different Claude models and with 'ruthless' or 'prosocial' instructions.",
+            "result": "Claude matched people's own book rankings on 61% of pairs (50% is chance). All-Opus floors scored 0.88 on a 0 to 1 satisfaction scale against 0.75 for all-Haiku; the instructions mattered little."
+          },
+          "kind": "experiment"
+        }
+      ]
+    },
+    {
+      "date": "2026-06-09",
+      "items": [
+        {
+          "id": "https://www.anthropic.com/news/claude-fable-5-mythos-5#claude-fable-5-plays-pok-mon-firered-using-only-screenshots",
+          "title": "Claude Fable 5 plays Pokémon FireRed using only screenshots",
+          "link": "https://www.anthropic.com/news/claude-fable-5-mythos-5",
+          "published": "2026-06-09T00:00:00.000Z",
+          "source": "experiments-showcase",
+          "sourceName": "Experiments (hand-kept)",
+          "summary": "Anthropic's Fable 5 launch announcement shows Claude finishing Pokémon FireRed from game screenshots alone.",
+          "filters": [
+            "anthropic",
+            "experiments",
+            "models"
+          ],
+          "score": 0,
+          "important": true,
+          "brief": {
+            "what": "In the Fable 5 launch announcement, Anthropic says Claude Fable 5 beat Pokémon FireRed with a minimal, vision-only harness.",
+            "setup": "It received only raw game screenshots, with no game-state data. Press coverage says earlier models struggled even with helper harnesses.",
+            "result": "It completed the game with vision alone. Anthropic's announcement also carries a time-lapse video of the run."
+          },
+          "kind": "experiment",
+          "models": [
+            "Claude Fable 5 plays Pok"
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2026-04-24",
+      "items": [
+        {
+          "id": "https://www.anthropic.com/features/project-deal#project-deal-claude-agents-negotiate-secondhand-sales-in-an-",
+          "title": "Project Deal: Claude agents negotiate secondhand sales in an experiment",
+          "link": "https://www.anthropic.com/features/project-deal",
+          "published": "2026-04-24T00:00:00.000Z",
+          "source": "experiments-showcase",
+          "sourceName": "Experiments (hand-kept)",
+          "summary": "For one week, Claude agents bought, sold and negotiated used items for 69 Anthropic employees in Slack.",
+          "filters": [
+            "anthropic",
+            "experiments"
+          ],
+          "score": 0,
+          "brief": {
+            "what": "69 Anthropic employees each gave an agent a $100 budget to buy and sell secondhand items, negotiating in Slack with no human sign-off.",
+            "setup": "Four parallel markets ran. In the real one every agent was Claude Opus 4.5; in two others each person was randomly given Opus 4.5 or the smaller Haiku 4.5.",
+            "result": "The real market made 186 deals worth just over $4,000. Opus agents closed about 2.1 more deals per person than Haiku agents, but people rated both about the same on fairness."
+          },
+          "kind": "experiment"
+        }
+      ]
+    },
+    {
+      "date": "2025-12-18",
+      "items": [
+        {
+          "id": "https://www.anthropic.com/research/project-vend-2#project-vend-phase-two-an-experiment-adding-a-ceo-agent-to-t",
+          "title": "Project Vend phase two: an experiment adding a CEO agent to the shop",
+          "link": "https://www.anthropic.com/research/project-vend-2",
+          "published": "2025-12-18T00:00:00.000Z",
+          "source": "experiments-showcase",
+          "sourceName": "Experiments (hand-kept)",
+          "summary": "The second phase of Anthropic's AI shop experiment added a CEO agent and a merch agent and grew the business to three cities.",
+          "filters": [
+            "experiments"
+          ],
+          "score": 0,
+          "brief": {
+            "what": "Phase two moved the shopkeeper to newer Claude models, added a CEO agent (Seymour Cash) and a merch-making agent (Clothius), and grew from one San Francisco machine to San Francisco, New York and London.",
+            "setup": "New tools: a customer system, better inventory data, web research for suppliers, payment links and reminders. Purchases still needed human approval.",
+            "result": "Weeks with negative margins were largely eliminated and the merch sold well. The CEO cut discounts by about 80%, but the shop was still easy to manipulate, for example with a fake contract."
+          },
+          "kind": "experiment"
+        }
+      ]
+    },
+    {
+      "date": "2025-06-27",
+      "items": [
+        {
+          "id": "https://www.anthropic.com/research/project-vend-1#project-vend-claude-runs-a-small-shop-in-an-experiment",
+          "title": "Project Vend: Claude runs a small shop in an experiment",
+          "link": "https://www.anthropic.com/research/project-vend-1",
+          "published": "2025-06-27T00:00:00.000Z",
+          "source": "experiments-showcase",
+          "sourceName": "Experiments (hand-kept)",
+          "summary": "Anthropic and Andon Labs let a Claude instance, nicknamed Claudius, run an automated shop in Anthropic's San Francisco office for about a month.",
+          "filters": [
+            "anthropic",
+            "experiments"
+          ],
+          "score": 0,
+          "brief": {
+            "what": "A Claude Sonnet 3.7 agent, Claudius, ran a small office shop for about a month, in a test with Andon Labs.",
+            "setup": "Told to make a profit, it could search the web, email wholesalers, keep notes, chat with staff on Slack and change prices. Andon Labs staff did the physical restocking.",
+            "result": "The shop did not make money. Claudius sold items below cost, gave discounts when pressed and once took payment through a made-up Venmo account, but it also found niche suppliers and launched a pre-order service."
+          },
+          "kind": "experiment"
         }
       ]
     }

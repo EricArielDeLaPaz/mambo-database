@@ -45,7 +45,25 @@ export function classify(item, source = {}) {
 }
 
 /* "New Gemini model: Gemini 4 Neon". Only for real releases; anything else keeps its own title. */
+/* First useful clause of release notes: "What's Changed - Fix X by @a in #1" -> "Fix X". */
+export function releaseLead(summary = '', max = 90) {
+  let t = summary.replace(/\s+/g, ' ').trim()
+    .replace(/^(?:#+\s*)?(?:what'?s (?:changed|new)|changelog|release notes?|highlights|summary)\b[:\s-]*/i, '')
+    .replace(/^[-*•\s]+/, '');
+  t = t.split(/(?<=[.!?])\s|\s[-*•]\s/)[0].replace(/\s+(?:by|in|via)\s+@\S+.*$/i, '').replace(/\s+\(?#\d+\)?.*$/, '').trim();
+  if (t.length > max) t = t.slice(0, max).replace(/\s+\S*$/, '') + '…';
+  return t.replace(/[.\s]+$/, '');
+}
+
 export function headline(item, kind, source = {}) {
+  if (kind === 'release') {
+    // a bare version number says nothing, so put what the release is about next to it
+    const product = String(source.name || '').replace(/\s+releases?$/i, '');
+    const lead = releaseLead(item.summary);
+    if (!product || !lead) return '';
+    const version = item.title.toLowerCase().includes(product.toLowerCase()) ? item.title : `${product} ${item.title}`;
+    return `${version}: ${lead}`;
+  }
   if (kind !== 'model') return '';
   const names = modelNames(item.title);
   // Hugging Face model ids carry the company in the source name ("Mistral (Hugging Face)")

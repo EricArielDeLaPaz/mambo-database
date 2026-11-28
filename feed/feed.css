@@ -98,9 +98,9 @@ button.daycard[aria-pressed=true]{background:rgba(29,78,216,.08);border-color:va
 .brief{margin:0 0 8px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:14px}
 .brief dt{font:700 11.5px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);padding-top:2px}
 .brief dd{margin:0}
-.gallery{margin:32px 0 0}
-.gallery h2{margin:0 0 4px}
-.gallery .note{margin:0 0 12px}
+.highlights{margin:32px 0 0}
+.highlights h2{margin:0 0 4px}
+.highlights .note{margin:0 0 12px}
 .more{display:inline-block;padding:4px 0;font:600 14px var(--font-body);color:var(--text)}
 .more:hover{text-decoration-thickness:2px}
 

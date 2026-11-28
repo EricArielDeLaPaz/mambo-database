@@ -611,13 +611,12 @@
   },
   {
    "id": "experiments-showcase",
-   "name": "Experiments showcase",
+   "name": "Experiments (hand-kept)",
    "type": "manual",
    "filters": [],
    "enabled": true,
    "windowDays": 1500,
-   "status": "Hand-kept, checked 2026-11-28: standout experiments, shown in their own \"Experiments worth a look\" list, never as today's news.",
-   "showcase": true
+   "status": "Hand-kept, checked 2026-11-28: standout experiments, each posted on its own publish date. Set \"important\": true to pin one into the weekly Highlights."
   },
   {
    "id": "gh-claude-code",

@@ -189,6 +189,7 @@ export function processSource(source, rawItems, rules, now, known) {
     };
     if (source.access === 'members') item.access = 'members';
     if (r.text) item.text = r.text;
+    if (r.important === true) item.important = true; // hand-kept items can be flagged for the weekly Highlights
     // hand-kept items may carry their own brief: what / setup / result
     const mb = Object.fromEntries(['what', 'setup', 'result'].filter((k) => r[k]).map((k) => [k, String(r[k])]));
     if (Object.keys(mb).length) { item.brief = mb; item.manualBrief = true; }
@@ -299,15 +300,12 @@ export async function run({ fixtures = false, out, now = new Date() } = {}) {
   for (const it of all) delete it.manualBrief;
 
   const digest = { ...DIGEST, ...(cfg.digest || {}) };
-  // hand-picked standouts live in their own list and are never presented as today's news
-  const showcaseIds = new Set(cfg.sources.filter((x) => x.showcase).map((x) => x.id));
-  const showcase = all.filter((i) => showcaseIds.has(i.source)).sort((a, b) => b.published.localeCompare(a.published));
-  const days = buildDays(all.filter((i) => !showcaseIds.has(i.source)), prev.days, now, 30, digest);
+  const days = buildDays(all, prev.days, now, 30, digest);
   const readyBySource = new Set(cfg.sources.filter((s) => s.enabled).flatMap((s) => s.filters));
   const readyByRule = new Set(cfg.rules.map((r) => r.filter));
   const filters = cfg.filters.map((f) => (f.group ? f : { ...f, ready: !f.soon && (readyBySource.has(f.id) || readyByRule.has(f.id)) }));
 
-  const result = { generated: now.toISOString(), latestDigest: latestDigest(now, digest), sample: fixtures, filters, sources: reports, briefs: briefStats, showcase, days };
+  const result = { generated: now.toISOString(), latestDigest: latestDigest(now, digest), sample: fixtures, filters, sources: reports, briefs: briefStats, days };
   await mkdir(path.dirname(outFile), { recursive: true });
   await writeFile(outFile, JSON.stringify(result, null, 2) + '\n');
   return { outFile, result };

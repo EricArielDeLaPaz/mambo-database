@@ -8,7 +8,7 @@ import {
   decode, stripHtml, summarize, cleanSummary, canonicalUrl,
   parseFeed, parseHfModels, parseHfPapers, tagItem, processSource, buildDays, run, digestDate, latestDigest
 } from './feed.mjs';
-import { assignSections, daysFor, postTitle, shorten, filterOrder, calendar, addDays } from '../feed/lib/compose.mjs';
+import { assignSections, daysFor, postTitle, shorten, filterOrder, calendar, addDays, highlights } from '../feed/lib/compose.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cfg = JSON.parse(await readFile(path.join(ROOT, 'feed', 'sources.json'), 'utf8'));
@@ -295,7 +295,7 @@ test('calendar: one entry per day, empty days say count 0, newest first', () => 
 });
 
 /* ---------- briefs: kind, model names, what / setup / result ---------- */
-import { modelNames, classify, headline, pickBrief, pageParagraphs, enrich } from './feed-brief.mjs';
+import { modelNames, classify, headline, pickBrief, pageParagraphs, enrich, releaseLead } from './feed-brief.mjs';
 
 test('modelNames finds one or two model names in a title', () => {
   assert.deepEqual(modelNames('Introducing Claude Fable 5.2 and Claude Mythos 5.2'), ['Claude Fable 5.2', 'Claude Mythos 5.2']);
@@ -424,9 +424,29 @@ test('access: items from members-style sources are marked, others stay free', ()
   assert.equal(mk().access, undefined);
 });
 
-test('showcase items are listed apart from the days', async () => {
+test('experiment entries post on their own date, not in a separate list', async () => {
   const { result } = await run({ fixtures: true, out: path.join(ROOT, 'feed', 'data', 'sample.json'), now: NOW });
-  assert.ok(result.showcase.length >= 5, 'Pokemon, Vend (2) , Deal and Swap are kept');
-  assert.ok(result.showcase.every((i) => i.source === 'experiments-showcase' && i.brief && i.brief.result));
-  assert.ok(!result.days.flatMap((d) => d.items).some((i) => i.source === 'experiments-showcase'));
+  assert.equal(result.showcase, undefined);
+  const hand = result.days.flatMap((d) => d.items.map((i) => [d.date, i])).filter(([, i]) => i.source === 'experiments-showcase');
+  assert.ok(hand.length >= 5);
+  assert.ok(hand.every(([d, i]) => d === i.published.slice(0, 10) && i.brief && i.brief.result));
+});
+
+test('highlights: the biggest items of the last 7 days, pinned items first, nothing older', () => {
+  const mk = (id, kind, date, extra = {}) => ({ id, title: id, kind, published: date + 'T08:00:00.000Z', filters: ['anthropic'], ...extra });
+  const days = [
+    { date: '2026-11-24', items: [mk('news', 'news', '2026-11-24'), mk('model', 'model', '2026-11-24')] },
+    { date: '2026-11-20', items: [mk('pinned', 'news', '2026-11-20', { important: true }), mk('rel', 'release', '2026-11-20')] },
+    { date: '2026-11-10', items: [mk('old', 'model', '2026-11-10')] }
+  ];
+  assert.deepEqual(highlights(days, ['anthropic'], '2026-11-24', { span: 7, max: 3 }).map((i) => i.id), ['pinned', 'model', 'news']);
+  assert.deepEqual(highlights(days, ['openai'], '2026-11-24'), []);
+});
+
+test('release headline puts what the release is about next to the version', () => {
+  assert.equal(releaseLead("What's Changed - Fix crash when resuming long sessions by @bob in #123"), 'Fix crash when resuming long sessions');
+  const src = { name: 'Claude Code releases', type: 'atom', url: 'https://github.com/x/y/releases.atom' };
+  const it = { title: 'v2.0.55', summary: 'Adds an approval mode for file edits. Also fixes a typo.' };
+  assert.equal(headline(it, 'release', src), 'Claude Code v2.0.55: Adds an approval mode for file edits');
+  assert.equal(headline({ title: 'v1', summary: '' }, 'release', src), '');
 });

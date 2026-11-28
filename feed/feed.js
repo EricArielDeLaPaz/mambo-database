@@ -1,11 +1,11 @@
-import { calendar, filterOrder } from './lib/compose.mjs';
+import { calendar, filterOrder, highlights } from './lib/compose.mjs';
 
 const STORE = 'mambo-feed-filters-v1';
 const ACCESS_STORE = 'mambo-feed-access-v1';
 let access = { free: true, members: true };
 const PANES = 'mambo-feed.panes';
 const $ = (s, r = document) => r.querySelector(s);
-const STEP = 14;      // days added each time "Show earlier days" is used
+const STEP = 7;       // days added each time "View more posts" is used
 const MAX_DAYS = 90;
 
 let data = null;
@@ -160,14 +160,11 @@ function setBanner() {
 }
 
 /* ---------- day cards ---------- */
-function cal() {
-  const end = data.latestDigest || (data.generated || new Date().toISOString()).slice(0, 10);
-  return calendar(visibleDays(), [...selected], filterOrder(data.filters), end, shown);
+function endDate() {
+  return data.latestDigest || (data.generated || new Date().toISOString()).slice(0, 10);
 }
-
-function showcaseList() {
-  if (!selected.has('experiments')) return [];
-  return (data.showcase || []).filter((i) => ((i.access || 'free') === 'free' ? access.free : access.members));
+function cal() {
+  return calendar(visibleDays(), [...selected], filterOrder(data.filters), endDate(), shown);
 }
 
 function renderDays() {
@@ -187,7 +184,6 @@ function renderDays() {
   }
   const days = cal();
   const labels = byId();
-  const gallery = showcaseList();
   const list = el('ul', { class: 'days', 'aria-label': 'Days' });
   for (const d of days) {
     let card;
@@ -212,15 +208,16 @@ function renderDays() {
   const oldestData = vd.length ? vd[vd.length - 1].date : null;
   const oldestShown = days[days.length - 1].date;
   if (shown < MAX_DAYS && oldestData && oldestData < oldestShown) {
-    const more = el('button', { type: 'button', class: 'btn sm', text: 'Show earlier days' });
+    const more = el('button', { type: 'button', class: 'btn sm', text: 'View more posts' });
     more.addEventListener('click', () => { shown = Math.min(MAX_DAYS, shown + STEP); renderDays(); });
     nodes.push(more);
   }
-  if (gallery.length) {
-    nodes.push(el('section', { class: 'gallery', 'aria-labelledby': 'gal-h' },
-      el('h2', { id: 'gal-h', text: 'Experiments worth a look' }),
-      el('p', { class: 'note', text: 'Standout experiments and demos, picked by hand from the original publisher. Not today’s news.' }),
-      el('ul', { class: 'items' }, ...gallery.map((it) => itemCard(it)))));
+  const top = highlights(visibleDays(), [...selected], endDate(), { span: 7, max: 5 });
+  if (top.length) {
+    nodes.push(el('section', { class: 'highlights', 'aria-labelledby': 'hl-h' },
+      el('h2', { id: 'hl-h', text: 'Highlights' }),
+      el('p', { class: 'note', text: 'The biggest things from the last 7 days for your filters.' }),
+      el('ul', { class: 'items' }, ...top.map((it) => itemCard(it)))));
   }
   out.replaceChildren(...nodes);
   const withNews = days.filter((d) => d.count).length;
