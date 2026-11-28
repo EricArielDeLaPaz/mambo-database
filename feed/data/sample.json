@@ -496,24 +496,10 @@
       "type": "rss"
     },
     {
-      "id": "designer-news",
-      "ok": true,
-      "skipped": "no fixture or manual file",
-      "name": "Designer News",
-      "type": "rss"
-    },
-    {
       "id": "dezeen-design",
       "ok": true,
       "skipped": "no fixture or manual file",
       "name": "Dezeen design",
-      "type": "rss"
-    },
-    {
-      "id": "lobsters-design",
-      "ok": true,
-      "skipped": "no fixture or manual file",
-      "name": "Lobsters design",
       "type": "rss"
     },
     {
@@ -535,13 +521,6 @@
       "ok": true,
       "skipped": "no fixture or manual file",
       "name": "Adrian Roselli",
-      "type": "rss"
-    },
-    {
-      "id": "storybook-blog",
-      "ok": true,
-      "skipped": "no fixture or manual file",
-      "name": "Storybook",
       "type": "rss"
     },
     {
