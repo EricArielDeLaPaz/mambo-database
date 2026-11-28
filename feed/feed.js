@@ -165,6 +165,11 @@ function cal() {
   return calendar(visibleDays(), [...selected], filterOrder(data.filters), end, shown);
 }
 
+function showcaseList() {
+  if (!selected.has('experiments')) return [];
+  return (data.showcase || []).filter((i) => ((i.access || 'free') === 'free' ? access.free : access.members));
+}
+
 function renderDays() {
   const out = $('#out');
   const sel = [...selected];
@@ -182,6 +187,7 @@ function renderDays() {
   }
   const days = cal();
   const labels = byId();
+  const gallery = showcaseList();
   const list = el('ul', { class: 'days', 'aria-label': 'Days' });
   for (const d of days) {
     let card;
@@ -209,6 +215,12 @@ function renderDays() {
     const more = el('button', { type: 'button', class: 'btn sm', text: 'Show earlier days' });
     more.addEventListener('click', () => { shown = Math.min(MAX_DAYS, shown + STEP); renderDays(); });
     nodes.push(more);
+  }
+  if (gallery.length) {
+    nodes.push(el('section', { class: 'gallery', 'aria-labelledby': 'gal-h' },
+      el('h2', { id: 'gal-h', text: 'Experiments worth a look' }),
+      el('p', { class: 'note', text: 'Standout experiments and demos, picked by hand from the original publisher. Not today’s news.' }),
+      el('ul', { class: 'items' }, ...gallery.map((it) => itemCard(it)))));
   }
   out.replaceChildren(...nodes);
   const withNews = days.filter((d) => d.count).length;

@@ -615,8 +615,9 @@
    "type": "manual",
    "filters": [],
    "enabled": true,
-   "windowDays": 400,
-   "status": "Hand-kept, checked 2026-11-26: standout Claude and AI experiments (games, side-by-sides). Old entries stay in the data but only show on their own date."
+   "windowDays": 1500,
+   "status": "Hand-kept, checked 2026-11-28: standout experiments, shown in their own \"Experiments worth a look\" list, never as today's news.",
+   "showcase": true
   },
   {
    "id": "gh-claude-code",
@@ -921,6 +922,32 @@
    "status": "OFF 2026-11-28 (primary sources only): link aggregator that points to other sites. Use it to discover stories, then add the original publisher.",
    "maxPerDay": 3,
    "access": "members"
+  },
+  {
+   "id": "hf-blog",
+   "name": "Hugging Face blog",
+   "type": "rss",
+   "url": "https://huggingface.co/blog/feed.xml",
+   "filters": [
+    "research"
+   ],
+   "enabled": true,
+   "windowDays": 14,
+   "maxPerDay": 3,
+   "status": "NEW 2026-11-28, not yet read live"
+  },
+  {
+   "id": "oneusefulthing",
+   "name": "One Useful Thing (Ethan Mollick)",
+   "type": "rss",
+   "url": "https://www.oneusefulthing.org/feed",
+   "filters": [
+    "experiments"
+   ],
+   "enabled": true,
+   "windowDays": 30,
+   "access": "members",
+   "status": "NEW 2026-11-28, not yet read live; Substack, some posts are paid"
   }
  ],
  "digest": {
