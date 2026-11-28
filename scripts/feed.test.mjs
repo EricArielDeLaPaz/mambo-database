@@ -417,3 +417,9 @@ test('release feeds: entries with no description and pre-releases are skipped', 
   const { items } = processSource(src, [mk('0.174.0-alpha.7', ''), mk('0.173.0', ''), mk('0.172.0', 'Adds a new approval mode and fixes a crash when resuming long sessions.'), mk('0.171.0-beta.1', 'Adds a new approval mode and fixes a crash when resuming long sessions.')], cfg.rules, NOW, known);
   assert.deepEqual(items.map((i) => i.title), ['0.172.0']);
 });
+
+test('access: items from members-style sources are marked, others stay free', () => {
+  const mk = (access) => processSource({ id: 'x', name: 'X', type: 'rss', filters: ['trends'], windowDays: 14, ...(access ? { access } : {}) }, [{ title: 'A post', link: 'https://x.test/a', published: '2026-11-24T08:00:00.000Z', summary: 'Plain text about design.' }], cfg.rules, NOW, known).items[0];
+  assert.equal(mk('members').access, 'members');
+  assert.equal(mk().access, undefined);
+});

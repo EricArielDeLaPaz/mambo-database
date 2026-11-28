@@ -1,6 +1,8 @@
 import { calendar, filterOrder } from './lib/compose.mjs';
 
 const STORE = 'mambo-feed-filters-v1';
+const ACCESS_STORE = 'mambo-feed-access-v1';
+let access = { free: true, members: true };
 const PANES = 'mambo-feed.panes';
 const $ = (s, r = document) => r.querySelector(s);
 const STEP = 14;      // days added each time "Show earlier days" is used
@@ -34,6 +36,18 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 function readSaved() {
   try { const v = JSON.parse(localStorage.getItem(STORE)); return Array.isArray(v) ? v : null; } catch { return null; }
+}
+function readAccess() {
+  try { const v = JSON.parse(localStorage.getItem(ACCESS_STORE)); if (v && typeof v === 'object') access = { free: v.free !== false, members: v.members !== false }; } catch { /* default: show both */ }
+}
+function saveAccess() {
+  try { localStorage.setItem(ACCESS_STORE, JSON.stringify(access)); } catch { /* private mode */ }
+}
+/* Items carry access 'free' (default) or 'members' (the source may put some posts behind a membership or paywall). */
+function visibleDays() {
+  return data.days
+    .map((d) => ({ date: d.date, items: d.items.filter((i) => ((i.access || 'free') === 'free' ? access.free : access.members)) }))
+    .filter((d) => d.items.length);
 }
 function save() {
   try { localStorage.setItem(STORE, JSON.stringify([...selected])); } catch { /* private mode: the page still works */ }
@@ -103,6 +117,14 @@ function buildSide() {
   reset.addEventListener('click', () => { selected = suggested(); changed(); });
   clear.addEventListener('click', () => { selected = new Set(); changed(); });
   side.append(el('div', { class: 'row' }, reset, clear));
+  const acc = el('fieldset', {}, el('legend', { class: 'eyebrow', text: 'Access' }));
+  for (const [key, label, note] of [['free', 'Free to read', 'Open to everyone'], ['members', 'May need a membership', 'Medium and linked articles that can be behind a paywall']]) {
+    const input = el('input', { type: 'checkbox', id: 'a-' + key, 'data-access': key });
+    input.checked = access[key];
+    input.addEventListener('change', () => { access[key] = input.checked; saveAccess(); changed(); });
+    acc.append(el('label', { class: 'chk', for: input.id }, input, el('span', { class: 't' }, label, el('small', { text: note }))));
+  }
+  side.append(acc);
   for (const g of data.filters.filter((f) => f.group)) {
     const fs = el('fieldset', {}, el('legend', { class: 'eyebrow', text: g.label }));
     for (const f of data.filters.filter((x) => x.parent === g.id)) {
@@ -134,20 +156,24 @@ function setBanner() {
     b.textContent = 'Sample data. These are real items from 18 to 24 November 2026 gathered while building the feed, not today’s digest. The live feed rebuilds every day.';
     return;
   }
-  const failed = (data.sources || []).filter((s) => s.ok === false).map((s) => s.name || s.id);
-  if (!failed.length) { b.hidden = true; return; }
-  b.textContent = 'Could not read: ' + failed.join(', ') + '. Items from those sources may be missing today.';
+  b.hidden = true;
 }
 
 /* ---------- day cards ---------- */
 function cal() {
   const end = data.latestDigest || (data.generated || new Date().toISOString()).slice(0, 10);
-  return calendar(data.days, [...selected], filterOrder(data.filters), end, shown);
+  return calendar(visibleDays(), [...selected], filterOrder(data.filters), end, shown);
 }
 
 function renderDays() {
   const out = $('#out');
   const sel = [...selected];
+  if (!access.free && !access.members) {
+    out.replaceChildren(el('p', { class: 'msg' }, el('strong', { text: 'No access type is on. ' }), 'Turn on Free to read or May need a membership.'));
+    $('#status').textContent = 'No access type is on.';
+    $('#count').textContent = '';
+    return;
+  }
   if (!sel.length) {
     out.replaceChildren(el('p', { class: 'msg' }, el('strong', { text: 'No filters are on. ' }), 'Turn on at least one filter to see your days.'));
     $('#status').textContent = 'No filters are on.';
@@ -176,7 +202,8 @@ function renderDays() {
     list.append(el('li', {}, card));
   }
   const nodes = [list];
-  const oldestData = data.days.length ? data.days[data.days.length - 1].date : null;
+  const vd = visibleDays();
+  const oldestData = vd.length ? vd[vd.length - 1].date : null;
   const oldestShown = days[days.length - 1].date;
   if (shown < MAX_DAYS && oldestData && oldestData < oldestShown) {
     const more = el('button', { type: 'button', class: 'btn sm', text: 'Show earlier days' });
@@ -197,6 +224,7 @@ function itemCard(it) {
   const brief = it.brief || {};
   const tags = el('span', { class: 'tags' }, el('span', { class: 'tag kind-' + (it.kind || 'news'), text: KIND[it.kind] || KIND.news }));
   for (const m of it.models || []) tags.append(el('span', { class: 'tag', text: m }));
+  if (it.access === 'members') tags.append(el('span', { class: 'tag', text: 'May need membership' }));
   const li = el('li', { class: 'item' }, tags, el('h3', { text: it.headline || it.title }), el('p', { class: 'src', text: it.sourceName }));
   // "what" is the plain description; setup and result only appear when the publisher's own text says them
   const what = brief.what || it.summary;
@@ -288,6 +316,7 @@ async function init() {
     $('#out').replaceChildren(el('p', { class: 'msg' }, el('strong', { text: 'The feed could not load. ' }), 'Open this page from a web server (for example "npx serve" in the repo) instead of a file, and check that feed/data/latest.json exists.'));
     return;
   }
+  readAccess();
   const ready = readyIds();
   const saved = readSaved();
   selected = saved === null ? suggested() : new Set(saved.filter((id) => ready.has(id)));
