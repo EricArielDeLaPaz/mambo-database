@@ -187,6 +187,7 @@ export function processSource(source, rawItems, rules, now, known) {
       id, title: r.title, link: r.link, published: r.published,
       source: source.id, sourceName: source.name, summary: base.summary, filters, score: r.score || 0
     };
+    if (source.access === 'members') item.access = 'members';
     if (r.text) item.text = r.text;
     // hand-kept items may carry their own brief: what / setup / result
     const mb = Object.fromEntries(['what', 'setup', 'result'].filter((k) => r[k]).map((k) => [k, String(r[k])]));

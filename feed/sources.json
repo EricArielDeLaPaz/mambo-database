@@ -684,7 +684,7 @@
    "type": "rss",
    "url": "https://www.figma.com/blog/feed/atom.xml",
    "filters": [
-    "design"
+    "trends"
    ],
    "enabled": false,
    "status": "read 2026-11-27: 781 items but none kept in the 30 day window, so it adds nothing; check its dates before enabling",
@@ -745,7 +745,7 @@
    "type": "rss",
    "url": "https://bsky.app/profile/figma.com/rss",
    "filters": [
-    "design"
+    "trends"
    ],
    "enabled": false,
    "status": "read 2026-11-27: newest item 2025-11-21 (stale)",
@@ -758,12 +758,13 @@
    "type": "rss",
    "url": "https://tldr.tech/api/rss/design",
    "filters": [
-    "design"
+    "trends"
    ],
    "enabled": true,
    "windowDays": 14,
    "status": "read 2026-11-28: working",
-   "maxPerDay": 2
+   "maxPerDay": 2,
+   "access": "members"
   },
   {
    "id": "tldr-ai",
@@ -776,7 +777,8 @@
    "enabled": true,
    "windowDays": 14,
    "status": "read 2026-11-28: working",
-   "maxPerDay": 1
+   "maxPerDay": 1,
+   "access": "members"
   },
   {
    "id": "sidebar",
@@ -784,12 +786,13 @@
    "type": "rss",
    "url": "https://sidebar.io/feed.xml",
    "filters": [
-    "design"
+    "trends"
    ],
    "enabled": true,
    "windowDays": 14,
    "status": "read 2026-11-28: working",
-   "maxPerDay": 5
+   "maxPerDay": 5,
+   "access": "members"
   },
   {
    "id": "codrops",
@@ -815,7 +818,8 @@
    "enabled": true,
    "windowDays": 14,
    "status": "read 2026-11-28: working",
-   "maxPerDay": 3
+   "maxPerDay": 3,
+   "access": "members"
   },
   {
    "id": "designer-news",
@@ -823,7 +827,7 @@
    "type": "rss",
    "url": "https://www.designernews.co/?format=rss",
    "filters": [
-    "design"
+    "trends"
    ],
    "enabled": false,
    "windowDays": 14,
@@ -849,7 +853,7 @@
    "type": "rss",
    "url": "https://lobste.rs/t/design.rss",
    "filters": [
-    "design"
+    "trends"
    ],
    "enabled": false,
    "windowDays": 14,
@@ -910,12 +914,13 @@
    "type": "rss",
    "url": "https://hnrss.org/newest?points=150&q=design+OR+typography+OR+accessibility+OR+Figma",
    "filters": [
-    "design"
+    "trends"
    ],
    "enabled": true,
    "windowDays": 14,
    "status": "read 2026-11-28: working",
-   "maxPerDay": 3
+   "maxPerDay": 3,
+   "access": "members"
   }
  ],
  "digest": {
