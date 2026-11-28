@@ -762,7 +762,7 @@
    ],
    "enabled": true,
    "windowDays": 14,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "status": "read 2026-11-28: working",
    "maxPerDay": 2
   },
   {
@@ -775,7 +775,7 @@
    ],
    "enabled": true,
    "windowDays": 14,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "status": "read 2026-11-28: working",
    "maxPerDay": 1
   },
   {
@@ -788,7 +788,7 @@
    ],
    "enabled": true,
    "windowDays": 14,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "status": "read 2026-11-28: working",
    "maxPerDay": 5
   },
   {
@@ -801,7 +801,7 @@
    ],
    "enabled": true,
    "windowDays": 14,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "status": "read 2026-11-28: working",
    "maxPerDay": 3
   },
   {
@@ -814,7 +814,7 @@
    ],
    "enabled": true,
    "windowDays": 14,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "status": "read 2026-11-28: working",
    "maxPerDay": 3
   },
   {
@@ -825,9 +825,9 @@
    "filters": [
     "design"
    ],
-   "enabled": true,
+   "enabled": false,
    "windowDays": 14,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "status": "read 2026-11-28: feed empty",
    "maxPerDay": 3
   },
   {
@@ -839,9 +839,9 @@
     "trends"
    ],
    "enabled": true,
-   "windowDays": 14,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
-   "maxPerDay": 3
+   "windowDays": 7,
+   "status": "read 2026-11-28: working, busy (32 items in 14 days), so limited to 2 a day",
+   "maxPerDay": 2
   },
   {
    "id": "lobsters-design",
@@ -851,9 +851,9 @@
    "filters": [
     "design"
    ],
-   "enabled": true,
+   "enabled": false,
    "windowDays": 14,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "status": "read 2026-11-28: nothing in the window",
    "maxPerDay": 3
   },
   {
@@ -866,7 +866,7 @@
    ],
    "enabled": true,
    "windowDays": 45,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log"
+   "status": "read 2026-11-28: working"
   },
   {
    "id": "bradfrost",
@@ -878,7 +878,7 @@
    ],
    "enabled": true,
    "windowDays": 45,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log"
+   "status": "read 2026-11-28: working"
   },
   {
    "id": "adrianroselli",
@@ -890,7 +890,7 @@
    ],
    "enabled": true,
    "windowDays": 30,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log"
+   "status": "read 2026-11-28: working"
   },
   {
    "id": "storybook-blog",
@@ -900,9 +900,9 @@
    "filters": [
     "design-systems"
    ],
-   "enabled": true,
+   "enabled": false,
    "windowDays": 45,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log"
+   "status": "read 2026-11-28: HTTP 404, feed address wrong"
   },
   {
    "id": "hn-design",
@@ -914,7 +914,7 @@
    ],
    "enabled": true,
    "windowDays": 14,
-   "status": "NEW 2026-11-28, not yet read live: check the first deploy log",
+   "status": "read 2026-11-28: working",
    "maxPerDay": 3
   }
  ],
