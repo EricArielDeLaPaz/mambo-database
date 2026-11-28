@@ -5,8 +5,8 @@ const ACCESS_STORE = 'mambo-feed-access-v1';
 let access = { free: true, members: true };
 const PANES = 'mambo-feed.panes';
 const $ = (s, r = document) => r.querySelector(s);
-const STEP = 7;       // days added each time "View more posts" is used
-const MAX_DAYS = 90;
+const STEP = 7;       // days added each time the reader scrolls to the end
+const MAX_DAYS = 30;  // a month of posts, loaded as the reader scrolls
 
 let data = null;
 let selected = new Set();
@@ -167,9 +167,36 @@ function cal() {
   return calendar(visibleDays(), [...selected], filterOrder(data.filters), endDate(), shown);
 }
 
+function dayCard(d, labels) {
+  let card;
+  if (d.count) {
+    const sources = new Set(d.sections.flatMap((s) => s.items.map((i) => i.source)));
+    const tags = el('span', { class: 'tags' }, ...d.sections.map((s) => el('span', { class: 'tag', text: labels[s.filter].label })));
+    card = el('button', { type: 'button', class: 'daycard', 'data-date': d.date, 'aria-pressed': String(d.date === openDate) },
+      el('span', { class: 'date', text: shortDate(d.date) }),
+      el('span', { class: 'title', text: d.title }),
+      el('span', { class: 'meta', text: `${plural(d.count, 'update')} from ${plural(sources.size, 'source')}` }),
+      tags);
+    card.addEventListener('click', () => { lastDate = d.date; openDay(d.date); });
+  } else {
+    card = el('div', { class: 'daycard none' },
+      el('span', { class: 'date', text: shortDate(d.date) }),
+      el('span', { class: 'title', text: 'Nothing new' }));
+  }
+  return el('li', {}, card);
+}
+
+let moreObserver = null;
+function setCount(days) {
+  const withNews = days.filter((d) => d.count).length;
+  $('#count').textContent = `${withNews} of the last ${days.length} days have updates`;
+  $('#status').textContent = `${plural(withNews, 'day')} with updates out of the last ${days.length}.`;
+}
+
 function renderDays() {
   const out = $('#out');
   const sel = [...selected];
+  if (moreObserver) { moreObserver.disconnect(); moreObserver = null; }
   if (!access.free && !access.members) {
     out.replaceChildren(el('p', { class: 'msg' }, el('strong', { text: 'No access type is on. ' }), 'Turn on Free to read or May need a membership.'));
     $('#status').textContent = 'No access type is on.';
@@ -182,47 +209,39 @@ function renderDays() {
     $('#count').textContent = '';
     return;
   }
-  const days = cal();
   const labels = byId();
+  // without IntersectionObserver the whole month is shown at once
+  if (!('IntersectionObserver' in window)) shown = MAX_DAYS;
+  let days = cal();
   const list = el('ul', { class: 'days', 'aria-label': 'Days' });
-  for (const d of days) {
-    let card;
-    if (d.count) {
-      const sources = new Set(d.sections.flatMap((s) => s.items.map((i) => i.source)));
-      const tags = el('span', { class: 'tags' }, ...d.sections.map((s) => el('span', { class: 'tag', text: labels[s.filter].label })));
-      card = el('button', { type: 'button', class: 'daycard', 'data-date': d.date, 'aria-pressed': String(d.date === openDate) },
-        el('span', { class: 'date', text: shortDate(d.date) }),
-        el('span', { class: 'title', text: d.title }),
-        el('span', { class: 'meta', text: `${plural(d.count, 'update')} from ${plural(sources.size, 'source')}` }),
-        tags);
-      card.addEventListener('click', () => { lastDate = d.date; openDay(d.date); });
-    } else {
-      card = el('div', { class: 'daycard none' },
-        el('span', { class: 'date', text: shortDate(d.date) }),
-        el('span', { class: 'title', text: 'Nothing new' }));
-    }
-    list.append(el('li', {}, card));
-  }
-  const nodes = [list];
-  const vd = visibleDays();
-  const oldestData = vd.length ? vd[vd.length - 1].date : null;
-  const oldestShown = days[days.length - 1].date;
-  if (shown < MAX_DAYS && oldestData && oldestData < oldestShown) {
-    const more = el('button', { type: 'button', class: 'btn sm', text: 'View more posts' });
-    more.addEventListener('click', () => { shown = Math.min(MAX_DAYS, shown + STEP); renderDays(); });
-    nodes.push(more);
-  }
-  const top = highlights(visibleDays(), [...selected], endDate(), { span: 7, max: 5 });
+  for (const d of days) list.append(dayCard(d, labels));
+  const nodes = [];
+  const top = highlights(visibleDays(), sel, endDate(), { span: 7, max: 5 });
   if (top.length) {
     nodes.push(el('section', { class: 'highlights', 'aria-labelledby': 'hl-h' },
       el('h2', { id: 'hl-h', text: 'Highlights' }),
       el('p', { class: 'note', text: 'The biggest things from the last 7 days for your filters.' }),
       el('ul', { class: 'items' }, ...top.map((it) => itemCard(it)))));
   }
+  nodes.push(list);
+  const end = el('div', { class: 'endmark', 'aria-hidden': 'true' });
+  nodes.push(end);
   out.replaceChildren(...nodes);
-  const withNews = days.filter((d) => d.count).length;
-  $('#count').textContent = `${withNews} of the last ${days.length} days have updates`;
-  $('#status').textContent = `${plural(withNews, 'day')} with updates out of the last ${days.length}.`;
+  setCount(days);
+  // keep adding a week at a time while the reader scrolls, up to a month
+  if (shown < MAX_DAYS && 'IntersectionObserver' in window) {
+    moreObserver = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting) || shown >= MAX_DAYS) return;
+      const before = days.length;
+      shown = Math.min(MAX_DAYS, shown + STEP);
+      days = cal();
+      for (const d of days.slice(before)) list.append(dayCard(d, labels));
+      setCount(days);
+      if (shown >= MAX_DAYS) { moreObserver.disconnect(); moreObserver = null; }
+      else { moreObserver.unobserve(end); moreObserver.observe(end); } // still in view on a tall screen: load the next week too
+    }, { rootMargin: '0px 0px 200px 0px' });
+    moreObserver.observe(end);
+  }
 }
 
 /* ---------- one item in a post ---------- */
