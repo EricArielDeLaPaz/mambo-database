@@ -410,3 +410,10 @@ test('experiments: AI plays a game is tagged, a plain release is not', () => {
   assert.ok(!t('Introducing Gemini 4 Neon').includes('experiments'));
   assert.ok(!t('Designers play with color this week').includes('experiments'));
 });
+
+test('release feeds: entries with no description and pre-releases are skipped', () => {
+  const src = { id: 'r', name: 'R', type: 'atom', filters: ['openai'], windowDays: 14, minSummary: 40, excludeTitle: '\\b(alpha|beta)\\b' };
+  const mk = (title, summary) => ({ title, link: 'https://x.test/' + title, published: '2026-11-24T08:00:00.000Z', summary });
+  const { items } = processSource(src, [mk('0.174.0-alpha.7', ''), mk('0.173.0', ''), mk('0.172.0', 'Adds a new approval mode and fixes a crash when resuming long sessions.'), mk('0.171.0-beta.1', 'Adds a new approval mode and fixes a crash when resuming long sessions.')], cfg.rules, NOW, known);
+  assert.deepEqual(items.map((i) => i.title), ['0.172.0']);
+});

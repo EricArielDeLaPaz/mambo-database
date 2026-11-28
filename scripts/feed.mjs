@@ -177,6 +177,8 @@ export function processSource(source, rawItems, rules, now, known) {
       (!inc || inc.test(`${r.title} ${r.summary}`)) && !(exT && exT.test(r.title)) && !(exL && exL.test(r.link));
     if (!ok) { report.dropped++; continue; }
     const base = { title: r.title, summary: cleanSummary(r.summary || '', r.title) };
+    // release feeds: an entry with no description (just a version tag) tells a reader nothing
+    if (source.minSummary && base.summary.length < source.minSummary) { report.dropped++; continue; }
     const filters = tagItem({ ...base }, source, rules, known);
     if (!filters.length) { report.dropped++; continue; }
     // Hand-kept sources often point many items at one page, so the title is part of their id.

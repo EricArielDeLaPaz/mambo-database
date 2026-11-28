@@ -627,9 +627,11 @@
     "anthropic"
    ],
    "enabled": true,
-   "status": "read 2026-11-27: working, release notes only",
+   "status": "read 2026-11-27: working; entries without a description and pre-releases are skipped",
    "windowDays": 14,
-   "maxPerDay": 2
+   "maxPerDay": 2,
+   "minSummary": 40,
+   "excludeTitle": "\\b(alpha|beta|rc|pre-?release|nightly|preview)\\b"
   },
   {
    "id": "gh-anthropic-sdk",
@@ -640,9 +642,11 @@
     "anthropic"
    ],
    "enabled": true,
-   "status": "read 2026-11-27: working, release notes only",
+   "status": "read 2026-11-27: working; entries without a description and pre-releases are skipped",
    "windowDays": 14,
-   "maxPerDay": 1
+   "maxPerDay": 1,
+   "minSummary": 40,
+   "excludeTitle": "\\b(alpha|beta|rc|pre-?release|nightly|preview)\\b"
   },
   {
    "id": "gh-codex",
@@ -653,9 +657,11 @@
     "openai"
    ],
    "enabled": true,
-   "status": "read 2026-11-27: working, release notes only",
+   "status": "read 2026-11-27: working; entries without a description and pre-releases are skipped",
    "windowDays": 14,
-   "maxPerDay": 2
+   "maxPerDay": 2,
+   "minSummary": 40,
+   "excludeTitle": "\\b(alpha|beta|rc|pre-?release|nightly|preview)\\b"
   },
   {
    "id": "gh-gemini-cli",
@@ -666,9 +672,11 @@
     "google"
    ],
    "enabled": true,
-   "status": "read 2026-11-27: working, release notes only",
+   "status": "read 2026-11-27: working; entries without a description and pre-releases are skipped",
    "windowDays": 14,
-   "maxPerDay": 2
+   "maxPerDay": 2,
+   "minSummary": 40,
+   "excludeTitle": "\\b(alpha|beta|rc|pre-?release|nightly|preview)\\b"
   },
   {
    "id": "figma-blog",
