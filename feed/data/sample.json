@@ -249,20 +249,6 @@
       "type": "manual"
     },
     {
-      "id": "techcrunch-ai",
-      "ok": true,
-      "skipped": "no fixture or manual file",
-      "name": "TechCrunch",
-      "type": "rss"
-    },
-    {
-      "id": "arstechnica-ai",
-      "ok": true,
-      "skipped": "no fixture or manual file",
-      "name": "Ars Technica",
-      "type": "rss"
-    },
-    {
       "id": "simonwillison",
       "ok": true,
       "skipped": "no fixture or manual file",
@@ -461,27 +447,6 @@
       "type": "atom"
     },
     {
-      "id": "tldr-design",
-      "ok": true,
-      "skipped": "no fixture or manual file",
-      "name": "TLDR Design",
-      "type": "rss"
-    },
-    {
-      "id": "tldr-ai",
-      "ok": true,
-      "skipped": "no fixture or manual file",
-      "name": "TLDR AI",
-      "type": "rss"
-    },
-    {
-      "id": "sidebar",
-      "ok": true,
-      "skipped": "no fixture or manual file",
-      "name": "Sidebar",
-      "type": "rss"
-    },
-    {
       "id": "codrops",
       "ok": true,
       "skipped": "no fixture or manual file",
@@ -521,13 +486,6 @@
       "ok": true,
       "skipped": "no fixture or manual file",
       "name": "Adrian Roselli",
-      "type": "rss"
-    },
-    {
-      "id": "hn-design",
-      "ok": true,
-      "skipped": "no fixture or manual file",
-      "name": "Hacker News (design, AI demos)",
       "type": "rss"
     }
   ],

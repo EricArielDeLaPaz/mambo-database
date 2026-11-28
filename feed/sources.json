@@ -374,9 +374,9 @@
    "type": "rss",
    "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
    "filters": [],
-   "enabled": true,
+   "enabled": false,
    "windowDays": 7,
-   "status": "NEW 2026-11-26, not yet read live: covers AI stories such as Claude playing Pokémon; items are kept only when the title names a company or an experiment"
+   "status": "OFF 2026-11-28 (primary sources only): second-hand news coverage, not the company itself. Use it to discover stories, then add the original publisher."
   },
   {
    "id": "arstechnica-ai",
@@ -384,9 +384,9 @@
    "type": "rss",
    "url": "https://arstechnica.com/ai/feed/",
    "filters": [],
-   "enabled": true,
+   "enabled": false,
    "windowDays": 7,
-   "status": "NEW 2026-11-26, not yet read live; same title rules as TechCrunch"
+   "status": "OFF 2026-11-28 (primary sources only): second-hand news coverage, not the company itself. Use it to discover stories, then add the original publisher."
   },
   {
    "id": "simonwillison",
@@ -760,9 +760,9 @@
    "filters": [
     "trends"
    ],
-   "enabled": true,
+   "enabled": false,
    "windowDays": 14,
-   "status": "read 2026-11-28: working",
+   "status": "OFF 2026-11-28 (primary sources only): newsletter that re-lists other sites' articles. Use it to discover stories, then add the original publisher.",
    "maxPerDay": 2,
    "access": "members"
   },
@@ -774,9 +774,9 @@
    "filters": [
     "research"
    ],
-   "enabled": true,
+   "enabled": false,
    "windowDays": 14,
-   "status": "read 2026-11-28: working",
+   "status": "OFF 2026-11-28 (primary sources only): newsletter that re-lists other sites' articles. Use it to discover stories, then add the original publisher.",
    "maxPerDay": 1,
    "access": "members"
   },
@@ -788,9 +788,9 @@
    "filters": [
     "trends"
    ],
-   "enabled": true,
+   "enabled": false,
    "windowDays": 14,
-   "status": "read 2026-11-28: working",
+   "status": "OFF 2026-11-28 (primary sources only): link roundup that points to other sites. Use it to discover stories, then add the original publisher.",
    "maxPerDay": 5,
    "access": "members"
   },
@@ -831,7 +831,7 @@
    ],
    "enabled": false,
    "windowDays": 14,
-   "status": "read 2026-11-28: feed empty",
+   "status": "OFF 2026-11-28 (primary sources only): link aggregator. Use it to discover stories, then add the original publisher.",
    "maxPerDay": 3
   },
   {
@@ -857,7 +857,7 @@
    ],
    "enabled": false,
    "windowDays": 14,
-   "status": "read 2026-11-28: nothing in the window",
+   "status": "OFF 2026-11-28 (primary sources only): link aggregator. Use it to discover stories, then add the original publisher.",
    "maxPerDay": 3
   },
   {
@@ -916,9 +916,9 @@
    "filters": [
     "trends"
    ],
-   "enabled": true,
+   "enabled": false,
    "windowDays": 14,
-   "status": "read 2026-11-28: working",
+   "status": "OFF 2026-11-28 (primary sources only): link aggregator that points to other sites. Use it to discover stories, then add the original publisher.",
    "maxPerDay": 3,
    "access": "members"
   }
@@ -927,5 +927,6 @@
   "timeZone": "America/Chicago",
   "hour": 5,
   "note": "A day's post is published at 5:00 a.m. Central and holds what came out since 5:00 a.m. the day before. Nothing newer is shown until the next 5:00 a.m."
- }
+ },
+ "policy": "Primary sources only: every source here is the publisher or author of what it lists. Aggregators and news coverage are used by hand to find stories, never fed in. The page shows the title, the publisher-supplied summary and a short quote, and always links to the original."
 }

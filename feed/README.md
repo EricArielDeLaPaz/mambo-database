@@ -71,4 +71,8 @@ The post for a date comes out at 5:00 a.m. Central (America/Chicago, daylight sa
 
 ## Experiments & demos
 
-The `Experiments & demos` filter picks up titles that name an AI product and an experiment word (plays, tested, beats, speedrun, versus, simulation). Sources: TechCrunch AI, Ars Technica AI and Simon Willison (new 2026-11-26, not yet read live: check the first deploy log). Standout past stories, such as Claude finishing Pokémon FireRed from screenshots, live in `manual/experiments-showcase.json` with a brief taken from the source.
+The `Experiments & demos` filter picks up titles that name an AI product and an experiment word (plays, tested, beats, speedrun, versus, simulation). Sources: Simon Willison's blog and the hand-kept showcase. TechCrunch and Ars Technica were turned off on 2026-11-28 (see Primary sources only). Standout past stories, such as Claude finishing Pokémon FireRed from screenshots, live in `manual/experiments-showcase.json` with a brief taken from the source.
+
+## Primary sources only
+
+Every source must be the publisher or author of what it lists. Newsletters (TLDR), link roundups (Sidebar), aggregators (Hacker News, Designer News, Lobsters) and news coverage (TechCrunch, Ars Technica) stay off. Use them by hand to find a story, then add the company's or author's own feed or a hand-kept entry that links to the original page. Each card shows the title, the publisher's own summary or a short quote, and a link to the original; nothing is republished in full. This is a design rule, not legal advice.
