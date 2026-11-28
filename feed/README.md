@@ -44,7 +44,7 @@ Run `node scripts/feed.mjs` and read each source line. These were NOT confirmed 
 
 ## Going live (in `.github/workflows/pages.yml`)
 
-The workflow runs `node scripts/feed.mjs` (a failure does not block the deploy; the page then shows the sample with its notice), copies the feed page into `_site/feed/`, and runs daily at 10:05 and 11:05 UTC (5:05 a.m. Central in summer and winter). The added lines, for reference:
+The workflow runs `node scripts/feed.mjs` (a failure does not block the deploy; the page then shows the sample with its notice), copies the feed page into `_site/feed/`, and runs daily at four times each morning from 10:07 UTC (GitHub often starts scheduled runs late, so several chances make the post appear soon after 5 a.m. Central). The added lines, for reference:
 
 ```yaml
           mkdir -p _site/feed
@@ -59,7 +59,7 @@ and a fresh `latest.json` before that step so the site is never stuck on sample 
         run: node scripts/feed.mjs
 ```
 
-plus a daily trigger under `on:`: `schedule: [{ cron: "5 10,11 * * *" }]` (5:05 a.m. Central in summer and winter; the run that is too early just republishes the same day). Commits made by a workflow's own token do not start other workflows, so generating the feed inside this workflow is simpler than committing `latest.json`. Trade-off: history older than each feed's own window is not kept.
+plus a daily trigger under `on:`: `schedule: [{ cron: "7 10,11,12,13 * * *" }]` (5:05 a.m. Central in summer and winter; the run that is too early just republishes the same day). Commits made by a workflow's own token do not start other workflows, so generating the feed inside this workflow is simpler than committing `latest.json`. Trade-off: history older than each feed's own window is not kept.
 
 ## Checked in a browser (Chromium, 2026-11-24)
 
